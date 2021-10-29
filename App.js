@@ -13,6 +13,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   useColorScheme,
   View,
 } from 'react-native';
@@ -36,15 +37,21 @@ import {
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { atom, RecoilRoot, useRecoilState } from 'recoil';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { textState } from './src/Atoms';
 import HomeScreen from './src/screens/HomeScreen';
-import TestScreen from './src/screens/TestScreen';
 import { ThemeContextProvider } from './src/contexts/ThemeContext';
 import StatsScreen from './src/screens/StatsScreen';
 import FarmersScreen from './src/screens/FarmersScreen';
+import BlocksFoundScreen from './src/screens/BlocksFoundScreen';
+import PayoutScreen from './src/screens/PayoutScreen';
+import FarmerScreen from './src/screens/FarmerScreen';
 
+const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+// const Drawer = createDrawerNavigator();
 
 const CombinedDefaultTheme = merge(PaperDefaultTheme, NavigationDefaultTheme);
 const CombinedDarkTheme = merge(PaperDarkTheme, NavigationDarkTheme);
@@ -100,30 +107,48 @@ const App = () => {
     [toggleTheme, isThemeDark]
   );
 
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const onChangeSearch = (query) => setSearchQuery(query);
+
+  const Root = () => (
+    <Drawer.Navigator
+      backBehavior="history"
+      initialRouteName="Stats"
+      screenOptions={{
+        headerShown: true,
+        headerStyle: { backgroundColor: theme.colors.primary },
+        drawerActiveTintColor: theme.colors.text,
+        headerTintColor: '#fff',
+        // drawerActiveBackgroundColor: { background: 'red' },
+        // drawerContentContainerStyle: { backgroundColor: 'red' },
+        drawerStyle: { backgroundColor: theme.colors.primary },
+      }}
+    >
+      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Stats" component={StatsScreen} />
+      <Drawer.Screen name="Farmers" component={FarmersScreen} />
+      <Drawer.Screen name="Blocks Found" component={BlocksFoundScreen} />
+      <Drawer.Screen name="Payouts" component={PayoutScreen} />
+    </Drawer.Navigator>
+  );
+
   return (
     <RecoilRoot>
       <ThemeContextProvider value={preferences}>
         <SafeAreaProvider style={{ backgroundColor: theme.colors.background }}>
           <PaperProvider theme={theme}>
-            <Suspense fallback={<Text>Loading...</Text>}>
-              <NavigationContainer theme={theme}>
-                <Drawer.Navigator
-                  initialRouteName="Stats"
-                  screenOptions={{
-                    headerStyle: { backgroundColor: theme.colors.primary },
-                    drawerActiveTintColor: theme.colors.text,
-                    headerTintColor: '#fff',
-                    // drawerActiveBackgroundColor: { background: 'red' },
-                    // drawerContentContainerStyle: { backgroundColor: 'red' },
-                    drawerStyle: { backgroundColor: theme.colors.primary },
-                  }}
-                >
-                  <Drawer.Screen name="Home" component={HomeScreen} />
-                  <Drawer.Screen name="Stats" component={StatsScreen} />
-                  <Drawer.Screen name="Farmers" component={FarmersScreen} />
-                </Drawer.Navigator>
-              </NavigationContainer>
-            </Suspense>
+            <NavigationContainer theme={theme}>
+              <Stack.Navigator>
+                <Stack.Screen name="Root" component={Root} options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="Farmer"
+                  component={FarmerScreen}
+                  // options={{ headerShown: false, title: 'hello' }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+            {/* </Suspense> */}
           </PaperProvider>
         </SafeAreaProvider>
       </ThemeContextProvider>
