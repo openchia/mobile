@@ -45,8 +45,7 @@ const Content = ({ navigation }) => {
       item={item}
       rank={index}
       onPress={() => {
-        console.log('Clicked');
-        navigation.navigate('Farmer');
+        navigation.navigate({ name: 'Farmer Details', params: { item } });
       }}
     />
   );
@@ -65,14 +64,6 @@ const Content = ({ navigation }) => {
 const FarmersScreen = ({ navigation }) => (
   <Suspense fallback={<LoadingComponent />}>
     <Content navigation={navigation} />
-    {/* <Stack.Navigator>
-      <Stack.Screen name="List" component={Content} options={{ headerShown: false }} />
-      <Stack.Screen
-        name="Item"
-        component={FarmerScreen}
-        options={{ headerShown: false, title: 'hello' }}
-      />
-    </Stack.Navigator> */}
   </Suspense>
 );
 

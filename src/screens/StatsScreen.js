@@ -20,8 +20,18 @@ import LoadingComponent from '../components/LoadingComponent';
 
 const Item = ({ title, value, color }) => (
   <View style={styles.item}>
-    <Text style={{ color }}>{title}</Text>
-    <Text>{value}</Text>
+    <Text style={{ color, fontSize: 16 }}>{title}</Text>
+    <Text
+      style={{
+        textAlign: 'center',
+        marginTop: 10,
+        marginBottom: 10,
+        fontSize: 18,
+        fontWeight: 'bold',
+      }}
+    >
+      {value}
+    </Text>
   </View>
 );
 
@@ -40,7 +50,7 @@ const Content = () => {
   const stats = useRecoilValue(statsQuery());
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, display: 'flex', margin: 8 }}>
       <View style={styles.container}>
         <Item
           value={currencyFormat(stats.xch_current_price.usd)}
@@ -84,7 +94,11 @@ const Content = () => {
         />
       </View>
       <View style={styles.container}>
-        <Item value={`${stats.xch_tb_month} XCH/TiB/day`} color="#4DB33E" title="PROFITABILITY" />
+        <Item
+          value={`${stats.xch_tb_month.toFixed(8)} XCH/TiB/day`}
+          color="#4DB33E"
+          title="PROFITABILITY"
+        />
       </View>
       {/* {isLoading ? <ActivityIndicator /> : <AreaChartNetspace data={data} />} */}
     </SafeAreaView>
@@ -100,8 +114,7 @@ const StatsScreen = ({ navigation }) => (
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 8,
+    flex: 1,
   },
   item: {
     flex: 1,
@@ -110,9 +123,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     elevation: 6,
     margin: 6,
-    marginEnd: 10,
-    marginStart: 10,
-    height: 86,
     borderRadius: 8,
     borderColor: '#fff', // if you need
     borderWidth: 1,
