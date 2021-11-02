@@ -171,6 +171,8 @@ const FarmerScreen = ({ route, navigation }) => {
                   : 'content-save'
                 : 'delete'
             }
+            style={{ marginEnd: 16 }}
+            color="#fff"
             size={24}
             onPress={() => {
               if (launcherItem) {

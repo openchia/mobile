@@ -81,7 +81,8 @@ const LightTheme = {
     accent: '#c57e49',
     surface: '#f5f5f5',
     onSurface: '#0096FF',
-    primary: '#008640',
+    // primary: '#008640',
+    primary: '#119400',
     divider: '#fff',
     text: 'grey',
     disabled: 'black',
@@ -101,7 +102,8 @@ const DarkTheme = {
     text: '#ffffffff',
     surface: '#20272c',
     accent: '#c57e49',
-    primary: '#329f4d',
+    primary: '#119400',
+    // primary: '#329f4d',
     leaves: 'rgba(245, 245, 245, 0.07)',
   },
 };
@@ -163,7 +165,7 @@ const AppRoot = ({ theme, toggleTheme }) => {
 
   return (
     <NavigationContainer theme={theme}>
-      <StatusBar backgroundColor="#007839" barStyle="light-content" />
+      <StatusBar backgroundColor="#047300" barStyle="light-content" />
       <Stack.Navigator
         screenOptions={{
           headerShown: true,
