@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { selectorFamily, useRecoilValue, useRecoilState } from 'recoil';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { format } from 'date-fns';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,7 +18,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Clipboard from '@react-native-clipboard/clipboard';
 import { IconButton } from 'react-native-paper';
 import AreaChartNetspace from '../charts/AreaChartNetspace';
-import { getNetspace, getFarmers, getPartialsFromID } from '../Api';
+import { getNetspace, getFarmers, getPartialsFromID, getFarmer } from '../Api';
 import { formatBytes } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
 import FarmerGraphScreen from './FarmerGraphScreen';
@@ -145,7 +145,9 @@ const Content = ({ item }) => {
 };
 const FarmerScreen = ({ route, navigation }) => {
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
-  const { item } = route.params;
+  const [loading, setLoading] = useState(true);
+  const { item, launcherID } = route.params;
+  const [launcherItem, setLauncherItem] = useState(item || null);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -162,15 +164,11 @@ const FarmerScreen = ({ route, navigation }) => {
             icon="content-save"
             size={24}
             onPress={() => {
-              // saveObject('launcherIDs', 'null');
-              // const set = launcherIDs;
-              // set.add(item.launcher_id);
-              setLauncherIDs((prev) => new Map(prev.set(item.launcher_id, item.name)));
-              // setLauncherIDs((prev) => new Map(prev.add(item.launcher_id)));
-              // setLauncherIDs(set);
-              // setLauncherIDs((prevState) => ({
-              //   arrayvar: [...prevState.arrayvar, item.launcher_id],
-              // }));
+              if (launcherItem) {
+                setLauncherIDs(
+                  (prev) => new Map(prev.set(launcherItem.launcher_id, launcherItem.name))
+                );
+              }
             }}
           />
         </View>
@@ -178,16 +176,26 @@ const FarmerScreen = ({ route, navigation }) => {
     });
   }, [navigation]);
 
+  useEffect(() => {
+    if (launcherID) {
+      getFarmer(launcherID)
+        .then((data) => {
+          setLauncherItem(data);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, []);
+
+  if (!launcherItem && launcherID && loading) {
+    return <LoadingComponent />;
+  }
+
   return (
     <Suspense fallback={<LoadingComponent />}>
-      <Tab.Navigator
-        tabBarOptions={
-          {
-            // showLabel: false,
-          }
-        }
-        labeled={false}
-      >
+      <Tab.Navigator labeled={false}>
         <Tab.Screen
           options={{
             style: {
@@ -195,21 +203,12 @@ const FarmerScreen = ({ route, navigation }) => {
               height: 45,
             },
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="file-chart"
-                size={24}
-                color="white"
-                style={
-                  {
-                    // marginTop: -5,
-                  }
-                }
-              />
+              <MaterialCommunityIcons name="file-chart" size={24} color="white" />
             ),
           }}
           name="Stats"
         >
-          {() => <Content item={item} />}
+          {() => <Content item={launcherItem} />}
         </Tab.Screen>
         <Tab.Screen
           options={{
@@ -218,16 +217,7 @@ const FarmerScreen = ({ route, navigation }) => {
               height: 45,
             },
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="chart-areaspline-variant"
-                size={24}
-                color="white"
-                style={
-                  {
-                    // marginTop: -5,
-                  }
-                }
-              />
+              <MaterialCommunityIcons name="chart-areaspline-variant" size={24} color="white" />
             ),
           }}
           name="Settings"

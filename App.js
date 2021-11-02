@@ -7,8 +7,9 @@
  * @flow strict-local
  */
 
-import React, { Node, useCallback, useMemo, useState, Suspense } from 'react';
+import React, { Node, useCallback, useMemo, useState, Suspense, useEffect } from 'react';
 import {
+  Keyboard,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -17,6 +18,7 @@ import {
   TextInput,
   useColorScheme,
   View,
+  LogBox,
 } from 'react-native';
 
 import {
@@ -53,6 +55,9 @@ import PayoutScreen from './src/screens/PayoutScreen';
 import FarmerScreen from './src/screens/FarmerScreen';
 import LoadingComponent from './src/components/LoadingComponent';
 import DrawerContent from './src/components/DrawerContent';
+import ScanScreen from './src/screens/ScanScreen';
+
+LogBox.ignoreLogs(['Reanimated 2']);
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -133,12 +138,13 @@ const Root = ({ launcherIDs, theme, toggleTheme }) => {
       <Drawer.Screen name="Farmers" component={FarmersScreen} />
       <Drawer.Screen name="Blocks Found" component={BlocksFoundScreen} />
       <Drawer.Screen name="Payouts" component={PayoutScreen} />
+      <Drawer.Screen name="Scan Launcher ID" component={ScanScreen} />
       {/* <Divider /> */}
       {launcherIDsArray.map((item) => (
         <Drawer.Screen
           key={item.value}
           name={item.value ? item.value : item.name}
-          component={StatsScreen}
+          component={FarmerScreen}
         />
       ))}
     </Drawer.Navigator>
@@ -147,9 +153,6 @@ const Root = ({ launcherIDs, theme, toggleTheme }) => {
 
 const AppRoot = ({ theme, toggleTheme }) => {
   const launcherIDs = useRecoilValue(launcherIDsState);
-  // console.log('called');
-  // console.log(Array.from(launcherIDs).map((item) => console.log(item)));
-  const x = 1;
 
   return (
     <NavigationContainer theme={theme}>
@@ -157,11 +160,7 @@ const AppRoot = ({ theme, toggleTheme }) => {
         screenOptions={{
           headerShown: true,
           headerStyle: { backgroundColor: theme.colors.primary },
-          // drawerActiveTintColor: theme.colors.text,
-          // drawerActiveTintColor: '#000',
           headerTintColor: '#fff',
-          // drawerActiveBackgroundColor: { background: 'red' },
-          // drawerContentContainerStyle: { backgroundColor: 'red' },
           drawerStyle: { backgroundColor: theme.colors.primary },
         }}
       >
@@ -171,31 +170,7 @@ const AppRoot = ({ theme, toggleTheme }) => {
         <Stack.Screen
           name="Farmer Details"
           component={FarmerScreen}
-          options={({ route, navigation }) => ({
-            // headerStyle: {
-            //   backgroundColor: theme.colors.background,
-            // },
-            // headerLeft: (props) => (
-            //   <IconButton
-            //     style={{ marginStart: 16 }}
-            //     icon="cog"
-            //     onPress={() => navigation.navigate('Settings')}
-            //   />
-            // ),
-            // headerTitle: '',
-            // headerRight: () => (
-            //   <View
-            //     style={{
-            //       display: 'flex',
-            //       flexDirection: 'row',
-            //       marginEnd: -12,
-            //       alignItems: 'center',
-            //     }}
-            //   >
-            //     <IconButton icon="content-save" size={24} onPress={() => {}} />
-            //   </View>
-            // ),
-          })}
+          options={({ route, navigation }) => ({})}
         />
       </Stack.Navigator>
     </NavigationContainer>

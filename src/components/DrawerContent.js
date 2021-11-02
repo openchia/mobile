@@ -1,13 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import React, { useContext, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { Divider, Drawer, Switch, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwsomeIcons from 'react-native-vector-icons/FontAwesome';
 import Color from 'color';
 import CustomDrawerSection from './CustomDrawerSection';
 import ThemeContext from '../contexts/ThemeContext';
+import { getFarmer } from '../Api';
 
 const DrawerContent = (props) => {
   const { navigation, launcherIDsArray, toggleTheme } = props;
@@ -19,6 +20,30 @@ const DrawerContent = (props) => {
   //   console.log(launcherIDsArray);
   return (
     <View style={{ flex: 1 }}>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          margin: 16,
+          alignItems: 'center',
+          height: 24,
+        }}
+      >
+        <Image style={{}} source={require('../images/openchia_icon.png')} />
+        <Text
+          style={{
+            color: 'grey',
+            ...font,
+            fontSize: 18,
+            marginLeft: 24,
+            fontWeight: '600',
+            fontFamily: 'OpenSans-Regular',
+          }}
+        >
+          OPENCHIA.IO
+        </Text>
+      </View>
+      <Divider style={{ backgroundColor: 'black' }} />
       <DrawerContentScrollView {...props}>
         {/* <DrawerItemList {...props} /> */}
         <CustomDrawerSection style={{}}>
@@ -64,12 +89,27 @@ const DrawerContent = (props) => {
           />
         </CustomDrawerSection>
         <CustomDrawerSection title="Launcher IDs">
+          <DrawerItem
+            label="Add Launcher ID"
+            onPress={() => navigation.navigate('Scan Launcher ID')}
+            labelStyle={{ color: 'grey' }}
+            icon={({ color, size }) => (
+              <MaterialCommunityIcons name="plus" size={size} color="grey" />
+            )}
+          />
           {launcherIDsArray.map((item) => (
             <DrawerItem
               labelStyle={{ color: 'grey' }}
               key={item.name}
               label={item.value ? item.value : item.name}
-              onPress={() => navigation.navigate(`${item.name}`)}
+              onPress={() => {
+                navigation.navigate({ name: 'Farmer Details', params: { launcherID: item.name } });
+                // getFarmer(item.name)
+                //   .then((data) => {
+                //     navigation.navigate({ name: 'Farmer Details', params: { item: data } });
+                //   })
+                //   .catch((error) => console.log(error));
+              }}
               icon={({ color, size }) => (
                 <MaterialCommunityIcons name="silo" size={size} color="grey" />
               )}
