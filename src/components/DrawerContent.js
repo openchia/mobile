@@ -5,7 +5,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import { Divider, Drawer, Switch, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwsomeIcons from 'react-native-vector-icons/FontAwesome';
-import Color from 'color';
+import { useTranslation } from 'react-i18next';
 import CustomDrawerSection from './CustomDrawerSection';
 import ThemeContext from '../contexts/ThemeContext';
 import { getFarmer } from '../Api';
@@ -13,6 +13,7 @@ import { getFarmer } from '../Api';
 const DrawerContent = (props) => {
   const { navigation, launcherIDsArray, toggleTheme } = props;
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const { isThemeDark } = useContext(ThemeContext);
 
@@ -48,7 +49,7 @@ const DrawerContent = (props) => {
         {/* <DrawerItemList {...props} /> */}
         <CustomDrawerSection style={{}}>
           <DrawerItem
-            label="Home"
+            label={t('navigate:home')}
             onPress={() => navigation.navigate('Home')}
             labelStyle={{ color: 'grey' }}
             icon={({ color, size }) => (
@@ -56,7 +57,7 @@ const DrawerContent = (props) => {
             )}
           />
           <DrawerItem
-            label="Stats"
+            label={t('navigate:stats')}
             onPress={() => navigation.navigate('Stats')}
             labelStyle={{ color: 'grey' }}
             icon={({ color, size }) => (
@@ -64,7 +65,7 @@ const DrawerContent = (props) => {
             )}
           />
           <DrawerItem
-            label="Farmers"
+            label={t('navigate:farmers')}
             onPress={() => navigation.navigate('Farmers')}
             labelStyle={{ color: 'grey' }}
             icon={({ color, size }) => (
@@ -72,7 +73,7 @@ const DrawerContent = (props) => {
             )}
           />
           <DrawerItem
-            label="Blocks Found"
+            label={t('navigate:blocksFound')}
             onPress={() => navigation.navigate('Blocks Found')}
             labelStyle={{ color: 'grey' }}
             icon={({ color, size }) => (
@@ -80,7 +81,7 @@ const DrawerContent = (props) => {
             )}
           />
           <DrawerItem
-            label="Payouts"
+            label={t('navigate:payouts')}
             onPress={() => navigation.navigate('Payouts')}
             labelStyle={{ color: 'grey' }}
             icon={({ color, size }) => (
@@ -88,9 +89,9 @@ const DrawerContent = (props) => {
             )}
           />
         </CustomDrawerSection>
-        <CustomDrawerSection title="Launcher IDs">
+        <CustomDrawerSection title="Launcher ID's">
           <DrawerItem
-            label="Add Launcher ID"
+            label={t('navigate:launcherID')}
             onPress={() => navigation.navigate('Scan Launcher ID')}
             labelStyle={{ color: 'grey' }}
             icon={({ color, size }) => (
@@ -120,7 +121,9 @@ const DrawerContent = (props) => {
           <TouchableRipple onPress={() => toggleTheme()}>
             <View style={styles.preference}>
               <MaterialCommunityIcons name="theme-light-dark" size={24} color="grey" />
-              <Text style={{ color: 'grey', flex: 1, marginStart: 32, ...font }}>Dark Theme</Text>
+              <Text style={{ color: 'grey', flex: 1, marginStart: 32 }}>
+                {t('navigate:darkMode')}
+              </Text>
               <View pointerEvents="none">
                 <Switch value={isThemeDark} />
               </View>
@@ -137,8 +140,8 @@ const DrawerContent = (props) => {
         </CustomDrawerSection>
         <CustomDrawerSection showDivider={false}>
           <DrawerItem
-            label="Settings"
-            onPress={() => navigation.navigate('Home')}
+            label={t('navigate:settings')}
+            onPress={() => navigation.navigate('Settings')}
             labelStyle={{ color: 'grey' }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="cog" size={size} color="grey" />

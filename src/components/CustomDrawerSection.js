@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import * as React from 'react';
 import { View, ViewStyle, StyleSheet, StyleProp } from 'react-native';
-import color from 'color';
 import { Divider, Text, withTheme } from 'react-native-paper';
 
 const CustomDrawerSection = ({ children, title, theme, style, showDivider, ...rest }) => {
   const { colors, fonts } = theme;
-  const titleColor = color('grey').alpha(0.7).rgb().string();
+  // const titleColor = color('grey').alpha(0.7).rgb().string();
+  const titleColor = 'grey';
   const font = fonts.medium;
 
   return (

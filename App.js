@@ -20,6 +20,7 @@ import {
   View,
   LogBox,
 } from 'react-native';
+import './src/constants/IMLocalize';
 
 import {
   IconButton,
@@ -43,7 +44,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { atom, RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import { createStackNavigator } from '@react-navigation/stack';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { TransitionPresets, createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { textState, launcherIDsState } from './src/Atoms';
 import HomeScreen from './src/screens/HomeScreen';
@@ -56,10 +58,14 @@ import FarmerScreen from './src/screens/FarmerScreen';
 import LoadingComponent from './src/components/LoadingComponent';
 import DrawerContent from './src/components/DrawerContent';
 import ScanScreen from './src/screens/ScanScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
+import LanguageSelectorScreen from './src/screens/LanguageSelectorScreen';
 
 LogBox.ignoreLogs(['Reanimated 2']);
+LogBox.ignoreLogs(['timer']);
 
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const CombinedDefaultTheme = merge(PaperDefaultTheme, NavigationDefaultTheme);
@@ -73,11 +79,11 @@ const LightTheme = {
     background: '#f5f5f5',
     border: '#0096FF',
     accent: '#c57e49',
-    surface: '#0096FF',
+    surface: '#f5f5f5',
     onSurface: '#0096FF',
     primary: '#008640',
     divider: '#fff',
-    text: '#fff',
+    text: 'grey',
     disabled: 'black',
     placeholder: 'black',
     backdrop: 'black',
@@ -112,7 +118,7 @@ const Root = ({ launcherIDs, theme, toggleTheme }) => {
         <DrawerContent {...props} launcherIDsArray={launcherIDsArray} toggleTheme={toggleTheme} />
       )}
       backBehavior="history"
-      initialRouteName="Stats"
+      initialRouteName="Home"
       useLegacyImplementation
       screenOptions={{
         headerShown: true,
@@ -147,6 +153,7 @@ const Root = ({ launcherIDs, theme, toggleTheme }) => {
           component={FarmerScreen}
         />
       ))}
+      <Drawer.Screen name="Settings" component={SettingsScreen} />
     </Drawer.Navigator>
   );
 };
@@ -156,12 +163,15 @@ const AppRoot = ({ theme, toggleTheme }) => {
 
   return (
     <NavigationContainer theme={theme}>
+      <StatusBar backgroundColor="#007839" barStyle="light-content" />
       <Stack.Navigator
         screenOptions={{
           headerShown: true,
           headerStyle: { backgroundColor: theme.colors.primary },
           headerTintColor: '#fff',
           drawerStyle: { backgroundColor: theme.colors.primary },
+          gestureEnabled: true, // If you want to swipe back like iOS on Android
+          ...TransitionPresets.SlideFromRightIOS,
         }}
       >
         <Stack.Screen name="Root" options={{ headerShown: false }}>
@@ -170,8 +180,9 @@ const AppRoot = ({ theme, toggleTheme }) => {
         <Stack.Screen
           name="Farmer Details"
           component={FarmerScreen}
-          options={({ route, navigation }) => ({})}
+          // options={({ route, navigation }) => ({})}
         />
+        <Stack.Screen name="Language" component={LanguageSelectorScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

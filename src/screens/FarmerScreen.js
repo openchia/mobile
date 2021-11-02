@@ -97,6 +97,7 @@ const query = selectorFamily({
 const Content = ({ item }) => {
   // const { item } = route.params;
   const partials = useRecoilValue(query(item.launcher_id));
+  // const launcherIDsArray = Array.from(launcherIDs, ([name, value]) => ({ name, value }));
   const partialsFiltered = [];
   const errors = [];
   const harvesters = new Set();
@@ -147,6 +148,7 @@ const FarmerScreen = ({ route, navigation }) => {
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
   const [loading, setLoading] = useState(true);
   const { item, launcherID } = route.params;
+  // const launcherIDs = useRecoilValue(launcherIDsState);
   const [launcherItem, setLauncherItem] = useState(item || null);
 
   React.useLayoutEffect(() => {
@@ -161,20 +163,39 @@ const FarmerScreen = ({ route, navigation }) => {
           }}
         >
           <IconButton
-            icon="content-save"
+            icon={
+              // eslint-disable-next-line no-nested-ternary
+              launcherItem
+                ? launcherIDs.has(launcherItem.launcher_id)
+                  ? 'delete'
+                  : 'content-save'
+                : 'delete'
+            }
             size={24}
             onPress={() => {
               if (launcherItem) {
-                setLauncherIDs(
-                  (prev) => new Map(prev.set(launcherItem.launcher_id, launcherItem.name))
-                );
+                if (launcherIDs.has(launcherItem.launcher_id)) {
+                  // const newMap = { ...launcherIDs.delete(launcherItem.launcher_id) };
+                  setLauncherIDs((prev) => {
+                    const newState = new Map(prev);
+                    newState.delete(launcherItem.launcher_id);
+                    return newState;
+                  });
+                  // setLauncherIDs((prev) => new Map(prev.delete(launcherItem.launcher_id)));
+                  // console.log(newMap);
+                  navigation.goBack();
+                } else {
+                  setLauncherIDs(
+                    (prev) => new Map(prev.set(launcherItem.launcher_id, launcherItem.name))
+                  );
+                }
               }
             }}
           />
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, launcherItem]);
 
   useEffect(() => {
     if (launcherID) {
@@ -234,7 +255,6 @@ const styles = StyleSheet.create({
     flex: 1,
     // flexWrap: 'wrap',
     display: 'flex',
-    gap: 10,
     marginTop: 8,
     marginBottom: 8,
   },
