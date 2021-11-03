@@ -21,12 +21,13 @@ export const getStats = () =>
       if (response.ok) {
         return response.json();
       }
-      throw Error(response.statusText);
+      console.log(response);
+      throw new Error(response.statusText);
     })
-    .then((json) => json)
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((json) => json);
+// .catch((error) => {
+//   console.log(error);
+// });
 
 export const getFarmers = () =>
   fetch(`${REST_API}launcher`)

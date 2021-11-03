@@ -1,21 +1,37 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { SafeAreaView, ActivityIndicator, FlatList, Text, View, StyleSheet } from 'react-native';
-import { selectorFamily, useRecoilValue } from 'recoil';
+import {
+  SafeAreaView,
+  ActivityIndicator,
+  FlatList,
+  View,
+  StyleSheet,
+  RefreshControl,
+} from 'react-native';
+import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { format } from 'date-fns';
-import AreaChartNetspace from '../charts/AreaChartNetspace';
+import { Text } from 'react-native-paper';
 import { getPayouts } from '../Api';
 import { formatBytes, convertMojoToChia } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
+import { payoutsRequestIDState } from '../Atoms';
+
+const useRefresh = () => {
+  const setRequestId = useSetRecoilState(payoutsRequestIDState());
+  return () => setRequestId((id) => id + 1);
+};
 
 const query = selectorFamily({
   key: 'payoutsSelector',
-  get: () => async () => {
-    const response = await getPayouts();
-    if (response.error) {
-      throw response.error;
-    }
-    return response;
-  },
+  get:
+    () =>
+    async ({ get }) => {
+      get(payoutsRequestIDState());
+      const response = await getPayouts();
+      if (response.error) {
+        throw response.error;
+      }
+      return response;
+    },
 });
 
 const Item = ({ item }) => (
@@ -27,6 +43,7 @@ const Item = ({ item }) => (
 );
 
 const Content = () => {
+  const refresh = useRefresh();
   const payouts = useRecoilValue(query());
 
   const renderItem = ({ item, index }) => <Item item={item} rank={index} />;
@@ -34,6 +51,8 @@ const Content = () => {
   return (
     <SafeAreaView>
       <FlatList
+        ListHeaderComponent={<View style={{ marginTop: 8 }} />}
+        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
         data={payouts.results}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
@@ -67,7 +86,7 @@ const styles = StyleSheet.create({
   },
   rank: {
     fontSize: 14,
-    marginEnd: 20,
+    marginEnd: 12,
   },
   name: {
     fontSize: 14,

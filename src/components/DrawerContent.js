@@ -90,21 +90,13 @@ const DrawerContent = (props) => {
           />
         </CustomDrawerSection>
         <CustomDrawerSection title="Launcher ID's">
-          <DrawerItem
-            label={t('navigate:launcherID')}
-            onPress={() => navigation.navigate('Scan Launcher ID')}
-            labelStyle={{ color: 'grey' }}
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons name="plus" size={size} color="grey" />
-            )}
-          />
           {launcherIDsArray.map((item) => (
             <DrawerItem
               labelStyle={{ color: 'grey' }}
               key={item.name}
               label={item.value ? item.value : item.name}
               onPress={() => {
-                navigation.navigate({ name: 'Farmer Details', params: { launcherID: item.name } });
+                navigation.navigate({ name: 'Farmer Details', params: { launcherId: item.name } });
                 // getFarmer(item.name)
                 //   .then((data) => {
                 //     navigation.navigate({ name: 'Farmer Details', params: { item: data } });
@@ -116,6 +108,14 @@ const DrawerContent = (props) => {
               )}
             />
           ))}
+          <DrawerItem
+            label={t('navigate:launcherID')}
+            onPress={() => navigation.navigate('Scan Launcher ID')}
+            labelStyle={{ color: 'grey' }}
+            icon={({ color, size }) => (
+              <MaterialCommunityIcons name="plus" size={size} color="grey" />
+            )}
+          />
         </CustomDrawerSection>
         <CustomDrawerSection label="Preferences">
           <TouchableRipple onPress={() => toggleTheme()}>

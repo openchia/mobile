@@ -1,6 +1,23 @@
+/* eslint-disable no-nested-ternary */
 import React, { Suspense, useEffect, useState } from 'react';
-import { SafeAreaView, ActivityIndicator, FlatList, Text, View, StyleSheet } from 'react-native';
-import { selectorFamily, useRecoilValue } from 'recoil';
+import {
+  SafeAreaView,
+  ActivityIndicator,
+  FlatList,
+  View,
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
+import {
+  selectorFamily,
+  useRecoilValue,
+  atomFamily,
+  useSetRecoilState,
+  useRecoilValueLoadable,
+} from 'recoil';
+import { ErrorBoundary } from 'react-error-boundary';
+
 import {
   format,
   formatDistance,
@@ -8,6 +25,8 @@ import {
   formatDuration,
   secondsToHours,
 } from 'date-fns';
+import { useToast } from 'react-native-toast-notifications';
+import { Text } from 'react-native-paper';
 import AreaChartNetspace from '../charts/AreaChartNetspace';
 import { getNetspace, getStats } from '../Api';
 import {
@@ -16,9 +35,9 @@ import {
   currencyFormat,
   formatBytes,
 } from '../utils/Formatting';
-import LoadingComponent from '../components/LoadingComponent';
+import { statsRequestIDState } from '../Atoms';
 
-const Item = ({ title, value, color }) => (
+const Item = ({ title, value, color, loadable, format }) => (
   <View style={styles.item}>
     <Text style={{ color, fontSize: 16 }}>{title}</Text>
     <Text
@@ -30,87 +49,184 @@ const Item = ({ title, value, color }) => (
         fontWeight: 'bold',
       }}
     >
-      {value}
+      {loadable.state === 'hasValue'
+        ? format(loadable.contents)
+        : loadable.state === 'loading'
+        ? '...'
+        : 'Error occured'}
     </Text>
+    {/* <Text style={{ color, fontSize: 16 }}>
+      {' '}
+      {loadable.state === 'hasValue'
+        ? format(loadable.contents)
+        : loadable.state === 'loading'
+        ? '...'
+        : 'Error occured'}
+    </Text> */}
   </View>
 );
 
+const useRefreshStats = () => {
+  const setRequestId = useSetRecoilState(statsRequestIDState());
+  return () => setRequestId((id) => id + 1);
+};
+
 const statsQuery = selectorFamily({
   key: 'statsSelector',
-  get: () => async () => {
-    const response = await getStats();
-    if (response.error) {
-      throw response.error;
-    }
-    return response;
-  },
+  get:
+    () =>
+    async ({ get }) => {
+      get(statsRequestIDState());
+      const response = await getStats();
+      if (response.error) {
+        throw new Error(response.error);
+      }
+      return response;
+    },
 });
 
 const Content = () => {
-  const stats = useRecoilValue(statsQuery());
+  const statsLoadable = useRecoilValueLoadable(statsQuery());
+  const refresh = useRefreshStats();
+
+  if (statsLoadable.state === 'hasError') {
+    return (
+      <ScrollView
+        contentContainerStyle={{
+          padding: 8,
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
+      >
+        <Text style={{ fontSize: 20, textAlign: 'center' }}>
+          Could not fetch data. Please make sure you have an internet connection. Pull down to try
+          refresh again.
+        </Text>
+      </ScrollView>
+    );
+  }
 
   return (
-    <SafeAreaView style={{ flex: 1, display: 'flex', margin: 8 }}>
+    <ScrollView
+      contentContainerStyle={{ padding: 8, flex: 1, display: 'flex' }}
+      refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
+    >
       <View style={styles.container}>
         <Item
-          value={currencyFormat(stats.xch_current_price.usd)}
+          loadable={statsLoadable}
+          format={(item) => currencyFormat(item.xch_current_price.usd)}
           color="#4DB33E"
           title="XCH PRICE"
         />
-        <Item value={formatBytes(stats.pool_space)} color="#4DB33E" title="POOL SPACE" />
+        <Item
+          loadable={statsLoadable}
+          format={(item) => formatBytes(item.pool_space)}
+          color="#4DB33E"
+          title="POOL SPACE"
+        />
       </View>
       <View style={styles.container}>
         <Item
-          value={`${(stats.estimate_win / 60 / 24).toFixed(3)} days`}
+          loadable={statsLoadable}
+          format={(item) => `${(item.estimate_win / 60 / 24).toFixed(3)} days`}
           color="#3DD292"
           title="ETW"
         />
-        <Item value={stats.rewards_blocks} color="#FB6D4C" title="BLOCKS" />
-      </View>
-      <View style={styles.container}>
-        <Item value={stats.farmers} color="#34D4F1" title="FARMERS" />
-        <Item value={formatBytes(stats.blockchain_space)} color="#34D4F1" title="NETSPACE" />
+        <Item
+          loadable={statsLoadable}
+          format={(item) => item.rewards_blocks}
+          color="#FB6D4C"
+          title="BLOCKS"
+        />
       </View>
       <View style={styles.container}>
         <Item
-          value={`${((stats.time_since_last_win / (stats.estimate_win * 60)) * 100).toFixed(0)}%`}
+          loadable={statsLoadable}
+          format={(item) => item.farmers}
+          color="#34D4F1"
+          title="FARMERS"
+        />
+        <Item
+          loadable={statsLoadable}
+          format={(item) => formatBytes(item.blockchain_space)}
+          color="#34D4F1"
+          title="NETSPACE"
+        />
+      </View>
+      <View style={styles.container}>
+        <Item
+          loadable={statsLoadable}
+          format={(item) =>
+            `${((item.time_since_last_win / (item.estimate_win * 60)) * 100).toFixed(0)}%`
+          }
           color="#4DB33E"
           title="CURRENT EFFORT"
         />
-        <Item value={`${stats.average_effort.toFixed(0)}%`} color="#4DB33E" title="EFFORT" />
+        <Item
+          loadable={statsLoadable}
+          // value="average_effort"
+          format={(item) => `${item.average_effort.toFixed(0)}%`}
+          color="#4DB33E"
+          title="EFFORT"
+        />
       </View>
       <View style={styles.container}>
         <Item
-          // value={formatDistanceToNow(new Date(stats.last_rewards[0].date))}
-          // value={secondsToHours(new Date(stats.time_since_last_win))}
-          value={convertSecondsToHourMin(stats.time_since_last_win)}
+          loadable={statsLoadable}
+          format={(item) => convertSecondsToHourMin(item.time_since_last_win)}
           color="#4DB33E"
           title="SINCE LAST WIN"
         />
         <Item
-          value={`${convertMojoToChia(stats.rewards_amount)} XCH`}
+          loadable={statsLoadable}
+          format={(item) => `${convertMojoToChia(item.rewards_amount)} XCH`}
           color="#4DB33E"
           title="REWARDS"
         />
       </View>
       <View style={styles.container}>
         <Item
-          value={`${stats.xch_tb_month.toFixed(8)} XCH/TiB/day`}
+          loadable={statsLoadable}
+          format={(item) => `${item.xch_tb_month.toFixed(8)} XCH/TiB/day`}
           color="#4DB33E"
           title="PROFITABILITY"
         />
       </View>
-      {/* {isLoading ? <ActivityIndicator /> : <AreaChartNetspace data={data} />} */}
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
-const StatsScreen = ({ navigation }) => (
-  <Suspense fallback={<LoadingComponent />}>
-    <Content />
-  </Suspense>
-);
+function ErrorFallback({ error, resetErrorBoundary }) {
+  return (
+    <View role="alert">
+      <Text>Something went wrong:</Text>
+    </View>
+  );
+}
 
+const StatsScreen = ({ navigation }) => (
+  // const toast = useToast();
+  // const statsLoadable = useRecoilValueLoadable(statsQuery());
+  // const refresh = useRefreshStats();
+
+  // if (statsLoadable.state === 'hasError') {
+  //   toast.show(statsLoadable.contents);
+  // }
+
+  <SafeAreaView style={{ flex: 1 }}>
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onReset={() => {
+        // reset the state of your app so the error doesn't happen again
+      }}
+    >
+      <Content />
+    </ErrorBoundary>
+  </SafeAreaView>
+);
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',

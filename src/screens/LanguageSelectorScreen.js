@@ -3,7 +3,6 @@ import {
   SafeAreaView,
   ActivityIndicator,
   FlatList,
-  Text,
   View,
   StyleSheet,
   Pressable,
@@ -11,7 +10,8 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useTranslation } from 'react-i18next';
-import { TouchableRipple } from 'react-native-paper';
+import { Text, TouchableRipple } from 'react-native-paper';
+import CustomCard from '../components/CustomCard';
 
 export const LANGUAGES = [
   { code: 'en', label: 'English' },
@@ -21,19 +21,20 @@ export const LANGUAGES = [
 const Item = ({ item, selected, onPress }) => {
   if (selected) {
     return (
-      <TouchableRipple
-        borderless
-        style={[styles.item, { backgroundColor: '#cccccc', borderColor: '#000' }]}
-        onPress={onPress}
+      <View
+        style={styles.itemNotSelected}
+        // style={([styles.item], { backgroundColor: 'rgba(219, 219, 219, 0.6)' })}
+        // selected
+        // onPress={onPress}
       >
-        <Text style={[styles.label, { color: '#000' }]}>{item.label}</Text>
-      </TouchableRipple>
+        <Text style={styles.label}>{item.label}</Text>
+      </View>
     );
   }
   return (
-    <TouchableRipple borderless style={[styles.item]} onPress={onPress}>
+    <CustomCard style={[styles.item]} onPress={onPress}>
       <Text style={styles.label}>{item.label}</Text>
-    </TouchableRipple>
+    </CustomCard>
   );
 };
 
@@ -59,6 +60,7 @@ const LanguageSelectorScreen = ({ navigation }) => {
   return (
     <SafeAreaView>
       <FlatList
+        ListHeaderComponent={<View style={{ marginTop: 8 }} />}
         data={LANGUAGES}
         renderItem={renderItem}
         keyExtractor={(item) => item.code.toString()}
@@ -79,6 +81,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginHorizontal: 16,
     borderColor: '#fff', // if you need
+    borderWidth: 1,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowRadius: 10,
+    shadowOpacity: 1,
+    elevation: 6,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  itemNotSelected: {
+    backgroundColor: '#dbdbdb',
+    padding: 14,
+    paddingEnd: 20,
+    marginVertical: 8,
+    borderRadius: 8,
+    marginHorizontal: 16,
+    borderColor: '#c9c9c9', // if you need
     borderWidth: 1,
     overflow: 'hidden',
     shadowColor: '#000',

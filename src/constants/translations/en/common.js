@@ -6,4 +6,12 @@ export default {
   open: 'All our software is open source.',
   join: 'Join our Pool',
   chat: 'Chat with us',
+  fee: '1% Fee',
+  minPayout: 'No Minimum payout',
+  instantPayout: 'Instant payout',
+  transparent: 'Transparent',
+  feeDesc: 'Low fee with referral option.',
+  minPayoutDesc: 'Why wait to get your rewards?',
+  instantPayoutDesc: 'Get your reward as soon as possible.',
+  transparentDesc: 'We have nothing to hide. Full blown explorer and live logs.',
 };

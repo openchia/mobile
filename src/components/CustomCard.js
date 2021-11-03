@@ -1,34 +1,26 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+
+import { StyleSheet, View, TouchableNativeFeedback } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Text, TouchableRipple, useTheme } from 'react-native-paper';
 
-const CustomCard = ({ title, subtitle, desc, onPress }) => {
+const CustomCard = ({ title, subtitle, desc, onPress, children, selected }) => {
   const x = 0;
   return (
-    //   const theme = useTheme();
-    // <View style={styles.item}>
-    <TouchableRipple style={styles.item} borderless onPress={onPress}>
-      <View style={styles.content}>
-        <View style={styles.mainContent}>
-          {title && <Text style={styles.title}>{title}</Text>}
-          {subtitle && (
-            <Text numberOfLines={1} style={styles.subtitle}>
-              {subtitle}
-            </Text>
-          )}
-        </View>
-        {desc && <Text style={styles.desc}>{desc}</Text>}
-      </View>
-      {/* <Text style={styles.size}>{formatBytes(item.estimated_size)}</Text> */}
-    </TouchableRipple>
+    <View style={[styles.content]}>
+      <TouchableNativeFeedback
+        onPress={onPress}
+        background={TouchableNativeFeedback.Ripple('rgba(219, 219, 219, 0.6)', true)}
+      >
+        <View style={styles.item}>{children}</View>
+      </TouchableNativeFeedback>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  item: {
+  content: {
     backgroundColor: '#fff',
-    padding: 14,
-    paddingEnd: 20,
     marginVertical: 8,
     borderRadius: 8,
     marginHorizontal: 16,
@@ -42,25 +34,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
-  content: {
+  item: {
+    padding: 16,
     display: 'flex',
     flexDirection: 'row',
     flex: 1,
     alignItems: 'center',
-  },
-  mainContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-  },
-  title: {
-    fontSize: 18,
-  },
-  subtitle: {
-    fontSize: 14,
-  },
-  desc: {
-    fontSize: 12,
   },
 });
 

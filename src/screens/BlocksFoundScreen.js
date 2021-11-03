@@ -1,21 +1,38 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { SafeAreaView, ActivityIndicator, FlatList, Text, View, StyleSheet } from 'react-native';
-import { selectorFamily, useRecoilValue } from 'recoil';
+import {
+  SafeAreaView,
+  ActivityIndicator,
+  FlatList,
+  View,
+  StyleSheet,
+  RefreshControl,
+} from 'react-native';
+import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { format, fromUnixTime } from 'date-fns';
+import { Text } from 'react-native-paper';
 import AreaChartNetspace from '../charts/AreaChartNetspace';
 import { getBlocks, getNetspace } from '../Api';
 import { formatBytes } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
+import { blocksRequestIDState } from '../Atoms';
+
+const useRefresh = () => {
+  const setRequestId = useSetRecoilState(blocksRequestIDState());
+  return () => setRequestId((id) => id + 1);
+};
 
 const query = selectorFamily({
   key: 'farmersSelector',
-  get: () => async () => {
-    const response = await getBlocks();
-    if (response.error) {
-      throw response.error;
-    }
-    return response;
-  },
+  get:
+    () =>
+    async ({ get }) => {
+      get(blocksRequestIDState());
+      const response = await getBlocks();
+      if (response.error) {
+        throw response.error;
+      }
+      return response;
+    },
 });
 
 const Item = ({ item }) => (
@@ -32,6 +49,7 @@ const Item = ({ item }) => (
 );
 
 const Content = ({ navigation }) => {
+  const refresh = useRefresh();
   const blocks = useRecoilValue(query());
 
   const renderItem = ({ item, index }) => <Item item={item} />;
@@ -39,6 +57,8 @@ const Content = ({ navigation }) => {
   return (
     <SafeAreaView>
       <FlatList
+        ListHeaderComponent={<View style={{ marginTop: 8 }} />}
+        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
         data={blocks.results}
         renderItem={renderItem}
         keyExtractor={(item) => item.name.toString()}

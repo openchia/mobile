@@ -3,56 +3,82 @@ import {
   SafeAreaView,
   ActivityIndicator,
   FlatList,
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
+  RefreshControlBase,
+  RefreshControl,
+  TouchableNativeFeedback,
 } from 'react-native';
-import { selectorFamily, useRecoilValue } from 'recoil';
+import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
+import { Text, TouchableRipple } from 'react-native-paper';
 import AreaChartNetspace from '../charts/AreaChartNetspace';
 import { getNetspace, getFarmers } from '../Api';
 import { formatBytes } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
-import FarmerScreen from './FarmerScreen';
+import { farmersRequestIDState } from '../Atoms';
+import CustomCard from '../components/CustomCard';
+
+const useRefresh = () => {
+  const setRequestId = useSetRecoilState(farmersRequestIDState());
+  return () => setRequestId((id) => id + 1);
+};
 
 const farmersQuery = selectorFamily({
   key: 'farmersSelector',
-  get: () => async () => {
-    const response = await getFarmers();
-    if (response.error) {
-      throw response.error;
-    }
-    return response;
-  },
+  get:
+    () =>
+    async ({ get }) => {
+      get(farmersRequestIDState());
+      const response = await getFarmers();
+      if (response.error) {
+        throw response.error;
+      }
+      return response;
+    },
 });
 
 const Item = ({ item, rank, onPress }) => (
-  <TouchableOpacity style={styles.item} onPress={onPress}>
+  // <View style={{ borderRadius: 24, backgroundColor: '#F66', height: 48 }}>
+  //   <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#AAF', true)}>
+  //     <View style={{ hiehgt: 200 }}>
+  //       <Text>{item.rank}</Text>
+  //     </View>
+  //   </TouchableNativeFeedback>
+  // </View>
+  <CustomCard onPress={onPress}>
     <Text style={styles.rank}>{rank}</Text>
     <Text numberOfLines={1} style={styles.name}>
       {item.name ? item.name : item.launcher_id}
     </Text>
     <Text style={styles.size}>{formatBytes(item.estimated_size)}</Text>
-  </TouchableOpacity>
+  </CustomCard>
 );
 
 const Content = ({ navigation }) => {
   const farmers = useRecoilValue(farmersQuery());
+  const refresh = useRefresh();
 
   const renderItem = ({ item, index }) => (
     <Item
       item={item}
       rank={index}
       onPress={() => {
-        navigation.navigate({ name: 'Farmer Details', params: { item } });
+        navigation.navigate({
+          name: 'Farmer Details',
+          params: { launcherId: item.launcher_id, name: item.name },
+        });
       }}
     />
   );
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <FlatList
+        ListHeaderComponent={<View style={{ marginTop: 8 }} />}
+        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
         data={farmers.results}
         renderItem={renderItem}
         keyExtractor={(item) => item.launcher_id.toString()}

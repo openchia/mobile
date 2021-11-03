@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ActivityIndicator, FlatList, View } from 'react-native';
+import { SafeAreaView, ActivityIndicator, FlatList, View, StyleSheet } from 'react-native';
 import { Card, useTheme, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
-import AreaChartNetspace from '../charts/AreaChartNetspace';
-import { getNetspace } from '../Api';
-import LoadingComponent from '../components/LoadingComponent';
-import CustomCard from '../components/CustomCard';
 import { LANGUAGES } from './LanguageSelectorScreen';
+import CustomCard from '../components/CustomCard';
 
 const SettingsScreen = ({ navigation }) => {
   // const theme = useTheme();
@@ -17,33 +14,59 @@ const SettingsScreen = ({ navigation }) => {
   return (
     <SafeAreaView
       style={{
-        paddingTop: 16,
+        paddingTop: 8,
         flex: 1,
       }}
     >
-      <CustomCard
-        title="Currency"
-        subtitle="Set preferred currency."
-        desc="USD"
-        style={{
-          marginLeft: 12,
-          marginEnd: 12,
-          // borderRadius: 10,
-        }}
-        // onPress={() => navigation.navigate('CurrencySelection')}
-      />
-      <CustomCard
-        title="Language"
-        subtitle="Set preferred language."
-        desc={LANGUAGES.filter((item) => item.code === selectedLanguageCode)[0].label}
-        style={{
-          marginLeft: 12,
-          marginEnd: 12,
-          // borderRadius: 10,
-        }}
-        onPress={() => navigation.navigate('Language')}
-      />
+      <CustomCard>
+        <View style={styles.content}>
+          <View style={styles.mainContent}>
+            <Text style={styles.title}>Currency</Text>
+            <Text numberOfLines={1} style={styles.subtitle}>
+              Set preferred currency.
+            </Text>
+          </View>
+          <Text style={styles.desc}>USD</Text>
+        </View>
+      </CustomCard>
+      <CustomCard onPress={() => navigation.navigate('Language')}>
+        <View style={styles.content}>
+          <View style={styles.mainContent}>
+            <Text style={styles.title}>Language</Text>
+            <Text numberOfLines={1} style={styles.subtitle}>
+              Set preferred language.
+            </Text>
+          </View>
+          <Text style={styles.desc}>
+            {LANGUAGES.filter((item) => item.code === selectedLanguageCode)[0].label}
+          </Text>
+        </View>
+      </CustomCard>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  content: {
+    display: 'flex',
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+  },
+  mainContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+  },
+  title: {
+    fontSize: 18,
+  },
+  subtitle: {
+    fontSize: 14,
+  },
+  desc: {
+    fontSize: 12,
+  },
+});
+
 export default SettingsScreen;

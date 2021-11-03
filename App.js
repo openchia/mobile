@@ -8,19 +8,10 @@
  */
 
 import React, { Node, useCallback, useMemo, useState, Suspense, useEffect } from 'react';
-import {
-  Keyboard,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  useColorScheme,
-  View,
-  LogBox,
-} from 'react-native';
+import { StatusBar, LogBox } from 'react-native';
 import './src/constants/IMLocalize';
+
+import Toast, { ToastProvider } from 'react-native-toast-notifications';
 
 import {
   IconButton,
@@ -85,10 +76,10 @@ const LightTheme = {
     primary: '#119400',
     divider: '#fff',
     text: 'grey',
-    disabled: 'black',
-    placeholder: 'black',
-    backdrop: 'black',
-    notification: 'black',
+    disabled: 'grey',
+    placeholder: 'grey',
+    backdrop: 'grey',
+    notification: 'grey',
     leaves: 'rgba(41, 50, 57, 0.05)',
   },
 };
@@ -214,13 +205,15 @@ const App = () => {
   return (
     <RecoilRoot>
       <ThemeContextProvider value={preferences}>
-        <SafeAreaProvider style={{ backgroundColor: theme.colors.background }}>
-          <PaperProvider theme={theme}>
-            <Suspense fallback={<LoadingComponent />}>
-              <AppRoot theme={theme} toggleTheme={toggleTheme} />
-            </Suspense>
-          </PaperProvider>
-        </SafeAreaProvider>
+        <ToastProvider>
+          <SafeAreaProvider style={{ backgroundColor: theme.colors.background }}>
+            <PaperProvider theme={theme}>
+              <Suspense fallback={<LoadingComponent />}>
+                <AppRoot theme={theme} toggleTheme={toggleTheme} />
+              </Suspense>
+            </PaperProvider>
+          </SafeAreaProvider>
+        </ToastProvider>
       </ThemeContextProvider>
     </RecoilRoot>
   );
