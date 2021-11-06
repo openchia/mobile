@@ -16,10 +16,36 @@ const localForageEffect =
     });
   };
 
+const localEffect =
+  (key) =>
+  ({ setSelf, onSet }) => {
+    setSelf(
+      getObject(key).then(
+        (savedValue) => (savedValue != null ? savedValue : new DefaultValue()) // Abort initialization if no value was stored
+      )
+    );
+
+    onSet((newValue) => {
+      saveObject(key, newValue);
+    });
+  };
+
 export const launcherIDsState = atom({
   key: 'atomLauncherIDs',
   default: new Map(),
   effects_UNSTABLE: [localForageEffect('launcherIDs')],
+});
+
+export const themeState = atom({
+  key: 'atomTheme',
+  default: false,
+  effects_UNSTABLE: [localEffect('theme')],
+});
+
+export const currencyState = atom({
+  key: 'atomCurrency',
+  default: 'usd',
+  effects_UNSTABLE: [localEffect('currency')],
 });
 
 // eslint-disable-next-line import/prefer-default-export
@@ -55,5 +81,10 @@ export const payoutsRequestIDState = atomFamily({
 
 export const farmerRequestIDState = atomFamily({
   key: 'farmerRequestAtomFamily',
+  default: 0,
+});
+
+export const netSpaceRequestIDState = atomFamily({
+  key: 'netspaceRequestAtomFamily',
   default: 0,
 });

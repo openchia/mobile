@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ActivityIndicator, FlatList, View, StyleSheet } from 'react-native';
 import { Card, useTheme, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
+import { useRecoilValue } from 'recoil';
 import { LANGUAGES } from './LanguageSelectorScreen';
 import CustomCard from '../components/CustomCard';
+import { currencyState } from '../Atoms';
 
 const SettingsScreen = ({ navigation }) => {
   // const theme = useTheme();
   // const LeftContent = (props) => <Text style={{ marginEnd: 16 }}>test</Text>;
   const { t, i18n } = useTranslation();
   const selectedLanguageCode = i18n.language;
+  const currency = useRecoilValue(currencyState);
 
   return (
     <SafeAreaView
@@ -18,7 +21,15 @@ const SettingsScreen = ({ navigation }) => {
         flex: 1,
       }}
     >
-      <CustomCard>
+      <CustomCard
+        onPress={() => navigation.navigate('Currency')}
+        style={{
+          padding: 16,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
         <View style={styles.content}>
           <View style={styles.mainContent}>
             <Text style={styles.title}>Currency</Text>
@@ -26,10 +37,18 @@ const SettingsScreen = ({ navigation }) => {
               Set preferred currency.
             </Text>
           </View>
-          <Text style={styles.desc}>USD</Text>
+          <Text style={styles.desc}>{currency.toUpperCase()}</Text>
         </View>
       </CustomCard>
-      <CustomCard onPress={() => navigation.navigate('Language')}>
+      <CustomCard
+        onPress={() => navigation.navigate('Language')}
+        style={{
+          padding: 16,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
         <View style={styles.content}>
           <View style={styles.mainContent}>
             <Text style={styles.title}>Language</Text>

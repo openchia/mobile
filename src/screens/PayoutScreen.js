@@ -14,6 +14,7 @@ import { getPayouts } from '../Api';
 import { formatBytes, convertMojoToChia } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
 import { payoutsRequestIDState } from '../Atoms';
+import CustomCard from '../components/CustomCard';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(payoutsRequestIDState());
@@ -35,11 +36,13 @@ const query = selectorFamily({
 });
 
 const Item = ({ item }) => (
-  <View style={styles.item}>
+  <CustomCard
+    style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }}
+  >
     <Text style={styles.rank}>{item.id}</Text>
     <Text style={styles.size}>{format(new Date(item.datetime), 'PPpp')}</Text>
     <Text style={styles.size}>{`${convertMojoToChia(item.amount)} XCH`}</Text>
-  </View>
+  </CustomCard>
 );
 
 const Content = () => {
@@ -68,22 +71,6 @@ const PayoutScreen = ({ navigation }) => (
 );
 
 const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#fff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 8,
-    borderColor: '#fff', // if you need
-    borderWidth: 1,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowRadius: 10,
-    shadowOpacity: 1,
-    elevation: 6,
-    display: 'flex',
-    flexDirection: 'row',
-  },
   rank: {
     fontSize: 14,
     marginEnd: 12,

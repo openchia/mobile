@@ -27,7 +27,6 @@ import {
 } from 'date-fns';
 import { useToast } from 'react-native-toast-notifications';
 import { Text } from 'react-native-paper';
-import AreaChartNetspace from '../charts/AreaChartNetspace';
 import { getNetspace, getStats } from '../Api';
 import {
   convertMojoToChia,
@@ -35,10 +34,12 @@ import {
   currencyFormat,
   formatBytes,
 } from '../utils/Formatting';
-import { statsRequestIDState } from '../Atoms';
+import { currencyState, statsRequestIDState } from '../Atoms';
+import CustomCard from '../components/CustomCard';
+import { getCurrencyFromKey } from './CurrencySelectionScreen';
 
 const Item = ({ title, value, color, loadable, format }) => (
-  <View style={styles.item}>
+  <CustomCard style={styles.item}>
     <Text style={{ color, fontSize: 16 }}>{title}</Text>
     <Text
       style={{
@@ -63,7 +64,7 @@ const Item = ({ title, value, color, loadable, format }) => (
         ? '...'
         : 'Error occured'}
     </Text> */}
-  </View>
+  </CustomCard>
 );
 
 const useRefreshStats = () => {
@@ -87,6 +88,7 @@ const statsQuery = selectorFamily({
 
 const Content = () => {
   const statsLoadable = useRecoilValueLoadable(statsQuery());
+  const currency = useRecoilValue(currencyState);
   const refresh = useRefreshStats();
 
   if (statsLoadable.state === 'hasError') {
@@ -111,13 +113,15 @@ const Content = () => {
 
   return (
     <ScrollView
-      contentContainerStyle={{ padding: 8, flex: 1, display: 'flex' }}
+      contentContainerStyle={{ marginTop: 8, marginBottom: 8, flex: 1, display: 'flex' }}
       refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
     >
       <View style={styles.container}>
         <Item
           loadable={statsLoadable}
-          format={(item) => currencyFormat(item.xch_current_price.usd)}
+          format={(item) =>
+            `${currencyFormat(item.xch_current_price[currency])} ${getCurrencyFromKey(currency)}`
+          }
           color="#4DB33E"
           title="XCH PRICE"
         />
@@ -236,16 +240,17 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
-    elevation: 6,
-    margin: 6,
-    borderRadius: 8,
-    borderColor: '#fff', // if you need
-    borderWidth: 1,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowRadius: 10,
-    shadowOpacity: 1,
+    flexDirection: 'column',
+    // backgroundColor: '#fff',
+    // elevation: 6,
+    // margin: 6,
+    // borderRadius: 8,
+    // borderColor: '#fff', // if you need
+    // borderWidth: 1,
+    // overflow: 'hidden',
+    // shadowColor: '#000',
+    // shadowRadius: 10,
+    // shadowOpacity: 1,
   },
 });
 

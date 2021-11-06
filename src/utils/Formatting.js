@@ -33,3 +33,16 @@ export const convertSecondsToHourMin = (seconds) => {
 };
 
 export const convertMojoToChia = (mojo) => mojo / 10 ** 12;
+
+export const formatPrice = (price, currency) => {
+  const currencyOptions = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+  }).resolvedOptions();
+
+  const value = price.toLocaleString('en-US', {
+    ...currencyOptions,
+    style: 'decimal',
+  });
+  return value;
+};

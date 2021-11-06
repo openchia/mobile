@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LoadingComponent = () => (
   <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <ActivityIndicator size={60} />
+    <ActivityIndicator size={60} color="#119400" />
   </SafeAreaView>
 );
 

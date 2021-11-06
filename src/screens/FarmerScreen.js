@@ -25,35 +25,36 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { IconButton, Text } from 'react-native-paper';
-import AreaChartNetspace from '../charts/AreaChartNetspace';
 import { getNetspace, getFarmers, getPartialsFromID, getFarmer, getStats } from '../Api';
-import { formatBytes } from '../utils/Formatting';
+import { formatBytes, formatPrice } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
 import FarmerGraphScreen from './FarmerGraphScreen';
 import { saveObject } from '../utils/Utils';
-import { farmerRequestIDState, launcherIDsState } from '../Atoms';
+import { currencyState, farmerRequestIDState, launcherIDsState } from '../Atoms';
+import CustomCard from '../components/CustomCard';
+import { getCurrencyFromKey } from './CurrencySelectionScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
 const Item = ({ title, value, color, loadable, format }) => (
-  <View style={styles.item}>
+  <CustomCard style={styles.item}>
     <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
     <Text
       style={{
         textAlign: 'center',
-        marginTop: 10,
-        marginBottom: 10,
+        // marginTop: 10,
+        // marginBottom: 10,
         fontSize: 20,
         fontWeight: 'bold',
       }}
     >
       {loadable.state === 'hasValue' ? format(loadable.contents.partials) : '...'}
     </Text>
-  </View>
+  </CustomCard>
 );
 
-const HeaderItem = ({ loadable, launcherId }) => (
-  <View style={styles.headerItem}>
+const HeaderItem = ({ loadable, launcherId, currency }) => (
+  <CustomCard style={styles.headerItem}>
     <View style={{ display: 'flex', flexDirection: 'row' }}>
       <Text style={{ flex: 1, fontWeight: 'bold' }}>Friendly Name:</Text>
       <Text>
@@ -64,7 +65,7 @@ const HeaderItem = ({ loadable, launcherId }) => (
           : '...'}
       </Text>
     </View>
-    <View style={{ display: 'flex', flexDirection: 'column', marginTop: 8 }}>
+    <View style={{ display: 'flex', flexDirection: 'column', marginTop: 6 }}>
       <Text style={{ fontWeight: 'bold' }}>Launcher ID:</Text>
       <TouchableOpacity
         style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: 20 }}
@@ -74,13 +75,13 @@ const HeaderItem = ({ loadable, launcherId }) => (
         <MaterialCommunityIcons name="content-copy" size={16} color="grey" />
       </TouchableOpacity>
     </View>
-    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 8 }}>
+    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
       <Text style={{ flex: 1, fontWeight: 'bold' }}>Difficulty:</Text>
       <Text style={{}}>
         {loadable.state === 'hasValue' ? loadable.contents.farmer.difficulty : '...'}
       </Text>
     </View>
-    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 8 }}>
+    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
       <Text style={{ flex: 1, fontWeight: 'bold' }}>Joined At:</Text>
       {/* <Text style={{}}>{format(new Date(item.joined_at), 'PPpp')}</Text> */}
       <Text style={{}}>
@@ -89,24 +90,34 @@ const HeaderItem = ({ loadable, launcherId }) => (
           : '...'}
       </Text>
     </View>
-    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 8 }}>
-      <Text style={{ flex: 1, fontWeight: 'bold' }}>Estimated Earnings</Text>
+    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
+      <Text style={{ flex: 1, fontWeight: 'bold' }}>Estimated Daily Earnings:</Text>
       <Text>
         {loadable.state === 'hasValue'
-          ? `${(
+          ? `${formatPrice(
               (loadable.contents.farmer.estimated_size / 1099511627776) *
-              loadable.contents.stats.xch_tb_month *
-              loadable.contents.stats.xch_current_price.usd
-            ).toFixed(2)} $/day`
+                loadable.contents.stats.xch_tb_month *
+                loadable.contents.stats.xch_current_price[currency],
+              currency
+            )}  ${getCurrencyFromKey(currency)}`
           : '...'}
       </Text>
     </View>
-    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 8 }}>
-      <Text style={{ flex: 1, fontWeight: 'bold' }}>Points</Text>
+    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
+      <Text style={{ flex: 1, fontWeight: 'bold' }}>Points:</Text>
       <Text>{loadable.state === 'hasValue' ? loadable.contents.farmer.points : '...'}</Text>
     </View>
-    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 8 }}>
-      <Text style={{ flex: 1, fontWeight: 'bold' }}>Estimated Size</Text>
+    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
+      <Text style={{ flex: 1, fontWeight: 'bold' }}>Utilization Space:</Text>
+      <Text>
+        {loadable.state === 'hasValue'
+          ? `${loadable.contents.farmer.points_of_total.toFixed(5)}%`
+          : '...'}
+      </Text>
+      {/* <Text style={{}}>{formatBytes(item.estimated_size)}</Text> */}
+    </View>
+    <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
+      <Text style={{ flex: 1, fontWeight: 'bold' }}>Estimated Size:</Text>
       <Text>
         {loadable.state === 'hasValue'
           ? formatBytes(loadable.contents.farmer.estimated_size)
@@ -114,7 +125,7 @@ const HeaderItem = ({ loadable, launcherId }) => (
       </Text>
       {/* <Text style={{}}>{formatBytes(item.estimated_size)}</Text> */}
     </View>
-  </View>
+  </CustomCard>
 );
 
 const useRefresh = () => {
@@ -147,6 +158,7 @@ const Content = ({ launcherId }) => {
   // const partials = useRecoilValue(query(item.launcher_id));
   const refresh = useRefresh();
   const dataLoadable = useRecoilValueLoadable(query(launcherId));
+  const currency = useRecoilValue(currencyState);
 
   // const launcherIDsArray = Array.from(launcherIDs, ([name, value]) => ({ name, value }));
   const errors = [];
@@ -167,12 +179,12 @@ const Content = ({ launcherId }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingTop: 8 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
-        contentContainerStyle={{ padding: 8, flex: 1, display: 'flex' }}
+        contentContainerStyle={{ padding: 4, flex: 1, display: 'flex' }}
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
       >
-        <HeaderItem loadable={dataLoadable} launcherId={launcherId} />
+        <HeaderItem loadable={dataLoadable} launcherId={launcherId} currency={currency} />
         <View style={styles.container}>
           <Item
             loadable={dataLoadable}
@@ -319,51 +331,18 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flex: 1,
-    // flexWrap: 'wrap',
     display: 'flex',
-    marginTop: 8,
-    marginBottom: 8,
   },
   item: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
-    elevation: 6,
-    marginHorizontal: 10,
-    // marginStart: 16,
-    //= = margin: 10,
-    // margin: 6,
-    // marginEnd: 10,
-    // marginStart: 10,
-    // height: 86,
-    borderRadius: 8,
-    borderColor: '#fff', // if you need
-    borderWidth: 1,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowRadius: 10,
-    shadowOpacity: 1,
+    flexDirection: 'column',
   },
   headerItem: {
-    display: 'flex',
-    padding: 10,
-    marginHorizontal: 10,
-    // marginTop: 20,
-    // flex: 1,
-    backgroundColor: '#fff',
-    elevation: 6,
-    // margin: 6,
-    marginBottom: 8,
-    // marginStart: 10,
-    // height: 200,
-    borderRadius: 8,
-    borderColor: '#fff', // if you need
-    borderWidth: 1,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowRadius: 10,
-    shadowOpacity: 1,
+    justifyContent: 'center',
+    flexDirection: 'column',
+    padding: 6,
   },
 });
 

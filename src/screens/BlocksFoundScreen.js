@@ -9,12 +9,12 @@ import {
 } from 'react-native';
 import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { format, fromUnixTime } from 'date-fns';
-import { Text } from 'react-native-paper';
-import AreaChartNetspace from '../charts/AreaChartNetspace';
+import { Text, useTheme } from 'react-native-paper';
 import { getBlocks, getNetspace } from '../Api';
 import { formatBytes } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
 import { blocksRequestIDState } from '../Atoms';
+import CustomCard from '../components/CustomCard';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(blocksRequestIDState());
@@ -35,18 +35,23 @@ const query = selectorFamily({
     },
 });
 
-const Item = ({ item }) => (
-  <View style={styles.item}>
-    <View style={{ marginEnd: 20 }}>
-      <Text style={styles.index}>{item.confirmed_block_index}</Text>
-      <Text style={styles.date}>{format(fromUnixTime(item.timestamp), 'PPpp')}</Text>
-    </View>
-    {/* <Text style={styles.luck}>{`${item.luck}%`}</Text> */}
-    <Text numberOfLines={1} style={styles.name}>
-      {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
-    </Text>
-  </View>
-);
+const Item = ({ item }) => {
+  const theme = useTheme();
+  return (
+    <CustomCard
+      style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }}
+    >
+      <View style={{ marginEnd: 20 }}>
+        <Text style={styles.index}>{item.confirmed_block_index}</Text>
+        <Text style={styles.date}>{format(fromUnixTime(item.timestamp), 'PPpp')}</Text>
+      </View>
+      {/* <Text style={styles.luck}>{`${item.luck}%`}</Text> */}
+      <Text numberOfLines={1} style={[styles.name, { color: theme.colors.textPrimary }]}>
+        {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
+      </Text>
+    </CustomCard>
+  );
+};
 
 const Content = ({ navigation }) => {
   const refresh = useRefresh();
@@ -75,18 +80,6 @@ const BlocksFoundScreen = ({ navigation }) => (
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: '#fff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 8,
-    borderColor: '#fff', // if you need
-    borderWidth: 1,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowRadius: 10,
-    shadowOpacity: 1,
-    elevation: 6,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

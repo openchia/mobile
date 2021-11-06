@@ -11,26 +11,39 @@ import {
 import { Button, IconButton, Text, useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import Svg, { Path, Rect, G } from 'react-native-svg';
-import AreaChartNetspace from '../charts/AreaChartNetspace';
 import { getNetspace } from '../Api';
 import LoadingComponent from '../components/LoadingComponent';
+import CustomCard from '../components/CustomCard';
 
-const Item = ({ title, value, color }) => (
-  <View style={styles.item}>
-    <Text style={{ color, fontSize: 14, textAlign: 'center', fontWeight: 'bold' }}>{title}</Text>
-    <Text
-      style={{
-        textAlign: 'center',
-        marginTop: 10,
-        marginBottom: 10,
-        fontSize: 12,
-        // fontWeight: 'bold',
-      }}
-    >
-      {value}
-    </Text>
-  </View>
-);
+const Item = ({ title, value, color }) => {
+  const theme = useTheme();
+  return (
+    <CustomCard style={styles.item}>
+      <Text
+        style={{
+          color: '#4DB33E',
+          fontSize: 14,
+          textAlign: 'center',
+          fontWeight: 'bold',
+        }}
+      >
+        {title}
+      </Text>
+      <Text
+        style={{
+          color: 'grey',
+          textAlign: 'center',
+          marginTop: 10,
+          marginBottom: 10,
+          fontSize: 12,
+          // fontWeight: 'bold',
+        }}
+      >
+        {value}
+      </Text>
+    </CustomCard>
+  );
+};
 
 const URLButton = ({ url, children, backgroundColor, textColor, icon, style }) => {
   const handlePress = useCallback(async () => {
@@ -125,7 +138,7 @@ const HomeScreen = ({ navigation }) => {
         style={{ position: 'absolute' }}
       >
         <G mask='url("#SvgjsMask1559")' fill="none">
-          <Rect width="1080" height="1920" x="0" y="0" fill="#119400" />
+          <Rect width="1080" height="1920" x="0" y="0" fill={theme.colors.primaryDark} />
           <Path
             d="M658.97,989.433C736.342,991.425,806.989,949.728,848.421,884.353C893.26,813.602,916.749,722.844,873.314,651.222C830.977,581.411,740.476,567.181,658.97,571.96C586.768,576.194,520.048,611.253,484.149,674.041C448.509,736.375,450.887,812.212,485.697,875.013C521.662,939.896,584.811,987.523,658.97,989.433"
             fill="rgba(115, 195, 104, 0.3)"
@@ -261,20 +274,12 @@ const HomeScreen = ({ navigation }) => {
           }}
         >
           <View style={styles.container}>
-            <Item title={t('common:fee')} value={t('common:feeDesc')} color="#4DB33E" />
-            <Item title={t('common:minPayout')} value={t('common:minPayoutDesc')} color="#4DB33E" />
+            <Item title={t('common:fee')} value={t('common:feeDesc')} />
+            <Item title={t('common:minPayout')} value={t('common:minPayoutDesc')} />
           </View>
           <View style={styles.container}>
-            <Item
-              title={t('common:instantPayout')}
-              value={t('common:instantPayoutDesc')}
-              color="#4DB33E"
-            />
-            <Item
-              title={t('common:transparent')}
-              value={t('common:transparentDesc')}
-              color="#4DB33E"
-            />
+            <Item title={t('common:instantPayout')} value={t('common:instantPayoutDesc')} />
+            <Item title={t('common:transparent')} value={t('common:transparentDesc')} />
           </View>
         </View>
 
@@ -304,22 +309,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
+    backgroundColor: '#ededed',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
-    elevation: 6,
-    padding: 12,
-    margin: 14,
-    // marginEnd: 16,
-    // marginStart: 16,
-    borderRadius: 8,
-    borderColor: '#fff', // if you need
-    borderWidth: 1,
-    // overflow: 'hidden',
-    shadowColor: '#000',
-    shadowRadius: 10,
-    shadowOpacity: 1,
+    flexDirection: 'column',
   },
 });
 

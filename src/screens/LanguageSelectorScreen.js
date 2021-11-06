@@ -21,18 +21,20 @@ export const LANGUAGES = [
 const Item = ({ item, selected, onPress }) => {
   if (selected) {
     return (
-      <View
-        style={styles.itemNotSelected}
-        // style={([styles.item], { backgroundColor: 'rgba(219, 219, 219, 0.6)' })}
+      <CustomCard
+        style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }} // style={([styles.item], { backgroundColor: 'rgba(219, 219, 219, 0.6)' })}
         // selected
         // onPress={onPress}
       >
         <Text style={styles.label}>{item.label}</Text>
-      </View>
+      </CustomCard>
     );
   }
   return (
-    <CustomCard style={[styles.item]} onPress={onPress}>
+    <CustomCard
+      style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }}
+      onPress={onPress}
+    >
       <Text style={styles.label}>{item.label}</Text>
     </CustomCard>
   );
@@ -74,36 +76,36 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   item: {
-    backgroundColor: '#fff',
-    padding: 14,
-    paddingEnd: 20,
-    marginVertical: 8,
-    borderRadius: 8,
-    marginHorizontal: 16,
-    borderColor: '#fff', // if you need
-    borderWidth: 1,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowRadius: 10,
-    shadowOpacity: 1,
-    elevation: 6,
+    // backgroundColor: '#fff',
+    // padding: 14,
+    // paddingEnd: 20,
+    // marginVertical: 8,
+    // borderRadius: 8,
+    // marginHorizontal: 16,
+    // borderColor: '#fff', // if you need
+    // borderWidth: 1,
+    // overflow: 'hidden',
+    // shadowColor: '#000',
+    // shadowRadius: 10,
+    // shadowOpacity: 1,
+    // elevation: 6,
     display: 'flex',
     flexDirection: 'row',
   },
   itemNotSelected: {
-    backgroundColor: '#dbdbdb',
-    padding: 14,
-    paddingEnd: 20,
-    marginVertical: 8,
-    borderRadius: 8,
-    marginHorizontal: 16,
-    borderColor: '#c9c9c9', // if you need
-    borderWidth: 1,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowRadius: 10,
-    shadowOpacity: 1,
-    elevation: 6,
+    // backgroundColor: '#dbdbdb',
+    // padding: 14,
+    // paddingEnd: 20,
+    // marginVertical: 8,
+    // borderRadius: 8,
+    // marginHorizontal: 16,
+    // borderColor: '#c9c9c9', // if you need
+    // borderWidth: 1,
+    // overflow: 'hidden',
+    // shadowColor: '#000',
+    // shadowRadius: 10,
+    // shadowOpacity: 1,
+    // elevation: 6,
     display: 'flex',
     flexDirection: 'row',
   },
