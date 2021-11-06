@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useMemo, useState } from 'react';
 import { Text } from 'react-native-paper';
 import { useChartData } from '../react-native-animated-charts';

@@ -22,7 +22,7 @@ import { getNetspace } from '../Api';
 import CustomCard from '../components/CustomCard';
 import monotoneCubicInterpolation from '../react-native-animated-charts/interpolations/monotoneCubicInterpolation';
 import { ChartDot, ChartPath, ChartPathProvider } from '../react-native-animated-charts';
-import GenericExample from './GenericExample';
+import TestGraph from './TestGraph';
 
 const filterData = (data, timePeriod) => {
   const date = new Date(new Date().getTime() - timePeriod * 60 * 60 * 1000);
@@ -270,7 +270,7 @@ const AreaChartNetspace = ({ data }) => {
           />
         ))}
       </CustomCard>
-      <GenericExample />
+      <TestGraph />
       {/* <ChartPathProvider data={{ points, smoothingStrategy: 'bezier' }}>
         <ChartPath height={SIZE / 2} stroke="yellow" width={SIZE} />
         <ChartDot style={{ backgroundColor: 'blue' }} />
