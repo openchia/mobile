@@ -22,7 +22,7 @@ import { getNetspace } from '../Api';
 import CustomCard from '../components/CustomCard';
 import monotoneCubicInterpolation from '../react-native-animated-charts/interpolations/monotoneCubicInterpolation';
 import { ChartDot, ChartPath, ChartPathProvider } from '../react-native-animated-charts';
-import TestGraph from './TestGraph';
+import GenericExample from './GenericExample';
 
 const filterData = (data, timePeriod) => {
   const date = new Date(new Date().getTime() - timePeriod * 60 * 60 * 1000);
@@ -60,6 +60,18 @@ const CustomPressable = ({ item, onPress, selected, index }) => (
 const CustomChart = ({ data }) => {
   const dateList = data.map((item) => item.date); // objKey;
   const priceList = data.map((item) => item.size); // objKey;
+
+  // var data1 = dataSet.map((elem) => {
+  //   return {
+  //     country: elem.country,
+  //     launches: elem.launches+10,
+  //   }
+  // });
+
+  // const data1 = dataSet.map(item => {
+  //   return { item.date, item.size }
+  //   }
+  // );
 
   const apx = (size = 0) => {
     // eslint-disable-next-line prefer-destructuring
@@ -270,7 +282,7 @@ const AreaChartNetspace = ({ data }) => {
           />
         ))}
       </CustomCard>
-      <TestGraph />
+      <GenericExample dataSet={filterData(data, 100)} />
       {/* <ChartPathProvider data={{ points, smoothingStrategy: 'bezier' }}>
         <ChartPath height={SIZE / 2} stroke="yellow" width={SIZE} />
         <ChartDot style={{ backgroundColor: 'blue' }} />

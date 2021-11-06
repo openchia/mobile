@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react';
 import { TextInput } from 'react-native';
 import Animated, { useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
