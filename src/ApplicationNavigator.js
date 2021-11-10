@@ -230,11 +230,11 @@ const ApplicationNavigator = () => {
   return (
     <ToastProvider>
       <SafeAreaProvider style={{ backgroundColor: theme.colors.background }}>
-        {/* <GestureHandlerRootView style={{ flex: 1 }}> */}
-        <PaperProvider theme={theme}>
-          <AppRoot theme={theme} launcherIDsArray={launcherIDsArray} />
-        </PaperProvider>
-        {/* </GestureHandlerRootView> */}
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <PaperProvider theme={theme}>
+            <AppRoot theme={theme} launcherIDsArray={launcherIDsArray} />
+          </PaperProvider>
+        </GestureHandlerRootView>
       </SafeAreaProvider>
     </ToastProvider>
   );

@@ -81,8 +81,7 @@ const statsQuery = selectorFamily({
   get:
     () =>
     async ({ get }) => {
-      const x = get(statsRequestIDState());
-      console.log(x);
+      get(statsRequestIDState());
       const response = await getStats();
       const currency = get(currencyState);
       if (response.error) {
