@@ -610,7 +610,9 @@ function ChartPath({
   const gradientAnimatedProps = useAnimatedStyle(() => {
     const pathValue = path.value.replace('M', 'L');
     const gradientD =
-      pathValue.length > 0 ? `M 0,${height} C 0,0 0,0 0,0 ${pathValue} L ${width},${height}` : '';
+      pathValue.length > 0
+        ? `M 0,${height + 100} C 0,0 0,0 0,0 ${pathValue} L ${width},${height + 100}`
+        : '';
     const props = {
       d: gradientD,
     };
@@ -668,11 +670,11 @@ export function SvgComponent() {
     >
       <Animated.View>
         <Svg
-          height={height + 20} // temporary fix for clipped chart
-          viewBox={`0 0 ${width} ${height}`}
-          width={width}
+          height={height + 100} // temporary fix for clipped chart
+          viewBox={`0 0 ${width} ${height + 80}`}
+          width={width + 1}
         >
-          <AnimatedPath animatedProps={gradientAnimatedProps} fill="url(#prefix__paint0_linear)" />
+          <AnimatedPath animatedProps={gradientAnimatedProps} fill={props.backgroundColor} />
           <Defs>
             <LinearGradient id="prefix__paint0_linear" x1="100%" y1="0%" x2="100%" y2="120%">
               <Stop stopColor={props.stroke} />

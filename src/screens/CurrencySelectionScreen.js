@@ -6,6 +6,7 @@ import { getNetspace } from '../Api';
 import LoadingComponent from '../components/LoadingComponent';
 import CustomCard from '../components/CustomCard';
 import { currencyState } from '../Atoms';
+import PressableCard from '../components/PressableCard';
 
 export const currencies = [
   { key: 'usd', USD: '$', title: 'United States Dollar' },
@@ -37,25 +38,40 @@ export const getCurrencyFromKey = (key) =>
 const Item = ({ item, selected, onPress }) => {
   if (selected) {
     return (
-      <CustomCard
-        style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }}
-      >
-        <Text style={styles.label}>{item.title}</Text>
-        <Text> Selected</Text>
-        <View style={{ flex: 1 }} />
-        <Text style={styles.label}>{item[item.key.toUpperCase()]}</Text>
-      </CustomCard>
+      <PressableCard>
+        <View
+          style={{
+            padding: 14,
+            display: 'flex',
+            flexDirection: 'row',
+            flex: 1,
+            alignItems: 'center',
+          }}
+        >
+          <Text style={styles.label}>{item.title}</Text>
+          <Text> Selected</Text>
+          <View style={{ flex: 1 }} />
+          <Text style={styles.label}>{item[item.key.toUpperCase()]}</Text>
+        </View>
+      </PressableCard>
     );
   }
   return (
-    <CustomCard
-      style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }}
-      onPress={onPress}
-    >
-      <Text style={styles.label}>{item.title}</Text>
-      <View style={{ flex: 1 }} />
-      <Text style={styles.label}>{item[item.key.toUpperCase()]}</Text>
-    </CustomCard>
+    <PressableCard onPress={onPress}>
+      <View
+        style={{
+          padding: 14,
+          display: 'flex',
+          flexDirection: 'row',
+          flex: 1,
+          alignItems: 'center',
+        }}
+      >
+        <Text style={styles.label}>{item.title}</Text>
+        <View style={{ flex: 1 }} />
+        <Text style={styles.label}>{item[item.key.toUpperCase()]}</Text>
+      </View>
+    </PressableCard>
   );
 };
 

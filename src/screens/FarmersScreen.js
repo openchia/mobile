@@ -13,12 +13,14 @@ import {
 } from 'react-native';
 import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
-import { Text, TouchableRipple, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { getNetspace, getFarmers } from '../Api';
 import { formatBytes } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
 import { farmersRequestIDState } from '../Atoms';
 import CustomCard from '../components/CustomCard';
+import TouchableRipple from '../components/TouchableRipple';
+import PressableCard from '../components/PressableCard';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(farmersRequestIDState());
@@ -42,24 +44,21 @@ const farmersQuery = selectorFamily({
 const Item = ({ item, rank, onPress }) => {
   const theme = useTheme();
   return (
-    // <View style={{ borderRadius: 24, backgroundColor: '#F66', height: 48 }}>
-    //   <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#AAF', true)}>
-    //     <View style={{ hiehgt: 200 }}>
-    //       <Text>{item.rank}</Text>
-    //     </View>
-    //   </TouchableNativeFeedback>
-    // </View>
-    <CustomCard
-      onPress={onPress}
-      style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }}
-    >
-      <Text style={styles.rank}>{rank}</Text>
-      <Text numberOfLines={1} style={[styles.name, { color: theme.colors.textPrimary }]}>
-        {item.name ? item.name : item.launcher_id}
-      </Text>
-      {/* <Text style={styles.utilization}>{`${item.points_of_total.toFixed(5)}%`}</Text> */}
-      <Text style={styles.size}>{formatBytes(item.estimated_size)}</Text>
-    </CustomCard>
+    <PressableCard onPress={onPress}>
+      <View
+        style={{ display: 'flex', flexDirection: 'row', padding: 12, justifyContent: 'center' }}
+      >
+        <Text style={styles.rank}>{rank}</Text>
+        <Text
+          numberOfLines={1}
+          style={[styles.name, { color: theme.colors.textLight, fontSize: 14 }]}
+        >
+          {item.name ? item.name : item.launcher_id}
+        </Text>
+        {/* <Text style={styles.utilization}>{`${item.points_of_total.toFixed(5)}%`}</Text> */}
+        <Text style={styles.size}>{formatBytes(item.estimated_size)}</Text>
+      </View>
+    </PressableCard>
   );
 };
 
@@ -72,6 +71,7 @@ const Content = ({ navigation }) => {
       item={item}
       rank={index}
       onPress={() => {
+        console.log('pressed');
         navigation.navigate({
           name: 'Farmer Details',
           params: { launcherId: item.launcher_id, name: item.name },

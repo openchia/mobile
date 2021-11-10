@@ -15,6 +15,7 @@ import { formatBytes } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
 import { blocksRequestIDState } from '../Atoms';
 import CustomCard from '../components/CustomCard';
+import PressableCard from '../components/PressableCard';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(blocksRequestIDState());
@@ -38,18 +39,20 @@ const query = selectorFamily({
 const Item = ({ item }) => {
   const theme = useTheme();
   return (
-    <CustomCard
-      style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }}
-    >
-      <View style={{ marginEnd: 20 }}>
-        <Text style={styles.index}>{item.confirmed_block_index}</Text>
-        <Text style={styles.date}>{format(fromUnixTime(item.timestamp), 'PPpp')}</Text>
+    <PressableCard onTap={() => {}}>
+      <View
+        style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }}
+      >
+        <View style={{ marginEnd: 20 }}>
+          <Text style={styles.index}>{item.confirmed_block_index}</Text>
+          <Text style={styles.date}>{format(fromUnixTime(item.timestamp), 'PPpp')}</Text>
+        </View>
+        {/* <Text style={styles.luck}>{`${item.luck}%`}</Text> */}
+        <Text numberOfLines={1} style={[styles.name, { color: theme.colors.textLight }]}>
+          {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
+        </Text>
       </View>
-      {/* <Text style={styles.luck}>{`${item.luck}%`}</Text> */}
-      <Text numberOfLines={1} style={[styles.name, { color: theme.colors.textPrimary }]}>
-        {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
-      </Text>
-    </CustomCard>
+    </PressableCard>
   );
 };
 
@@ -94,7 +97,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 14,
-    color: '#407538',
     marginLeft: 'auto',
     textAlign: 'right',
     flex: 1,

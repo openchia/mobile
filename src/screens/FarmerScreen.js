@@ -179,56 +179,55 @@ const Content = ({ launcherId }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView
-        contentContainerStyle={{ padding: 4, flex: 1, display: 'flex' }}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
-      >
-        <HeaderItem loadable={dataLoadable} launcherId={launcherId} currency={currency} />
-        <View style={styles.container}>
-          <Item
-            loadable={dataLoadable}
-            format={(item) => item.count}
-            color="#4DB33E"
-            title={`PARTIALS\n(24 HOURS)`}
-          />
-          <Item
-            loadable={dataLoadable}
-            format={() => points}
-            color="#4DB33E"
-            title={'POINTS\n(24 HOURS)'}
-          />
-        </View>
-        <View style={styles.container}>
-          <Item
-            loadable={dataLoadable}
-            format={(item) => item.count - errors.length}
-            color="#3DD292"
-            title={`SUCCESSFUL\nPARTIALS`}
-          />
-          <Item
-            loadable={dataLoadable}
-            format={() => errors.length}
-            color="#FB6D4C"
-            title={'FAILED\nPARTIALS'}
-          />
-        </View>
-        <View style={styles.container}>
-          <Item
-            loadable={dataLoadable}
-            format={(item) => `${(((item.count - errors.length) * 100) / item.count).toFixed(1)}%`}
-            color="#34D4F1"
-            title={'PARTIAL\nPERFORMANCE'}
-          />
-          <Item
-            loadable={dataLoadable}
-            format={() => harvesters.size}
-            color="#34D4F1"
-            title={'HARVESTERS\nCOUNT'}
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={{ padding: 4, flexGrow: 1 }}
+      refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
+    >
+      <HeaderItem loadable={dataLoadable} launcherId={launcherId} currency={currency} />
+      <View style={styles.container}>
+        <Item
+          loadable={dataLoadable}
+          format={(item) => item.count}
+          color="#4DB33E"
+          title={`PARTIALS\n(24 HOURS)`}
+        />
+        <Item
+          loadable={dataLoadable}
+          format={() => points}
+          color="#4DB33E"
+          title={'POINTS\n(24 HOURS)'}
+        />
+      </View>
+      <View style={styles.container}>
+        <Item
+          loadable={dataLoadable}
+          format={(item) => item.count - errors.length}
+          color="#3DD292"
+          title={`SUCCESSFUL\nPARTIALS`}
+        />
+        <Item
+          loadable={dataLoadable}
+          format={() => errors.length}
+          color="#FB6D4C"
+          title={'FAILED\nPARTIALS'}
+        />
+      </View>
+      <View style={styles.container}>
+        <Item
+          loadable={dataLoadable}
+          format={(item) => `${(((item.count - errors.length) * 100) / item.count).toFixed(1)}%`}
+          color="#34D4F1"
+          title={'PARTIAL\nPERFORMANCE'}
+        />
+        <Item
+          loadable={dataLoadable}
+          format={() => harvesters.size}
+          color="#34D4F1"
+          title={'HARVESTERS\nCOUNT'}
+        />
+      </View>
+    </ScrollView>
   );
 };
 const FarmerScreen = ({ route, navigation }) => {

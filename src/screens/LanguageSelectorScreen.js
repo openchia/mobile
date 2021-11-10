@@ -12,6 +12,7 @@ import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { Text, TouchableRipple } from 'react-native-paper';
 import CustomCard from '../components/CustomCard';
+import PressableCard from '../components/PressableCard';
 
 export const LANGUAGES = [
   { code: 'en', label: 'English' },
@@ -22,7 +23,13 @@ const Item = ({ item, selected, onPress }) => {
   if (selected) {
     return (
       <CustomCard
-        style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }} // style={([styles.item], { backgroundColor: 'rgba(219, 219, 219, 0.6)' })}
+        style={{
+          padding: 14,
+          display: 'flex',
+          flexDirection: 'row',
+          flex: 1,
+          alignItems: 'center',
+        }} // style={([styles.item], { backgroundColor: 'rgba(219, 219, 219, 0.6)' })}
         // selected
         // onPress={onPress}
       >
@@ -31,12 +38,19 @@ const Item = ({ item, selected, onPress }) => {
     );
   }
   return (
-    <CustomCard
-      style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }}
-      onPress={onPress}
-    >
-      <Text style={styles.label}>{item.label}</Text>
-    </CustomCard>
+    <PressableCard onPress={onPress}>
+      <View
+        style={{
+          padding: 14,
+          display: 'flex',
+          flexDirection: 'row',
+          flex: 1,
+          alignItems: 'center',
+        }}
+      >
+        <Text style={styles.label}>{item.label}</Text>
+      </View>
+    </PressableCard>
   );
 };
 

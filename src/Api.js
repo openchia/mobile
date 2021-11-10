@@ -21,7 +21,6 @@ export const getStats = () =>
       if (response.ok) {
         return response.json();
       }
-      console.log(response);
       throw new Error(response.statusText);
     })
     .then((json) => json);

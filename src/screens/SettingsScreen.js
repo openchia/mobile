@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { LANGUAGES } from './LanguageSelectorScreen';
 import CustomCard from '../components/CustomCard';
 import { currencyState } from '../Atoms';
+import PressableCard from '../components/PressableCard';
 
 const SettingsScreen = ({ navigation }) => {
   // const theme = useTheme();
@@ -21,14 +22,14 @@ const SettingsScreen = ({ navigation }) => {
         flex: 1,
       }}
     >
-      <CustomCard
+      <PressableCard
         onPress={() => navigation.navigate('Currency')}
-        style={{
-          padding: 16,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
+        // style={{
+        //   padding: 16,
+        //   display: 'flex',
+        //   flexDirection: 'row',
+        //   alignItems: 'center',
+        // }}
       >
         <View style={styles.content}>
           <View style={styles.mainContent}>
@@ -39,15 +40,15 @@ const SettingsScreen = ({ navigation }) => {
           </View>
           <Text style={styles.desc}>{currency.toUpperCase()}</Text>
         </View>
-      </CustomCard>
-      <CustomCard
+      </PressableCard>
+      <PressableCard
         onPress={() => navigation.navigate('Language')}
-        style={{
-          padding: 16,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
+        // style={{
+        //   padding: 16,
+        //   display: 'flex',
+        //   flexDirection: 'row',
+        //   alignItems: 'center',
+        // }}
       >
         <View style={styles.content}>
           <View style={styles.mainContent}>
@@ -60,7 +61,7 @@ const SettingsScreen = ({ navigation }) => {
             {LANGUAGES.filter((item) => item.code === selectedLanguageCode)[0].label}
           </Text>
         </View>
-      </CustomCard>
+      </PressableCard>
     </SafeAreaView>
   );
 };
@@ -69,8 +70,8 @@ const styles = StyleSheet.create({
   content: {
     display: 'flex',
     flexDirection: 'row',
-    flex: 1,
     alignItems: 'center',
+    padding: 16,
   },
   mainContent: {
     display: 'flex',

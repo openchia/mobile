@@ -15,6 +15,7 @@ import { formatBytes, convertMojoToChia } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
 import { payoutsRequestIDState } from '../Atoms';
 import CustomCard from '../components/CustomCard';
+import PressableCard from '../components/PressableCard';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(payoutsRequestIDState());
@@ -36,13 +37,13 @@ const query = selectorFamily({
 });
 
 const Item = ({ item }) => (
-  <CustomCard
-    style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }}
-  >
-    <Text style={styles.rank}>{item.id}</Text>
-    <Text style={styles.size}>{format(new Date(item.datetime), 'PPpp')}</Text>
-    <Text style={styles.size}>{`${convertMojoToChia(item.amount)} XCH`}</Text>
-  </CustomCard>
+  <PressableCard onTap={() => {}}>
+    <View style={{ display: 'flex', flexDirection: 'row', padding: 12 }}>
+      <Text style={styles.rank}>{item.id}</Text>
+      <Text style={styles.size}>{format(new Date(item.datetime), 'PPpp')}</Text>
+      <Text style={styles.size}>{`${convertMojoToChia(item.amount)} XCH`}</Text>
+    </View>
+  </PressableCard>
 );
 
 const Content = () => {

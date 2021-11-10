@@ -1,17 +1,18 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import TouchableRipple from './TouchableRipple';
 
-const CustomCard = ({ style, children }) => {
+const PressableCard = ({ style, onPress, children, contentContainerStyle }) => {
   const theme = useTheme();
   return (
-    <View
+    <TouchableRipple
       style={[
         {
           backgroundColor: theme.colors.onSurface,
           borderColor: theme.colors.borderColor,
           // borderColor: 'grey',
-          marginVertical: 8,
+          marginVertical: 4,
           borderRadius: 8,
           marginHorizontal: 8,
           borderWidth: 1,
@@ -23,10 +24,11 @@ const CustomCard = ({ style, children }) => {
         },
         style,
       ]}
+      onPress={onPress}
     >
       <View>{children}</View>
-    </View>
+    </TouchableRipple>
   );
 };
 
-export default CustomCard;
+export default PressableCard;

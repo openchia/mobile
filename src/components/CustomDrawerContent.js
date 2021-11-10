@@ -11,6 +11,8 @@ import CustomDrawerSection from './CustomDrawerSection';
 import ThemeContext from '../contexts/ThemeContext';
 import { getFarmer } from '../Api';
 import { themeState } from '../Atoms';
+import OpenChiaIcon from '../images/OpenChiaIcon';
+import OpenChiaIconWithText from '../images/OpenChiaIconWithText';
 
 const CustomDrawerContent = (props) => {
   const { navigation, launcherIDsArray } = props;
@@ -30,16 +32,23 @@ const CustomDrawerContent = (props) => {
       <View
         style={{
           display: 'flex',
-          flexDirection: 'row',
-          margin: 16,
-          alignItems: 'center',
-          height: 24,
+          // flexDirection: 'row',
+          // margin: 16,
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          padding: 12,
+          // alignItems: 'center',
+          height: 56,
         }}
       >
-        <Image style={{}} source={require('../images/openchia_icon.png')} />
-        <Text
+        {/* <Image style={{}} source={require('../images/openchia_icon.png')} /> */}
+        <OpenChiaIconWithText
+          style={{ width: '100%', height: 36 }}
+          color={isThemeDark ? theme.colors.textLight : theme.colors.textDark}
+        />
+        {/* <Text
           style={{
-            color: theme.colors.text,
+            color: theme.colors.textGrey,
             ...font,
             fontSize: 18,
             marginLeft: 24,
@@ -48,69 +57,77 @@ const CustomDrawerContent = (props) => {
           }}
         >
           OPENCHIA.IO
-        </Text>
+        </Text> */}
       </View>
-      <Divider style={{ backgroundColor: 'black' }} />
+      <Divider style={{ backgroundColor: theme.colors.divider }} />
       <DrawerContentScrollView {...props}>
         {/* <DrawerItemList {...props} /> */}
         <CustomDrawerSection style={{}}>
           <DrawerItem
             label={t('navigate:home')}
             onPress={() => navigation.navigate('Home')}
-            labelStyle={{ color: theme.colors.text }}
+            labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="home-outline" size={size} color={theme.colors.text} />
+              <MaterialCommunityIcons
+                name="home-outline"
+                size={size}
+                color={theme.colors.textGrey}
+              />
             )}
           />
           <DrawerItem
             label={t('navigate:stats')}
             onPress={() => navigation.navigate('Stats')}
-            labelStyle={{ color: theme.colors.text }}
+            labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="finance" size={size} color={theme.colors.text} />
+              <MaterialCommunityIcons name="finance" size={size} color={theme.colors.textGrey} />
             )}
           />
           <DrawerItem
-            label="Netspace"
-            onPress={() => navigation.navigate('Netspace')}
-            labelStyle={{ color: theme.colors.text }}
+            label="Charts"
+            onPress={() => navigation.navigate('Charts')}
+            labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="finance" size={size} color={theme.colors.text} />
+              <MaterialCommunityIcons name="finance" size={size} color={theme.colors.textGrey} />
             )}
           />
           <DrawerItem
             label={t('navigate:farmers')}
             onPress={() => navigation.navigate('Farmers')}
-            labelStyle={{ color: theme.colors.text }}
+            labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="silo" size={size} color={theme.colors.text} />
+              <MaterialCommunityIcons name="silo" size={size} color={theme.colors.textGrey} />
             )}
           />
           <DrawerItem
             label={t('navigate:blocksFound')}
             onPress={() => navigation.navigate('Blocks Found')}
-            labelStyle={{ color: theme.colors.text }}
+            labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons
                 name="shape-square-plus"
                 size={size}
-                color={theme.colors.text}
+                color={theme.colors.textGrey}
               />
             )}
           />
           <DrawerItem
             label={t('navigate:payouts')}
             onPress={() => navigation.navigate('Payouts')}
-            labelStyle={{ color: theme.colors.text }}
+            labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="cash-multiple" size={size} color={theme.colors.text} />
+              <MaterialCommunityIcons
+                name="cash-multiple"
+                size={size}
+                color={theme.colors.textGrey}
+              />
             )}
           />
         </CustomDrawerSection>
         <CustomDrawerSection title="Launcher ID's">
           {launcherIDsArray.map((item) => (
             <DrawerItem
-              labelStyle={{ color: theme.colors.text }}
+              labelStyle={{ color: theme.colors.textGrey }}
               key={item.name}
               label={item.value ? item.value : item.name}
               onPress={() => {
@@ -122,24 +139,28 @@ const CustomDrawerContent = (props) => {
                 //   .catch((error) => console.log(error));
               }}
               icon={({ color, size }) => (
-                <MaterialCommunityIcons name="silo" size={size} color={theme.colors.text} />
+                <MaterialCommunityIcons name="silo" size={size} color={theme.colors.textGrey} />
               )}
             />
           ))}
           <DrawerItem
             label={t('navigate:launcherID')}
             onPress={() => navigation.navigate('Scan Launcher ID')}
-            labelStyle={{ color: theme.colors.text }}
+            labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="plus" size={size} color={theme.colors.text} />
+              <MaterialCommunityIcons name="plus" size={size} color={theme.colors.textGrey} />
             )}
           />
         </CustomDrawerSection>
         <CustomDrawerSection label="Preferences">
           <TouchableRipple onPress={() => toggleTheme()}>
             <View style={styles.preference}>
-              <MaterialCommunityIcons name="theme-light-dark" size={24} color={theme.colors.text} />
-              <Text style={{ color: theme.colors.text, flex: 1, marginStart: 32 }}>
+              <MaterialCommunityIcons
+                name="theme-light-dark"
+                size={24}
+                color={theme.colors.textGrey}
+              />
+              <Text style={{ color: theme.colors.textGrey, flex: 1, marginStart: 32 }}>
                 {t('navigate:darkMode')}
               </Text>
               <View pointerEvents="none">
@@ -150,9 +171,9 @@ const CustomDrawerContent = (props) => {
           {/* <DrawerItem
             label="Dark Theme"
             onPress={() => navigation.navigate('Home')}
-            labelStyle={{ color: theme.colors.text }}
+            labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="cog" size={size} color={theme.colors.text} />
+              <MaterialCommunityIcons name="cog" size={size} color={theme.colors.textGrey} />
             )}
           /> */}
         </CustomDrawerSection>
@@ -160,9 +181,9 @@ const CustomDrawerContent = (props) => {
           <DrawerItem
             label={t('navigate:settings')}
             onPress={() => navigation.navigate('Settings')}
-            labelStyle={{ color: theme.colors.text }}
+            labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="cog" size={size} color={theme.colors.text} />
+              <MaterialCommunityIcons name="cog" size={size} color={theme.colors.textGrey} />
             )}
           />
         </CustomDrawerSection>

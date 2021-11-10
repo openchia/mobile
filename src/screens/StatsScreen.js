@@ -37,25 +37,29 @@ import {
 import { currencyState, statsRequestIDState } from '../Atoms';
 import CustomCard from '../components/CustomCard';
 import { getCurrencyFromKey } from './CurrencySelectionScreen';
+import PressableCard from '../components/PressableCard';
 
 const Item = ({ title, value, color, loadable, format }) => (
-  <CustomCard style={styles.item}>
-    <Text style={{ color, fontSize: 16 }}>{title}</Text>
-    <Text
-      style={{
-        textAlign: 'center',
-        marginTop: 10,
-        marginBottom: 10,
-        fontSize: 18,
-        fontWeight: 'bold',
-      }}
-    >
-      {loadable.state === 'hasValue'
-        ? format(loadable.contents)
-        : loadable.state === 'loading'
-        ? '...'
-        : 'Error occured'}
-    </Text>
+  <PressableCard style={styles.item}>
+    <View style={{}}>
+      <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
+      <Text
+        style={{
+          textAlign: 'center',
+          // marginTop: 10,
+          marginBottom: 10,
+          fontSize: 18,
+          fontWeight: 'bold',
+        }}
+      >
+        {loadable.state === 'hasValue'
+          ? format(loadable.contents.stats)
+          : loadable.state === 'loading'
+          ? '...'
+          : 'Error occured'}
+      </Text>
+    </View>
+
     {/* <Text style={{ color, fontSize: 16 }}>
       {' '}
       {loadable.state === 'hasValue'
@@ -64,7 +68,7 @@ const Item = ({ title, value, color, loadable, format }) => (
         ? '...'
         : 'Error occured'}
     </Text> */}
-  </CustomCard>
+  </PressableCard>
 );
 
 const useRefreshStats = () => {
@@ -77,32 +81,37 @@ const statsQuery = selectorFamily({
   get:
     () =>
     async ({ get }) => {
-      get(statsRequestIDState());
+      const x = get(statsRequestIDState());
+      console.log(x);
       const response = await getStats();
+      const currency = get(currencyState);
       if (response.error) {
         throw new Error(response.error);
       }
-      return response;
+      return { stats: response, currency };
     },
 });
 
 const Content = () => {
   const statsLoadable = useRecoilValueLoadable(statsQuery());
-  const currency = useRecoilValue(currencyState);
   const refresh = useRefreshStats();
 
   if (statsLoadable.state === 'hasError') {
     return (
       <ScrollView
-        contentContainerStyle={{
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingTop: 8, paddingBottom: 8, flexGrow: 1 }}
+        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
+      >
+        contentContainerStyle=
+        {{
           padding: 8,
           flex: 1,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
-      >
+        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}>
         <Text style={{ fontSize: 20, textAlign: 'center' }}>
           Could not fetch data. Please make sure you have an internet connection. Pull down to try
           refresh again.
@@ -113,14 +122,17 @@ const Content = () => {
 
   return (
     <ScrollView
-      contentContainerStyle={{ marginTop: 8, marginBottom: 8, flex: 1, display: 'flex' }}
+      style={{ flex: 1 }}
+      contentContainerStyle={{ paddingTop: 8, paddingBottom: 8, flexGrow: 1 }}
       refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
     >
       <View style={styles.container}>
         <Item
           loadable={statsLoadable}
           format={(item) =>
-            `${currencyFormat(item.xch_current_price[currency])} ${getCurrencyFromKey(currency)}`
+            `${currencyFormat(
+              item.xch_current_price[statsLoadable.contents.currency]
+            )} ${getCurrencyFromKey(statsLoadable.contents.currency)}`
           }
           color="#4DB33E"
           title="XCH PRICE"
@@ -220,24 +232,16 @@ const StatsScreen = ({ navigation }) => (
   //   toast.show(statsLoadable.contents);
   // }
 
-  <SafeAreaView style={{ flex: 1 }}>
-    <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-      onReset={() => {
-        // reset the state of your app so the error doesn't happen again
-      }}
-    >
-      <Content />
-    </ErrorBoundary>
-  </SafeAreaView>
+  <Content />
 );
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    flex: 1,
+    // flex: 1,
   },
   item: {
     flex: 1,
+    minHeight: 100,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',

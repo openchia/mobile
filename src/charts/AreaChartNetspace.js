@@ -4,7 +4,15 @@ import { AreaChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 import * as scale from 'd3-scale';
 import dateFns, { isAfter } from 'date-fns';
-import { PanResponder, Dimensions, Text, TouchableOpacity, View, Pressable } from 'react-native';
+import {
+  PanResponder,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+  View,
+  Pressable,
+  StyleSheet,
+} from 'react-native';
 import {
   Circle,
   Defs,
@@ -18,11 +26,20 @@ import {
 } from 'react-native-svg';
 import { useTheme } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+  useDerivedValue,
+} from 'react-native-reanimated';
 import { getNetspace } from '../Api';
 import CustomCard from '../components/CustomCard';
 import monotoneCubicInterpolation from '../react-native-animated-charts/interpolations/monotoneCubicInterpolation';
 import { ChartDot, ChartPath, ChartPathProvider } from '../react-native-animated-charts';
 import GenericExample from './GenericExample';
+
+const { width } = Dimensions.get('window');
 
 const filterData = (data, timePeriod) => {
   const date = new Date(new Date().getTime() - timePeriod * 60 * 60 * 1000);
@@ -30,11 +47,14 @@ const filterData = (data, timePeriod) => {
 };
 
 const times = [
-  { time: 8, display: '8h' },
-  { time: 24, display: '24h' },
-  { time: 24 * 7, display: '7D' },
-  { time: -1, display: '1M' },
+  { time: 8, value: 0, label: '8h' },
+  { time: 24, value: 1, label: '24h' },
+  { time: 24 * 7, value: 2, label: '7D' },
+  { time: -1, value: 3, label: '1M' },
 ];
+
+const SELECTION_WIDTH = width - 32;
+const BUTTON_WIDTH = (width - 32) / times.length;
 
 const CustomPressable = ({ item, onPress, selected, index }) => (
   <Pressable
@@ -234,7 +254,7 @@ const CustomChart = ({ data }) => {
 
 export const { width: SIZE } = Dimensions.get('window');
 
-export const data = [
+export const testData = [
   { x: 1453075200, y: 1.47 },
   { x: 1453161600, y: 1.37 },
   { x: 1453248000, y: 1.53 },
@@ -251,45 +271,87 @@ export const data = [
   { x: 1454198400, y: 2.2 },
 ];
 
-const points = monotoneCubicInterpolation({ data, range: 40 });
+// const points = monotoneCubicInterpolation({ data, range: 40 });
 
 const AreaChartNetspace = ({ data }) => {
-  const [selected, setSelected] = useState(3);
-  const [dataState, setData] = useState(data);
+  // const [selected, setSelected] = useState(3);
+  const transition = useSharedValue(0);
+  const previous = useSharedValue(0);
+  const current = useSharedValue(0);
+  const [points, setPoints] = useState(data[current.value]);
 
-  const onPressed = (item, index) => {
-    if (item.time === -1) setData(data);
-    else setData(filterData(data, item.time));
-    setSelected(index);
-  };
+  // console.log(data);
+
+  // const points = useDerivedValue(() => data[current.value]);
+
+  // console.log(pointss);
+
+  // const onPressed = (item, index) => {
+  //   if (item.time === -1) setData(data);
+  //   else setData(filterData(data, item.time));
+  // };
+
+  const style = useAnimatedStyle(() => ({
+    transform: [{ translateX: withTiming(BUTTON_WIDTH * current.value) }],
+  }));
 
   return (
-    <View style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <CustomCard
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
+    <View style={styles.container}>
+      <View>
+        <GenericExample points={points} />
+      </View>
+      <View style={styles.selection}>
+        <View style={StyleSheet.absoluteFill}>
+          <Animated.View style={[styles.backgroundSelection, style]} />
+        </View>
         {times.map((item, index) => (
-          <CustomPressable
-            key={item.display}
-            selected={index === selected}
-            item={item}
-            index={index}
-            onPress={(item, index) => onPressed(item, index)}
-          />
+          <TouchableWithoutFeedback
+            key={item.label}
+            onPress={() => {
+              previous.value = current.value;
+              transition.value = 0;
+              current.value = index;
+              transition.value = withTiming(1);
+              setPoints(data[index]);
+              // onPressed(item);
+            }}
+          >
+            <Animated.View style={[styles.labelContainer]}>
+              <Text style={styles.label}>{item.label}</Text>
+            </Animated.View>
+          </TouchableWithoutFeedback>
         ))}
-      </CustomCard>
-      <GenericExample dataSet={filterData(data, 100)} />
-      {/* <ChartPathProvider data={{ points, smoothingStrategy: 'bezier' }}>
-        <ChartPath height={SIZE / 2} stroke="yellow" width={SIZE} />
-        <ChartDot style={{ backgroundColor: 'blue' }} />
-      </ChartPathProvider> */}
-      {/* <CustomChart data={dataState} /> */}
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  backgroundSelection: {
+    backgroundColor: '#f3f3f3',
+    ...StyleSheet.absoluteFillObject,
+    width: BUTTON_WIDTH,
+    borderRadius: 8,
+  },
+  selection: {
+    flexDirection: 'row',
+    width: SELECTION_WIDTH,
+    alignSelf: 'center',
+  },
+  labelContainer: {
+    padding: 16,
+    width: BUTTON_WIDTH,
+  },
+  label: {
+    fontSize: 16,
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+});
 
 export default AreaChartNetspace;
