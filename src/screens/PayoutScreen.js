@@ -23,7 +23,7 @@ const useRefresh = () => {
 };
 
 const query = selectorFamily({
-  key: 'payoutsSelector',
+  key: 'payouts',
   get:
     () =>
     async ({ get }) => {
@@ -53,9 +53,10 @@ const Content = () => {
   const renderItem = ({ item, index }) => <Item item={item} rank={index} />;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <FlatList
-        ListHeaderComponent={<View style={{ marginTop: 8 }} />}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
+        ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
         data={payouts.results}
         renderItem={renderItem}

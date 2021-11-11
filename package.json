@@ -52,6 +52,7 @@
     "react-native-vector-icons": "^9.0.0",
     "react-native-wagmi-charts": "^1.8.0",
     "recoil": "^0.4.1",
+    "recyclerlistview": "^3.0.5",
     "styled-components": "^5.3.3"
   },
   "devDependencies": {

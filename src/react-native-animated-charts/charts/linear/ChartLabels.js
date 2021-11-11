@@ -28,6 +28,7 @@ function ChartLabelFactory(style) {
         {...props}
         animatedProps={textProps}
         defaultValue={format ? format(val.value) : val.value}
+        value={defaultValue}
         editable={false}
       />
     );

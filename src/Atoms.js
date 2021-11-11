@@ -88,3 +88,18 @@ export const netSpaceRequestIDState = atomFamily({
   key: 'netspaceRequestAtomFamily',
   default: 0,
 });
+
+export const farmerBlockRefreshState = atomFamily({
+  key: 'farmerBlockRefreshState',
+  default: 0,
+});
+
+export const farmerPayoutsRefreshState = atomFamily({
+  key: 'farmerPayoutsRefreshState',
+  default: 0,
+});
+
+export const farmerRefreshState = atomFamily({
+  key: 'farmerRefreshState',
+  default: 0,
+});

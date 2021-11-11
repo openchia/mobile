@@ -77,7 +77,7 @@ const useRefreshStats = () => {
 };
 
 const statsQuery = selectorFamily({
-  key: 'statsSelector',
+  key: 'stats',
   get:
     () =>
     async ({ get }) => {
@@ -99,7 +99,7 @@ const Content = () => {
     return (
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingTop: 8, paddingBottom: 8, flexGrow: 1 }}
+        contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
       >
         contentContainerStyle=
@@ -122,7 +122,7 @@ const Content = () => {
   return (
     <ScrollView
       style={{ flex: 1 }}
-      contentContainerStyle={{ paddingTop: 8, paddingBottom: 8, flexGrow: 1 }}
+      contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
       refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
     >
       <View style={styles.container}>

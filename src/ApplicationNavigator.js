@@ -51,7 +51,7 @@ import FarmersScreen from './screens/FarmersScreen';
 import BlocksFoundScreen from './screens/BlocksFoundScreen';
 import PayoutScreen from './screens/PayoutScreen';
 import ScanScreen from './screens/ScanScreen';
-import FarmerScreen from './screens/FarmerScreen';
+import FarmerScreen, { getHeaderTitle } from './screens/FarmerScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import { launcherIDsState, themeState } from './Atoms';
 import LanguageSelectorScreen from './screens/LanguageSelectorScreen';
@@ -201,6 +201,9 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray }) => (
       <Stack.Screen
         name="Farmer Details"
         component={FarmerScreen}
+        options={({ route }) => ({
+          title: getHeaderTitle(route),
+        })}
         // options={({ route, navigation }) => ({})}
       />
       <Stack.Screen name="Language" component={LanguageSelectorScreen} />

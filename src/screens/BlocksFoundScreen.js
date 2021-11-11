@@ -23,7 +23,7 @@ const useRefresh = () => {
 };
 
 const query = selectorFamily({
-  key: 'farmersSelector',
+  key: 'blocks',
   get:
     () =>
     async ({ get }) => {
@@ -63,9 +63,10 @@ const Content = ({ navigation }) => {
   const renderItem = ({ item, index }) => <Item item={item} />;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <FlatList
-        ListHeaderComponent={<View style={{ marginTop: 8 }} />}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
+        ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
         data={blocks.results}
         renderItem={renderItem}

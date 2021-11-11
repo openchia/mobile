@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { SafeAreaView, ActivityIndicator, FlatList, Text, View, ScrollView } from 'react-native';
 import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { fromUnixTime, getUnixTime, isAfter } from 'date-fns';
 import { useTheme } from 'react-native-paper';
-import { getNetspace } from '../Api';
+import { getSpace } from '../Api';
 import LoadingComponent from '../components/LoadingComponent';
 import { netSpaceRequestIDState } from '../Atoms';
 import AreaChartNetspace from '../charts/AreaChartNetspace';
@@ -47,23 +47,23 @@ const filterData = (data, timePeriod) => {
 const Charts = ({ navigation }) => {
   const [data, setData] = useState(null);
   const [maxSize, setMaxSize] = useState('');
-  const theme = useTheme();
 
   useEffect(() => {
-    getNetspace().then((netspace) => {
+    getSpace().then((netspace) => {
       const convertedData = netspace.map((item) => ({
         x: getUnixTime(new Date(item.date)),
         y: item.size,
       }));
+      const filteredData = convertedData.filter((item) => item.y !== 0);
       const data = NetspaceChartIntervals.map((item) => {
         if (item.time === -1)
           return monotoneCubicInterpolation({
-            data: convertedData,
+            data: filteredData,
             includeExtremes: true,
             range: 100,
           });
         return monotoneCubicInterpolation({
-          data: filterData(convertedData, item.time),
+          data: filterData(filteredData, item.time),
           includeExtremes: true,
           range: 100,
         });
@@ -78,13 +78,13 @@ const Charts = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView
+    <ScrollView
       style={{
         flex: 1,
       }}
     >
       <PoolspaceChart data={data} maxSize={maxSize} />
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

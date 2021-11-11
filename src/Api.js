@@ -2,8 +2,8 @@ import axios from 'axios';
 
 const REST_API = 'https://openchia.io/api/v1.0/';
 
-export const getNetspace = () =>
-  fetch(`${REST_API}space`)
+export const getSpace = () =>
+  fetch(`${REST_API}space?days=365`)
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -28,8 +28,8 @@ export const getStats = () =>
 //   console.log(error);
 // });
 
-export const getFarmers = () =>
-  fetch(`${REST_API}launcher`)
+export const getFarmers = (offset, limit) =>
+  fetch(`${REST_API}launcher/?limit=${limit}&offset=${offset}&is_pool_member=true`)
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -67,8 +67,34 @@ export const getBlocks = () =>
       console.log(error);
     });
 
+export const getBlocksFromFarmer = (launcherId) =>
+  fetch(`${REST_API}block/?farmed_by=${launcherId}`)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json)
+    .catch((error) => {
+      console.log(error);
+    });
+
 export const getPayouts = () =>
   fetch(`${REST_API}payout`)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json)
+    .catch((error) => {
+      console.log(error);
+    });
+
+export const getPayoutsFromAddress = (launcherId) =>
+  fetch(`${REST_API}payoutaddress/?launcher=${launcherId}`)
     .then((response) => {
       if (response.ok) {
         return response.json();

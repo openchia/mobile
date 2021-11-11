@@ -32,13 +32,10 @@ const CustomDrawerContent = (props) => {
       <View
         style={{
           display: 'flex',
-          // flexDirection: 'row',
-          // margin: 16,
           alignItems: 'flex-start',
           justifyContent: 'center',
           padding: 12,
-          // alignItems: 'center',
-          height: 56,
+          height: 72,
         }}
       >
         {/* <Image style={{}} source={require('../images/openchia_icon.png')} /> */}
@@ -88,7 +85,11 @@ const CustomDrawerContent = (props) => {
             onPress={() => navigation.navigate('Charts')}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="finance" size={size} color={theme.colors.textGrey} />
+              <MaterialCommunityIcons
+                name="chart-areaspline"
+                size={size}
+                color={theme.colors.textGrey}
+              />
             )}
           />
           <DrawerItem

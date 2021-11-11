@@ -92,9 +92,10 @@ const CurrencySelectionScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <FlatList
-        ListHeaderComponent={<View style={{ marginTop: 8 }} />}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
+        ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
         data={currencies}
         renderItem={renderItem}
         keyExtractor={(item) => item.key.toString()}

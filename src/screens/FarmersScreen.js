@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import {
   SafeAreaView,
   ActivityIndicator,
@@ -10,11 +10,13 @@ import {
   RefreshControlBase,
   RefreshControl,
   TouchableNativeFeedback,
+  Dimensions,
 } from 'react-native';
 import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
 import { Text, useTheme } from 'react-native-paper';
-import { getNetspace, getFarmers } from '../Api';
+import { RecyclerListView, DataProvider, LayoutProvider } from 'recyclerlistview';
+import { getFarmers } from '../Api';
 import { formatBytes } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
 import { farmersRequestIDState } from '../Atoms';
@@ -22,31 +24,21 @@ import CustomCard from '../components/CustomCard';
 import TouchableRipple from '../components/TouchableRipple';
 import PressableCard from '../components/PressableCard';
 
-const useRefresh = () => {
-  const setRequestId = useSetRecoilState(farmersRequestIDState());
-  return () => setRequestId((id) => id + 1);
-};
-
-const farmersQuery = selectorFamily({
-  key: 'farmersSelector',
-  get:
-    () =>
-    async ({ get }) => {
-      get(farmersRequestIDState());
-      const response = await getFarmers();
-      if (response.error) {
-        throw response.error;
-      }
-      return response;
-    },
-});
+const HEIGHT = 50;
 
 const Item = ({ item, rank, onPress }) => {
   const theme = useTheme();
   return (
     <PressableCard onPress={onPress}>
       <View
-        style={{ display: 'flex', flexDirection: 'row', padding: 12, justifyContent: 'center' }}
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          padding: 12,
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: HEIGHT,
+        }}
       >
         <Text style={styles.rank}>{rank}</Text>
         <Text
@@ -62,42 +54,107 @@ const Item = ({ item, rank, onPress }) => {
   );
 };
 
-const Content = ({ navigation }) => {
-  const farmers = useRecoilValue(farmersQuery());
-  const refresh = useRefresh();
+const LIMIT = 50;
 
-  const renderItem = ({ item, index }) => (
+const Content = ({ navigation, refresh, isLoading, hasMore, setOffset, data, width }) => {
+  const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(data);
+
+  const [layoutProvider] = React.useState(
+    new LayoutProvider(
+      (index) => 1,
+      (type, dim) => {
+        dim.width = width;
+        dim.height = HEIGHT + 8;
+      }
+    )
+  );
+
+  const rowRenderer = (type, data, index) => (
     <Item
-      item={item}
-      rank={index}
+      rank={index + 1}
+      item={data}
       onPress={() => {
-        console.log('pressed');
         navigation.navigate({
           name: 'Farmer Details',
-          params: { launcherId: item.launcher_id, name: item.name },
+          params: { launcherId: data.launcher_id, name: data.name },
         });
       }}
     />
   );
 
+  const loadMore = () => {
+    if (hasMore) {
+      setOffset((offset) => offset + LIMIT);
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <FlatList
-        ListHeaderComponent={<View style={{ marginTop: 8 }} />}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
-        data={farmers.results}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.launcher_id.toString()}
+      <RecyclerListView
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => {
+              refresh();
+            }}
+          />
+        }
+        contentContainerStyle={{ marginTop: 6, paddingBottom: 14 }}
+        dataProvider={dataProvider}
+        layoutProvider={layoutProvider}
+        rowRenderer={rowRenderer}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
+        renderFooter={() =>
+          isLoading && (
+            <Text style={{ padding: 10, fontWeight: 'bold', textAlign: 'center' }}>Loading</Text>
+          )
+        }
       />
     </SafeAreaView>
   );
 };
 
-const FarmersScreen = ({ navigation }) => (
-  <Suspense fallback={<LoadingComponent />}>
-    <Content navigation={navigation} />
-  </Suspense>
-);
+const FarmersScreen = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(true);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const { width } = Dimensions.get('window');
+  const [data, setData] = useState([]);
+
+  const pulldownRefresh = () => {
+    setData([]);
+    setIsRefreshing(true);
+    setOffset(0);
+    setHasMore(true);
+  };
+
+  useEffect(() => {
+    if (hasMore) {
+      setIsLoading(true);
+      getFarmers(offset, LIMIT).then((farmers) => {
+        setHasMore(farmers.results.length === LIMIT);
+        setData([...data, ...farmers.results]);
+        setIsRefreshing(false);
+        setIsLoading(false);
+      });
+    }
+  }, [offset]);
+
+  if (isRefreshing) return <LoadingComponent />;
+  return (
+    <Content
+      navigation={navigation}
+      refresh={pulldownRefresh}
+      setOffset={(offset) => setOffset(offset)}
+      isLoading={isLoading}
+      hasMore={hasMore}
+      data={data}
+      width={width}
+    />
+  );
+};
 
 const styles = StyleSheet.create({
   item: {
