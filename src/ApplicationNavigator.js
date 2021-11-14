@@ -152,6 +152,9 @@ const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
       inactiveTintColor: 'black',
       activeTintColor: 'red',
       activeBackgroundColor: 'grey',
+      navigationOptions: {
+        headerBackTitle: 'Back',
+      },
       // inactiveTintColor: 'blue',
       inactiveBackgroundColor: 'white',
       labelStyle: {
