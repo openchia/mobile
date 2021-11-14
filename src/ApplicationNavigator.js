@@ -143,6 +143,9 @@ const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
     backBehavior="history"
     initialRouteName="Home"
     // useLegacyImplementation
+    navigationOptions={{
+      headerBackTitle: 'Back',
+    }}
     screenOptions={{
       headerShown: true,
       headerStyle: { backgroundColor: theme.colors.primary },
@@ -152,9 +155,6 @@ const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
       inactiveTintColor: 'black',
       activeTintColor: 'red',
       activeBackgroundColor: 'grey',
-      navigationOptions: {
-        headerBackTitle: 'Back',
-      },
       // inactiveTintColor: 'blue',
       inactiveBackgroundColor: 'white',
       labelStyle: {
