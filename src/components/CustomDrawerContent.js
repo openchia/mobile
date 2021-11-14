@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import React, { useCallback, useContext, useState } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, SafeAreaView } from 'react-native';
 import { Divider, Drawer, Switch, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwsomeIcons from 'react-native-vector-icons/FontAwesome';
@@ -28,7 +28,7 @@ const CustomDrawerContent = (props) => {
   const font = theme.fonts.medium;
   //   console.log(launcherIDsArray);
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View
         style={{
           display: 'flex',
@@ -189,7 +189,7 @@ const CustomDrawerContent = (props) => {
           />
         </CustomDrawerSection>
       </DrawerContentScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
