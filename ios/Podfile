@@ -1,7 +1,7 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '11.0'
+platform :ios, '10.0'
 
 target 'mobile' do
   config = use_native_modules!
@@ -12,12 +12,15 @@ target 'mobile' do
     :hermes_enabled => false
   )
 
-
-
   target 'mobileTests' do
     inherit! :complete
     # Pods for testing
+
   end
+
+  permissions_path = '../node_modules/react-native-permissions/ios'
+
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
   # Enables Flipper.
   #
@@ -27,6 +30,5 @@ target 'mobile' do
 
   post_install do |installer|
     react_native_post_install(installer)
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
 end

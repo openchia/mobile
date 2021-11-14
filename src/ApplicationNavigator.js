@@ -8,7 +8,7 @@
  */
 
 import React, { Node, useCallback, useMemo, useState, Suspense, useEffect } from 'react';
-import { StatusBar, LogBox } from 'react-native';
+import { StatusBar, LogBox, SafeAreaView } from 'react-native';
 
 import Toast, { ToastProvider } from 'react-native-toast-notifications';
 
@@ -183,33 +183,35 @@ const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
 );
 
 const AppRoot = ({ theme, toggleTheme, launcherIDsArray }) => (
-  <NavigationContainer theme={theme}>
-    <StatusBar backgroundColor={theme.colors.statusBarColor} barStyle="light-content" />
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: true,
-        headerStyle: { backgroundColor: theme.colors.primary },
-        headerTintColor: '#fff',
-        drawerStyle: { backgroundColor: theme.colors.primary },
-        gestureEnabled: true, // If you want to swipe back like iOS on Android
-        ...TransitionPresets.SlideFromRightIOS,
-      }}
-    >
-      <Stack.Screen name="Root" options={{ headerShown: false }}>
-        {() => <Root theme={theme} toggleTheme={toggleTheme} launcherIDsArray={launcherIDsArray} />}
-      </Stack.Screen>
-      <Stack.Screen
-        name="Farmer Details"
-        component={FarmerScreen}
-        options={({ route }) => ({
-          title: getHeaderTitle(route),
-        })}
-        // options={({ route, navigation }) => ({})}
-      />
-      <Stack.Screen name="Language" component={LanguageSelectorScreen} />
-      <Stack.Screen name="Currency" component={CurrencySelectionScreen} />
-    </Stack.Navigator>
-  </NavigationContainer>
+  <SafeAreaView style={{flex:1}}>
+    <NavigationContainer theme={theme}>
+      <StatusBar backgroundColor={theme.colors.statusBarColor} barStyle="light-content" />
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: true,
+          headerStyle: { backgroundColor: theme.colors.primary },
+          headerTintColor: '#fff',
+          drawerStyle: { backgroundColor: theme.colors.primary },
+          gestureEnabled: true, // If you want to swipe back like iOS on Android
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      >
+        <Stack.Screen name="Root" options={{ headerShown: false }}>
+          {() => <Root theme={theme} toggleTheme={toggleTheme} launcherIDsArray={launcherIDsArray} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Farmer Details"
+          component={FarmerScreen}
+          options={({ route }) => ({
+            title: getHeaderTitle(route),
+          })}
+          // options={({ route, navigation }) => ({})}
+        />
+        <Stack.Screen name="Language" component={LanguageSelectorScreen} />
+        <Stack.Screen name="Currency" component={CurrencySelectionScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  </SafeAreaView>
 );
 
 const ApplicationNavigator = () => {
