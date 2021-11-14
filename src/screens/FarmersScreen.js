@@ -56,7 +56,16 @@ const Item = ({ item, rank, onPress }) => {
 
 const LIMIT = 50;
 
-const Content = ({ navigation, refresh, isLoading, hasMore, setOffset, data, width }) => {
+const Content = ({
+  navigation,
+  refresh,
+  isLoading,
+  hasMore,
+  setOffset,
+  data,
+  width,
+  setIsLoading,
+}) => {
   const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(data);
 
   const [layoutProvider] = React.useState(
@@ -85,6 +94,7 @@ const Content = ({ navigation, refresh, isLoading, hasMore, setOffset, data, wid
   const loadMore = () => {
     if (hasMore) {
       setOffset((offset) => offset + LIMIT);
+      setIsLoading(true);
     }
   };
 
@@ -116,7 +126,7 @@ const Content = ({ navigation, refresh, isLoading, hasMore, setOffset, data, wid
 };
 
 const FarmersScreen = ({ navigation }) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(true);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -131,16 +141,24 @@ const FarmersScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (hasMore) {
-      setIsLoading(true);
+    if (isLoading && hasMore) {
+      getFarmers(offset, LIMIT).then((farmers) => {
+        setHasMore(farmers.results.length === LIMIT);
+        setData([...data, ...farmers.results]);
+        setIsLoading(false);
+      });
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (isRefreshing && hasMore) {
       getFarmers(offset, LIMIT).then((farmers) => {
         setHasMore(farmers.results.length === LIMIT);
         setData([...data, ...farmers.results]);
         setIsRefreshing(false);
-        setIsLoading(false);
       });
     }
-  }, [offset]);
+  }, [isRefreshing]);
 
   if (isRefreshing) return <LoadingComponent />;
   return (
@@ -152,6 +170,7 @@ const FarmersScreen = ({ navigation }) => {
       hasMore={hasMore}
       data={data}
       width={width}
+      setIsLoading={setIsLoading}
     />
   );
 };
