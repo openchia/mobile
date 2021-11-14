@@ -118,24 +118,6 @@ const HomeScreen = ({ navigation }) => {
     });
   }, [navigation]);
 
-  const shapes = {
-    pathOne:
-      'M380.279 107.377C380.279 107.377 295.739 13.1031 187.625 107.25C79.5108 201.397 -1.97128 107.125 -1.97128 107.125L-1.89778 1.07516e-06L380.353 0.252415L380.279 107.377Z',
-  };
-
-  // const handlePress = useCallback(async () => {
-  //   // Checking if the link is supported for links with custom URL scheme.
-  //   const supported = await Linking.canOpenURL('https://openchia.io/en/join');
-
-  //   if (supported) {
-  //     // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-  //     // by some browser in the mobile
-  //     await Linking.openURL('https://openchia.io/en/join');
-  //   } else {
-  //     Alert.alert(`Don't know how to open this URL: ${'https://openchia.io/en/join'}`);
-  //   }
-  // }, [url]);
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
@@ -146,7 +128,7 @@ const HomeScreen = ({ navigation }) => {
           viewBox="0 0 1080 1920"
           style={{ position: 'absolute' }}
         >
-          <G mask='url("#SvgjsMask1559")' fill="none">
+          <G fill="none">
             <Rect
               width="1080"
               height="1920"

@@ -57,9 +57,8 @@ const CustomDrawerContent = (props) => {
         </Text> */}
       </View>
       <Divider style={{ backgroundColor: theme.colors.divider }} />
-      <DrawerContentScrollView {...props}>
-        {/* <DrawerItemList {...props} /> */}
-        <CustomDrawerSection style={{}}>
+      <DrawerContentScrollView contentContainerStyle={{paddingTop: 0}}{...props}>
+        <CustomDrawerSection>
           <DrawerItem
             label={t('navigate:home')}
             onPress={() => navigation.navigate('Home')}
