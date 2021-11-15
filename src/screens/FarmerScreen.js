@@ -25,9 +25,10 @@ import { format } from 'date-fns';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { IconButton, Text } from 'react-native-paper';
+import { Button, IconButton, Text } from 'react-native-paper';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { getNetspace, getFarmers, getPartialsFromID, getFarmer, getStats } from '../Api';
+import { useLayoutEffect } from 'react';
+import { getFarmers, getPartialsFromID, getFarmer, getStats } from '../Api';
 import { formatBytes, formatPrice } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
 import FarmerGraphScreen from './FarmerGraphScreen';
@@ -83,9 +84,10 @@ const FarmerScreen = ({ route, navigation }) => {
   const { launcherId, name } = route.params;
   const dataLoadable = useRecoilValueLoadable(query(launcherId));
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions(({ route }) => ({
-      headerRight: () => (
+  useLayoutEffect(() => {
+    // const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+    navigation.setOptions({
+      headerRight: (props) => (
         <View
           style={{
             display: 'flex',
@@ -114,8 +116,8 @@ const FarmerScreen = ({ route, navigation }) => {
           />
         </View>
       ),
-    }));
-  }, [navigation]);
+    });
+  }, [navigation, route]);
 
   return (
     <Tab.Navigator labeled={false}>

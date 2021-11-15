@@ -208,6 +208,9 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray }) => (
         component={FarmerScreen}
         options={({ route }) => ({
           title: getHeaderTitle(route),
+          headerRight: () => (
+            <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
+          ),
         })}
         // options={({ route, navigation }) => ({})}
       />

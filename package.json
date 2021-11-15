@@ -1,5 +1,5 @@
 {
-  "name": "mobile",
+  "name": "openchia",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -39,6 +39,7 @@
     "react-native-gesture-handler": "^1.10.3",
     "react-native-haptic-feedback": "^1.10.0",
     "react-native-localize": "^2.1.5",
+    "react-native-notifications": "^4.1.2",
     "react-native-paper": "^4.9.2",
     "react-native-permissions": "^3.1.0",
     "react-native-qrcode-scanner": "^1.5.4",

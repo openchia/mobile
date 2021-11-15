@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1053195783758",
+    "project_id": "openchia-f53b5",
+    "storage_bucket": "openchia-f53b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053195783758:android:d85ec4238c855e307c7d1f",
+        "android_client_info": {
+          "package_name": "com.openchia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053195783758-ftnbndake1sp7mtjj5b8mrsjuddqre19.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh1U-J7Fc7EI_Su7gqWCNgXdgh6JnsP9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053195783758-ftnbndake1sp7mtjj5b8mrsjuddqre19.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1053195783758-cfcmaqr09mc5fgo4rgma78ebcknab6kb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.openchia"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

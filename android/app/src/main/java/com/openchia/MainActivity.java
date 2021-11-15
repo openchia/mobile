@@ -1,4 +1,4 @@
-package com.mobile;
+package com.openchia;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;
