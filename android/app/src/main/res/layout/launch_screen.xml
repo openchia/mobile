@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
     <ImageView
-        android:layout_margin="24dp"
+        android:layout_margin="76dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/ic_open_chia"
