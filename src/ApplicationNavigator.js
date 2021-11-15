@@ -143,9 +143,6 @@ const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
     backBehavior="history"
     initialRouteName="Home"
     // useLegacyImplementation
-    navigationOptions={{
-      headerBackTitle: 'Back',
-    }}
     screenOptions={{
       headerShown: true,
       headerStyle: { backgroundColor: theme.colors.primary },
@@ -155,6 +152,9 @@ const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
       inactiveTintColor: 'black',
       activeTintColor: 'red',
       activeBackgroundColor: 'grey',
+      navigationOptions: {
+        headerBackTitle: 'Back',
+      },
       // inactiveTintColor: 'blue',
       inactiveBackgroundColor: 'white',
       labelStyle: {
@@ -194,6 +194,7 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray }) => (
         headerStyle: { backgroundColor: theme.colors.primary },
         headerTintColor: '#fff',
         drawerStyle: { backgroundColor: theme.colors.primary },
+        headerBackTitleVisible: false,
         gestureEnabled: true, // If you want to swipe back like iOS on Android
         ...TransitionPresets.SlideFromRightIOS,
       }}
