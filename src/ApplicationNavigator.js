@@ -11,6 +11,7 @@ import React, { Node, useCallback, useMemo, useState, Suspense, useEffect } from
 import { StatusBar, LogBox, SafeAreaView } from 'react-native';
 
 import Toast, { ToastProvider } from 'react-native-toast-notifications';
+import SplashScreen from 'react-native-splash-screen';
 
 import {
   IconButton,
@@ -221,6 +222,10 @@ const ApplicationNavigator = () => {
   // const launcherIDs = useRecoilValueLoadable(launcherIDsState);
   const isThemeDark = useRecoilValue(themeState);
   const launcherIDs = useRecoilValue(launcherIDsState);
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
   // if (launcherIDs.state === 'loading' || isThemeDark.state === 'loading') {
   //   return <LoadingComponent />;
