@@ -202,10 +202,10 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     implementation project(':react-native-notifications')
-    implementation 'com.google.firebase:firebase-core:16.0.0'
+    // implementation 'com.google.firebase:firebase-core:16.0.0'
 
-    implementation platform('com.google.firebase:firebase-bom:29.0.0')
-    implementation 'com.google.firebase:firebase-analytics'
+    // implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    // implementation 'com.google.firebase:firebase-analytics'
 
     compile project(':react-native-vector-icons')
 
