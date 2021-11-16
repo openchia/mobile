@@ -2,10 +2,10 @@ import React, { Node, useCallback, useMemo, useState, Suspense, useEffect } from
 import { Platform, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RecoilRoot } from 'recoil';
+import { Notifications } from 'react-native-notifications';
 import ApplicationNavigator from './src/ApplicationNavigator';
 import LoadingComponent from './src/components/LoadingComponent';
 import './src/constants/IMLocalize';
-import { Notifications } from 'react-native-notifications';
 
 if (Platform.OS === 'android') {
   require('intl');
@@ -18,6 +18,21 @@ if (Platform.OS === 'android') {
 const App = () => {
   useEffect(() => {
     Notifications.registerRemoteNotifications();
+
+    if (Platform.OS === 'ios') {
+      Notifications.ios.checkPermissions().then((currentPermissions) => {
+        console.log(`Badges enabled: ${!!currentPermissions.badge}`);
+        console.log(`Sounds enabled: ${!!currentPermissions.sound}`);
+        console.log(`Alerts enabled: ${!!currentPermissions.alert}`);
+        console.log(`Car Play enabled: ${!!currentPermissions.carPlay}`);
+        console.log(`Critical Alerts enabled: ${!!currentPermissions.criticalAlert}`);
+        console.log(`Provisioanl enabled: ${!!currentPermissions.provisional}`);
+        console.log(
+          `Provides App Notification Settings enabled: ${!!currentPermissions.providesAppNotificationSettings}`
+        );
+        console.log(`Announcement enabled: ${!!currentPermissions.announcement}`);
+      });
+    }
 
     Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
       console.log(
