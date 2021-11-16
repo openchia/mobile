@@ -34,17 +34,49 @@ const App = () => {
       });
     }
 
-    Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
-      console.log(
-        `Notification received in foreground: ${notification.title} : ${notification.body}`
-      );
-      completion({ alert: false, sound: false, badge: false });
+    Notifications.events().registerRemoteNotificationsRegistered((event) => {
+      // TODO: Send the token to my server so it could send back push notifications...
+      console.log('Device Token Received', event.deviceToken);
+    });
+    Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
+      console.error(event);
     });
 
-    Notifications.events().registerNotificationOpened((notification, completion) => {
-      console.log(`Notification opened: ${notification.payload}`);
+    Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
+      console.log('Notification Received - Foreground', notification.payload);
+
+      // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
+      completion({ alert: true, sound: true, badge: false });
+    });
+
+    Notifications.events().registerNotificationOpened((notification, completion, action) => {
+      console.log('Notification opened by device user', notification.payload);
+      console.log(
+        `Notification opened with an action identifier: ${action.identifier} and response text: ${action.text}`
+      );
       completion();
     });
+
+    Notifications.events().registerNotificationReceivedBackground((notification, completion) => {
+      console.log('Notification Received - Background', notification.payload);
+
+      // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
+      completion({ alert: true, sound: true, badge: false });
+    });
+
+    Notifications.ios.events().registerPushKitRegistered((event) => {
+      console.log(`PushKit Token Received: ${event.pushKitToken}`);
+    });
+
+    Notifications.ios.events().registerPushKitNotificationReceived((payload, complete) => {
+      console.log(`PushKit notification Received: ${JSON.stringify(payload)}`);
+
+      complete();
+    });
+
+    // Important: This tells PushKit we are done and have shown the Incoming Call. So make sure to
+    // show the call screen before calling complete
+    Notifications.ios.registerPushKit();
   }, []);
 
   return (

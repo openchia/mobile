@@ -50,8 +50,8 @@ static void InitializeFlipper(UIApplication *application) {
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
 
-  [RNNotifications startMonitorNotifications]; // -> Add this line
   [FIRApp configure];
+  [RNNotifications startMonitorNotifications]; // -> Add this line
 
   return YES;
 }
