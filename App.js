@@ -63,20 +63,6 @@ const App = () => {
       // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
       completion({ alert: true, sound: true, badge: false });
     });
-
-    Notifications.ios.events().registerPushKitRegistered((event) => {
-      console.log(`PushKit Token Received: ${event.pushKitToken}`);
-    });
-
-    Notifications.ios.events().registerPushKitNotificationReceived((payload, complete) => {
-      console.log(`PushKit notification Received: ${JSON.stringify(payload)}`);
-
-      complete();
-    });
-
-    // Important: This tells PushKit we are done and have shown the Incoming Call. So make sure to
-    // show the call screen before calling complete
-    Notifications.ios.registerPushKit();
   }, []);
 
   return (
