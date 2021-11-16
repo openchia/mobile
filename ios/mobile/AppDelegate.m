@@ -51,10 +51,7 @@ static void InitializeFlipper(UIApplication *application) {
   [self.window makeKeyAndVisible];
 
   [RNNotifications startMonitorNotifications]; // -> Add this line
-
-  - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [FIRApp configure];
-  }
+  [FIRApp configure];
 
   return YES;
 }
