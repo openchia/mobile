@@ -42,7 +42,7 @@ const CustomDrawerContent = (props) => {
           backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
           paddingTop: Platform.OS === 'ios' ? 48 : 0,
           paddingLeft: 12,
-          height: Platform.OS === 'ios' ? 110 : 72,
+          height: Platform.OS === 'ios' ? 120 : 72,
         }}
       >
         <OpenChiaIconWithText style={{ width: '100%', height: 36 }} color="#f5f5f5" />
