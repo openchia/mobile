@@ -29,37 +29,24 @@ const CustomDrawerContent = (props) => {
   //   console.log(launcherIDsArray);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View
-        style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primaryLight,
-          padding: 12,
-          height: 72,
+      {/* <Divider style={{ backgroundColor: theme.colors.divider }} /> */}
+      <DrawerContentScrollView
+        contentContainerStyle={{
+          backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
         }}
+        {...props}
       >
-        {/* <Image style={{}} source={require('../images/openchia_icon.png')} /> */}
-        <OpenChiaIconWithText
-          style={{ width: '100%', height: 36 }}
-          color="#f5f5f5"
-          // color={isThemeDark ? theme.colors.textLight : theme.colors.textDark}
-        />
-        {/* <Text
+        <View
           style={{
-            color: theme.colors.textGrey,
-            ...font,
-            fontSize: 18,
-            marginLeft: 24,
-            fontWeight: '600',
-            fontFamily: 'OpenSans-Regular',
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            padding: 12,
+            height: 72,
           }}
         >
-          OPENCHIA.IO
-        </Text> */}
-      </View>
-      <Divider style={{ backgroundColor: theme.colors.divider }} />
-      <DrawerContentScrollView contentContainerStyle={{ paddingTop: 0 }} {...props}>
+          <OpenChiaIconWithText style={{ width: '100%', height: 36 }} color="#f5f5f5" />
+        </View>
         <CustomDrawerSection>
           <DrawerItem
             label={t('navigate:home')}

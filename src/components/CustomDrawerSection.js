@@ -8,7 +8,7 @@ const CustomDrawerSection = ({ children, title, theme, style, showDivider, ...re
   const font = fonts.medium;
 
   return (
-    <View style={[styles.container, style]} {...rest}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }, style]} {...rest}>
       {title && (
         <View style={styles.titleContainer}>
           <Text numberOfLines={1} style={[{ color: colors.textGrey, ...font }, styles.title]}>
