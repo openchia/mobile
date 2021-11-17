@@ -6,6 +6,7 @@ import {
   View,
   Linking,
   Alert,
+  StatusBar,
   StyleSheet,
 } from 'react-native';
 import { Button, IconButton, Text, useTheme } from 'react-native-paper';
@@ -13,7 +14,6 @@ import { useTranslation } from 'react-i18next';
 import Svg, { Path, Rect, G } from 'react-native-svg';
 import { useRecoilState } from 'recoil';
 import { ScrollView } from 'react-native-gesture-handler';
-import { getNetspace } from '../Api';
 import LoadingComponent from '../components/LoadingComponent';
 import CustomCard from '../components/CustomCard';
 import { themeState } from '../Atoms';
@@ -121,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <FocusAwareStatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+      <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
         <Svg
           width="100%"
