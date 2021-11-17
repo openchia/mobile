@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import Svg, { Path, Rect, G } from 'react-native-svg';
 import { useRecoilState } from 'recoil';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useDrawerStatus } from '@react-navigation/drawer';
 import LoadingComponent from '../components/LoadingComponent';
 import CustomCard from '../components/CustomCard';
 import { themeState } from '../Atoms';
@@ -109,19 +110,34 @@ const HomeScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const [isThemeDark, setIsThemeDark] = useRecoilState(themeState);
+  // const isDrawerOpen = useDrawerStatus() === 'open';
+
+  // useEffect(
+  //   (isDrawerOpen) => {
+  //     if (isDrawerOpen) {
+  //       StatusBar.setHidden();
+  //     }
+  //   },
+  //   [isDrawerOpen]
+  // );
 
   const fill = isThemeDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       // headerShown: false,
-      // headerStyle: { backgroundColor: theme.colors.primary },
+      headerStyle: {
+        backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primaryLight,
+      },
     });
   }, [navigation]);
 
   return (
     <View style={{ flex: 1 }}>
-      {/* <FocusAwareStatusBar barStyle="light-content" backgroundColor="#6a51ae" /> */}
+      {/* <FocusAwareStatusBar
+        barStyle="light-content"
+        backgroundColor={isThemeDark ? theme.colors.primary : theme.colors.primaryLight}
+      /> */}
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
         <Svg
           width="100%"

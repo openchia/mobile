@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
 /**
  * Sample React Native App
@@ -8,7 +9,7 @@
  */
 
 import React, { Node, useCallback, useMemo, useState, Suspense, useEffect } from 'react';
-import { StatusBar, LogBox, SafeAreaView } from 'react-native';
+import { StatusBar, LogBox, SafeAreaView, Platform } from 'react-native';
 
 import Toast, { ToastProvider } from 'react-native-toast-notifications';
 import SplashScreen from 'react-native-splash-screen';
@@ -44,7 +45,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 // import { createStackNavigator } from '@react-navigation/stack';
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TransitionPresets, createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, useDrawerStatus } from '@react-navigation/drawer';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import HomeScreen from './screens/HomeScreen';
 import StatsScreen from './screens/StatsScreen';
@@ -59,7 +60,6 @@ import LanguageSelectorScreen from './screens/LanguageSelectorScreen';
 import CurrencySelectionScreen from './screens/CurrencySelectionScreen';
 import CustomDrawerContent from './components/CustomDrawerContent';
 import ChartsScreen from './screens/ChartsScreen';
-import LoadingComponent from './components/LoadingComponent';
 
 // LogBox.ignoreLogs(['Reanimated 2']);
 LogBox.ignoreLogs(['timer']);
@@ -77,7 +77,7 @@ const LightTheme = {
   colors: {
     ...CombinedDefaultTheme.colors,
     background: '#f5f5f5',
-    border: '#0096FF',
+    border: '#436B34',
     accent: '#c57e49',
     surface: '#f5f5f5',
     onSurface: '#fff',
@@ -187,10 +187,13 @@ const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
 );
 
 const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark }) => (
+  // const isDrawerOpen = useDrawerStatus() === 'open';
   <NavigationContainer theme={theme}>
     <StatusBar
       backgroundColor={theme.colors.statusBarColor}
-      barStyle={isThemeDark ? 'light-content' : 'dark-content'}
+      barStyle={
+        Platform.OS === 'ios' ? (isThemeDark ? 'light-content' : 'dark-content') : 'light-content'
+      }
     />
     <Stack.Navigator
       screenOptions={{
@@ -222,7 +225,6 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark }) => (
     </Stack.Navigator>
   </NavigationContainer>
 );
-
 const ApplicationNavigator = () => {
   // const isThemeDark = useRecoilValueLoadable(themeState);
   // const launcherIDs = useRecoilValueLoadable(launcherIDsState);

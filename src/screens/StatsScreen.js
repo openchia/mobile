@@ -110,7 +110,8 @@ const Content = () => {
           alignItems: 'center',
           justifyContent: 'center',
         }}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}>
+        refreshControl=
+        <RefreshControl refreshing={false} onRefresh={() => refresh()} />
         <Text style={{ fontSize: 20, textAlign: 'center' }}>
           Could not fetch data. Please make sure you have an internet connection. Pull down to try
           refresh again.
