@@ -126,8 +126,8 @@ const HomeScreen = ({ navigation }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       // headerShown: false,
+      headerTitle: '',
       headerStyle: {
-        headerTitle: "",
         elevation: 0,
         shadowOpacity: 0,
         backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primaryLight,
