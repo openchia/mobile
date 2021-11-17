@@ -127,6 +127,9 @@ const HomeScreen = ({ navigation }) => {
     navigation.setOptions({
       // headerShown: false,
       headerStyle: {
+        headerTitle: "",
+        elevation: 0,
+        shadowOpacity: 0,
         backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primaryLight,
       },
       headerRight: (props) => (
