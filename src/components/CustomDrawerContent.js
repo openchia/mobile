@@ -28,7 +28,7 @@ const CustomDrawerContent = (props) => {
   const font = theme.fonts.medium;
   //   console.log(launcherIDsArray);
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       {/* <Divider style={{ backgroundColor: theme.colors.divider }} /> */}
       <DrawerContentScrollView
         contentContainerStyle={{
@@ -177,7 +177,7 @@ const CustomDrawerContent = (props) => {
           />
         </CustomDrawerSection>
       </DrawerContentScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

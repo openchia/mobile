@@ -30,7 +30,7 @@ CustomDrawerSection.defaultProps = {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 4,
+    // marginBottom: 4,
   },
   titleContainer: {
     height: 40,
