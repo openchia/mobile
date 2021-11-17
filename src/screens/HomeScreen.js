@@ -114,14 +114,14 @@ const HomeScreen = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      //headerShown: false,
+      // headerShown: false,
       // headerStyle: { backgroundColor: theme.colors.primary },
     });
   }, [navigation]);
 
   return (
     <View style={{ flex: 1 }}>
-      <FocusAwareStatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+      {/* <FocusAwareStatusBar barStyle="light-content" backgroundColor="#6a51ae" /> */}
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
         <Svg
           width="100%"

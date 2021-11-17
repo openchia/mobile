@@ -186,9 +186,12 @@ const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
   </Drawer.Navigator>
 );
 
-const AppRoot = ({ theme, toggleTheme, launcherIDsArray }) => (
+const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark }) => (
   <NavigationContainer theme={theme}>
-    <StatusBar backgroundColor={theme.colors.statusBarColor} barStyle="light-content" />
+    <StatusBar
+      backgroundColor={theme.colors.statusBarColor}
+      barStyle={isThemeDark ? 'light-content' : 'dark-content'}
+    />
     <Stack.Navigator
       screenOptions={{
         headerShown: true,
@@ -247,7 +250,7 @@ const ApplicationNavigator = () => {
       <SafeAreaProvider style={{ backgroundColor: theme.colors.background }}>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <PaperProvider theme={theme}>
-            <AppRoot theme={theme} launcherIDsArray={launcherIDsArray} />
+            <AppRoot theme={theme} launcherIDsArray={launcherIDsArray} isThemeDark={isThemeDark} />
           </PaperProvider>
         </GestureHandlerRootView>
       </SafeAreaProvider>
