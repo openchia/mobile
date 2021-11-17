@@ -78,13 +78,13 @@ const Charts = ({ navigation }) => {
   }
 
   return (
-    <ScrollView
+    <SafeAreaView
       style={{
         flex: 1,
       }}
     >
       <PoolspaceChart data={data} maxSize={maxSize} />
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
