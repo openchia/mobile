@@ -129,6 +129,31 @@ const HomeScreen = ({ navigation }) => {
       headerStyle: {
         backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primaryLight,
       },
+      headerRight: (props) => (
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            // marginEnd: -12,
+            alignItems: 'center',
+          }}
+        >
+          <URLImageButton
+            icon="youtube"
+            url="https://www.youtube.com/channel/UCL70j_KiPd49rfp_UEqxiyQ"
+          />
+          {/* <URLImageButton icon="discord" url="https://discord.com/invite/2URS9H7RZn" /> */}
+          <URLImageButton icon="github" url="https://github.com/openchia" />
+          <URLImageButton icon="twitter" url="https://twitter.com/openchia" />
+          {/* <IconButton
+            // icon={launcherIDs.has(launcherId) ? 'delete' : 'content-save'}
+            style={{ marginEnd: 20 }}
+            color="#fff"
+            size={24}
+            onPress={() => {}}
+          /> */}
+        </View>
+      ),
     });
   }, [navigation]);
 
@@ -186,7 +211,7 @@ const HomeScreen = ({ navigation }) => {
             />
           </G>
         </Svg>
-        <View
+        {/* <View
           style={{
             display: 'flex',
             flexDirection: 'row',
@@ -206,10 +231,9 @@ const HomeScreen = ({ navigation }) => {
             icon="youtube"
             url="https://www.youtube.com/channel/UCL70j_KiPd49rfp_UEqxiyQ"
           />
-          {/* <URLImageButton icon="discord" url="https://discord.com/invite/2URS9H7RZn" /> */}
           <URLImageButton icon="github" url="https://github.com/openchia" />
           <URLImageButton icon="twitter" url="https://twitter.com/openchia" />
-        </View>
+        </View> */}
         <View
           style={{
             alignItems: 'center',
