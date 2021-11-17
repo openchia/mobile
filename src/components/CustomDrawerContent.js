@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import React, { useCallback, useContext, useState } from 'react';
-import { StyleSheet, View, Image, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Image, SafeAreaView, Platform } from 'react-native';
 import { Divider, Drawer, Switch, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwsomeIcons from 'react-native-vector-icons/FontAwesome';
@@ -28,15 +28,36 @@ const CustomDrawerContent = (props) => {
   const font = theme.fonts.medium;
   //   console.log(launcherIDsArray);
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+        // backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
+      }}
+    >
+      <View
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
+          marginTop: Platform.OS === 'ios' ? 30 : 0,
+          padding: 12,
+          height: 72,
+        }}
+      >
+        <OpenChiaIconWithText style={{ width: '100%', height: 36 }} color="#f5f5f5" />
+      </View>
       {/* <Divider style={{ backgroundColor: theme.colors.divider }} /> */}
       <DrawerContentScrollView
-        contentContainerStyle={{
-          backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
-        }}
+        style={{ height: '100%' }}
+        contentContainerStyle={
+          {
+            // backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
+          }
+        }
         {...props}
       >
-        <View
+        {/* <View
           style={{
             display: 'flex',
             alignItems: 'flex-start',
@@ -46,7 +67,7 @@ const CustomDrawerContent = (props) => {
           }}
         >
           <OpenChiaIconWithText style={{ width: '100%', height: 36 }} color="#f5f5f5" />
-        </View>
+        </View> */}
         <CustomDrawerSection>
           <DrawerItem
             label={t('navigate:home')}
