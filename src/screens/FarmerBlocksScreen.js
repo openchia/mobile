@@ -80,8 +80,9 @@ const Content = ({ launcherId }) => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <FlatList
+        contentContainerStyle={{ flexGrow: 1 }}
         ListHeaderComponent={<View style={{ marginTop: 8 }} />}
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
         data={blocks.results}

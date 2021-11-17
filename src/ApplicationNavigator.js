@@ -63,6 +63,8 @@ import ChartsScreen from './screens/ChartsScreen';
 
 // LogBox.ignoreLogs(['Reanimated 2']);
 LogBox.ignoreLogs(['timer']);
+LogBox.ignoreLogs(['keyboardDidShow: ...']); // Ignore log notification by message
+LogBox.ignoreLogs(['keyboardDidHide: ...']); // Ignore log notification by message
 
 // const Stack = createNativeStackNavigator();
 const Stack = createStackNavigator();
