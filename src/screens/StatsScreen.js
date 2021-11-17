@@ -121,97 +121,99 @@ const Content = () => {
   }
 
   return (
-    <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
-      refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
-    >
-      <View style={styles.container}>
-        <Item
-          loadable={statsLoadable}
-          format={(item) =>
-            `${currencyFormat(
-              item.xch_current_price[statsLoadable.contents.currency]
-            )} ${getCurrencyFromKey(statsLoadable.contents.currency)}`
-          }
-          color="#4DB33E"
-          title="XCH PRICE"
-        />
-        <Item
-          loadable={statsLoadable}
-          format={(item) => formatBytes(item.pool_space)}
-          color="#4DB33E"
-          title="POOL SPACE"
-        />
-      </View>
-      <View style={styles.container}>
-        <Item
-          loadable={statsLoadable}
-          format={(item) => `${(item.estimate_win / 60 / 24).toFixed(3)} days`}
-          color="#3DD292"
-          title="ETW"
-        />
-        <Item
-          loadable={statsLoadable}
-          format={(item) => item.rewards_blocks}
-          color="#FB6D4C"
-          title="BLOCKS"
-        />
-      </View>
-      <View style={styles.container}>
-        <Item
-          loadable={statsLoadable}
-          format={(item) => item.farmers}
-          color="#34D4F1"
-          title="FARMERS"
-        />
-        <Item
-          loadable={statsLoadable}
-          format={(item) => formatBytes(item.blockchain_space)}
-          color="#34D4F1"
-          title="NETSPACE"
-        />
-      </View>
-      <View style={styles.container}>
-        <Item
-          loadable={statsLoadable}
-          format={(item) =>
-            `${((item.time_since_last_win / (item.estimate_win * 60)) * 100).toFixed(0)}%`
-          }
-          color="#4DB33E"
-          title="CURRENT EFFORT"
-        />
-        <Item
-          loadable={statsLoadable}
-          // value="average_effort"
-          format={(item) => `${item.average_effort.toFixed(0)}%`}
-          color="#4DB33E"
-          title="EFFORT"
-        />
-      </View>
-      <View style={styles.container}>
-        <Item
-          loadable={statsLoadable}
-          format={(item) => convertSecondsToHourMin(item.time_since_last_win)}
-          color="#4DB33E"
-          title="SINCE LAST WIN"
-        />
-        <Item
-          loadable={statsLoadable}
-          format={(item) => `${convertMojoToChia(item.rewards_amount)} XCH`}
-          color="#4DB33E"
-          title="REWARDS"
-        />
-      </View>
-      <View style={styles.container}>
-        <Item
-          loadable={statsLoadable}
-          format={(item) => `${item.xch_tb_month.toFixed(8)} XCH/TiB/day`}
-          color="#4DB33E"
-          title="PROFITABILITY"
-        />
-      </View>
-    </ScrollView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
+        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
+      >
+        <View style={styles.container}>
+          <Item
+            loadable={statsLoadable}
+            format={(item) =>
+              `${currencyFormat(
+                item.xch_current_price[statsLoadable.contents.currency]
+              )} ${getCurrencyFromKey(statsLoadable.contents.currency)}`
+            }
+            color="#4DB33E"
+            title="XCH PRICE"
+          />
+          <Item
+            loadable={statsLoadable}
+            format={(item) => formatBytes(item.pool_space)}
+            color="#4DB33E"
+            title="POOL SPACE"
+          />
+        </View>
+        <View style={styles.container}>
+          <Item
+            loadable={statsLoadable}
+            format={(item) => `${(item.estimate_win / 60 / 24).toFixed(3)} days`}
+            color="#3DD292"
+            title="ETW"
+          />
+          <Item
+            loadable={statsLoadable}
+            format={(item) => item.rewards_blocks}
+            color="#FB6D4C"
+            title="BLOCKS"
+          />
+        </View>
+        <View style={styles.container}>
+          <Item
+            loadable={statsLoadable}
+            format={(item) => item.farmers}
+            color="#34D4F1"
+            title="FARMERS"
+          />
+          <Item
+            loadable={statsLoadable}
+            format={(item) => formatBytes(item.blockchain_space)}
+            color="#34D4F1"
+            title="NETSPACE"
+          />
+        </View>
+        <View style={styles.container}>
+          <Item
+            loadable={statsLoadable}
+            format={(item) =>
+              `${((item.time_since_last_win / (item.estimate_win * 60)) * 100).toFixed(0)}%`
+            }
+            color="#4DB33E"
+            title="CURRENT EFFORT"
+          />
+          <Item
+            loadable={statsLoadable}
+            // value="average_effort"
+            format={(item) => `${item.average_effort.toFixed(0)}%`}
+            color="#4DB33E"
+            title="EFFORT"
+          />
+        </View>
+        <View style={styles.container}>
+          <Item
+            loadable={statsLoadable}
+            format={(item) => convertSecondsToHourMin(item.time_since_last_win)}
+            color="#4DB33E"
+            title="SINCE LAST WIN"
+          />
+          <Item
+            loadable={statsLoadable}
+            format={(item) => `${convertMojoToChia(item.rewards_amount)} XCH`}
+            color="#4DB33E"
+            title="REWARDS"
+          />
+        </View>
+        <View style={styles.container}>
+          <Item
+            loadable={statsLoadable}
+            format={(item) => `${item.xch_tb_month.toFixed(8)} XCH/TiB/day`}
+            color="#4DB33E"
+            title="PROFITABILITY"
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -237,11 +239,11 @@ const StatsScreen = ({ navigation }) => (
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    // flex: 1,
+    flex: 1,
   },
   item: {
     flex: 1,
-    minHeight: 100,
+    // minHeight: 100,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',

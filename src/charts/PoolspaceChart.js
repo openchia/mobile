@@ -38,7 +38,7 @@ export const formatY = (value) => {
     bytes /= thresh;
     ++u;
   } while (bytes >= thresh);
-  return `${bytes.toFixed(1)} ${units[u]}`;
+  return `${bytes.toFixed(2)} ${units[u]}`;
 };
 
 const formatDatetime = (value) => {
@@ -104,22 +104,22 @@ const PoolspaceChart = ({ data, maxSize }) => {
 
   return (
     <View style={styles.container}>
-      <View>
-        <ChartPathProvider data={{ points, smoothingStrategy: 'bezier' }}>
-          <View style={{ marginTop: 16, marginLeft: 16 }}>
-            {/* <Text>Hello</Text> */}
-            <ChartXLabel
-              format={formatDatetime}
-              defaultValue="Pool Netspace"
-              style={{ color: theme.colors.text, padding: 0, fontSize: 16 }}
-            />
-            <ChartYLabel
-              format={formatY}
-              defaultValue={maxSize}
-              style={{ color: theme.colors.text, padding: 0, fontSize: 24 }}
-            />
-          </View>
-          <View style={{ marginTop: 16 }}>
+      <ChartPathProvider data={{ points, smoothingStrategy: 'bezier' }}>
+        <View style={{ marginTop: 16, marginLeft: 16, alignSelf: 'auto' }}>
+          {/* <Text>Hello</Text> */}
+          <ChartXLabel
+            format={formatDatetime}
+            defaultValue="Pool Netspace"
+            style={{ color: theme.colors.text, padding: 0, fontSize: 16 }}
+          />
+          <ChartYLabel
+            format={formatY}
+            defaultValue={maxSize}
+            style={{ color: theme.colors.text, padding: 0, fontSize: 24 }}
+          />
+        </View>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <View style={{}}>
             <ChartPath
               hapticsEnabled={false}
               hitSlop={30}
@@ -133,45 +133,45 @@ const PoolspaceChart = ({ data, maxSize }) => {
             />
             <ChartDot
               style={{
-                backgroundColor: 'green',
+                backgroundColor: theme.colors.accentColor,
               }}
             />
           </View>
-        </ChartPathProvider>
-      </View>
-
-      <CustomCard style={{ marginTop: 16 }}>
-        <View style={styles.selection}>
-          <View
-            style={[StyleSheet.absoluteFill, { marginTop: 4, marginBottom: 4, marginStart: 4 }]}
-          >
-            <Animated.View style={[styles.backgroundSelection, style]} />
-          </View>
-          {NetspaceChartIntervals.map((item, index) => (
-            <TouchableWithoutFeedback
-              key={item.label}
-              onPress={() => {
-                previous.value = current.value;
-                transition.value = 0;
-                current.value = index;
-                transition.value = withTiming(1);
-                setPoints(data[index]);
-              }}
-            >
-              <Animated.View style={[styles.labelContainer]}>
-                <Text
-                  style={[
-                    styles.label,
-                    { color: index === current.value ? 'black' : theme.colors.text },
-                  ]}
+          <CustomCard style={{ marginTop: 16 }}>
+            <View style={styles.selection}>
+              <View
+                style={[StyleSheet.absoluteFill, { marginTop: 4, marginBottom: 4, marginStart: 4 }]}
+              >
+                <Animated.View style={[styles.backgroundSelection, style]} />
+              </View>
+              {NetspaceChartIntervals.map((item, index) => (
+                <TouchableWithoutFeedback
+                  key={item.label}
+                  onPress={() => {
+                    previous.value = current.value;
+                    transition.value = 0;
+                    current.value = index;
+                    transition.value = withTiming(1);
+                    setPoints(data[index]);
+                  }}
                 >
-                  {item.label}
-                </Text>
-              </Animated.View>
-            </TouchableWithoutFeedback>
-          ))}
+                  <Animated.View style={[styles.labelContainer]}>
+                    <Text
+                      adjustsFontSizeToFit
+                      style={[
+                        styles.label,
+                        { color: index === current.value ? 'black' : theme.colors.text },
+                      ]}
+                    >
+                      {item.label}
+                    </Text>
+                  </Animated.View>
+                </TouchableWithoutFeedback>
+              ))}
+            </View>
+          </CustomCard>
         </View>
-      </CustomCard>
+      </ChartPathProvider>
     </View>
   );
 };
@@ -179,6 +179,7 @@ const PoolspaceChart = ({ data, maxSize }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // justifyContent: 'center',
     // backgroundColor: 'white',
   },
   backgroundSelection: {
@@ -196,10 +197,12 @@ const styles = StyleSheet.create({
   },
   labelContainer: {
     padding: 8,
+    paddingTop: 12,
+    paddingBottom: 12,
     width: BUTTON_WIDTH,
   },
   label: {
-    fontSize: 16,
+    fontSize: 12,
     color: 'black',
     fontWeight: 'bold',
     textAlign: 'center',

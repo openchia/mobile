@@ -101,7 +101,7 @@ const FarmerBlockScreen = ({ launcherId }) => (
 const styles = StyleSheet.create({
   date: {
     marginLeft: 'auto',
-    fontSize: 14,
+    fontSize: 12,
   },
   block: {
     marginLeft: 'auto',
