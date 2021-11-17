@@ -17,6 +17,7 @@ import { getNetspace } from '../Api';
 import LoadingComponent from '../components/LoadingComponent';
 import CustomCard from '../components/CustomCard';
 import { themeState } from '../Atoms';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 const Item = ({ title, value, color }) => {
   const theme = useTheme();
@@ -120,6 +121,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <FocusAwareStatusBar barStyle="light-content" backgroundColor="#6a51ae" />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
         <Svg
           width="100%"
