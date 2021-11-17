@@ -34,7 +34,7 @@ const CustomDrawerContent = (props) => {
         // backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
       }}
     >
-      <View
+      {/* <View
         style={{
           display: 'flex',
           alignItems: 'flex-start',
@@ -46,17 +46,19 @@ const CustomDrawerContent = (props) => {
         }}
       >
         <OpenChiaIconWithText style={{ width: '100%', height: 36 }} color="#f5f5f5" />
-      </View>
+      </View> */}
       {/* <Divider style={{ backgroundColor: theme.colors.divider }} /> */}
       <DrawerContentScrollView
+        stickyHeaderIndices={[1]}
         contentContainerStyle={{
           paddingTop: 0,
           // backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
         }}
         {...props}
       >
-        {/* <View
+        <View
           style={{
+            backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'center',
@@ -65,7 +67,7 @@ const CustomDrawerContent = (props) => {
           }}
         >
           <OpenChiaIconWithText style={{ width: '100%', height: 36 }} color="#f5f5f5" />
-        </View> */}
+        </View>
         <CustomDrawerSection>
           <DrawerItem
             label={t('navigate:home')}
