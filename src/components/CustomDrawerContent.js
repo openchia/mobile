@@ -40,7 +40,7 @@ const CustomDrawerContent = (props) => {
           alignItems: 'flex-start',
           justifyContent: 'center',
           backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
-          paddingTop: Platform.OS === 'ios' ? 30 : 0,
+          paddingTop: Platform.OS === 'ios' ? 64 : 0,
           padding: 12,
           height: 72,
         }}
@@ -49,12 +49,10 @@ const CustomDrawerContent = (props) => {
       </View>
       {/* <Divider style={{ backgroundColor: theme.colors.divider }} /> */}
       <DrawerContentScrollView
-        style={{ height: '100%' }}
-        contentContainerStyle={
-          {
-            // backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
-          }
-        }
+        contentContainerStyle={{
+          marginTop: 0,
+          // backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
+        }}
         {...props}
       >
         {/* <View
