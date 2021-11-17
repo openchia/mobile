@@ -7,6 +7,13 @@ import ApplicationNavigator from './src/ApplicationNavigator';
 import LoadingComponent from './src/components/LoadingComponent';
 import './src/constants/IMLocalize';
 
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({ 
+  dsn: 'https://7426074fea104d898f7fcaba3e94d45d@o1071760.ingest.sentry.io/6069453', 
+});
+
+
 if (Platform.OS === 'android') {
   require('intl');
   require('intl/locale-data/jsonp/fr-BE');
