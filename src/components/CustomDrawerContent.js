@@ -40,9 +40,9 @@ const CustomDrawerContent = (props) => {
           alignItems: 'flex-start',
           justifyContent: 'center',
           backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
-          paddingTop: Platform.OS === 'ios' ? 64 : 0,
+          paddingTop: Platform.OS === 'ios' ? 48 : 0,
           padding: 12,
-          height: 72,
+          height: Platform.OS === 'ios' ? 110 : 72,
         }}
       >
         <OpenChiaIconWithText style={{ width: '100%', height: 36 }} color="#f5f5f5" />
@@ -50,7 +50,7 @@ const CustomDrawerContent = (props) => {
       {/* <Divider style={{ backgroundColor: theme.colors.divider }} /> */}
       <DrawerContentScrollView
         contentContainerStyle={{
-          marginTop: 0,
+          paddingTop: 0,
           // backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
         }}
         {...props}
