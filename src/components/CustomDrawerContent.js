@@ -40,7 +40,7 @@ const CustomDrawerContent = (props) => {
           alignItems: 'flex-start',
           justifyContent: 'center',
           backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
-          marginTop: Platform.OS === 'ios' ? 30 : 0,
+          paddingTop: Platform.OS === 'ios' ? 30 : 0,
           padding: 12,
           height: 72,
         }}
