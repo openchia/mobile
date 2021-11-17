@@ -191,9 +191,10 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark }) => (
   <NavigationContainer theme={theme}>
     <StatusBar
       backgroundColor={theme.colors.statusBarColor}
-      barStyle={
-        Platform.OS === 'ios' ? (isThemeDark ? 'light-content' : 'dark-content') : 'light-content'
-      }
+      barStyle="light-content"
+      // barStyle={
+      //   Platform.OS === 'ios' ? (isThemeDark ? 'light-content' : 'dark-content') : 'light-content'
+      // }
     />
     <Stack.Navigator
       screenOptions={{
