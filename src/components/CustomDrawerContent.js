@@ -34,6 +34,7 @@ const CustomDrawerContent = (props) => {
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'center',
+          backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primaryLight,
           padding: 12,
           height: 72,
         }}
@@ -41,7 +42,8 @@ const CustomDrawerContent = (props) => {
         {/* <Image style={{}} source={require('../images/openchia_icon.png')} /> */}
         <OpenChiaIconWithText
           style={{ width: '100%', height: 36 }}
-          color={isThemeDark ? theme.colors.textLight : theme.colors.textDark}
+          color="#f5f5f5"
+          // color={isThemeDark ? theme.colors.textLight : theme.colors.textDark}
         />
         {/* <Text
           style={{
@@ -57,7 +59,7 @@ const CustomDrawerContent = (props) => {
         </Text> */}
       </View>
       <Divider style={{ backgroundColor: theme.colors.divider }} />
-      <DrawerContentScrollView contentContainerStyle={{paddingTop: 0}}{...props}>
+      <DrawerContentScrollView contentContainerStyle={{ paddingTop: 0 }} {...props}>
         <CustomDrawerSection>
           <DrawerItem
             label={t('navigate:home')}

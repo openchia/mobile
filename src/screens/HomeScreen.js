@@ -158,7 +158,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, isThemeDark]);
 
   return (
     <View style={{ flex: 1 }}>
