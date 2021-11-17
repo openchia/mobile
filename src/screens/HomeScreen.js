@@ -164,6 +164,7 @@ const HomeScreen = ({ navigation }) => {
   }, [navigation, isThemeDark]);
 
   return (
+    <View style={{flex:1, backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primaryLight}}>
     <SafeAreaView style={{ flex: 1 }}>
       {/* <FocusAwareStatusBar
         barStyle="light-content"
@@ -349,6 +350,7 @@ const HomeScreen = ({ navigation }) => {
       </View>
       {/* </ScrollView> */}
     </SafeAreaView>
+    </View>
   );
 };
 
