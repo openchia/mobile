@@ -1,0 +1,2382 @@
+[
+  {
+    "id": 4568,
+    "date": "2021-11-17T19:57:04",
+    "date_gmt": "2021-11-17T23:57:04",
+    "guid": {
+      "rendered": "https://thechiaplot.net/?p=4568"
+    },
+    "modified": "2021-11-17T19:58:36",
+    "modified_gmt": "2021-11-17T23:58:36",
+    "slug": "thoughts-on-chia-dust-storm-qa",
+    "status": "publish",
+    "type": "post",
+    "link": "https://thechiaplot.net/2021/11/17/thoughts-on-chia-dust-storm-qa/",
+    "title": {
+      "rendered": "Thoughts on Chia Dust Storm Q&#038;A"
+    },
+    "content": {
+      "rendered": "\n<p>Earlier today the senior staff from the Chia Network technical team went to <a href=\"https://www.youtube.com/watch?v=Tst0nvqsjwo\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Chia Q&amp;A on YouTube\">Zoom and YouTube</a> for a post mortem of the <a href=\"https://thechiaplot.net/2021/10/31/chia-transaction-spam-knocks-weaker-nodes-offline/\" title=\"Chia Transaction spam knocks weaker nodes offline\">Chia Dust Storm</a> that caused a number of issues, especially for low powered farming hardware, on Halloween weekend.</p>\n\n\n\n<p>Overall the presentation was good, they clearly outlined what happened and even produced a couple of nifty slides for us to check out. They outlined the nature of the performance patches they put out, which is nice, and explained how they are testing in testnet with much larger loads to ensure this doesn&#8217;t happen again. They also have prepared a <a href=\"https://github.com/Chia-Network/post-mortem/blob/main/October2021/10-31-2021-DustStorm.md\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Chia Dust Storm Post Mortem Document\">post-mortem document</a> on GitHub.</p>\n\n\n\n<div class=\"wp-block-image\"><figure class=\"aligncenter size-large\"><a href=\"https://thechiaplot.net/wp-content/uploads/2021/11/testnet-dust-storm-graph.png\"><img loading=\"lazy\" width=\"1024\" height=\"510\" src=\"http://thechiaplot.net/wp-content/uploads/2021/11/testnet-dust-storm-graph-1024x510.png\" alt=\"synthetic chia dust storm on testnet\" class=\"wp-image-4573\" srcset=\"https://thechiaplot.net/wp-content/uploads/2021/11/testnet-dust-storm-graph-1024x510.png 1024w, https://thechiaplot.net/wp-content/uploads/2021/11/testnet-dust-storm-graph-300x150.png 300w, https://thechiaplot.net/wp-content/uploads/2021/11/testnet-dust-storm-graph-768x383.png 768w, https://thechiaplot.net/wp-content/uploads/2021/11/testnet-dust-storm-graph-1536x766.png 1536w, https://thechiaplot.net/wp-content/uploads/2021/11/testnet-dust-storm-graph-850x424.png 850w, https://thechiaplot.net/wp-content/uploads/2021/11/testnet-dust-storm-graph.png 1930w\" sizes=\"(max-width: 1024px) 100vw, 1024px\" /></a><figcaption><em>synthetic chia dust storm on testnet</em></figcaption></figure></div>\n\n\n\n<p>I don&#8217;t think that&#8217;s enough. I don&#8217;t think any mission critical production system should be run without at least 4 separate environments &#8211; Development, Testing, User Acceptance Testing/Pre-Production and Production. I think the Chia team is doing Dev-Test-Prod deployment which isn&#8217;t good enough for mission critical applications. Now that they are branching into real enterprise applications for their technology they are going to have to treat this seriously. These kind of unknowns can&#8217;t just happen to a system running the world&#8217;s carbon markets.</p>\n\n\n\n<p>I have <a href=\"https://thechiaplot.net/2021/07/30/should-chia-network-be-supporting-the-chia-fork-ecosystem-more/\" title=\"Should Chia Network be supporting the Chia Fork ecosystem more?\">said this before</a>, and I will reiterate, that I think they need to do use one, or multiple, fork networks as a testbed for stuff. There are real people with a variety of hardware and network connections, exactly the problems they are attempting to solve synthetically. Or they could set up their own UAT network.  A real mainnet coin that runs a week ahead of the main Chia blockchain and is used to test DeFi and stuff but with coins that people can trade and keep. The CentOS to the Chia-Blockchain RHEL.</p>\n\n\n\n<p>The post mortem part of the Q&amp;A is pretty interesting if you are into the technical details behind Chia and the consensus mechanism but if you are just a farmer updating when a new version is released a lot of the details don&#8217;t matter here. Justin and Mariano both did very clear explanations of their pieces of the puzzle, and the <a href=\"https://thechiaplot.net/2021/11/01/chia-network-makes-official-promise-to-optimize-nodes-after-dust-storm/\" title=\"Chia Network makes official promise to optimize nodes after Dust Storm\">exact changes and optimizations</a> made to deal with transaction storms make sense to me now.</p>\n\n\n\n<p>I really would like to <a href=\"https://thechiaplot.net/2021/11/03/interview-with-the-chia-dust-stormer/\" title=\"Interview with the Chia Dust Stormer\">talk to the Dust Stormer</a> again, and get their thoughts on the optimizations Chia has made as well as the changes to the ecosystem in the last couple of weeks, with the <a href=\"https://thechiaplot.net/2021/11/05/what-is-project-atari/\" title=\"What is Project Atari?\">World Bank announcement</a>, the <a href=\"https://thechiaplot.net/2021/11/11/costa-rica-announces-that-chia-network-will-be-its-climate-blockchain-technology-partner/\" title=\"Costa Rica announces that Chia Network will be its climate blockchain technology partner\">Costa Rica partnership</a> and the <a href=\"https://thechiaplot.net/2021/11/16/bram-cohen-details-a-ton-of-new-chia-news-including-wallets-and-tokens/\" title=\"Bram Cohen details a ton of new Chia News, including wallets and tokens\">release of CATs and the light wallet</a>. So if you are reading this, and you want a follow up, please reach out and we can do our Satoshi dance again.</p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>Earlier today the senior staff from the Chia Network technical team went to Zoom and YouTube for a post mortem of the Chia Dust Storm that caused a number of issues, especially for low powered farming hardware, on Halloween weekend. Overall the presentation was good, they clearly outlined what happened and even produced a couple&#8230;</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 4279,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "spay_email": ""
+    },
+    "categories": [20],
+    "tags": [6, 58, 105, 233],
+    "jetpack_featured_media_url": "https://thechiaplot.net/wp-content/uploads/2021/10/devon-janse-van-rensburg-WNQW-xrwJAM-unsplash-scaled-e1635710978243.jpg",
+    "jetpack-related-posts": [
+      {
+        "id": 4297,
+        "url": "https://thechiaplot.net/2021/11/01/chia-network-makes-official-promise-to-optimize-nodes-after-dust-storm/",
+        "url_meta": {
+          "origin": 4568,
+          "position": 0
+        },
+        "title": "Chia Network makes official promise to optimize nodes after Dust Storm",
+        "date": "November 1, 2021",
+        "format": false,
+        "excerpt": "After the Dust Storm on the weekend, Chia Network is calling it an \"anonymous tester\", they have published an update on their Github about what happened and how they plan on responding. The tdlr is that about 20% of nodes were affected in one way or another, either directly through\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "dust storm",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/10/devon-janse-van-rensburg-WNQW-xrwJAM-unsplash-scaled-e1635710978243.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3913,
+        "url": "https://thechiaplot.net/2021/10/05/the-real-reason-behind-the-chia-blockchain-1-2-8-release/",
+        "url_meta": {
+          "origin": 4568,
+          "position": 1
+        },
+        "title": "The real reason behind the Chia Blockchain 1.2.8 release",
+        "date": "October 5, 2021",
+        "format": false,
+        "excerpt": "Last week Chia Network released Chia Blockchain 1.2.8 which fixed a number of issues and laid the preparatory work for the DID features coming to the ecosystem. But there was a main reason for the deployment not being talked about much: a transaction bug that could have stopped the network.\u2026",
+        "rel": "",
+        "context": "In &quot;Information&quot;",
+        "img": {
+          "alt_text": "man on computer",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/07/danial-igdery-FCHlYvR5gJI-unsplash-scaled-e1632882199180.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4344,
+        "url": "https://thechiaplot.net/2021/11/03/interview-with-the-chia-dust-stormer/",
+        "url_meta": {
+          "origin": 4568,
+          "position": 2
+        },
+        "title": "Interview with the Chia Dust Stormer",
+        "date": "November 3, 2021",
+        "format": false,
+        "excerpt": "Yesterday afternoon I put out a call, first on Keybase and then on the blog, offering to tell the Chia Dust Stormer's side of the story. This morning that individual contacted me via one of the channels I published. I established the identity of the attacker cryptographically using a transaction\u2026",
+        "rel": "",
+        "context": "In &quot;Information&quot;",
+        "img": {
+          "alt_text": "dust storm",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/10/devon-janse-van-rensburg-WNQW-xrwJAM-unsplash-scaled-e1635710978243.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4490,
+        "url": "https://thechiaplot.net/2021/11/12/nucle-chia-wallet-launched-on-android-ios-coming/",
+        "url_meta": {
+          "origin": 4568,
+          "position": 3
+        },
+        "title": "Nucle Chia Wallet Launched on Android, iOS coming",
+        "date": "November 12, 2021",
+        "format": false,
+        "excerpt": "The Nucle.io team has been hard at work expanding their Chia wallet support, and are happy to announce that they have launched the Android version of their product. This is really exciting, and if you want a mobile wallet with the blessing of Chia Network, this is your bet. Go\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/08/nucle-2-e1630677605525.png?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 2353,
+        "url": "https://thechiaplot.net/2021/08/08/maxiopool-shutting-its-doors-for-good-due-to-chia-pool-protocol-exploit/",
+        "url_meta": {
+          "origin": 4568,
+          "position": 4
+        },
+        "title": "MaxioPool shutting its doors for good due to Chia pool protocol exploit",
+        "date": "August 8, 2021",
+        "format": false,
+        "excerpt": "MaxioPool, a friend of the site and a very good Chia pool in my experience, is shutting down for good. This is very sad news, but the reason why they are closing down is even more concerning. MaxioPool has discovered an exploit in the on-chain pooling protocol. They have discovered,\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "pool shutdown",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/07/isaac-chou-RE2P2jtlD-M-unsplash-scaled-e1630015887288.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3052,
+        "url": "https://thechiaplot.net/2021/08/26/why-i-like-chia/",
+        "url_meta": {
+          "origin": 4568,
+          "position": 5
+        },
+        "title": "Why I like Chia",
+        "date": "August 26, 2021",
+        "format": false,
+        "excerpt": "A lot of the feedback I received from my recent request (Thank you again to everyone who replied) centered around how I cant be trusted because I have been negative on some of Chia Network's strategic decisions and action in the past. And I have. And I will again, I'm\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "Sunshine on a field",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/08/aaron-burden-BTubi6qaY6Q-unsplash-scaled-e1629984608287.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      }
+    ],
+    "amp_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4568"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/comments?post=4568"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 5,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4568/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 4577,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4568/revisions/4577"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media/4279"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media?parent=4568"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/categories?post=4568"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/tags?post=4568"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 4560,
+    "date": "2021-11-17T12:52:51",
+    "date_gmt": "2021-11-17T16:52:51",
+    "guid": {
+      "rendered": "https://thechiaplot.net/?p=4560"
+    },
+    "modified": "2021-11-17T12:52:53",
+    "modified_gmt": "2021-11-17T16:52:53",
+    "slug": "a-nuanced-look-at-chia-asset-tokens-cats",
+    "status": "publish",
+    "type": "post",
+    "link": "https://thechiaplot.net/2021/11/17/a-nuanced-look-at-chia-asset-tokens-cats/",
+    "title": {
+      "rendered": "A nuanced look at Chia Asset Tokens (CATs)"
+    },
+    "content": {
+      "rendered": "\n<p><em>The Chia Plot community member Grizzo has recently written up his thoughts about <a href=\"https://thechiaplot.net/2021/10/27/chia-publishes-chia-asset-tokens-asteroid-and-marmotcoin-plus-others/\" title=\"Chia publishes Chia Asset Tokens \u2013 Asteroid and Marmotcoin plus others\">Chia Asset Tokens (CATs)</a> and has shared them with us, along with a very useful technical primer on how CATs work. The point about melting stablecoins is a very good one, and I think that mechanism might open up some interesting problems for projects relying on a fixed supply.</em></p>\n\n\n\n<p>The Chia team <a href=\"https://thechiaplot.net/2021/11/16/bram-cohen-details-a-ton-of-new-chia-news-including-wallets-and-tokens/\" title=\"Bram Cohen details a ton of new Chia News, including wallets and tokens\">recently announced the beta release</a> of their equivalent to Ethereum tokens [(ERC20 and associated derivative upgrades ERC223, ERC777, ERC1155)] <a href=\"https://www.gemini.com/cryptopedia/ethereum-token-standards-erc777-erc1155-erc223-erc1337\" target=\"_blank\" rel=\"noreferrer noopener\">https://www.gemini.com/cryptopedia/ethereum-token-standards-erc777-erc1155-erc223-erc1337</a>. This standard ushers in a new era for Chia where real businesses can be built by allowing for advanced smart contract programming.</p>\n\n\n\n<p>The Chia team has created something very interesting in the way that CATs work through splitting the token into two parts, the CAT1 standard itself defining how a token is behaves and operates, and the TAIL, the program that contains the unique id (GENESIS_ID) and it&#8217;s issuance characteristics. The team created 3 reference TAILs that demonstrate a full range of things that are possible &#8211; [fixed supply, anything, delegated] <a href=\"https://github.com/Chia-Network/chialisp-web/blob/d3b0dfacd2314177f0fe441060789d3f6a57dab2/docs/puzzles/cats.md\" target=\"_blank\" rel=\"noreferrer noopener\">https://github.com/Chia-Network/chialisp-web/blob/d3b0dfacd2314177f0fe441060789d3f6a57dab2/docs/puzzles/cats.md</a>.</p>\n\n\n\n<p>The ancillary effect of creating all this flexibility is the nightmare it creates for any exchange that might want to support Chia and CATs. First off we need to consider the basic question, how many CAT tokens are there for a given issuance. This is not at all easy to calculate! First of CATs can be melted by users. When a CAT is created using the default standard you need to use 1000 mojos to create 1 CAT. Since there are 1,000,000,000,000 mojos to a Chia (that&#8217;s 1 trillion) a single Chia can create a token with 1,000,000,000 (that&#8217;s 1 billion) tokens. If you want more than 1 billion you need to spend an increasing amount of Chia. 10 XCH to get 10 billion, 100 XCH to get 100 billion and so on. That implies that all tokens have an intrinsic value of 1000 mojos and the price really shouldn&#8217;t ever fall below that floor, because if it did you could swoop them up and convert to XCH using the melt operation and make money. This ability to melt is a nightmare for calculating total supply. If users can melt tokens then you need to walk the entire blockchain to figure out how many of a given CAT exist.</p>\n\n\n\n<p>The problem is even more pronounced if a CAT is created with some other TAIL. The Chia team indicated that Stablecoins should use a TAIL where the supply can be increased at will. However melting a Stablecoin seems to imply that there could be an imbalance between the creating company and it&#8217;s ledger of assets.</p>\n\n\n\n<p>It will be interesting to see how this all plays out.</p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>The Chia Plot community member Grizzo has recently written up his thoughts about Chia Asset Tokens (CATs) and has shared them with us, along with a very useful technical primer on how CATs work. The point about melting stablecoins is a very good one, and I think that mechanism might open up some interesting problems&#8230;</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 3640,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "spay_email": ""
+    },
+    "categories": [20],
+    "tags": [220, 6, 58, 105],
+    "jetpack_featured_media_url": "https://thechiaplot.net/wp-content/uploads/2021/09/jari-hytonen-YCPkW_r_6uA-unsplash-scaled-e1632477388885.jpg",
+    "jetpack-related-posts": [
+      {
+        "id": 4535,
+        "url": "https://thechiaplot.net/2021/11/16/bram-cohen-details-a-ton-of-new-chia-news-including-wallets-and-tokens/",
+        "url_meta": {
+          "origin": 4560,
+          "position": 0
+        },
+        "title": "Bram Cohen details a ton of new Chia News, including wallets and tokens",
+        "date": "November 16, 2021",
+        "format": false,
+        "excerpt": "Today in a Zoom Q&A (very explicitly not an AMA) the Chia Network team, but really Bram Cohen, gave us a detailed overview of the Chia Asset Token, or CAT, standard. The call involved six members of the Chia team (mostly engineers) and the explanation was both technical and detailed.\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "Basket of CATs",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/09/jari-hytonen-YCPkW_r_6uA-unsplash-scaled-e1632477388885.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4468,
+        "url": "https://thechiaplot.net/2021/11/11/chia-and-hub-culture-talk-vo2-tokens-on-the-chia-blockchain/",
+        "url_meta": {
+          "origin": 4560,
+          "position": 1
+        },
+        "title": "Chia and Hub Culture talk Vo2 tokens on the Chia Blockchain",
+        "date": "November 11, 2021",
+        "format": false,
+        "excerpt": "Last night Hub Culture and Chia hosted the dinner I discussed here, where they talked about the environment, Bitcoin and Chia, Vo2 tokens, and a whole host of other things. Neil Cohen and Gene Hoffman were there representing Chia Network and did a bang up job. Neil looked a bit\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "Trees in a forest",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/08/matt-artz-nTRDnDdDYk8-unsplash-scaled-e1630239256611.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3635,
+        "url": "https://thechiaplot.net/2021/09/24/bram-cohen-releases-glossary-of-terms-for-chia-asset-tokens/",
+        "url_meta": {
+          "origin": 4560,
+          "position": 2
+        },
+        "title": "Bram Cohen releases glossary of terms for Chia Asset Tokens",
+        "date": "September 24, 2021",
+        "format": false,
+        "excerpt": "Bram Cohen, CEO of Chia Network Inc, has published a blog post regarding the new terminology Chia is using to describe their Chia Asset Tokens (CATs). Its not his usual serious fare, and is written quite whimsically. But even though it is pretty clear about what a CAT is, and\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "Basket of CATs",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/09/jari-hytonen-YCPkW_r_6uA-unsplash-scaled-e1632477388885.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4465,
+        "url": "https://thechiaplot.net/2021/11/12/crypto-exchange-lbank-announces-they-will-be-listing-chives-soon/",
+        "url_meta": {
+          "origin": 4560,
+          "position": 3
+        },
+        "title": "Crypto exchange Lbank announces they will be listing Chives soon",
+        "date": "November 12, 2021",
+        "format": false,
+        "excerpt": "In the wake of previous failed fork listings on real crypto exchanges, and one good one, Chives is working with crypto exchange Lbank to get listed on their market. The announcement focuses on the plans Chives has been up to over the past few months, which I have sadly not\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "Stock Exchange",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/07/nick-chong-N__BnvQ_w18-unsplash-scaled-e1630663220443.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3539,
+        "url": "https://thechiaplot.net/2021/09/21/chia-network-roadmap-part-1-chia-asset-tokens/",
+        "url_meta": {
+          "origin": 4560,
+          "position": 4
+        },
+        "title": "Chia Network Roadmap Part 1 &#8211; Chia Asset Tokens",
+        "date": "September 21, 2021",
+        "format": false,
+        "excerpt": "Last week the senior technical executives from Chia Network, Gene Hoffman, Bram Cohen and Paul Hainsworth, as well as J. Eckert moderating, hosted an Ask Me Anything about their product roadmap. This presentation was extremely information dense compared to Chia's usual fare and there is a lot to talk about.\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "chia product ama",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/09/chia-product-ama-e1632187365262.png?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3569,
+        "url": "https://thechiaplot.net/2021/09/23/chia-network-roadmap-part-3-defi/",
+        "url_meta": {
+          "origin": 4560,
+          "position": 5
+        },
+        "title": "Chia Network Roadmap part 3 &#8211; DeFi",
+        "date": "September 23, 2021",
+        "format": false,
+        "excerpt": "Last week the senior technical executives from Chia Network, Gene Hoffman, Bram Cohen and Paul Hainsworth, as well as J. Eckert moderating,\u00a0hosted an Ask Me Anything\u00a0about their product roadmap. This presentation was extremely information dense compared to\u00a0Chia\u2019s usual fare\u00a0and there is a lot to talk about. I am going to\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "chia product ama",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/09/chia-product-ama-e1632187365262.png?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      }
+    ],
+    "amp_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4560"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/comments?post=4560"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 3,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4560/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 4564,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4560/revisions/4564"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media/3640"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media?parent=4560"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/categories?post=4560"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/tags?post=4560"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 4544,
+    "date": "2021-11-16T16:57:53",
+    "date_gmt": "2021-11-16T20:57:53",
+    "guid": {
+      "rendered": "https://thechiaplot.net/?p=4544"
+    },
+    "modified": "2021-11-16T18:39:18",
+    "modified_gmt": "2021-11-16T22:39:18",
+    "slug": "how-to-get-a-marmot-coin",
+    "status": "publish",
+    "type": "post",
+    "link": "https://thechiaplot.net/2021/11/16/how-to-get-a-marmot-coin/",
+    "title": {
+      "rendered": "How to get a Marmot Coin"
+    },
+    "content": {
+      "rendered": "\n<p>Its here. You&#8217;ve been waiting. I&#8217;ve been waiting. <a href=\"https://thechiaplot.net/2021/10/27/chia-publishes-chia-asset-tokens-asteroid-and-marmotcoin-plus-others/\" title=\"Chia publishes Chia Asset Tokens \u2013 Asteroid and Marmotcoin plus others\">Marmot Coin</a>. MRMT. Announced <a href=\"https://thechiaplot.net/2021/11/16/bram-cohen-details-a-ton-of-new-chia-news-including-wallets-and-tokens/\" title=\"Bram Cohen details a ton of new Chia News, including wallets and tokens\">today in the CAT Q&amp;A</a> session hosted by Chia Network Marmot Coin is going to be the Chia meme coin to beat. But, like all good things, there is a catch. Marmot Coin is backed by real life Marmots, and in order to get one you need Proof of Marmot. So how can you do this?</p>\n\n\n\n<p>Well, according to Marmot Coin founder <a href=\"https://twitter.com/prestonjbyrne\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Preston Byrne on Twitter\">Preston Byrne</a> in a Twitter thread this afternoon there are three distinct mechanisms for acquiring this coveted meme coin.</p>\n\n\n\n<ul><li>Get <s>a picture of</s> a live Marmot. This is actually pretty tough since they are an endangered, rare animal on Vancouver Island. DO NOT HARASS MARMOTS. This part is important.</li><li>Donate a toy Marmot (or equivalent toy) to a Children&#8217;s charity and provide proof to the esteemed Marmot Coin foundation.</li><li>Donate $100 or more to the <a href=\"https://marmots.org/\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Marmot Recovery Foundation\">Marmot Recovery Foundation</a>.</li></ul>\n\n\n\n<figure class=\"wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter\"><div class=\"wp-block-embed__wrapper\">\n<blockquote class=\"twitter-tweet\" data-width=\"550\" data-dnt=\"true\"><p lang=\"en\" dir=\"ltr\">The communique read as follows: <br><br>&quot;CHIRP&quot;<br><br>Translating, this means &quot;we will accept a donation of a marmot cuddly toy, or any toy really, to a toy bank for needy children or a donation to <a href=\"https://twitter.com/MarmotRecovery?ref_src=twsrc%5Etfw\">@MarmotRecovery</a> in the sum of $100 or more as the minimum issuance criteria for <a href=\"https://twitter.com/marmotcoin?ref_src=twsrc%5Etfw\">@marmotcoin</a>&quot;</p>&mdash; Preston Byrne (@prestonjbyrne) <a href=\"https://twitter.com/prestonjbyrne/status/1460619873520918530?ref_src=twsrc%5Etfw\">November 16, 2021</a></blockquote><script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n</div></figure>\n\n\n\n<p>I must stress that you should NOT harass Marmots, and you should instead leverage options 2 or 3 and donate to a worthy cause to exchange Proof of Marmot for Marmot Coin.  I have reached out to Mr. Byrne to detail out the process of the exchange and will update this article when he clarifies, because right now I think people are just going to tweet stuff at him.</p>\n\n\n\n<p><em>Edit: After discussion with Preston Byrne, I have clarified the Proof of Marmot issuance rules. He informed me that &#8220;We follow orders from the Marmot High Council, which sits atop the mountain on the marmot hole planet Marmota Prime.&#8221; meaning that issuance rules are governed by a higher power and cannot be detailed at any given time.</em></p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>Its here. You&#8217;ve been waiting. I&#8217;ve been waiting. Marmot Coin. MRMT. Announced today in the CAT Q&amp;A session hosted by Chia Network Marmot Coin is going to be the Chia meme coin to beat. But, like all good things, there is a catch. Marmot Coin is backed by real life Marmots, and in order to&#8230;</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 4546,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "spay_email": ""
+    },
+    "categories": [5],
+    "tags": [6, 105, 10, 251],
+    "jetpack_featured_media_url": "https://thechiaplot.net/wp-content/uploads/2021/11/eli-allan-hzcp-NslAOA-unsplash-1-scaled-e1637096059585.jpg",
+    "jetpack-related-posts": [
+      {
+        "id": 3356,
+        "url": "https://thechiaplot.net/2021/09/08/spare-coin-has-launched-on-xt-crypto-exchange-lets-see-how-it-went/",
+        "url_meta": {
+          "origin": 4544,
+          "position": 0
+        },
+        "title": "Spare Coin has launched on XT crypto exchange, let&#8217;s see how it went",
+        "date": "September 8, 2021",
+        "format": false,
+        "excerpt": "Well. The good news is if you are one of the few people trying to buy all the Spare coin you can you can get it pretty cheap. If you were trying to sell all your SPARE for a windfall at $20 a pop based on a tweet, then you're\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "Stock Exchange",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/07/nick-chong-N__BnvQ_w18-unsplash-scaled-e1630663220443.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 508,
+        "url": "https://thechiaplot.net/2021/06/19/the-final-fork-for-now-flax-coin-is-a-copy-paste-of-chia-and-it-works/",
+        "url_meta": {
+          "origin": 4544,
+          "position": 1
+        },
+        "title": "The final fork &#8211; for now. Flax coin is a copy/paste of Chia and it works",
+        "date": "June 19, 2021",
+        "format": false,
+        "excerpt": "After checking out ChainGreen and the failed launch of SpareCoin my hopes for Flax were not high. The developer of this coin is not making any claims beyond being a copy / paste of Chia-Blockchain with a few small changes so it would be a unique blockchain and network. The\u2026",
+        "rel": "",
+        "context": "In &quot;Information&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/06/ben-lodge-1jowiwnmFKE-unsplash-scaled-e1630009468922.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4277,
+        "url": "https://thechiaplot.net/2021/10/31/update-to-the-chia-dust-storm-situation/",
+        "url_meta": {
+          "origin": 4544,
+          "position": 2
+        },
+        "title": "Update to the Chia Dust Storm situation",
+        "date": "October 31, 2021",
+        "format": false,
+        "excerpt": "Chia Network has just posted an official response to the Chia Dust Storm going on, the high volume of single mojo transactions. The update basically says that they aware of the problem, that they are going to shift resources from new features to optimization and that there isn't anything to\u2026",
+        "rel": "",
+        "context": "In &quot;Information&quot;",
+        "img": {
+          "alt_text": "dust storm",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/10/devon-janse-van-rensburg-WNQW-xrwJAM-unsplash-scaled-e1635710978243.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 703,
+        "url": "https://thechiaplot.net/2021/06/30/you-can-sort-of-try-out-chives-now-but-should-you/",
+        "url_meta": {
+          "origin": 4544,
+          "position": 3
+        },
+        "title": "You can sort of try out Chives now &#8211; but should you?",
+        "date": "June 30, 2021",
+        "format": false,
+        "excerpt": "The ChivesCoin client is buildable from GitHub, and an intrepid user Zhaelthas from the Chia Fork Farmers discord has built it in Ubuntu and been sharing some data and screenshots about the project. Right now it looks fairly similar to Chia and the other coins, but there are a few\u2026",
+        "rel": "",
+        "context": "In &quot;Information&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/06/ben-lodge-1jowiwnmFKE-unsplash-scaled-e1630009468922.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 2541,
+        "url": "https://thechiaplot.net/2021/08/11/chives-coin-revisit-a-new-take-on-chia-forks/",
+        "url_meta": {
+          "origin": 4544,
+          "position": 4
+        },
+        "title": "Chives Coin revisit &#8211; A new take on Chia Forks",
+        "date": "August 11, 2021",
+        "format": false,
+        "excerpt": "So I have to be honest, I didn't really start to look into this until my site started to get a ton of search traffic for Chives. This is not normal. So I looked into what Chives has been up to, and it seems like they have taken a wildly\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/06/ben-lodge-1jowiwnmFKE-unsplash-scaled-e1630009468922.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 252,
+        "url": "https://thechiaplot.net/2021/06/03/my-thoughts-on-chia-and-the-direction-of-the-blog/",
+        "url_meta": {
+          "origin": 4544,
+          "position": 5
+        },
+        "title": "My thoughts on Chia and the direction of the blog",
+        "date": "June 3, 2021",
+        "format": false,
+        "excerpt": "Because of the issues I have been posting about in regards to Chia Networks, it seems I have been placed firmly into an \"anti Chia\" or \"anti Crypto\" category. I want to address that, because I don't think that's accurate. I am a big fan of the technology behind Chia.\u2026",
+        "rel": "",
+        "context": "In &quot;Information&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/05/cropped-Chia-seeds-2.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      }
+    ],
+    "amp_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4544"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/comments?post=4544"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 6,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4544/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 4555,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4544/revisions/4555"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media/4546"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media?parent=4544"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/categories?post=4544"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/tags?post=4544"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 4535,
+    "date": "2021-11-16T14:17:53",
+    "date_gmt": "2021-11-16T18:17:53",
+    "guid": {
+      "rendered": "https://thechiaplot.net/?p=4535"
+    },
+    "modified": "2021-11-16T14:17:57",
+    "modified_gmt": "2021-11-16T18:17:57",
+    "slug": "bram-cohen-details-a-ton-of-new-chia-news-including-wallets-and-tokens",
+    "status": "publish",
+    "type": "post",
+    "link": "https://thechiaplot.net/2021/11/16/bram-cohen-details-a-ton-of-new-chia-news-including-wallets-and-tokens/",
+    "title": {
+      "rendered": "Bram Cohen details a ton of new Chia News, including wallets and tokens"
+    },
+    "content": {
+      "rendered": "\n<p>Today in a <a href=\"https://www.youtube.com/watch?v=VGl5yAsfGKs\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"CAT Q&amp;A YouTube stream\">Zoom Q&amp;A</a> (very explicitly not an AMA) the Chia Network team, but really Bram Cohen, gave us a detailed overview of the <a href=\"https://thechiaplot.net/2021/10/27/chia-publishes-chia-asset-tokens-asteroid-and-marmotcoin-plus-others/\" title=\"Chia publishes Chia Asset Tokens \u2013 Asteroid and Marmotcoin plus others\">Chia Asset Token</a>, or CAT, standard. The call involved six members of the Chia team (mostly engineers) and the explanation was both technical and detailed. There was a LOT of Chia news announced here, and I expect to have many follow ups. They are also having an AMA tomorrow to cover the Dust Storm. Very busy week for the Chia Network team.</p>\n\n\n\n<p>The first thing they announced was the CAT standard, along with the TAIL mechanism that is the chialisp code responsible for creating the token. Clever. They also did a live demonstration of the minting process, and I will have a separate article on that. It seems very simple. The CATs are very similar to <a href=\"https://ethereum.org/en/developers/docs/standards/tokens/erc-20/\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Ethereum Documentation on ERC20\">ERC20 tokens</a>, but apparently more secure. There will be a verification process but they aren&#8217;t detailing what that is. They did say that it is merely a mechanism to get them in the wallet natively, but I think that if something goes awry with a verified token and people get robbed Chia Network may end up in court.</p>\n\n\n\n<p>Next is the light wallet. This will also be getting its own post, but it syncs up very quickly and supports CATs right now. You can <a href=\"https://www.chia.net/download/\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Light Wallet download is down by the bottom\">download it now</a>, and I have. It looks pretty good. A lot like the existing client but just a wallet. You can add two separate tokens right now, MarmotCoin and SpaceBucks. This is pretty cool, and <a href=\"https://www.spacebuckscoin.com/\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"SpaceBucks home page, click for Faucet\">SpaceBucks even has a faucet</a>! Apparently to get a MarmotCoin you need a marmot, so I probably won&#8217;t be using that. Its important to note that the beta of the light wallet will break farming if you install it on a machine with a normal Chia client farming, so don&#8217;t.</p>\n\n\n\n<p>The wallet protocol is &#8220;electrum-like&#8221; but not based on electrum. It will talk to any Chia node using the same process as another node except it doesn&#8217;t need to download the whole blockchain. This thing is a game changer, and paired with <a href=\"https://thechiaplot.net/2021/11/12/nucle-chia-wallet-launched-on-android-ios-coming/\" title=\"Nucle Chia Wallet Launched on Android, iOS coming\">Nucle on mobile</a> makes Chia an actual viable cryptocurrency for anyone to use. This is fantastic and I will have a detailed overview later today.</p>\n\n\n\n<div class=\"wp-block-image\"><figure class=\"aligncenter size-large\"><img loading=\"lazy\" width=\"1007\" height=\"1024\" src=\"http://thechiaplot.net/wp-content/uploads/2021/11/spacebucks-1007x1024.png\" alt=\"chia asset token spacebucks in the light wallet\" class=\"wp-image-4537\" srcset=\"https://thechiaplot.net/wp-content/uploads/2021/11/spacebucks-1007x1024.png 1007w, https://thechiaplot.net/wp-content/uploads/2021/11/spacebucks-295x300.png 295w, https://thechiaplot.net/wp-content/uploads/2021/11/spacebucks-768x781.png 768w, https://thechiaplot.net/wp-content/uploads/2021/11/spacebucks-300x305.png 300w, https://thechiaplot.net/wp-content/uploads/2021/11/spacebucks-850x864.png 850w, https://thechiaplot.net/wp-content/uploads/2021/11/spacebucks.png 1467w\" sizes=\"(max-width: 1007px) 100vw, 1007px\" /><figcaption><em>chia asset token spacebucks in the light wallet</em></figcaption></figure></div>\n\n\n\n<p>They have built a CAT issuance web tool, which is <a href=\"https://github.com/Chia-Network/CAT-admin-tool\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"CAT Admin Tool\">open source and available here</a>. I cannot wait to use this for all sorts of shenanigans. I also expect scammers to take full advantage of easy to mint tokens, so be careful of the &#8220;custom token&#8221; ecosystem that is sure to spring up on Reddit and Discord. The verification process might have some serious questions around it, but I think it is important for anyone who doesn&#8217;t know exactly what they are doing.</p>\n\n\n\n<p>They also announced AMM support and partial offer files, which are way over my head but I will try to a bit here and I will follow up on this as well. This Q&amp;A is another one of those things that I am going to have to watch 4 times and write 3 more articles on in order to get everything down. AMMs are Automated Market Makers, and they will be chialisp programs that allow for automated liquidity and trades. I don&#8217;t know, <a href=\"https://www.coindesk.com/learn/2021/08/20/what-is-an-automated-market-maker/#:~:text=An%20automated%20market%20maker%20%28AMM%29%20is%20the%20underlying,we%20will%20explore%20how%20automated%20market%20makers%20work.\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Coindesk on AMMs\">here&#8217;s a link explaining it</a>. This is probably huge news for crypto traders but I am not one of those, so I will have to some research on that.</p>\n\n\n\n<p>There were a lot of swipes at Ethereum during this announcement. It fits with the feedback I hear from the wider cryptocurrency community about the arrogance of Chia. I tend to agree with the criticism about Ethereum from a technical reason, but they are the power player in smart contracts and DeFi right now and everyone experienced in the industry they are trying to break in here works with Ethereum right now. </p>\n\n\n\n<p>To me the real interesting thing is the light wallet and tokens. This is a huge update to Chia, and allows the ecosystem to rapidly expand on Chia itself and not through forks. I am hoping to be able to create a The Chia Plot token for some reason, seeing as they are planning to make it so easy. $TCP incoming.</p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>Today in a Zoom Q&amp;A (very explicitly not an AMA) the Chia Network team, but really Bram Cohen, gave us a detailed overview of the Chia Asset Token, or CAT, standard. The call involved six members of the Chia team (mostly engineers) and the explanation was both technical and detailed. There was a LOT of&#8230;</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 3640,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "spay_email": ""
+    },
+    "categories": [5],
+    "tags": [6, 58, 248, 105],
+    "jetpack_featured_media_url": "https://thechiaplot.net/wp-content/uploads/2021/09/jari-hytonen-YCPkW_r_6uA-unsplash-scaled-e1632477388885.jpg",
+    "jetpack-related-posts": [
+      {
+        "id": 3539,
+        "url": "https://thechiaplot.net/2021/09/21/chia-network-roadmap-part-1-chia-asset-tokens/",
+        "url_meta": {
+          "origin": 4535,
+          "position": 0
+        },
+        "title": "Chia Network Roadmap Part 1 &#8211; Chia Asset Tokens",
+        "date": "September 21, 2021",
+        "format": false,
+        "excerpt": "Last week the senior technical executives from Chia Network, Gene Hoffman, Bram Cohen and Paul Hainsworth, as well as J. Eckert moderating, hosted an Ask Me Anything about their product roadmap. This presentation was extremely information dense compared to Chia's usual fare and there is a lot to talk about.\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "chia product ama",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/09/chia-product-ama-e1632187365262.png?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3564,
+        "url": "https://thechiaplot.net/2021/09/21/chia-network-roadmap-part-2-new-wallets/",
+        "url_meta": {
+          "origin": 4535,
+          "position": 1
+        },
+        "title": "Chia Network Roadmap part 2 &#8211; New Wallets",
+        "date": "September 21, 2021",
+        "format": false,
+        "excerpt": "Last week the senior technical executives from Chia Network, Gene Hoffman, Bram Cohen and Paul Hainsworth, as well as J. Eckert moderating,\u00a0hosted an Ask Me Anything\u00a0about their product roadmap. This presentation was extremely information dense compared to\u00a0Chia\u2019s usual fare\u00a0and there is a lot to talk about. I am going to\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "chia product ama",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/09/chia-product-ama-e1632187365262.png?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3635,
+        "url": "https://thechiaplot.net/2021/09/24/bram-cohen-releases-glossary-of-terms-for-chia-asset-tokens/",
+        "url_meta": {
+          "origin": 4535,
+          "position": 2
+        },
+        "title": "Bram Cohen releases glossary of terms for Chia Asset Tokens",
+        "date": "September 24, 2021",
+        "format": false,
+        "excerpt": "Bram Cohen, CEO of Chia Network Inc, has published a blog post regarding the new terminology Chia is using to describe their Chia Asset Tokens (CATs). Its not his usual serious fare, and is written quite whimsically. But even though it is pretty clear about what a CAT is, and\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "Basket of CATs",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/09/jari-hytonen-YCPkW_r_6uA-unsplash-scaled-e1632477388885.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4560,
+        "url": "https://thechiaplot.net/2021/11/17/a-nuanced-look-at-chia-asset-tokens-cats/",
+        "url_meta": {
+          "origin": 4535,
+          "position": 3
+        },
+        "title": "A nuanced look at Chia Asset Tokens (CATs)",
+        "date": "November 17, 2021",
+        "format": false,
+        "excerpt": "The Chia Plot community member Grizzo has recently written up his thoughts about Chia Asset Tokens (CATs) and has shared them with us, along with a very useful technical primer on how CATs work. The point about melting stablecoins is a very good one, and I think that mechanism might\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "Basket of CATs",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/09/jari-hytonen-YCPkW_r_6uA-unsplash-scaled-e1632477388885.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4468,
+        "url": "https://thechiaplot.net/2021/11/11/chia-and-hub-culture-talk-vo2-tokens-on-the-chia-blockchain/",
+        "url_meta": {
+          "origin": 4535,
+          "position": 4
+        },
+        "title": "Chia and Hub Culture talk Vo2 tokens on the Chia Blockchain",
+        "date": "November 11, 2021",
+        "format": false,
+        "excerpt": "Last night Hub Culture and Chia hosted the dinner I discussed here, where they talked about the environment, Bitcoin and Chia, Vo2 tokens, and a whole host of other things. Neil Cohen and Gene Hoffman were there representing Chia Network and did a bang up job. Neil looked a bit\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "Trees in a forest",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/08/matt-artz-nTRDnDdDYk8-unsplash-scaled-e1630239256611.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3569,
+        "url": "https://thechiaplot.net/2021/09/23/chia-network-roadmap-part-3-defi/",
+        "url_meta": {
+          "origin": 4535,
+          "position": 5
+        },
+        "title": "Chia Network Roadmap part 3 &#8211; DeFi",
+        "date": "September 23, 2021",
+        "format": false,
+        "excerpt": "Last week the senior technical executives from Chia Network, Gene Hoffman, Bram Cohen and Paul Hainsworth, as well as J. Eckert moderating,\u00a0hosted an Ask Me Anything\u00a0about their product roadmap. This presentation was extremely information dense compared to\u00a0Chia\u2019s usual fare\u00a0and there is a lot to talk about. I am going to\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "chia product ama",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/09/chia-product-ama-e1632187365262.png?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      }
+    ],
+    "amp_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4535"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/comments?post=4535"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 5,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4535/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 4542,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4535/revisions/4542"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media/3640"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media?parent=4535"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/categories?post=4535"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/tags?post=4535"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 4519,
+    "date": "2021-11-14T06:46:35",
+    "date_gmt": "2021-11-14T10:46:35",
+    "guid": {
+      "rendered": "https://thechiaplot.net/?p=4519"
+    },
+    "modified": "2021-11-14T06:46:38",
+    "modified_gmt": "2021-11-14T10:46:38",
+    "slug": "chia-news-of-the-week-nov-5-to-nov-14",
+    "status": "publish",
+    "type": "post",
+    "link": "https://thechiaplot.net/2021/11/14/chia-news-of-the-week-nov-5-to-nov-14/",
+    "title": {
+      "rendered": "Chia News of the week &#8211; Nov 5 to Nov 14"
+    },
+    "content": {
+      "rendered": "\n<p>The last week has been fairly eventful for Chia Network and the farming community, so I thought I would a Chia News roundup post in case anyone missed anything. This is probably something I am going to start doing regularly on Sundays, so let me know if you think it is a stupid idea. Otherwise, welcome to the first Chia News of the Week.</p>\n\n\n\n<p>First I&#8217;m going to cheat a bit and discuss the World Bank Climate Warehouse announcement, even though it was really 9 days ago and the week before. It is a big deal though, so you should <a href=\"https://thechiaplot.net/2021/11/05/what-is-project-atari/\" title=\"What is Project Atari?\">check it out here</a>. Briefly, it is a program to develop a decentralized system of federated databases each owned and operated by nations or other private parties but verified against records on the Chia blockchain. Stay tuned for more in depth reporting about the architecture of what Chia Network is building here and why they are describing it as a public good. </p>\n\n\n\n<p>Also that day we had what might be the first real, successful <a href=\"https://thechiaplot.net/2021/11/05/hddcoin-listed-at-xt-com-busting-out-of-the-chia-fork-ecosystem/\" title=\"HDDCoin listed at XT.com \u2013 busting out of the Chia fork ecosystem\">listing of a Chia fork altcoin</a>, with HDDcoin launching on XT.com with a USDT trading pair. Its had its ups and downs since then, but no rug pull style sell-off crash. I <a href=\"https://thechiaplot.net/2021/11/07/hddcoin-real-price-doubles-since-listing/\" title=\"HDDCoin \u201creal price\u201d doubles since listing\">followed up a few days later</a> with a piece about how the price had doubled from the actual real trading price and that volume was healthy for a Chia fork. It&#8217;s down a little now but still seems good compared to the previous attempts at listing a Chia fork.</p>\n\n\n\n<p>Next we got a first look at what Chia might be building to use with the CATs they have been promising. The <a href=\"https://thechiaplot.net/2021/11/08/theres-a-new-cat-in-town-the-carbon-asset-token/\" title=\"There\u2019s a new CAT in town \u2013 the Carbon Asset Token\">Carbon Asset Token</a> looks like they will have a carbon credit registry system for use with the World Bank Climate Warehouse program they had just announced. They are also going to be hosting an AMA to discuss the launch of the Chia Asset Token on Tuesday so its possible we will learn more then. </p>\n\n\n\n<p><a href=\"https://www.chia.net/\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Chia Network Home page\">Chia updated their website</a>. The first update to the site since I start paying attention to the company, and it looks pretty good. They also have a new catchphrase, <a href=\"https://thechiaplot.net/2021/11/09/the-internet-of-markets/\" title=\"\u201cThe Internet of Markets\u201d\">The Internet of Markets</a> which I think will have more trouble taking off than they expect because, of course, they have trademarked it.</p>\n\n\n\n<p>After that, with COP26 in full swing, Chia held an <a href=\"https://thechiaplot.net/2021/11/10/a-glimpse-into-the-possibilities-of-a-chia-token-ecosystem/\" title=\"A glimpse into the possibilities of a Chia token ecosystem\">IETA dinner with Hub Culture</a> with the topic being the Ven Oxygen, or Vo2 coin launching that same day. Thanks to some assistance from a very observant Chia community member we guessed that Vo2 would announce it was going to run on Chia Network and it <a href=\"https://thechiaplot.net/2021/11/11/chia-and-hub-culture-talk-vo2-tokens-on-the-chia-blockchain/\" title=\"Chia and Hub Culture talk Vo2 tokens on the Chia Blockchain\">seems like we were right</a>. The original Ven coin is a digital currency that has been used since before Bitcoin launched, so this is not a small deal.</p>\n\n\n\n<p>Next came the really big news &#8211; Costa Rica, a worldwide leader in Climate change action, <a href=\"https://thechiaplot.net/2021/11/11/costa-rica-announces-that-chia-network-will-be-its-climate-blockchain-technology-partner/\" title=\"Costa Rica announces that Chia Network will be its climate blockchain technology partner\">announced that they had selected Chia Network</a> as their technology partner for building blockchain-based open-source tools for helping countries combat climate change. The inability to cheat each other or sell two separate countries the same carbon credit is actually a really big deal, and is considered a core requirement when discussing Article 6 of the Paris agreement outside of any blockchain context so I think this might be a real thing.</p>\n\n\n\n<p>Hot on the heels of HDDcoin&#8217;s listing, crypto exchange <a href=\"https://thechiaplot.net/2021/11/12/crypto-exchange-lbank-announces-they-will-be-listing-chives-soon/\" title=\"Crypto exchange Lbank announces they will be listing Chives soon\">LBank announced that they would be listing Chives</a> coin on their exchange soon. I have never used that exchange, so I don&#8217;t know if I can recommend anyone use it, but it is a real crypto exchange and not something developed specifically to trade Chia forks, so that is a good thing. Let&#8217;s hope that experience is more of an HDDCoin and less of a Spare.</p>\n\n\n\n<p>Finally <a href=\"https://thechiaplot.net/2021/11/12/nucle-chia-wallet-launched-on-android-ios-coming/\" title=\"Nucle Chia Wallet Launched on Android, iOS coming\">Nucle launched on Android</a>. It wasn&#8217;t a smooth launch and they are still having some issues, but I expect this to get sorted out really quickly and for there to be a real, usable mobile wallet on Android and iOS very soon. I have seen some of their in-development plans and while I can&#8217;t talk any details whatsoever I can say that I expect big things from this team and that a small hiccup on a Google Play deployment doesn&#8217;t really mean anything in the long run.</p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>The last week has been fairly eventful for Chia Network and the farming community, so I thought I would a Chia News roundup post in case anyone missed anything. This is probably something I am going to start doing regularly on Sundays, so let me know if you think it is a stupid idea. Otherwise,&#8230;</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 585,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "spay_email": ""
+    },
+    "categories": [5],
+    "tags": [6, 248, 105, 33],
+    "jetpack_featured_media_url": "https://thechiaplot.net/wp-content/uploads/2021/06/markus-winkler-aId-xYRTlEc-unsplash-scaled-e1630010362743.jpg",
+    "jetpack-related-posts": [
+      {
+        "id": 1909,
+        "url": "https://thechiaplot.net/2021/08/02/chia-network-is-threatening-xchscan-for-trying-to-compete-with-chia-explorer/",
+        "url_meta": {
+          "origin": 4519,
+          "position": 0
+        },
+        "title": "Chia Network is threatening XCHScan for trying to compete with Chia Explorer",
+        "date": "August 2, 2021",
+        "format": false,
+        "excerpt": "In a stunning move, The Chia Plot has seen evidence that Chia Network is threatening XCHScan.com with trademark infringement for basically trying to compete with Chia Explorer. In their communications they tell XCHScan to \"immediately cease in desist approaching farmers who are using the official chia explorer in an attempt\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/08/tingey-injury-law-firm-L4YGuSg0fxs-unsplash-scaled-e1627923376893.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 2382,
+        "url": "https://thechiaplot.net/2021/08/11/overview-of-the-chia-network-trademark-agreement/",
+        "url_meta": {
+          "origin": 4519,
+          "position": 1
+        },
+        "title": "Overview of the Chia Network trademark agreement",
+        "date": "August 11, 2021",
+        "format": false,
+        "excerpt": "OK, so this has the capacity to be extremely boring so I am going to try and keep it as short as possible. But I think the Chia Network Trademark agreement they are trying to force everyone to sign, and that they think controls all use over the words \"chia\"\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/07/bill-oxford-OXGhu60NwxU-unsplash-scaled-e1630010958138.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4179,
+        "url": "https://thechiaplot.net/2021/10/17/chia-profitability-also-shuts-down-i-spoke-to-the-developer/",
+        "url_meta": {
+          "origin": 4519,
+          "position": 2
+        },
+        "title": "Chia Profitability also shuts down, I spoke to the developer",
+        "date": "October 17, 2021",
+        "format": false,
+        "excerpt": "When PoolHarvest shut down a few days ago I predicted that based on the reasons given by the pool operator that the site they ran along side the pool, Chia Profitability, would also be shutting down. I was correct. I knew that this would come, because I spoke to Ottavio,\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "pool shutdown",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/07/isaac-chou-RE2P2jtlD-M-unsplash-scaled-e1630015887288.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4535,
+        "url": "https://thechiaplot.net/2021/11/16/bram-cohen-details-a-ton-of-new-chia-news-including-wallets-and-tokens/",
+        "url_meta": {
+          "origin": 4519,
+          "position": 3
+        },
+        "title": "Bram Cohen details a ton of new Chia News, including wallets and tokens",
+        "date": "November 16, 2021",
+        "format": false,
+        "excerpt": "Today in a Zoom Q&A (very explicitly not an AMA) the Chia Network team, but really Bram Cohen, gave us a detailed overview of the Chia Asset Token, or CAT, standard. The call involved six members of the Chia team (mostly engineers) and the explanation was both technical and detailed.\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "Basket of CATs",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/09/jari-hytonen-YCPkW_r_6uA-unsplash-scaled-e1632477388885.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4188,
+        "url": "https://thechiaplot.net/2021/10/18/flexpool-claims-flexfarmer-tested-against-chia-native-client/",
+        "url_meta": {
+          "origin": 4519,
+          "position": 4
+        },
+        "title": "FlexPool claims &#8211; FlexFarmer tested against Chia native client",
+        "date": "October 18, 2021",
+        "format": false,
+        "excerpt": "First before we get into this, I want to say how good FlexFarmer is as a piece of software. There are some security issues with it, as with all Chia software, but it is young and I have faith that FlexPool will continue to improve it. I understand, and mostly\u2026",
+        "rel": "",
+        "context": "In &quot;Information&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/08/harrison-broadbent-raLeFIxXgDY-unsplash-scaled-e1634557957562.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 153,
+        "url": "https://thechiaplot.net/2021/05/26/more-legal-threats-from-the-chia-network/",
+        "url_meta": {
+          "origin": 4519,
+          "position": 5
+        },
+        "title": "More legal threats from the Chia Network",
+        "date": "May 26, 2021",
+        "format": false,
+        "excerpt": "After my previous post, I made a number of small changes to the site in order to ensure that there is no confusion created for my visitors. After making these changes I sent the following email the Chia Network's Head of IP that had previously emailed me. Hi ,\u00a0I have\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/07/bill-oxford-OXGhu60NwxU-unsplash-scaled-e1630010958138.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      }
+    ],
+    "amp_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4519"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/comments?post=4519"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 4,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4519/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 4524,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4519/revisions/4524"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media/585"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media?parent=4519"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/categories?post=4519"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/tags?post=4519"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 4509,
+    "date": "2021-11-13T16:27:17",
+    "date_gmt": "2021-11-13T20:27:17",
+    "guid": {
+      "rendered": "https://thechiaplot.net/?p=4509"
+    },
+    "modified": "2021-11-13T16:27:19",
+    "modified_gmt": "2021-11-13T20:27:19",
+    "slug": "bigbutta-is-back-with-garden-dao",
+    "status": "publish",
+    "type": "post",
+    "link": "https://thechiaplot.net/2021/11/13/bigbutta-is-back-with-garden-dao/",
+    "title": {
+      "rendered": "BigButta is back with Garden DAO"
+    },
+    "content": {
+      "rendered": "\n<p>Friend of the site and former <a href=\"https://thechiaplot.net/2021/10/11/wtf-is-going-on-at-dfi/\" title=\"WTF is going on at DFI?\">CEO of Digital Farming Initiative</a> is back with the project he promised us when he left DFI &#8211; <a href=\"https://twitter.com/Garden_DAO\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Garden DAO on Twitter\">Garden DAO</a>. He has graciously spent some time explaining it to me, and I confess I am still not sure if what I have in my head is the reality of what he is proposing so I am going to let him explain it in his own words. </p>\n\n\n\n<blockquote class=\"wp-block-quote\"><p>Problems:</p><p>Strong interest from people to develop new projects in crypto ranging from DeFi, Infrastructure, gaming/NFT, wallet, ESG and stablecoins but there are limited funding sources for quality projects. Particularly, independent developers who in addition to needing funds, also need marketing, dev resources, and collaboration. Raising money from friends and family, VCs or grants can be slow, expensive, and non-collaborative.</p><p>People holding crypto currency are generally interested in doing things differently and making money. They want their funds to have actual utility which gives them the inherent utility benefit, as well as increasing adoption, and thus values.</p><p>Solution:</p><p>Garden DAO is a community driven system to aid in the process of raising funds by allowing users to explain and list their projects for crowdfunding. We&#8217;ve developed a unique system to ensure viable projects with dedicated founders have the access to multiple resources to help them reach their goals.</p><p>Garden DAO is a particularly great platform for crypto projects that rely on &#8220;smart contracts&#8221; to autonomously transact and govern their project. These projects are known as true DAOs, and users looking to launch these types of projects will have a plethora of options to customize and implement their vision including automatic disbursements, voting rights, and much more.</p><p>What is Garden DAO:</p><p>Garden DAO is made up of a collective of people from around the globe with various skills and talents. Our structure is setup where all members have a say in how the operations and ecosystem works. Our goal is to build a platform where the community can get together and take advantage of the Chia blockchain&#8217;s unique puzzle structure to start and execute new and exciting projects.</p></blockquote>\n\n\n\n<p>He took me through a mock scenario of what selling shares of the advertising revenue of the Chia plot would look like in a DAO and even though he explained it well, I&#8217;m still not sure why someone would want to do it or if it isn&#8217;t an illegal public securities offering. I doubt its the latter, but I certainly won&#8217;t be selling Chia Plot governance tokens until I get a very close look into how this works.</p>\n\n\n\n<p>That said, I have no need to raise capital and I can see how it might be really helpful to geographically diverse teams who have never met each other to be able to raise capital directly so that they can focus on a good idea. I&#8217;ll be keeping a close eye on this and if you want to too, <a href=\"https://discord.gg/Wzhvt3fGEW\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Garden DAO discord server\">check out their discord channel </a>and ask them about their project.</p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>Friend of the site and former CEO of Digital Farming Initiative is back with the project he promised us when he left DFI &#8211; Garden DAO. He has graciously spent some time explaining it to me, and I confess I am still not sure if what I have in my head is the reality of&#8230;</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 4511,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "spay_email": ""
+    },
+    "categories": [5],
+    "tags": [6, 248, 105, 250],
+    "jetpack_featured_media_url": "https://thechiaplot.net/wp-content/uploads/2021/11/ignacio-correia-1_yycyoMT6g-unsplash-scaled-e1636834916558.jpg",
+    "jetpack-related-posts": [
+      {
+        "id": 3253,
+        "url": "https://thechiaplot.net/2021/09/02/maxidao-launches-wxch-wrapped-chia-for-using-xch-on-the-ethereum-blockchain/",
+        "url_meta": {
+          "origin": 4509,
+          "position": 0
+        },
+        "title": "MaxiDAO launches WXCH, Wrapped Chia, for using XCH on the Ethereum blockchain",
+        "date": "September 2, 2021",
+        "format": false,
+        "excerpt": "MaxiDAO has announced via a Tweet and a Medium post that they are launching their WXCH product, or Wrapped Chia. I have to admit I am not 100% what to think of this. Experienced crypto traders in the Chia ecosystem seem to be excited about this, but I have some\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "Wrapped XCH from MaxiDAO",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/09/maxidoa-weth-e1630574359605.png?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4465,
+        "url": "https://thechiaplot.net/2021/11/12/crypto-exchange-lbank-announces-they-will-be-listing-chives-soon/",
+        "url_meta": {
+          "origin": 4509,
+          "position": 1
+        },
+        "title": "Crypto exchange Lbank announces they will be listing Chives soon",
+        "date": "November 12, 2021",
+        "format": false,
+        "excerpt": "In the wake of previous failed fork listings on real crypto exchanges, and one good one, Chives is working with crypto exchange Lbank to get listed on their market. The announcement focuses on the plans Chives has been up to over the past few months, which I have sadly not\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "Stock Exchange",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/07/nick-chong-N__BnvQ_w18-unsplash-scaled-e1630663220443.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 1248,
+        "url": "https://thechiaplot.net/2021/07/25/thoughts-about-chia-from-china/",
+        "url_meta": {
+          "origin": 4509,
+          "position": 2
+        },
+        "title": "Thoughts about Chia from China",
+        "date": "July 25, 2021",
+        "format": false,
+        "excerpt": "The following is a guest post written by Yilin He, or Chia in China from Twitter, who is a Chinese Chia farmer and has some really fascinating thoughts about the differences in attitudes between the Western farmers and our counterparts across the world. I have left the article mostly alone,\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "Chinese Panda",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/07/ying-wu-NsNRu6dfRds-unsplash-scaled-e1632479855515.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 2978,
+        "url": "https://thechiaplot.net/2021/08/22/more-details-on-the-zuri-internship-currently-using-chia-in-production/",
+        "url_meta": {
+          "origin": 4509,
+          "position": 3
+        },
+        "title": "More details on the Zuri Internship currently using Chia in production",
+        "date": "August 22, 2021",
+        "format": false,
+        "excerpt": "A couple of days ago I had a chance to briefly chat with one of the program managers for the Zuri Internship, or HNG Internship 8,but there were still a lot of questions about how and why they were using Chia. Despite being a VERY busy weekend for them, he\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/08/zuri-homepage.png?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 211,
+        "url": "https://thechiaplot.net/2021/06/01/how-to-trade-your-xch/",
+        "url_meta": {
+          "origin": 4509,
+          "position": 4
+        },
+        "title": "How I am trading my XCH",
+        "date": "June 1, 2021",
+        "format": false,
+        "excerpt": "This should not be taken as advice or financial advice. This is simply a story of how I started trading Chia / XCH. I am not affiliated with any other companies mentioned in this article, or in this series of articles. Right now there are not a lot of good\u2026",
+        "rel": "",
+        "context": "In &quot;Trading&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/07/michael-longmire-3Mu0iQgLQto-unsplash-1-scaled-e1630010993946.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 1794,
+        "url": "https://thechiaplot.net/2021/07/30/all-about-pools-openchia-spitting-fire-right-out-of-the-gate/",
+        "url_meta": {
+          "origin": 4509,
+          "position": 5
+        },
+        "title": "All about Pools &#8211; OpenChia, spitting fire right out of the gate",
+        "date": "July 30, 2021",
+        "format": false,
+        "excerpt": "In the latest entry into my All about Pools series here, I had a chance to get some insight into OpenChia, a pool whose value proposition in complete transparency. More than that, however, they launched their pool with a Reddit post insinuating that other pools cannot be trusted because their\u2026",
+        "rel": "",
+        "context": "In &quot;pools&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/06/raphael-biscaldi-7RQf2X6aXXI-unsplash-scaled-e1629821028681.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      }
+    ],
+    "amp_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4509"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/comments?post=4509"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 3,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4509/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 4515,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4509/revisions/4515"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media/4511"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media?parent=4509"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/categories?post=4509"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/tags?post=4509"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 4355,
+    "date": "2021-11-13T10:12:07",
+    "date_gmt": "2021-11-13T14:12:07",
+    "guid": {
+      "rendered": "https://thechiaplot.net/?p=4355"
+    },
+    "modified": "2021-11-13T10:12:09",
+    "modified_gmt": "2021-11-13T14:12:09",
+    "slug": "all-about-pools-an-old-time-mining-pool-prohashing-joins-the-fray",
+    "status": "publish",
+    "type": "post",
+    "link": "https://thechiaplot.net/2021/11/13/all-about-pools-an-old-time-mining-pool-prohashing-joins-the-fray/",
+    "title": {
+      "rendered": "All About Pools &#8211; An old time mining pool, Prohashing, joins the fray"
+    },
+    "content": {
+      "rendered": "\n<p>Bitcoin / Ethereum / Litecoin and everything else <a href=\"https://prohashing.com/\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Prohashing homepage\">mining pool Prohashing</a> has recently announced that they would be joining the <a href=\"https://thechiaplot.net/?s=all+about+pools\" title=\"All about pools\">crowded field of Chia Pools</a>, so I wanted talk to them to see why and what they were expecting to bring to the Chia pool ecosystem. And it was pretty interesting. I think they have a really good offering and I think their 3% fee is <a href=\"https://thechiaplot.net/2021/07/28/are-chia-pools-a-profitable-enterprise/\" title=\"Are Chia Pools a profitable enterprise?\">a lot more reasonable</a> than it will appear to start.</p>\n\n\n\n<p>Prohashing has been around for 8 years now, and when I asked them why they wanted to get into Chia they told me that they had mining operations covering ASICs, GPUs, and CPUs and &#8220;wanted to cover all of the hardware.&#8221; So naturally that meant getting into Chia HDD farming. Right now they offer Proof of Work miners the opportunity to get paid out in all sorts of coin options, including Proof of Stake coins that would normally need to be traded for. And they are bringing that option to Chia farmers.</p>\n\n\n\n<p>This is a pretty unique offering in the Chia ecosystem right now, and reminds me of NiceHash paying out in bitcoin (<a href=\"https://en.wikipedia.org/wiki/NiceHash#Controversies\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Nicehash Controversy\">without the baggage</a>). I tried to look at how all that is calculated, but in a nutshell it is complicated. Here is the <a href=\"https://prohashing.com/help/setting-mining-payouts\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Prohashing documentation\">documentation on their payout structure</a>. It hasn&#8217;t been updated to include Chia yet, but I suspect it will be similar to the many other algorithms they are mining.</p>\n\n\n\n<p>Prohashing is a legal, US-based regulated mining pool and feels that this gives them better credibility in the space than anonymous pool operators, and I tend to agree. I think knowing the team and having a real company is important during any financial transaction and this certainly counts. They are promising a level of transparency, trust and customer service that is &#8220;difficult to find&#8221;. I hope that is true, but its not without competition on that front in the Chia community.</p>\n\n\n\n<p>I asked if they had gotten demand from their PoW mining community to start a Chia pool, and they said they had. <a href=\"https://thechiaplot.net/2021/06/26/all-about-pools-the-big-dog-flexpool/\" title=\"All about pools \u2013 The big dog, Flexpool\">Much like FlexPool</a>, it seems that there is a lot of interest from the rank and file cryptocurrency community members, even if the <a href=\"https://thechiaplot.net/2021/11/13/awkward-interview-on-coindesk-tv-with-bram-cohen/\" title=\"Awkward interview on Coindesk TV with Bram Cohen\">media still struggles</a> to see what is going on with Chia.</p>\n\n\n\n<p>I think its great that organizations like Prohashing are getting involved in the Chia community, and I think their multi-coin payout offering is a really big draw. Its something that the Chia-only pools would have a lot of logistical issues matching so I dont think that will be an advantage that goes away any time soon.</p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>Bitcoin / Ethereum / Litecoin and everything else mining pool Prohashing has recently announced that they would be joining the crowded field of Chia Pools, so I wanted talk to them to see why and what they were expecting to bring to the Chia pool ecosystem. And it was pretty interesting. I think they have&#8230;</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 505,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "spay_email": ""
+    },
+    "categories": [50],
+    "tags": [6, 97, 105, 249],
+    "jetpack_featured_media_url": "https://thechiaplot.net/wp-content/uploads/2021/06/raphael-biscaldi-7RQf2X6aXXI-unsplash-scaled-e1629821028681.jpg",
+    "jetpack-related-posts": [
+      {
+        "id": 3717,
+        "url": "https://thechiaplot.net/2021/09/27/are-chinese-pools-gone-for-good/",
+        "url_meta": {
+          "origin": 4355,
+          "position": 0
+        },
+        "title": "Are Chinese pools gone for good?",
+        "date": "September 27, 2021",
+        "format": false,
+        "excerpt": "With the recent news of additional cryptocurrency crackdowns in China via the People's Bank of China there has been some speculation about what that would mean for the various cryptocurrency services, including crypto exchanges based there and the Chinese pools like Hpool. First the crypto exchanges. Huobi has announced that\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "pool shutdown",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/07/isaac-chou-RE2P2jtlD-M-unsplash-scaled-e1630015887288.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 751,
+        "url": "https://thechiaplot.net/2021/07/01/all-about-pools-foxypool-playing-both-angles/",
+        "url_meta": {
+          "origin": 4355,
+          "position": 1
+        },
+        "title": "All about pools &#8211; Foxypool, playing both angles",
+        "date": "July 1, 2021",
+        "format": false,
+        "excerpt": "Like Flexpool, Foxypool is an established cryptocurrency pool that decided to get into Chia pooling for reasons we will expand below. Unlike Flexpool they are focused entirely on storage based coins from what I can tell. Also uniquely they are already running a pool with their own custom code, as\u2026",
+        "rel": "",
+        "context": "In &quot;Information&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/06/raphael-biscaldi-7RQf2X6aXXI-unsplash-scaled-e1629821028681.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3052,
+        "url": "https://thechiaplot.net/2021/08/26/why-i-like-chia/",
+        "url_meta": {
+          "origin": 4355,
+          "position": 2
+        },
+        "title": "Why I like Chia",
+        "date": "August 26, 2021",
+        "format": false,
+        "excerpt": "A lot of the feedback I received from my recent request (Thank you again to everyone who replied) centered around how I cant be trusted because I have been negative on some of Chia Network's strategic decisions and action in the past. And I have. And I will again, I'm\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "Sunshine on a field",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/08/aaron-burden-BTubi6qaY6Q-unsplash-scaled-e1629984608287.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3418,
+        "url": "https://thechiaplot.net/2021/09/12/flexpool-claims-their-pool-is-more-likely-to-win-blocks-i-think-they-are-wrong/",
+        "url_meta": {
+          "origin": 4355,
+          "position": 3
+        },
+        "title": "FlexPool claims their pool is more likely to win blocks &#8211; I think they are wrong",
+        "date": "September 12, 2021",
+        "format": false,
+        "excerpt": "In a forum post the other day on ChiaForum.com, Flexpool made a series of claims based on a recent run of good luck they have had. You can read the whole thread linked above, but this quote is really what the gist of it hangs on. Funnily enough you make\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/06/thomas-park-QGdRrty4054-unsplash-scaled-e1630010431339.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 2243,
+        "url": "https://thechiaplot.net/2021/08/06/all-about-pools-chiabatta-the-south-korean-leaders/",
+        "url_meta": {
+          "origin": 4355,
+          "position": 4
+        },
+        "title": "All about Pools &#8211; Chiabatta, the South Korean leaders",
+        "date": "August 6, 2021",
+        "format": false,
+        "excerpt": "In today's All about Pools entry we spoke to Chiabatta, a group of South Korean farmers really trying to bring Chia to their part of the world. I really liked this team, they have a lot of ideas to not just grow their pool but the entire Chia community in\u2026",
+        "rel": "",
+        "context": "In &quot;pools&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/06/raphael-biscaldi-7RQf2X6aXXI-unsplash-scaled-e1629821028681.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4179,
+        "url": "https://thechiaplot.net/2021/10/17/chia-profitability-also-shuts-down-i-spoke-to-the-developer/",
+        "url_meta": {
+          "origin": 4355,
+          "position": 5
+        },
+        "title": "Chia Profitability also shuts down, I spoke to the developer",
+        "date": "October 17, 2021",
+        "format": false,
+        "excerpt": "When PoolHarvest shut down a few days ago I predicted that based on the reasons given by the pool operator that the site they ran along side the pool, Chia Profitability, would also be shutting down. I was correct. I knew that this would come, because I spoke to Ottavio,\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "pool shutdown",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/07/isaac-chou-RE2P2jtlD-M-unsplash-scaled-e1630015887288.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      }
+    ],
+    "amp_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4355"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/comments?post=4355"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 4,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4355/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 4506,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4355/revisions/4506"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media/505"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media?parent=4355"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/categories?post=4355"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/tags?post=4355"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 4496,
+    "date": "2021-11-13T05:17:49",
+    "date_gmt": "2021-11-13T09:17:49",
+    "guid": {
+      "rendered": "https://thechiaplot.net/?p=4496"
+    },
+    "modified": "2021-11-13T05:17:51",
+    "modified_gmt": "2021-11-13T09:17:51",
+    "slug": "awkward-interview-on-coindesk-tv-with-bram-cohen",
+    "status": "publish",
+    "type": "post",
+    "link": "https://thechiaplot.net/2021/11/13/awkward-interview-on-coindesk-tv-with-bram-cohen/",
+    "title": {
+      "rendered": "Awkward interview on Coindesk TV with Bram Cohen"
+    },
+    "content": {
+      "rendered": "\n<p>Bram Cohen recently gave an interview to Coindesk TV about the <a href=\"https://thechiaplot.net/2021/11/11/costa-rica-announces-that-chia-network-will-be-its-climate-blockchain-technology-partner/\" title=\"Costa Rica announces that Chia Network will be its climate blockchain technology partner\">partnership with Costa Rica</a> that the country and Chia Network just announced. Pretty big news in the world of Chia, but also cryptocurrency and blockchain technology in general. Especially on top of the very-much-connected <a href=\"https://thechiaplot.net/2021/11/05/what-is-project-atari/\" title=\"What is Project Atari?\">World Bank Climate Warehouse partnership</a>. Yet the Coindesk TV anchors really had no idea how to cover the story. It was an incredibly awkward interview &#8211; not because of anything Bram did or said, but because the financial reporters dealing with this story are way outside their beat.</p>\n\n\n\n<p>This interview highlights an issue that I think is going to crop up more and more in the blockchain / cryptocurrency reporting space. The people who have been covering blockchain have been doing so from a price analysis and market perspective. They are really good at covering the minutiae of pricing changes between coins, and how the price of bitcoin affects everything else. They are less good at covering blockchain technology enabling federated databases to help countries safely trade carbon credits. I&#8217;m not 100% sure any of the three reporters here know what the term &#8220;<a href=\"https://en.wikipedia.org/wiki/Federated_database_system\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Wikipedia entry on database federation\">federated database</a>&#8221; means.</p>\n\n\n\n<p>As blockchain technologies mature, and cryptocurrency becomes more mainstream and accepted, more and more use cases will be developed that sit outside the traditional financial services markets. You can already see it with Chia, where traditional media ignores them because its a &#8220;crypto thing&#8221; and cryptocurrency media ignores them because its not really. This is normal in emerging markets. Very few reporters are actual subject matter experts on the areas they cover, and without some technical expertise it can be very difficult to see where the puck is going. This interview highlighted that with the reporters seemingly interested in the story but not really knowing what to ask. There haven&#8217;t really been serious blockchain climate change moves with major players so nobody really knows how to deal with it. They are going to need to figure it out though, or they will end up doing the industry a great disservice by ignoring the actual innovation in favour of highlighting new ways of doing a Ponzi scheme.</p>\n\n\n\n<p>Go <a href=\"https://www.coindesk.com/tv/first-mover/first-mover-november-12-2021/\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Bram Cohen on CoindeskTV\">check out the interview</a> (it starts about 5:10 into the video), but if you are reading here I doubt you will learn anything you didn&#8217;t already know about the process. What a wasted opportunity to get Bram to talk about this stuff and ask really nothing of substance.</p>\n\n\n\n<p></p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>Bram Cohen recently gave an interview to Coindesk TV about the partnership with Costa Rica that the country and Chia Network just announced. Pretty big news in the world of Chia, but also cryptocurrency and blockchain technology in general. Especially on top of the very-much-connected World Bank Climate Warehouse partnership. Yet the Coindesk TV anchors&#8230;</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 4482,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "spay_email": ""
+    },
+    "categories": [20],
+    "tags": [6, 58, 248, 105],
+    "jetpack_featured_media_url": "https://thechiaplot.net/wp-content/uploads/2021/11/alex-ip-wFNNzXgo0Do-unsplash-scaled-e1636645282796.jpg",
+    "jetpack-related-posts": [
+      {
+        "id": 420,
+        "url": "https://thechiaplot.net/2021/06/16/the-dangerous-cult-of-personality-around-bram-cohen-and-chia/",
+        "url_meta": {
+          "origin": 4496,
+          "position": 0
+        },
+        "title": "The dangerous cult of personality around Bram Cohen and Chia",
+        "date": "June 16, 2021",
+        "format": false,
+        "excerpt": "If you know one thing about Chia its that it is the hippie version of bitcoin. If you know two things about Chia the second is that it was founded / invented by Bram Cohen, the original developer of BitTorrent. I want to start this by saying that I have\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/06/stefan-spassov-VJ3mkl-0Yog-unsplash-scaled-e1630009424374.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 198,
+        "url": "https://thechiaplot.net/2021/05/31/bram-cohen-on-the-chia-prefarm/",
+        "url_meta": {
+          "origin": 4496,
+          "position": 1
+        },
+        "title": "Bram Cohen on the Chia Prefarm",
+        "date": "May 31, 2021",
+        "format": false,
+        "excerpt": "Chia Founder Bram Cohen recently did an interview on Son of a Tech on a number of topics, but primarily on the 21 million coins that are not in circulation and held by Chia Networks, commonly known as the \"prefarm\". The interview was really well done, and did not let\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/05/Ontario_farm-e1630008926146.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3052,
+        "url": "https://thechiaplot.net/2021/08/26/why-i-like-chia/",
+        "url_meta": {
+          "origin": 4496,
+          "position": 2
+        },
+        "title": "Why I like Chia",
+        "date": "August 26, 2021",
+        "format": false,
+        "excerpt": "A lot of the feedback I received from my recent request (Thank you again to everyone who replied) centered around how I cant be trusted because I have been negative on some of Chia Network's strategic decisions and action in the past. And I have. And I will again, I'm\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "Sunshine on a field",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/08/aaron-burden-BTubi6qaY6Q-unsplash-scaled-e1629984608287.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4446,
+        "url": "https://thechiaplot.net/2021/11/10/a-glimpse-into-the-possibilities-of-a-chia-token-ecosystem/",
+        "url_meta": {
+          "origin": 4496,
+          "position": 3
+        },
+        "title": "A glimpse into the possibilities of a Chia token ecosystem",
+        "date": "November 10, 2021",
+        "format": false,
+        "excerpt": "One of the main things that makes Ethereum such a behemoth of the cryptocurrency world is the gigantic token ecosystem that exists there. Almost everything that isn't a native Layer 1 blockchain runs as an ERC20 token on the Ethereum blockchain, although many are available on other chains too. So\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "one world",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/11/markus-spiske-r1BS0pzlr1M-unsplash-scaled-e1636544857776.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 313,
+        "url": "https://thechiaplot.net/2021/06/10/interview-with-son-of-a-tech/",
+        "url_meta": {
+          "origin": 4496,
+          "position": 4
+        },
+        "title": "Interview with Son of a Tech",
+        "date": "June 10, 2021",
+        "format": false,
+        "excerpt": "YouTuber Son of a Tech recently had me on his show to talk about the trademark issues. Was a really good interview, and he helped me understand a lot of the wider cryptocurrency context behind some of the decisions Chia has made and why it makes people nervous. I had\u2026",
+        "rel": "",
+        "context": "In &quot;Information&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/06/youtubelogo-e1624560739864.png?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 209,
+        "url": "https://thechiaplot.net/2021/06/10/is-chia-as-green-as-the-marketing/",
+        "url_meta": {
+          "origin": 4496,
+          "position": 5
+        },
+        "title": "Is Chia as &#8220;green&#8221; as the marketing?",
+        "date": "June 10, 2021",
+        "format": false,
+        "excerpt": "Ever since the first public rumblings of Chia Networks and Bram Cohen's new enterprise it has been wrapped in \"green\" marketing, to the point where if the average person knows one thing about Chia its that it is less wasteful than Bitcoin. It is named after a plant (salvia hispanica)\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "Trees in a forest",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/08/matt-artz-nTRDnDdDYk8-unsplash-scaled-e1630239256611.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      }
+    ],
+    "amp_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4496"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/comments?post=4496"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 4,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4496/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 4501,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4496/revisions/4501"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media/4482"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media?parent=4496"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/categories?post=4496"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/tags?post=4496"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 4490,
+    "date": "2021-11-12T18:05:10",
+    "date_gmt": "2021-11-12T22:05:10",
+    "guid": {
+      "rendered": "https://thechiaplot.net/?p=4490"
+    },
+    "modified": "2021-11-15T14:57:16",
+    "modified_gmt": "2021-11-15T18:57:16",
+    "slug": "nucle-chia-wallet-launched-on-android-ios-coming",
+    "status": "publish",
+    "type": "post",
+    "link": "https://thechiaplot.net/2021/11/12/nucle-chia-wallet-launched-on-android-ios-coming/",
+    "title": {
+      "rendered": "Nucle Chia Wallet Launched on Android, iOS coming"
+    },
+    "content": {
+      "rendered": "\n<p>The <a href=\"https://thechiaplot.net/2021/08/14/knock-knock-nucle-announces-itself-loudly-as-a-lightweight-chia-wallet/\" title=\"Knock, knock. Nucle announces itself loudly as a lightweight Chia wallet\">Nucle.io team</a> has been hard at work expanding their Chia wallet support, and are happy to announce that they have launched the Android version of their product. This is really exciting, and if you want a mobile wallet with the blessing of <a href=\"https://thechiaplot.net/2021/08/18/chia-network-launches-chia-cultivation-grant-to-help-fund-community-projects/\" title=\"Chia Network launches Chia Cultivation Grant to help fund community projects\">Chia Network</a>, this is your bet. <a href=\"https://play.google.com/store/apps/details?id=io.nucle\" title=\"https://play.google.com/store/apps/details?id=io.nucle\">Go check it out here</a>.</p>\n\n\n\n<p>The Nucle team has prepared the following for the Chia Community and I am happy to share their words here. I am a big fan of the project, and I have had enough conversations to know that they are the real deal.</p>\n\n\n\n<blockquote class=\"wp-block-quote\"><p>The time has come, Nucle mobile app is finally live! Nucle is now available on the Google Play store, with the iOS version under app store review. Go download today!</p><p><strong>Why a delay?</strong></p><p>I want to quickly address why the delay in the release of the Nucle mobile apps. It mainly comes down to two reasons: security and speed. Security because there are many small changes we had to make to ensure the algorithm we use for encryption is stored only on your local store for your device so your private keys remain private. Second, speed because the optimizations we made to make Nucle fast on iOS took a lot longer than expected. Add speed and security on top of QA, UX issues, and AppSec reviews and you get to where we are at today. The good news is that iterative development going forward should be much faster-paced for us.</p><p><strong>Where Open Source?</strong></p><p>I noted this in our update announcement earlier this week, we were planning to have open-source readying to go 10/31/2021 but the &#8216;dust storm&#8217; caused us to reprioritize a couple of items. Now that the mobile apps are out, we&#8217;ll get the backend open-source of the Nucle web app published ASAP. Please see the previous post for more details. Also, the web app code has been cursorily reviewed by the Chia team for vulnerabilities and was found to pass the bar and the mobile apps are based on the same code</p><p><strong>What&#8217;s the future of Nucle?</strong></p><p>We are committed to growing the Defi platform for Chia. After publishing the open-source, we&#8217;re full steam ahead on getting ready for CAT support with Nucle V2 once the CAT standard is published by the Chia team. They&#8217;ve been hard at work on it and we&#8217;ve been working with our team to prepare for it as well. We&#8217;ve also got a few surprises up our sleeves for Nucle V2 which we think will benefit the entire Crypto ecosystem. Look for more news on that once we get further along on development with our partners.</p><p>Nucle Chromium extension is also high on our todo list and will launch around/after Nucle V2 for CAT support.</p><p>Try <a href=\"https://play.google.com/store/apps/details?id=io.nucle\" title=\"https://play.google.com/store/apps/details?id=io.nucle\">Nucle on Android today</a> and iOS in the coming days</p><cite>Nucle.io team</cite></blockquote>\n\n\n\n<p>I find it pretty interesting that <a href=\"https://thechiaplot.net/2021/11/03/interview-with-the-chia-dust-stormer/\" title=\"Interview with the Chia Dust Stormer\">the dust storm</a> had such an impact on development, both <a href=\"https://thechiaplot.net/2021/11/01/chia-network-makes-official-promise-to-optimize-nodes-after-dust-storm/\" title=\"Chia Network makes official promise to optimize nodes after Dust Storm\">here and at Chia Network</a>. I suspect the load test and fee requirement would have made the original launch almost useless if it couldn&#8217;t send transactions. Really good idea to delay and get it right. Too many software teams would just launch and say &#8220;oh well&#8221;.</p>\n\n\n\n<p>Congrats to the <a href=\"https://nucle.io/\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"https://nucle.io/\">Nucle.io team</a>. Please go check them out if you want a wallet that doesn&#8217;t take forever to sync. I cannot wait for their to be real, secure competition in this space.</p>\n\n\n\n<p><em>Edit: Appears they had a snafu with the Google Apps deployment process, I&#8217;m told something to do with signing keys. It should be up very soon, they have had it working in beta for a long time now. If you see a white screen that will be resolved shortly. It has been resolved.</em></p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>The Nucle.io team has been hard at work expanding their Chia wallet support, and are happy to announce that they have launched the Android version of their product. This is really exciting, and if you want a mobile wallet with the blessing of Chia Network, this is your bet. Go check it out here. The&#8230;</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 3293,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "spay_email": ""
+    },
+    "categories": [5],
+    "tags": [6, 248, 105, 171],
+    "jetpack_featured_media_url": "https://thechiaplot.net/wp-content/uploads/2021/08/nucle-2-e1630677605525.png",
+    "jetpack-related-posts": [
+      {
+        "id": 1885,
+        "url": "https://thechiaplot.net/2021/08/14/knock-knock-nucle-announces-itself-loudly-as-a-lightweight-chia-wallet/",
+        "url_meta": {
+          "origin": 4490,
+          "position": 0
+        },
+        "title": "Knock, knock. Nucle announces itself loudly as a lightweight Chia wallet",
+        "date": "August 14, 2021",
+        "format": false,
+        "excerpt": "From the team behind PoolChia comes a new lightweight Chia wallet called Nucle.io run on the web, but not a custodial wallet as you retain control of your keys. This wallet a bit of a game changer, with no more multiday sync process needed to get up and going. Honestly,\u2026",
+        "rel": "",
+        "context": "In &quot;Information&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/08/nucle-2-e1630677605525.png?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3183,
+        "url": "https://thechiaplot.net/2021/08/29/a-new-spv-chia-wallet-appears-introducing-arbor-wallet/",
+        "url_meta": {
+          "origin": 4490,
+          "position": 1
+        },
+        "title": "A new SPV Chia wallet appears, introducing Arbor Wallet",
+        "date": "August 29, 2021",
+        "format": false,
+        "excerpt": "Hot on the heels of Emergent Coin releasing their Nucle Simplified Payment Verification Chia wallet (SPV), Digital Farming Initiative have launched a test version of their new solution called Arbor Wallet, and they have launched it as a discord bot. I cannot tell you how uncomfortable that makes in the\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "Trees in a forest",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/08/matt-artz-nTRDnDdDYk8-unsplash-scaled-e1630239256611.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 2899,
+        "url": "https://thechiaplot.net/2021/08/23/lets-talk-about-nucle-and-chia-wallet-security/",
+        "url_meta": {
+          "origin": 4490,
+          "position": 2
+        },
+        "title": "Lets talk about Nucle and Chia wallet security",
+        "date": "August 23, 2021",
+        "format": false,
+        "excerpt": "Now that Nucle, Chia's first SPV wallet, is in open beta and anyone can sign up lets talk about Chia wallet security a little bit. I have spoken before about how I don't think security is very well understood in the cryptocurrency world, with lots of claims being made about\u2026",
+        "rel": "",
+        "context": "In &quot;Security&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/08/florian-berger-SzG0ncGBOeo-unsplash-scaled-e1629718380643.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3948,
+        "url": "https://thechiaplot.net/2021/10/06/arbor-wallet-now-available-on-ios-and-android/",
+        "url_meta": {
+          "origin": 4490,
+          "position": 3
+        },
+        "title": "Arbor Wallet now available on iOS and Android",
+        "date": "October 6, 2021",
+        "format": false,
+        "excerpt": "Update: It has come to our attention that Arbor as currently configured is sending is not decentralized and signs transactions on their web server with the wallet's private key. They have committed to fixing this but you should be aware. According to a discord post, and the fact that I\u2026",
+        "rel": "",
+        "context": "In \"ArborWallet\"",
+        "img": {
+          "alt_text": "Trees in a forest",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/08/matt-artz-nTRDnDdDYk8-unsplash-scaled-e1630239256611.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 2818,
+        "url": "https://thechiaplot.net/2021/08/18/chia-network-launches-chia-cultivation-grant-to-help-fund-community-projects/",
+        "url_meta": {
+          "origin": 4490,
+          "position": 4
+        },
+        "title": "Chia Network launches Chia Cultivation Grant to help fund community projects",
+        "date": "August 18, 2021",
+        "format": false,
+        "excerpt": "In an announcement on their official blog today Chia Network has launched their Chia Cultivation Grant to foster development in the Chia ecosystem. Managed by J. Eckert, VP of Ecosystem Operations, the Grant is designed to get worthwhile software projects off the ground with a cash infusion of $30 000\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "US Dollars",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/07/sharon-mccutcheon-8lnbXtxFGZw-unsplash-scaled-e1630369584654.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4519,
+        "url": "https://thechiaplot.net/2021/11/14/chia-news-of-the-week-nov-5-to-nov-14/",
+        "url_meta": {
+          "origin": 4490,
+          "position": 5
+        },
+        "title": "Chia News of the week &#8211; Nov 5 to Nov 14",
+        "date": "November 14, 2021",
+        "format": false,
+        "excerpt": "The last week has been fairly eventful for Chia Network and the farming community, so I thought I would a Chia News roundup post in case anyone missed anything. This is probably something I am going to start doing regularly on Sundays, so let me know if you think it\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "News",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/06/markus-winkler-aId-xYRTlEc-unsplash-scaled-e1630010362743.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      }
+    ],
+    "amp_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4490"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/comments?post=4490"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 6,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4490/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 4530,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4490/revisions/4530"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media/3293"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media?parent=4490"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/categories?post=4490"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/tags?post=4490"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 4465,
+    "date": "2021-11-12T05:07:50",
+    "date_gmt": "2021-11-12T09:07:50",
+    "guid": {
+      "rendered": "https://thechiaplot.net/?p=4465"
+    },
+    "modified": "2021-11-12T06:00:18",
+    "modified_gmt": "2021-11-12T10:00:18",
+    "slug": "crypto-exchange-lbank-announces-they-will-be-listing-chives-soon",
+    "status": "publish",
+    "type": "post",
+    "link": "https://thechiaplot.net/2021/11/12/crypto-exchange-lbank-announces-they-will-be-listing-chives-soon/",
+    "title": {
+      "rendered": "Crypto exchange Lbank announces they will be listing Chives soon"
+    },
+    "content": {
+      "rendered": "\n<p>In the wake of previous failed fork listings on real crypto exchanges, and one good one, Chives is working with crypto exchange <a href=\"https://support.lbank.site/hc/en-gb/articles/4409330902297\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Lbank announces they will be listing Chives\">Lbank to get listed on their market</a>. The announcement focuses on the plans Chives has been up to over the past few months, which I have sadly not been keeping up with but I want to detail out here now.</p>\n\n\n\n<p>The exchange listing talks about having a token issuance and NFT issuance systems similar to Ethereum, which seem to be based on the CAT standard, and the NFT system appears to be Chives&#8217; own. It also talks about the Chives game which is coming. This is the part of Chives that really excites me, the idea that they are planning on having something fun to play using their currency as a case study for the utility that is possible.</p>\n\n\n\n<p>I have been talking to the <a href=\"https://thechiaplot.net/2021/08/30/something-is-going-on-with-chives-coin/\" title=\"Something is going on with Chives Coin\">Chives team for some time</a>, and don&#8217;t really know what to make of them. They run two blockchains, have gone to some effort to distinguish themselves from Chia and have made sure that co-farming Chia plots is impossible. They have a ton of ambitious plans, and are executing on some of them. <a href=\"https://www.reddit.com/r/chives/comments/qf8664/chives_pets_presale_will_start_from_01_november/\" target=\"_blank\" rel=\"noreferrer noopener\" title=\"Reddit threat on Chives pet sale\">The Chives pet sales</a> was a roaring success, even taking down their web host from what I am told. They run their own exchange, and a number of other tools for their community. I am told they have 5 full time employees as well as a number of contractors around the world, so this is not a small team.</p>\n\n\n\n<p>I am very curious about how this listing will go. With <a href=\"https://thechiaplot.net/2021/11/07/hddcoin-real-price-doubles-since-listing/\" title=\"HDDCoin \u201creal price\u201d doubles since listing\">HDD seemingly doing great</a> after their listing it might be a great time. I have never heard of Lbank before this, but they do seemingly exchange XCH as well as many other coins so I don&#8217;t know, maybe I will check it out, but my lack of knowledge about the crypto exchange space makes me hesitant to trust any of them. If you are in my shoes, you should likely hesitate with all of them as well and make sure you are only exposing yourself in a limited manner.</p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>In the wake of previous failed fork listings on real crypto exchanges, and one good one, Chives is working with crypto exchange Lbank to get listed on their market. The announcement focuses on the plans Chives has been up to over the past few months, which I have sadly not been keeping up with but&#8230;</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 1710,
+    "comment_status": "open",
+    "ping_status": "open",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "spay_email": ""
+    },
+    "categories": [5],
+    "tags": [6, 93, 105, 247],
+    "jetpack_featured_media_url": "https://thechiaplot.net/wp-content/uploads/2021/07/nick-chong-N__BnvQ_w18-unsplash-scaled-e1630663220443.jpg",
+    "jetpack-related-posts": [
+      {
+        "id": 3511,
+        "url": "https://thechiaplot.net/2021/09/19/the-current-state-of-chia-forks/",
+        "url_meta": {
+          "origin": 4465,
+          "position": 0
+        },
+        "title": "The current state of Chia Forks",
+        "date": "September 19, 2021",
+        "format": false,
+        "excerpt": "I have been covering Chia Forks since the first couple launched, Flax and ChainGreen. It has been an interesting journey, with a wide spectrum of folks launching their own coins based on Chia Network's code. Some of them, like Flax, did not monkey with consensus or make any changes, and\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "a few forks",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/09/anita-jankovic-c1hg-BHe8Uk-unsplash-scaled-e1632055924605.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 4519,
+        "url": "https://thechiaplot.net/2021/11/14/chia-news-of-the-week-nov-5-to-nov-14/",
+        "url_meta": {
+          "origin": 4465,
+          "position": 1
+        },
+        "title": "Chia News of the week &#8211; Nov 5 to Nov 14",
+        "date": "November 14, 2021",
+        "format": false,
+        "excerpt": "The last week has been fairly eventful for Chia Network and the farming community, so I thought I would a Chia News roundup post in case anyone missed anything. This is probably something I am going to start doing regularly on Sundays, so let me know if you think it\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "News",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/06/markus-winkler-aId-xYRTlEc-unsplash-scaled-e1630010362743.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 3196,
+        "url": "https://thechiaplot.net/2021/08/30/something-is-going-on-with-chives-coin/",
+        "url_meta": {
+          "origin": 4465,
+          "position": 2
+        },
+        "title": "Something is going on with Chives Coin",
+        "date": "August 30, 2021",
+        "format": false,
+        "excerpt": "Its a big sea of Chia forks out there, and it can be hard to stand out from the crowd. In a lot of people's minds, or at least mine, it really did seem like it was Flax then and everyone else. And the common wisdom was that changing the\u2026",
+        "rel": "",
+        "context": "In \"Chia\"",
+        "img": {
+          "alt_text": "Flowering Chives",
+          "src": "https://i1.wp.com/thechiaplot.net/wp-content/uploads/2021/08/laura-ockel-elHXyQZcm8c-unsplash-scaled-e1630317717908.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 618,
+        "url": "https://thechiaplot.net/2021/06/25/it-never-ends-a-new-fork-called-chives-is-launching-june-30th/",
+        "url_meta": {
+          "origin": 4465,
+          "position": 3
+        },
+        "title": "It never ends &#8211; a new fork called Chives is launching June 30th",
+        "date": "June 25, 2021",
+        "format": false,
+        "excerpt": "Another Chia fork, called Chives, is on the horizon again promising no pre-farm and no ICO. The gimmick that Chives is claiming is that they will be partially proof of stake for what they are calling \"master nodes\". This one seems a bit different and is bringing something original to\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/06/ben-lodge-1jowiwnmFKE-unsplash-scaled-e1630009468922.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 2541,
+        "url": "https://thechiaplot.net/2021/08/11/chives-coin-revisit-a-new-take-on-chia-forks/",
+        "url_meta": {
+          "origin": 4465,
+          "position": 4
+        },
+        "title": "Chives Coin revisit &#8211; A new take on Chia Forks",
+        "date": "August 11, 2021",
+        "format": false,
+        "excerpt": "So I have to be honest, I didn't really start to look into this until my site started to get a ton of search traffic for Chives. This is not normal. So I looked into what Chives has been up to, and it seems like they have taken a wildly\u2026",
+        "rel": "",
+        "context": "In &quot;News&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i2.wp.com/thechiaplot.net/wp-content/uploads/2021/06/ben-lodge-1jowiwnmFKE-unsplash-scaled-e1630009468922.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      },
+      {
+        "id": 809,
+        "url": "https://thechiaplot.net/2021/07/07/lets-talk-about-chia-forks/",
+        "url_meta": {
+          "origin": 4465,
+          "position": 5
+        },
+        "title": "Let&#8217;s talk about Chia Forks",
+        "date": "July 7, 2021",
+        "format": false,
+        "excerpt": "More and more Chia forks are popping up every day. We have Flax, which is still doing well and approaching 2 EiB in netspace. ChainGreen still seems to work for me. Spare, Chives, ChiaRose etc are not running in my lab anymore and I have no plans to move in\u2026",
+        "rel": "",
+        "context": "In &quot;Discussion&quot;",
+        "img": {
+          "alt_text": "",
+          "src": "https://i0.wp.com/thechiaplot.net/wp-content/uploads/2021/06/anita-jankovic-c1hg-BHe8Uk-unsplash-scaled-e1630010553337.jpg?resize=350%2C200&ssl=1",
+          "width": 350,
+          "height": 200
+        },
+        "classes": []
+      }
+    ],
+    "amp_enabled": true,
+    "_links": {
+      "self": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4465"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/comments?post=4465"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 3,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4465/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 4487,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/posts/4465/revisions/4487"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media/1710"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://thechiaplot.net/wp-json/wp/v2/media?parent=4465"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/categories?post=4465"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://thechiaplot.net/wp-json/wp/v2/tags?post=4465"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  }
+]

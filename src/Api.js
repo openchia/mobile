@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const REST_API = 'https://openchia.io/api/v1.0/';
+const CHIA_PLOT_REST_API = 'https://thechiaplot.net/wp-json/wp/v2/';
 
 export const getSpace = () =>
   fetch(`${REST_API}space?days=365`)
@@ -112,6 +113,19 @@ export const getPartialsFromID = (launcherID, timestamp) =>
     // `https://openchia.io/api/v1.0/partial/?ordering=-timestamp&min_timestamp=${timestamp}&launcher=${launcherID}/?format=json`
     // `https://openchia.io/api/v1.0/partial/?limit=200&offset=200`
   )
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json)
+    .catch((error) => {
+      console.log(error);
+    });
+
+export const getChiaPlotPosts = () =>
+  fetch(`${CHIA_PLOT_REST_API}posts`)
     .then((response) => {
       if (response.ok) {
         return response.json();
