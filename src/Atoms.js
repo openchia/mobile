@@ -36,6 +36,12 @@ export const launcherIDsState = atom({
   effects_UNSTABLE: [localForageEffect('launcherIDs')],
 });
 
+export const initialRouteState = atom({
+  key: 'atomInitialRoute',
+  default: 'Home',
+  effects_UNSTABLE: [localEffect('initialRouteName')],
+});
+
 export const themeState = atom({
   key: 'atomTheme',
   default: false,
@@ -101,5 +107,10 @@ export const farmerPayoutsRefreshState = atomFamily({
 
 export const farmerRefreshState = atomFamily({
   key: 'farmerRefreshState',
+  default: 0,
+});
+
+export const newsRefreshState = atomFamily({
+  key: 'newsRefreshState',
   default: 0,
 });

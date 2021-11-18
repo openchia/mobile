@@ -55,11 +55,13 @@ import PayoutScreen from './screens/PayoutScreen';
 import ScanScreen from './screens/ScanScreen';
 import FarmerScreen, { getHeaderTitle } from './screens/FarmerScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import { launcherIDsState, themeState } from './Atoms';
+import { initialRouteState, launcherIDsState, selectedMenuState, themeState } from './Atoms';
 import LanguageSelectorScreen from './screens/LanguageSelectorScreen';
 import CurrencySelectionScreen from './screens/CurrencySelectionScreen';
 import CustomDrawerContent from './components/CustomDrawerContent';
 import ChartsScreen from './screens/ChartsScreen';
+import NewsScreen from './screens/NewsScreen';
+import NewsPostScreen from './screens/NewsPostScreen';
 
 // LogBox.ignoreLogs(['Reanimated 2']);
 LogBox.ignoreLogs(['timer']);
@@ -136,7 +138,7 @@ const DarkTheme = {
   },
 };
 
-const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
+const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute }) => (
   <Drawer.Navigator
     drawerContent={(props) => (
       <CustomDrawerContent
@@ -146,7 +148,7 @@ const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
       />
     )}
     backBehavior="history"
-    initialRouteName="Home"
+    initialRouteName={initialRoute}
     // useLegacyImplementation
     screenOptions={{
       headerShown: true,
@@ -172,6 +174,7 @@ const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
     }}
   >
     <Drawer.Screen name="Home" component={HomeScreen} />
+    <Drawer.Screen name="News" component={NewsScreen} />
     <Drawer.Screen name="Stats" component={StatsScreen} />
     <Drawer.Screen name="Farmers" component={FarmersScreen} />
     <Drawer.Screen name="Blocks Found" component={BlocksFoundScreen} />
@@ -190,7 +193,7 @@ const Root = ({ theme, toggleTheme, launcherIDsArray }) => (
   </Drawer.Navigator>
 );
 
-const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark }) => (
+const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRoute }) => (
   // const isDrawerOpen = useDrawerStatus() === 'open';
   <NavigationContainer theme={theme}>
     <StatusBar
@@ -212,7 +215,14 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark }) => (
       }}
     >
       <Stack.Screen name="Root" options={{ headerShown: false }}>
-        {() => <Root theme={theme} toggleTheme={toggleTheme} launcherIDsArray={launcherIDsArray} />}
+        {() => (
+          <Root
+            theme={theme}
+            toggleTheme={toggleTheme}
+            launcherIDsArray={launcherIDsArray}
+            initialRoute={initialRoute}
+          />
+        )}
       </Stack.Screen>
       <Stack.Screen
         name="Farmer Details"
@@ -225,6 +235,7 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark }) => (
         })}
         // options={({ route, navigation }) => ({})}
       />
+      <Stack.Screen name="Post" component={NewsPostScreen} />
       <Stack.Screen name="Language" component={LanguageSelectorScreen} />
       <Stack.Screen name="Currency" component={CurrencySelectionScreen} />
     </Stack.Navigator>
@@ -235,6 +246,7 @@ const ApplicationNavigator = () => {
   // const launcherIDs = useRecoilValueLoadable(launcherIDsState);
   const isThemeDark = useRecoilValue(themeState);
   const launcherIDs = useRecoilValue(launcherIDsState);
+  const initialRoute = useRecoilValue(initialRouteState);
 
   useEffect(() => {
     SplashScreen.hide();
@@ -257,7 +269,12 @@ const ApplicationNavigator = () => {
       <SafeAreaProvider style={{ backgroundColor: theme.colors.background }}>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <PaperProvider theme={theme}>
-            <AppRoot theme={theme} launcherIDsArray={launcherIDsArray} isThemeDark={isThemeDark} />
+            <AppRoot
+              theme={theme}
+              launcherIDsArray={launcherIDsArray}
+              isThemeDark={isThemeDark}
+              initialRoute={initialRoute}
+            />
           </PaperProvider>
         </GestureHandlerRootView>
       </SafeAreaProvider>

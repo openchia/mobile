@@ -6,11 +6,11 @@ import { Divider, Drawer, Switch, Text, TouchableRipple, useTheme } from 'react-
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwsomeIcons from 'react-native-vector-icons/FontAwesome';
 import { useTranslation } from 'react-i18next';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import CustomDrawerSection from './CustomDrawerSection';
 import ThemeContext from '../contexts/ThemeContext';
 import { getFarmer } from '../Api';
-import { themeState } from '../Atoms';
+import { initialRouteState, themeState } from '../Atoms';
 import OpenChiaIcon from '../images/OpenChiaIcon';
 import OpenChiaIconWithText from '../images/OpenChiaIconWithText';
 
@@ -20,9 +20,15 @@ const CustomDrawerContent = (props) => {
   const { t } = useTranslation();
 
   const [isThemeDark, setIsThemeDark] = useRecoilState(themeState);
+  const setIntialRoute = useSetRecoilState(initialRouteState);
 
   const toggleTheme = () => {
     setIsThemeDark(!isThemeDark);
+  };
+
+  const onPress = (location) => {
+    navigation.navigate(location);
+    setIntialRoute(location);
   };
 
   const font = theme.fonts.medium;
@@ -69,7 +75,7 @@ const CustomDrawerContent = (props) => {
         <CustomDrawerSection>
           <DrawerItem
             label={t('navigate:home')}
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => onPress('Home')}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons
@@ -80,8 +86,16 @@ const CustomDrawerContent = (props) => {
             )}
           />
           <DrawerItem
+            label={t('navigate:news')}
+            onPress={() => onPress('News')}
+            labelStyle={{ color: theme.colors.textGrey }}
+            icon={({ color, size }) => (
+              <MaterialCommunityIcons name="newspaper" size={size} color={theme.colors.textGrey} />
+            )}
+          />
+          <DrawerItem
             label={t('navigate:stats')}
-            onPress={() => navigation.navigate('Stats')}
+            onPress={() => onPress('Stats')}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="finance" size={size} color={theme.colors.textGrey} />
@@ -89,7 +103,7 @@ const CustomDrawerContent = (props) => {
           />
           <DrawerItem
             label="Charts"
-            onPress={() => navigation.navigate('Charts')}
+            onPress={() => onPress('Charts')}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons
@@ -101,7 +115,7 @@ const CustomDrawerContent = (props) => {
           />
           <DrawerItem
             label={t('navigate:farmers')}
-            onPress={() => navigation.navigate('Farmers')}
+            onPress={() => onPress('Farmers')}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="silo" size={size} color={theme.colors.textGrey} />
@@ -109,7 +123,7 @@ const CustomDrawerContent = (props) => {
           />
           <DrawerItem
             label={t('navigate:blocksFound')}
-            onPress={() => navigation.navigate('Blocks Found')}
+            onPress={() => onPress('Blocks Found')}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons
@@ -121,7 +135,7 @@ const CustomDrawerContent = (props) => {
           />
           <DrawerItem
             label={t('navigate:payouts')}
-            onPress={() => navigation.navigate('Payouts')}
+            onPress={() => onPress('Payouts')}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons
@@ -139,10 +153,10 @@ const CustomDrawerContent = (props) => {
               key={item.name}
               label={item.value ? item.value : item.name}
               onPress={() => {
-                navigation.navigate({ name: 'Farmer Details', params: { launcherId: item.name } });
+                onPress({ name: 'Farmer Details', params: { launcherId: item.name } });
                 // getFarmer(item.name)
                 //   .then((data) => {
-                //     navigation.navigate({ name: 'Farmer Details', params: { item: data } });
+                //     onPress({ name: 'Farmer Details', params: { item: data } });
                 //   })
                 //   .catch((error) => console.log(error));
               }}
@@ -153,7 +167,7 @@ const CustomDrawerContent = (props) => {
           ))}
           <DrawerItem
             label={t('navigate:launcherID')}
-            onPress={() => navigation.navigate('Scan Launcher ID')}
+            onPress={() => onPress('Scan Launcher ID')}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="plus" size={size} color={theme.colors.textGrey} />
@@ -178,7 +192,7 @@ const CustomDrawerContent = (props) => {
           </TouchableRipple>
           {/* <DrawerItem
             label="Dark Theme"
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => onPress('Home')}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="cog" size={size} color={theme.colors.textGrey} />
@@ -188,7 +202,7 @@ const CustomDrawerContent = (props) => {
         <CustomDrawerSection showDivider={false}>
           <DrawerItem
             label={t('navigate:settings')}
-            onPress={() => navigation.navigate('Settings')}
+            onPress={() => onPress('Settings')}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="cog" size={size} color={theme.colors.textGrey} />
