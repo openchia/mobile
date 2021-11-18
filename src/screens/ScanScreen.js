@@ -4,10 +4,16 @@ import { AppRegistry, StyleSheet, Text, TouchableOpacity, Linking } from 'react-
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
+import { getObject, saveObject } from '../utils/Utils';
+import { postFCMToken } from '../Api';
 
 const ScanScreen = () => {
   const onSuccess = (e) => {
-    console.log(e.data);
+    // saveObject('tokens');
+    // getObject('fcm').then((token) => {
+    //   // console.log(e.data, token);
+    //   postFCMToken(e.data, token).then((data) => console.log(data));
+    // });
   };
 
   return (

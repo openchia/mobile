@@ -10,22 +10,24 @@ import {
   Image,
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
-
-const tagsStyles = {
-  p: {
-    // color: 'green',
-  },
-  a: {
-    color: 'green',
-  },
-  span: {
-    fontSize: 12,
-  },
-};
+import { useTheme } from 'react-native-paper';
 
 const NewsPostScreen = ({ navigation, route }) => {
   const { post } = route.params;
   const { width } = useWindowDimensions();
+
+  const theme = useTheme();
+  const tagsStyles = {
+    body: {
+      color: theme.colors.text,
+    },
+    a: {
+      color: 'green',
+    },
+    span: {
+      fontSize: 12,
+    },
+  };
   return (
     <ScrollView contentContainerStyle={{ margin: 8 }}>
       <Image
@@ -37,6 +39,7 @@ const NewsPostScreen = ({ navigation, route }) => {
       <View style={{ alignItems: 'center' }}>
         <RenderHtml
           contentWidth={width}
+          tagsStyles={tagsStyles}
           source={{ html: `<h2><strong>${post.title.rendered}</strong></h2>` }}
         />
         <RenderHtml

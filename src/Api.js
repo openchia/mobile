@@ -136,3 +136,24 @@ export const getChiaPlotPosts = () =>
     .catch((error) => {
       console.log(error);
     });
+
+export const postFCMToken = (launcherToken, FCMToken) => {
+  console.log(`${REST_API}launcher/${launcherToken}`);
+  return fetch(`${REST_API}launcher/${launcherToken}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      fcm_token: FCMToken,
+    }),
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log('worked');
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json)
+    .catch((error) => {
+      console.log(error);
+    });
+};

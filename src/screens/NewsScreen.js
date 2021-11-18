@@ -9,8 +9,8 @@ import {
   useWindowDimensions,
   RefreshControl,
 } from 'react-native';
-import { Text } from 'react-native-paper';
-import RenderHtml from 'react-native-render-html';
+import { Text, useTheme } from 'react-native-paper';
+import RenderHtml, { HTMLElementModel, HTMLContentModel } from 'react-native-render-html';
 import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { getChiaPlotPosts } from '../Api';
 import { newsRefreshState } from '../Atoms';
@@ -36,49 +36,73 @@ const query = selectorFamily({
     },
 });
 
-const tagsStyles = {
-  p: {
-    // color: 'green',
-    fontSize: 12,
-  },
-};
+const Item = ({ item, width, onPress }) => {
+  const theme = useTheme();
+  const tagsStyles = {
+    body: {
+      color: theme.colors.text,
+    },
+    p: {
+      fontSize: 12,
+    },
+    h2: {
+      fontSize: 14,
+    },
+  };
 
-const Item = ({ item, width, onPress }) => (
-  <PressableCard onPress={onPress}>
-    <View
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        paddingTop: 12,
-        paddingBottom: 12,
-        paddingStart: 12,
-        paddingEnd: 12,
-      }}
-    >
-      <Image
-        style={{ height: 200, width: '100%', borderRadius: 6 }}
-        source={{
-          uri: item.jetpack_featured_media_url,
+  // const customHTMLElementModels = {
+  //   'blue-circle': HTMLElementModel.fromCustomModel({
+  //     tagName: 'blue-circle',
+  //     mixedUAStyles: {
+  //       width: 50,
+  //       height: 50,
+  //       borderRadius: 25,
+  //       alignSelf: 'center',
+  //       backgroundColor: 'blue',
+  //     },
+  //     contentModel: HTMLContentModel.block,
+  //   }),
+  // };
+
+  return (
+    <PressableCard onPress={onPress}>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          paddingTop: 12,
+          paddingBottom: 12,
+          paddingStart: 12,
+          paddingEnd: 12,
         }}
-      />
-      <View style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingTop: 12 }}>
-        <RenderHtml
-          contentWidth={width}
-          source={{ html: `<strong>${item.title.rendered}</strong>` }}
+      >
+        <Image
+          style={{ height: 200, width: '100%', borderRadius: 6 }}
+          source={{
+            uri: item.jetpack_featured_media_url,
+          }}
         />
-        <View style={{ flex: 1 }}>
+        <View style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingTop: 12 }}>
           <RenderHtml
-            enableCSSInlineProcessing
             tagsStyles={tagsStyles}
             contentWidth={width}
-            source={{ html: item.excerpt.rendered }}
+            // customHTMLElementModels={customHTMLElementModels}
+            source={{ html: `<h2><strong>${item.title.rendered}</strong></h2>` }}
           />
+          <View style={{ flex: 1 }}>
+            <RenderHtml
+              enableCSSInlineProcessing
+              tagsStyles={tagsStyles}
+              contentWidth={width}
+              source={{ html: item.excerpt.rendered }}
+            />
+          </View>
+          <Text style={styles.date}>{format(new Date(item.modified), 'PP')}</Text>
         </View>
-        <Text style={styles.date}>{format(new Date(item.modified), 'PP')}</Text>
       </View>
-    </View>
-  </PressableCard>
-);
+    </PressableCard>
+  );
+};
 
 const Content = ({ navigation }) => {
   const { width } = useWindowDimensions();
