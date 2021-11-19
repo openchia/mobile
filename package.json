@@ -59,7 +59,8 @@
     "react-native-wagmi-charts": "^1.8.0",
     "recoil": "^0.4.1",
     "recyclerlistview": "^3.0.5",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "victory-native": "^36.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

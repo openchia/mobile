@@ -39,6 +39,7 @@ import { getCurrencyFromKey } from './CurrencySelectionScreen';
 import FarmerStatsScreen from './FarmerStatsScreen';
 import FarmerPayoutScreen from './FarmerPayoutScreen';
 import FarmerBlockScreen from './FarmerBlocksScreen';
+import FarmerPartialScreen from './FarmerPartialScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -135,7 +136,7 @@ const FarmerScreen = ({ route, navigation }) => {
       >
         {() => <FarmerStatsScreen launcherId={launcherId} dataLoadable={dataLoadable} />}
       </Tab.Screen>
-      {/* <Tab.Screen
+      <Tab.Screen
         options={{
           style: {
             backgroundColor: 'red',
@@ -145,9 +146,10 @@ const FarmerScreen = ({ route, navigation }) => {
             <MaterialCommunityIcons name="chart-areaspline-variant" size={24} color="white" />
           ),
         }}
-        name="Settings"
-        component={FarmerGraphScreen}
-      /> */}
+        name="Partial Chart"
+      >
+        {() => <FarmerPartialScreen launcherId={launcherId} dataLoadable={dataLoadable} />}
+      </Tab.Screen>
       <Tab.Screen
         options={{
           style: {
