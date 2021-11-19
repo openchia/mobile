@@ -111,7 +111,7 @@ const Content = ({ data }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignContent: 'center', justifyContent: 'center', flex: 1 }}>
-        <TestStackedBarChart data={testData} height={250} keys={keys} colors={colors}/>
+        <TestStackedBarChart data={testData} height={250} keys={keys} colors={colors} />
         {/* <StackedBarChart
           // style={{ height: 250 }}
           height={250}
@@ -123,7 +123,7 @@ const Content = ({ data }) => {
           // contentInset={{ top: 30, bottom: 30 }}
         /> */}
       </View>
-      <CustomCard style={{ marginTop: 16 }}>
+      {/* <CustomCard style={{ marginTop: 16 }}>
         <View style={styles.selection}>
           <View
             style={[StyleSheet.absoluteFill, { marginTop: 4, marginBottom: 4, marginStart: 4 }]}
@@ -156,7 +156,7 @@ const Content = ({ data }) => {
             </TouchableWithoutFeedback>
           ))}
         </View>
-      </CustomCard>
+      </CustomCard> */}
     </SafeAreaView>
   );
 };

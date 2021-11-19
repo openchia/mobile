@@ -55,7 +55,7 @@ import PayoutScreen from './screens/PayoutScreen';
 import ScanScreen from './screens/ScanScreen';
 import FarmerScreen, { getHeaderTitle } from './screens/FarmerScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import { initialRouteState, launcherIDsState, selectedMenuState, themeState } from './Atoms';
+import { initialRouteState, launcherIDsState, settingsState } from './Atoms';
 import LanguageSelectorScreen from './screens/LanguageSelectorScreen';
 import CurrencySelectionScreen from './screens/CurrencySelectionScreen';
 import CustomDrawerContent from './components/CustomDrawerContent';
@@ -184,8 +184,8 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute }) => (
     {/* <Divider /> */}
     {launcherIDsArray.map((item) => (
       <Drawer.Screen
-        key={item.value}
-        name={item.value ? item.value : item.name}
+        key={item.name}
+        name={item.name ? item.name : item.value.name}
         component={FarmerScreen}
       />
     ))}
@@ -244,7 +244,7 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRou
 const ApplicationNavigator = () => {
   // const isThemeDark = useRecoilValueLoadable(themeState);
   // const launcherIDs = useRecoilValueLoadable(launcherIDsState);
-  const isThemeDark = useRecoilValue(themeState);
+  const settings = useRecoilValue(settingsState);
   const launcherIDs = useRecoilValue(launcherIDsState);
   const initialRoute = useRecoilValue(initialRouteState);
 
@@ -262,7 +262,7 @@ const ApplicationNavigator = () => {
   // const theme = isThemeDark.contents ? DarkTheme : LightTheme;
 
   const launcherIDsArray = Array.from(launcherIDs, ([name, value]) => ({ name, value }));
-  const theme = isThemeDark ? DarkTheme : LightTheme;
+  const theme = settings.isThemeDark ? DarkTheme : LightTheme;
 
   return (
     <ToastProvider>
@@ -272,7 +272,7 @@ const ApplicationNavigator = () => {
             <AppRoot
               theme={theme}
               launcherIDsArray={launcherIDsArray}
-              isThemeDark={isThemeDark}
+              isThemeDark={settings.isThemeDark}
               initialRoute={initialRoute}
             />
           </PaperProvider>

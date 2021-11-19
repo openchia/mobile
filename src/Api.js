@@ -137,17 +137,19 @@ export const getChiaPlotPosts = () =>
       console.log(error);
     });
 
-export const postFCMToken = (launcherToken, FCMToken) => {
-  console.log(`${REST_API}launcher/${launcherToken}`);
-  return fetch(`${REST_API}launcher/${launcherToken}`, {
+export const getLauncherIDFromToken = (token) =>
+  fetch(`${REST_API}login_qr`, {
     method: 'POST',
     body: JSON.stringify({
-      fcm_token: FCMToken,
+      token,
     }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
   })
     .then((response) => {
       if (response.ok) {
-        console.log('worked');
         return response.json();
       }
       throw Error(response.statusText);
@@ -156,4 +158,26 @@ export const postFCMToken = (launcherToken, FCMToken) => {
     .catch((error) => {
       console.log(error);
     });
-};
+
+export const updateFCMToken = (launcherID, token, FCMToken) =>
+  fetch(`${REST_API}launcher/${launcherID}/`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      fcm_token: FCMToken,
+    }),
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json)
+    .catch((error) => {
+      console.log(error);
+    });

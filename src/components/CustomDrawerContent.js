@@ -4,26 +4,46 @@ import React, { useCallback, useContext, useState } from 'react';
 import { StyleSheet, View, Image, SafeAreaView, Platform } from 'react-native';
 import { Divider, Drawer, Switch, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwsomeIcons from 'react-native-vector-icons/FontAwesome';
 import { useTranslation } from 'react-i18next';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import CustomDrawerSection from './CustomDrawerSection';
 import ThemeContext from '../contexts/ThemeContext';
-import { getFarmer } from '../Api';
-import { initialRouteState, themeState } from '../Atoms';
+import { getFarmer, updateFCMToken } from '../Api';
+import { initialRouteState, settingsState } from '../Atoms';
 import OpenChiaIcon from '../images/OpenChiaIcon';
 import OpenChiaIconWithText from '../images/OpenChiaIconWithText';
+import { getObject } from '../utils/Utils';
 
 const CustomDrawerContent = (props) => {
   const { navigation, launcherIDsArray } = props;
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const [isThemeDark, setIsThemeDark] = useRecoilState(themeState);
+  const [settings, setSettings] = useRecoilState(settingsState);
   const setIntialRoute = useSetRecoilState(initialRouteState);
 
   const toggleTheme = () => {
-    setIsThemeDark(!isThemeDark);
+    setSettings((prev) => ({ ...prev, isThemeDark: !prev.isThemeDark }));
+  };
+
+  const toggleNotifications = () => {
+    if (launcherIDsArray.length > 0) {
+      getObject('fcm').then((FCMToken) => {
+        launcherIDsArray.forEach((element) => {
+          // console.log(element);
+          updateFCMToken(
+            element.name,
+            element.value.token,
+            !settings.notifications ? FCMToken : null
+          ).then((data) => {
+            console.log(`Successfully set notifications to: ${!settings.notifications}\n`, data);
+          });
+        });
+      });
+    }
+    setSettings((prev) => ({ ...prev, notifications: !prev.notifications }));
   };
 
   const onPress = (location) => {
@@ -45,7 +65,7 @@ const CustomDrawerContent = (props) => {
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
+          backgroundColor: settings.isThemeDark ? theme.colors.primary : theme.colors.primary,
           paddingTop: Platform.OS === 'ios' ? 48 : 0,
           paddingLeft: 12,
           height: Platform.OS === 'ios' ? 120 : 72,
@@ -151,7 +171,7 @@ const CustomDrawerContent = (props) => {
             <DrawerItem
               labelStyle={{ color: theme.colors.textGrey }}
               key={item.name}
-              label={item.value ? item.value : item.name}
+              label={item.value.name ? item.value.name : item.name}
               onPress={() => {
                 onPress({ name: 'Farmer Details', params: { launcherId: item.name } });
                 // getFarmer(item.name)
@@ -186,7 +206,7 @@ const CustomDrawerContent = (props) => {
                 {t('navigate:darkMode')}
               </Text>
               <View pointerEvents="none">
-                <Switch value={isThemeDark} />
+                <Switch value={settings.isThemeDark} />
               </View>
             </View>
           </TouchableRipple>
@@ -198,6 +218,17 @@ const CustomDrawerContent = (props) => {
               <MaterialCommunityIcons name="cog" size={size} color={theme.colors.textGrey} />
             )}
           /> */}
+          <TouchableRipple onPress={() => toggleNotifications()}>
+            <View style={styles.preference}>
+              <Ionicons name="notifications" size={24} color={theme.colors.textGrey} />
+              <Text style={{ color: theme.colors.textGrey, flex: 1, marginStart: 32 }}>
+                {t('navigate:notifications')}
+              </Text>
+              <View pointerEvents="none">
+                <Switch value={settings.notifications} />
+              </View>
+            </View>
+          </TouchableRipple>
         </CustomDrawerSection>
         <CustomDrawerSection showDivider={false}>
           <DrawerItem

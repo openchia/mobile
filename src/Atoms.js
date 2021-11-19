@@ -16,6 +16,21 @@ const localForageEffect =
     });
   };
 
+const localTokenEffect =
+  (key) =>
+  ({ setSelf, onSet }) => {
+    setSelf(
+      getObject(key).then(
+        (savedValue) =>
+          savedValue != null ? new Set(Object.entries(savedValue)) : new DefaultValue() // Abort initialization if no value was stored
+      )
+    );
+
+    onSet((newValue) => {
+      saveObject(key, newValue);
+    });
+  };
+
 const localEffect =
   (key) =>
   ({ setSelf, onSet }) => {
@@ -36,16 +51,22 @@ export const launcherIDsState = atom({
   effects_UNSTABLE: [localForageEffect('launcherIDs')],
 });
 
+export const tokensState = atom({
+  key: 'atomTokens',
+  default: new Set(),
+  effects_UNSTABLE: [localTokenEffect('tokens')],
+});
+
 export const initialRouteState = atom({
   key: 'atomInitialRoute',
   default: 'Home',
   effects_UNSTABLE: [localEffect('initialRouteName')],
 });
 
-export const themeState = atom({
+export const settingsState = atom({
   key: 'atomTheme',
-  default: false,
-  effects_UNSTABLE: [localEffect('theme')],
+  default: { isThemeDark: false, notifications: true },
+  effects_UNSTABLE: [localEffect('settings')],
 });
 
 export const currencyState = atom({

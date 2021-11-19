@@ -18,7 +18,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useDrawerStatus } from '@react-navigation/drawer';
 import LoadingComponent from '../components/LoadingComponent';
 import CustomCard from '../components/CustomCard';
-import { themeState } from '../Atoms';
+import { settingsState } from '../Atoms';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 const Item = ({ title, value, color }) => {
@@ -112,7 +112,7 @@ const URLImageButton = ({ url, icon }) => {
 const HomeScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const isThemeDark = useRecoilValue(themeState);
+  const settings = useRecoilValue(settingsState);
   // const isDrawerOpen = useDrawerStatus() === 'open';
 
   // useEffect(
@@ -124,7 +124,7 @@ const HomeScreen = ({ navigation }) => {
   //   [isDrawerOpen]
   // );
 
-  const fill = isThemeDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+  const fill = settings.isThemeDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -133,7 +133,7 @@ const HomeScreen = ({ navigation }) => {
       headerStyle: {
         elevation: 0,
         shadowOpacity: 0,
-        backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primaryLight,
+        backgroundColor: settings.isThemeDark ? theme.colors.primary : theme.colors.primaryLight,
       },
       headerRight: (props) => (
         <View
@@ -161,13 +161,13 @@ const HomeScreen = ({ navigation }) => {
         </View>
       ),
     });
-  }, [navigation, isThemeDark]);
+  }, [navigation, settings.isThemeDark]);
 
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primaryLight,
+        backgroundColor: settings.isThemeDark ? theme.colors.primary : theme.colors.primaryLight,
       }}
     >
       <SafeAreaView style={{ flex: 1 }}>
@@ -189,7 +189,7 @@ const HomeScreen = ({ navigation }) => {
               height="1920"
               x="0"
               y="0"
-              fill={isThemeDark ? theme.colors.primary : theme.colors.primaryLight}
+              fill={settings.isThemeDark ? theme.colors.primary : theme.colors.primaryLight}
             />
             <Path
               d="M658.97,989.433C736.342,991.425,806.989,949.728,848.421,884.353C893.26,813.602,916.749,722.844,873.314,651.222C830.977,581.411,740.476,567.181,658.97,571.96C586.768,576.194,520.048,611.253,484.149,674.041C448.509,736.375,450.887,812.212,485.697,875.013C521.662,939.896,584.811,987.523,658.97,989.433"

@@ -28,12 +28,12 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { Button, IconButton, Text } from 'react-native-paper';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { useLayoutEffect } from 'react';
-import { getFarmers, getPartialsFromID, getFarmer, getStats } from '../Api';
+import { getFarmers, getPartialsFromID, getFarmer, getStats, updateFCMToken } from '../Api';
 import { formatBytes, formatPrice } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
 import FarmerGraphScreen from './FarmerGraphScreen';
-import { saveObject } from '../utils/Utils';
-import { currencyState, farmerRefreshState, launcherIDsState } from '../Atoms';
+import { getObject, saveObject } from '../utils/Utils';
+import { currencyState, farmerRefreshState, launcherIDsState, settingsState } from '../Atoms';
 import CustomCard from '../components/CustomCard';
 import { getCurrencyFromKey } from './CurrencySelectionScreen';
 import FarmerStatsScreen from './FarmerStatsScreen';
@@ -82,6 +82,7 @@ export const getHeaderTitle = (route) => {
 
 const FarmerScreen = ({ route, navigation }) => {
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
+  // const settings = useRecoilValue(settingsState);
   const { launcherId, name } = route.params;
   const dataLoadable = useRecoilValueLoadable(query(launcherId));
 
@@ -106,12 +107,22 @@ const FarmerScreen = ({ route, navigation }) => {
               if (launcherIDs.has(launcherId)) {
                 setLauncherIDs((prev) => {
                   const newState = new Map(prev);
+                  const launcherData = prev.get(launcherId);
+                  updateFCMToken(launcherId, launcherData.token, null).then((data) => {
+                    console.log(`Successfully removed FCM Token for launcher ${launcherData.name}`);
+                  });
                   newState.delete(launcherId);
+                  // getObject('fcm').then((FCMToken) => {
+                  //   // console.log(element);
+                  //   // updateFCMToken(launcherId, launcherData.value.token, null).then((data) => {
+                  //   //   console.log(data);
+                  //   // });
+                  // });
                   return newState;
                 });
                 navigation.goBack();
               } else {
-                setLauncherIDs((prev) => new Map(prev.set(launcherId, name)));
+                setLauncherIDs((prev) => new Map(prev.set(launcherId, { name })));
               }
             }}
           />

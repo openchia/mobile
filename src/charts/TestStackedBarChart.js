@@ -19,14 +19,6 @@ const TestStackedBarChart = ({ data, height, keys, colors }) => {
   const current = useSharedValue(0);
   const transition = useSharedValue(0);
 
-  const animatedProps = useAnimatedProps(() => {
-    const previousPath = graphs[previous.value].data.path;
-    const currentPath = graphs[current.value].data.path;
-    return {
-      d: mixPath(transition.value, previousPath, currentPath),
-    };
-  });
-
   const valueAccessor = ({ item, key }) => item[key];
 
   const series = shape
@@ -79,19 +71,14 @@ const TestStackedBarChart = ({ data, height, keys, colors }) => {
           const { svg } = data[keyIndex][bar.key];
 
           return (
-            <AnimatedPath
-              animatedProps={animatedProps}
-              {...svg}
-              fill={bar.color}
-              // stroke="black"
-              // strokeWidth={3}
-            />
-            // <Path
-            //   key={key}
-            //   fill={bar.color}
+            // <AnimatedPath
+            //   animatedProps={animatedProps}
             //   {...svg}
-            //   d={bar.path}
+            //   fill={bar.color}
+            //   // stroke="black"
+            //   // strokeWidth={3}
             // />
+            <Path key={key} fill={bar.color} {...svg} d={bar.path} />
           );
         })}
       </Svg>
