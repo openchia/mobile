@@ -36,7 +36,7 @@ const ScanScreen = ({ navigation }) => {
     const token = e.data;
     setTokens((prev) => new Set(prev.add(token)));
     getLauncherIDFromToken(token).then((data) => {
-      setLauncherIDs((prev) => new Map(prev.set(data.launcher_id, { name: 'Nusskefer', token })));
+      setLauncherIDs((prev) => new Map(prev.set(data.launcher_id, { name: null, token })));
       if (settings.notifications) {
         getObject('fcm').then((FCMToken) => {
           updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
@@ -57,7 +57,10 @@ const ScanScreen = ({ navigation }) => {
 
   return (
     <QRCodeScanner
+      reactivate
       ref={scanner}
+      onRead={onSuccess}
+      reactivateTimeout={2000}
       cameraProps={{ ratio: '1:1' }}
       showMarker
       topContent={
