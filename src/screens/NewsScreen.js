@@ -1,16 +1,16 @@
 import { format } from 'date-fns';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense } from 'react';
 import {
-  SafeAreaView,
   FlatList,
-  View,
   Image,
+  RefreshControl,
+  SafeAreaView,
   StyleSheet,
   useWindowDimensions,
-  RefreshControl,
+  View,
 } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import RenderHtml, { HTMLElementModel, HTMLContentModel } from 'react-native-render-html';
+import RenderHtml from 'react-native-render-html';
 import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { getChiaPlotPosts } from '../Api';
 import { newsRefreshState } from '../Atoms';

@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ActivityIndicator, FlatList, View, StyleSheet } from 'react-native';
+import React from 'react';
+import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useRecoilState } from 'recoil';
-import { getNetspace } from '../Api';
-import LoadingComponent from '../components/LoadingComponent';
-import CustomCard from '../components/CustomCard';
 import { currencyState } from '../Atoms';
 import PressableCard from '../components/PressableCard';
 

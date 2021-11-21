@@ -1,20 +1,17 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
-import React, { useCallback, useContext, useState } from 'react';
-import { StyleSheet, View, Image, SafeAreaView, Platform } from 'react-native';
-import { Divider, Drawer, Switch, Text, TouchableRipple, useTheme } from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwsomeIcons from 'react-native-vector-icons/FontAwesome';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Platform, StyleSheet, View } from 'react-native';
+import { Switch, Text, TouchableRipple, useTheme } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import CustomDrawerSection from './CustomDrawerSection';
-import ThemeContext from '../contexts/ThemeContext';
-import { getFarmer, updateFCMToken } from '../Api';
+import { updateFCMToken } from '../Api';
 import { initialRouteState, settingsState } from '../Atoms';
-import OpenChiaIcon from '../images/OpenChiaIcon';
 import OpenChiaIconWithText from '../images/OpenChiaIconWithText';
 import { getObject } from '../utils/Utils';
+import CustomDrawerSection from './CustomDrawerSection';
 
 const CustomDrawerContent = (props) => {
   const { navigation, launcherIDsArray } = props;
@@ -95,110 +92,109 @@ const CustomDrawerContent = (props) => {
         <CustomDrawerSection>
           <DrawerItem
             label={t('navigate:home')}
-            onPress={() => onPress('Home')}
+            onPress={() => onPress(t('navigate:home'))}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons
-                name="home-outline"
-                size={size}
-                color={theme.colors.textGrey}
-              />
+              <Ionicons name="ios-home-outline" size={size} color={theme.colors.textGrey} />
             )}
           />
           <DrawerItem
             label={t('navigate:news')}
-            onPress={() => onPress('News')}
+            onPress={() => onPress(t('navigate:news'))}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="newspaper" size={size} color={theme.colors.textGrey} />
+              <Ionicons name="ios-newspaper-outline" size={size} color={theme.colors.textGrey} />
             )}
           />
           <DrawerItem
             label={t('navigate:stats')}
-            onPress={() => onPress('Stats')}
+            onPress={() => onPress(t('navigate:stats'))}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="finance" size={size} color={theme.colors.textGrey} />
+              <Ionicons name="document-text-outline" size={size} color={theme.colors.textGrey} />
             )}
           />
           <DrawerItem
-            label="Charts"
-            onPress={() => onPress('Charts')}
+            label={t('navigate:charts')}
+            onPress={() => onPress(t('navigate:charts'))}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons
-                name="chart-areaspline"
-                size={size}
-                color={theme.colors.textGrey}
-              />
+              <Ionicons name="stats-chart-outline" size={size} color={theme.colors.textGrey} />
             )}
           />
           <DrawerItem
             label={t('navigate:farmers')}
-            onPress={() => onPress('Farmers')}
+            onPress={() => onPress(t('navigate:farmers'))}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="silo" size={size} color={theme.colors.textGrey} />
+              <Ionicons name="ios-people-outline" size={size} color={theme.colors.textGrey} />
             )}
           />
           <DrawerItem
             label={t('navigate:blocksFound')}
-            onPress={() => onPress('Blocks Found')}
+            onPress={() => onPress(t('navigate:blocksFound'))}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons
-                name="shape-square-plus"
-                size={size}
-                color={theme.colors.textGrey}
-              />
+              <Ionicons name="layers-outline" size={size} color={theme.colors.textGrey} />
             )}
           />
           <DrawerItem
             label={t('navigate:payouts')}
-            onPress={() => onPress('Payouts')}
+            onPress={() => onPress(t('navigate:payouts'))}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons
-                name="cash-multiple"
-                size={size}
-                color={theme.colors.textGrey}
-              />
+              <Ionicons name="ios-card-outline" size={size} color={theme.colors.textGrey} />
+            )}
+          />
+          <DrawerItem
+            label={t('navigate:verifyFarm')}
+            onPress={() => onPress(t('navigate:verifyFarm'))}
+            labelStyle={{ color: theme.colors.textGrey }}
+            icon={({ color, size }) => (
+              <Ionicons name="qr-code-outline" size={size} color={theme.colors.textGrey} />
             )}
           />
         </CustomDrawerSection>
-        <CustomDrawerSection title="Launcher ID's">
+        <CustomDrawerSection title={t('navigate:farms')}>
           {launcherIDsArray.map((item) => (
-            <DrawerItem
-              labelStyle={{ color: theme.colors.textGrey }}
+            <TouchableRipple
               key={item.name}
-              label={item.value.name ? item.value.name : item.name}
-              onPress={() => {
-                onPress({ name: 'Farmer Details', params: { launcherId: item.name } });
-                // getFarmer(item.name)
-                //   .then((data) => {
-                //     onPress({ name: 'Farmer Details', params: { item: data } });
-                //   })
-                //   .catch((error) => console.log(error));
-              }}
-              icon={({ color, size }) => (
-                <MaterialCommunityIcons name="silo" size={size} color={theme.colors.textGrey} />
-              )}
-            />
+              onPress={() => onPress({ name: 'Farmer Details', params: { launcherId: item.name } })}
+            >
+              <View style={styles.preference}>
+                <Ionicons name="ios-person-outline" size={24} color={theme.colors.textGrey} />
+                <Text
+                  numberOfLines={1}
+                  style={{ color: theme.colors.textGrey, flex: 1, marginStart: 32 }}
+                >
+                  {item.value.name ? item.value.name : item.name}
+                </Text>
+                <MaterialIcons name="verified" size={24} color={theme.colors.textGrey} />
+              </View>
+            </TouchableRipple>
+            // <DrawerItem
+            //   labelStyle={{ color: theme.colors.textGrey }}
+            //   key={item.name}
+            //   label={item.value.name ? item.value.name : item.name}
+            // onPress={() => {
+            //   onPress({ name: 'Farmer Details', params: { launcherId: item.name } });
+            //   // getFarmer(item.name)
+            //   //   .then((data) => {
+            //   //     onPress({ name: 'Farmer Details', params: { item: data } });
+            //   //   })
+            //   //   .catch((error) => console.log(error));
+            // }}
+            //   icon={({ color, size }) => (
+            //     <MaterialCommunityIcons name="silo" size={size} color={theme.colors.textGrey} />
+            //   )}
+            // />
           ))}
-          <DrawerItem
-            label={t('navigate:launcherID')}
-            onPress={() => onPress('Scan Launcher ID')}
-            labelStyle={{ color: theme.colors.textGrey }}
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons name="plus" size={size} color={theme.colors.textGrey} />
-            )}
-          />
         </CustomDrawerSection>
         <CustomDrawerSection label="Preferences">
           <TouchableRipple onPress={() => toggleTheme()}>
             <View style={styles.preference}>
-              <MaterialCommunityIcons
-                name="theme-light-dark"
+              <Ionicons
+                name={settings.isThemeDark ? 'ios-moon-outline' : 'ios-sunny-outline'}
                 size={24}
                 color={theme.colors.textGrey}
               />
@@ -220,7 +216,7 @@ const CustomDrawerContent = (props) => {
           /> */}
           <TouchableRipple onPress={() => toggleNotifications()}>
             <View style={styles.preference}>
-              <Ionicons name="notifications" size={24} color={theme.colors.textGrey} />
+              <Ionicons name="ios-notifications-outline" size={24} color={theme.colors.textGrey} />
               <Text style={{ color: theme.colors.textGrey, flex: 1, marginStart: 32 }}>
                 {t('navigate:notifications')}
               </Text>
@@ -236,7 +232,7 @@ const CustomDrawerContent = (props) => {
             onPress={() => onPress('Settings')}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <MaterialCommunityIcons name="cog" size={size} color={theme.colors.textGrey} />
+              <Ionicons name="ios-settings-outline" size={size} color={theme.colors.textGrey} />
             )}
           />
         </CustomDrawerSection>

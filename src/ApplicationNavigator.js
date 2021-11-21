@@ -47,6 +47,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { TransitionPresets, createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, useDrawerStatus } from '@react-navigation/drawer';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useTranslation } from 'react-i18next';
 import HomeScreen from './screens/HomeScreen';
 import StatsScreen from './screens/StatsScreen';
 import FarmersScreen from './screens/FarmersScreen';
@@ -138,7 +139,7 @@ const DarkTheme = {
   },
 };
 
-const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute }) => (
+const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => (
   <Drawer.Navigator
     drawerContent={(props) => (
       <CustomDrawerContent
@@ -173,14 +174,14 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute }) => (
       drawerStyle: { backgroundColor: theme.colors.surface },
     }}
   >
-    <Drawer.Screen name="Home" component={HomeScreen} />
-    <Drawer.Screen name="News" component={NewsScreen} />
-    <Drawer.Screen name="Stats" component={StatsScreen} />
-    <Drawer.Screen name="Farmers" component={FarmersScreen} />
-    <Drawer.Screen name="Blocks Found" component={BlocksFoundScreen} />
-    <Drawer.Screen name="Payouts" component={PayoutScreen} />
-    <Drawer.Screen name="Scan Launcher ID" component={ScanScreen} />
-    <Drawer.Screen name="Charts" component={ChartsScreen} />
+    <Drawer.Screen name={t('navigate:home')} component={HomeScreen} />
+    <Drawer.Screen name={t('navigate:news')} component={NewsScreen} />
+    <Drawer.Screen name={t('navigate:stats')} component={StatsScreen} />
+    <Drawer.Screen name={t('navigate:farmers')} component={FarmersScreen} />
+    <Drawer.Screen name={t('navigate:blocksFound')} component={BlocksFoundScreen} />
+    <Drawer.Screen name={t('navigate:payouts')} component={PayoutScreen} />
+    <Drawer.Screen name={t('navigate:verifyFarm')} component={ScanScreen} />
+    <Drawer.Screen name={t('navigate:charts')} component={ChartsScreen} />
     {/* <Divider /> */}
     {launcherIDsArray.map((item) => (
       <Drawer.Screen
@@ -193,54 +194,58 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute }) => (
   </Drawer.Navigator>
 );
 
-const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRoute }) => (
-  // const isDrawerOpen = useDrawerStatus() === 'open';
-  <NavigationContainer theme={theme}>
-    <StatusBar
-      backgroundColor={theme.colors.statusBarColor}
-      barStyle="light-content"
-      // barStyle={
-      //   Platform.OS === 'ios' ? (isThemeDark ? 'light-content' : 'dark-content') : 'light-content'
-      // }
-    />
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: true,
-        headerStyle: { backgroundColor: theme.colors.primary },
-        headerTintColor: '#fff',
-        drawerStyle: { backgroundColor: theme.colors.primary },
-        headerBackTitleVisible: false,
-        gestureEnabled: true, // If you want to swipe back like iOS on Android
-        ...TransitionPresets.SlideFromRightIOS,
-      }}
-    >
-      <Stack.Screen name="Root" options={{ headerShown: false }}>
-        {() => (
-          <Root
-            theme={theme}
-            toggleTheme={toggleTheme}
-            launcherIDsArray={launcherIDsArray}
-            initialRoute={initialRoute}
-          />
-        )}
-      </Stack.Screen>
-      <Stack.Screen
-        name="Farmer Details"
-        component={FarmerScreen}
-        options={({ route }) => ({
-          title: getHeaderTitle(route),
-          headerRight: () => (
-            <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
-          ),
-        })}
-        // options={({ route, navigation }) => ({})}
+const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRoute }) => {
+  const { t } = useTranslation();
+  return (
+    // const isDrawerOpen = useDrawerStatus() === 'open';
+    <NavigationContainer theme={theme}>
+      <StatusBar
+        backgroundColor={theme.colors.statusBarColor}
+        barStyle="light-content"
+        // barStyle={
+        //   Platform.OS === 'ios' ? (isThemeDark ? 'light-content' : 'dark-content') : 'light-content'
+        // }
       />
-      <Stack.Screen name="Post" component={NewsPostScreen} />
-      <Stack.Screen name="Language" component={LanguageSelectorScreen} />
-      <Stack.Screen name="Currency" component={CurrencySelectionScreen} />
-    </Stack.Navigator>
-  </NavigationContainer>
-);
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: true,
+          headerStyle: { backgroundColor: theme.colors.primary },
+          headerTintColor: '#fff',
+          drawerStyle: { backgroundColor: theme.colors.primary },
+          headerBackTitleVisible: false,
+          gestureEnabled: true, // If you want to swipe back like iOS on Android
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      >
+        <Stack.Screen name="Root" options={{ headerShown: false }}>
+          {() => (
+            <Root
+              theme={theme}
+              toggleTheme={toggleTheme}
+              launcherIDsArray={launcherIDsArray}
+              initialRoute={initialRoute}
+              t={t}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Farmer Details"
+          component={FarmerScreen}
+          options={({ route }) => ({
+            title: getHeaderTitle(route, t),
+            headerRight: () => (
+              <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
+            ),
+          })}
+          // options={({ route, navigation }) => ({})}
+        />
+        <Stack.Screen name="Post" component={NewsPostScreen} />
+        <Stack.Screen name={t('common:language')} component={LanguageSelectorScreen} />
+        <Stack.Screen name={t('common:currency')} component={CurrencySelectionScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 const ApplicationNavigator = () => {
   // const isThemeDark = useRecoilValueLoadable(themeState);
   // const launcherIDs = useRecoilValueLoadable(launcherIDsState);

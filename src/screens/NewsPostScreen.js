@@ -1,16 +1,8 @@
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  ScrollView,
-  View,
-  useWindowDimensions,
-  Image,
-} from 'react-native';
-import RenderHtml from 'react-native-render-html';
+import React from 'react';
+import { Image, ScrollView, useWindowDimensions, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import RenderHtml from 'react-native-render-html';
 
 const NewsPostScreen = ({ navigation, route }) => {
   const { post } = route.params;

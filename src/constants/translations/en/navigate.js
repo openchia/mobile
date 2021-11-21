@@ -7,6 +7,8 @@ export default {
   payouts: 'Payouts',
   darkMode: 'Dark Mode',
   notifications: 'Notifications',
-  launcherID: 'Add Launcher ID',
+  verifyFarm: 'Verify Farm',
   settings: 'Settings',
+  charts: 'Charts',
+  farms: 'Farms',
 };

@@ -1,48 +1,24 @@
 /* eslint-disable no-nested-ternary */
-import React, { Suspense, useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  View,
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
-} from 'react-native';
-import {
-  selectorFamily,
-  useRecoilValue,
-  atomFamily,
-  useSetRecoilState,
-  useRecoilValueLoadable,
-} from 'recoil';
-import { ErrorBoundary } from 'react-error-boundary';
-
-import {
-  format,
-  formatDistance,
-  formatDistanceToNow,
-  formatDuration,
-  secondsToHours,
-} from 'date-fns';
-import { useToast } from 'react-native-toast-notifications';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { getNetspace, getStats } from '../Api';
+import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import { getStats } from '../Api';
+import { currencyState, statsRequestIDState } from '../Atoms';
+import PressableCard from '../components/PressableCard';
 import {
   convertMojoToChia,
   convertSecondsToHourMin,
   currencyFormat,
   formatBytes,
 } from '../utils/Formatting';
-import { currencyState, statsRequestIDState } from '../Atoms';
-import CustomCard from '../components/CustomCard';
 import { getCurrencyFromKey } from './CurrencySelectionScreen';
-import PressableCard from '../components/PressableCard';
 
 const Item = ({ title, value, color, loadable, format }) => (
   <PressableCard style={styles.item}>
     <View style={{}}>
-      <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
+      <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title.toUpperCase()}</Text>
       <Text
         style={{
           textAlign: 'center',
@@ -59,15 +35,6 @@ const Item = ({ title, value, color, loadable, format }) => (
           : 'Error occured'}
       </Text>
     </View>
-
-    {/* <Text style={{ color, fontSize: 16 }}>
-      {' '}
-      {loadable.state === 'hasValue'
-        ? format(loadable.contents)
-        : loadable.state === 'loading'
-        ? '...'
-        : 'Error occured'}
-    </Text> */}
   </PressableCard>
 );
 
@@ -94,6 +61,7 @@ const statsQuery = selectorFamily({
 const Content = () => {
   const statsLoadable = useRecoilValueLoadable(statsQuery());
   const refresh = useRefreshStats();
+  const { t } = useTranslation();
 
   if (statsLoadable.state === 'hasError') {
     return (
@@ -136,13 +104,13 @@ const Content = () => {
               )} ${getCurrencyFromKey(statsLoadable.contents.currency)}`
             }
             color="#4DB33E"
-            title="XCH PRICE"
+            title={t('common:chiaPrice')}
           />
           <Item
             loadable={statsLoadable}
             format={(item) => formatBytes(item.pool_space)}
             color="#4DB33E"
-            title="POOL SPACE"
+            title={t('common:poolSpace')}
           />
         </View>
         <View style={styles.container}>
@@ -150,13 +118,13 @@ const Content = () => {
             loadable={statsLoadable}
             format={(item) => `${(item.estimate_win / 60 / 24).toFixed(3)} days`}
             color="#3DD292"
-            title="ETW"
+            title={t('common:etw')}
           />
           <Item
             loadable={statsLoadable}
             format={(item) => item.rewards_blocks}
             color="#FB6D4C"
-            title="BLOCKS"
+            title={t('common:blocks')}
           />
         </View>
         <View style={styles.container}>
@@ -164,13 +132,13 @@ const Content = () => {
             loadable={statsLoadable}
             format={(item) => item.farmers}
             color="#34D4F1"
-            title="FARMERS"
+            title={t('common:farmers')}
           />
           <Item
             loadable={statsLoadable}
             format={(item) => formatBytes(item.blockchain_space)}
             color="#34D4F1"
-            title="NETSPACE"
+            title={t('common:netspace')}
           />
         </View>
         <View style={styles.container}>
@@ -180,14 +148,14 @@ const Content = () => {
               `${((item.time_since_last_win / (item.estimate_win * 60)) * 100).toFixed(0)}%`
             }
             color="#4DB33E"
-            title="CURRENT EFFORT"
+            title={t('common:currentEffort')}
           />
           <Item
             loadable={statsLoadable}
             // value="average_effort"
             format={(item) => `${item.average_effort.toFixed(0)}%`}
             color="#4DB33E"
-            title="EFFORT"
+            title={t('common:effort')}
           />
         </View>
         <View style={styles.container}>
@@ -195,13 +163,13 @@ const Content = () => {
             loadable={statsLoadable}
             format={(item) => convertSecondsToHourMin(item.time_since_last_win)}
             color="#4DB33E"
-            title="SINCE LAST WIN"
+            title={t('common:sinceLastWin')}
           />
           <Item
             loadable={statsLoadable}
             format={(item) => `${convertMojoToChia(item.rewards_amount)} XCH`}
             color="#4DB33E"
-            title="REWARDS"
+            title={t('common:rewards')}
           />
         </View>
         <View style={styles.container}>
@@ -209,7 +177,7 @@ const Content = () => {
             loadable={statsLoadable}
             format={(item) => `${item.xch_tb_month.toFixed(8)} XCH/TiB/day`}
             color="#4DB33E"
-            title="PROFITABILITY"
+            title={t('common:profitability')}
           />
         </View>
       </ScrollView>

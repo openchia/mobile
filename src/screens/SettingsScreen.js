@@ -23,7 +23,7 @@ const SettingsScreen = ({ navigation }) => {
       }}
     >
       <PressableCard
-        onPress={() => navigation.navigate('Currency')}
+        onPress={() => navigation.navigate(`${t('common:currency')}`)}
         // style={{
         //   padding: 16,
         //   display: 'flex',
@@ -33,16 +33,17 @@ const SettingsScreen = ({ navigation }) => {
       >
         <View style={styles.content}>
           <View style={styles.mainContent}>
-            <Text style={styles.title}>Currency</Text>
+            <Text style={styles.title}>{t('common:currency')}</Text>
             <Text numberOfLines={1} style={styles.subtitle}>
-              Set preferred currency.
+              {t('common:currencyDesc')}
+              {/* Set preferred currency. */}
             </Text>
           </View>
           <Text style={styles.desc}>{currency.toUpperCase()}</Text>
         </View>
       </PressableCard>
       <PressableCard
-        onPress={() => navigation.navigate('Language')}
+        onPress={() => navigation.navigate(`${t('common:language')}`)}
         // style={{
         //   padding: 16,
         //   display: 'flex',
@@ -52,9 +53,9 @@ const SettingsScreen = ({ navigation }) => {
       >
         <View style={styles.content}>
           <View style={styles.mainContent}>
-            <Text style={styles.title}>Language</Text>
+            <Text style={styles.title}>{t('common:language')}</Text>
             <Text numberOfLines={1} style={styles.subtitle}>
-              Set preferred language.
+              {t('common:languageDesc')}
             </Text>
           </View>
           <Text style={styles.desc}>

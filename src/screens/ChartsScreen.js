@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ActivityIndicator, FlatList, Text, View, ScrollView } from 'react-native';
-import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { fromUnixTime, getUnixTime, isAfter } from 'date-fns';
-import { useTheme } from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native';
+import { useSetRecoilState } from 'recoil';
 import { getSpace } from '../Api';
-import LoadingComponent from '../components/LoadingComponent';
 import { netSpaceRequestIDState } from '../Atoms';
-import AreaChartNetspace from '../charts/AreaChartNetspace';
-import { monotoneCubicInterpolation } from '../react-native-animated-charts';
-import PoolspaceChart from '../charts/PoolspaceChart';
 import { NetspaceChartIntervals } from '../charts/Constants';
+import PoolspaceChart from '../charts/PoolspaceChart';
+import LoadingComponent from '../components/LoadingComponent';
+import { monotoneCubicInterpolation } from '../react-native-animated-charts';
 import { formatBytes } from '../utils/Formatting';
 
 const useRefresh = () => {

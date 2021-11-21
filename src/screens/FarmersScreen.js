@@ -1,54 +1,69 @@
-import React, { Suspense, useCallback, useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  RefreshControlBase,
-  RefreshControl,
-  TouchableNativeFeedback,
-  Dimensions,
-} from 'react-native';
-import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import { RecyclerListView, DataProvider, LayoutProvider } from 'recyclerlistview';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
+import { useTranslation } from 'react-i18next';
 import { getFarmers } from '../Api';
-import { formatBytes } from '../utils/Formatting';
 import LoadingComponent from '../components/LoadingComponent';
-import { farmersRequestIDState } from '../Atoms';
-import CustomCard from '../components/CustomCard';
-import TouchableRipple from '../components/TouchableRipple';
 import PressableCard from '../components/PressableCard';
+import { formatBytes } from '../utils/Formatting';
 
-const HEIGHT = 50;
+const HEIGHT = 142;
 
 const Item = ({ item, rank, onPress }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   return (
     <PressableCard onPress={onPress}>
       <View
         style={{
           display: 'flex',
-          flexDirection: 'row',
-          padding: 12,
-          justifyContent: 'center',
-          alignItems: 'center',
+          flexDirection: 'column',
+          // flexDirection: 'row',
+          padding: 8,
+          // justifyContent: 'center',
+          // alignItems: 'center',
           height: HEIGHT,
         }}
       >
-        <Text style={styles.rank}>{rank}</Text>
+        {/* <Text style={styles.rank}>{rank}</Text>
         <Text
           numberOfLines={1}
           style={[styles.name, { color: theme.colors.textLight, fontSize: 14 }]}
         >
           {item.name ? item.name : item.launcher_id}
         </Text>
-        {/* <Text style={styles.utilization}>{`${item.points_of_total.toFixed(5)}%`}</Text> */}
-        <Text style={styles.size}>{formatBytes(item.estimated_size)}</Text>
+        <Text style={styles.utilization}>{`${item.points_of_total.toFixed(5)}%`}</Text>
+        <Text style={styles.size}>{formatBytes(item.estimated_size)}</Text> */}
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.title}>Launcher ID:</Text>
+          <Text
+            numberOfLines={1}
+            style={[styles.val, { color: theme.colors.textLight, fontWeight: 'bold' }]}
+          >
+            {item.name ? item.name : item.launcher_id}
+          </Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 2 }}>
+          <Text style={styles.title}>{t('common:rank')}:</Text>
+          <Text style={[styles.val, { fontWeight: 'bold' }]}>{rank}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 2 }}>
+          <Text style={styles.title}>{t('common:points')}:</Text>
+          <Text style={styles.val}>{item.points}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 2 }}>
+          <Text style={styles.title}>{t('common:difficulty')}:</Text>
+          <Text style={styles.val}>{item.difficulty}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 2 }}>
+          <Text style={styles.title}>{t('common:utilizationSpace')}:</Text>
+          <Text style={styles.val}>{`${item.points_of_total.toFixed(5)}%`}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 2 }}>
+          <Text style={styles.title}>{t('common:estimatedSize')}:</Text>
+          <Text style={styles.val}>{formatBytes(item.estimated_size)}</Text>
+        </View>
       </View>
     </PressableCard>
   );
@@ -208,6 +223,15 @@ const styles = StyleSheet.create({
   size: {
     marginLeft: 'auto',
     fontSize: 14,
+  },
+  title: {
+    fontSize: 14,
+    marginEnd: 8,
+  },
+  val: {
+    fontSize: 14,
+    flex: 1,
+    textAlign: 'right',
   },
 });
 

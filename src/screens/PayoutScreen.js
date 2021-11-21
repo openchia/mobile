@@ -1,21 +1,14 @@
-import React, { Suspense, useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  View,
-  StyleSheet,
-  RefreshControl,
-} from 'react-native';
-import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { format } from 'date-fns';
+import React, { Suspense } from 'react';
+import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useTranslation } from 'react-i18next';
 import { getPayouts } from '../Api';
-import { formatBytes, convertMojoToChia } from '../utils/Formatting';
-import LoadingComponent from '../components/LoadingComponent';
 import { payoutsRequestIDState } from '../Atoms';
-import CustomCard from '../components/CustomCard';
+import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
+import { convertMojoToChia } from '../utils/Formatting';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(payoutsRequestIDState());
@@ -36,15 +29,35 @@ const query = selectorFamily({
     },
 });
 
-const Item = ({ item }) => (
-  <PressableCard onTap={() => {}}>
-    <View style={{ display: 'flex', flexDirection: 'row', padding: 12 }}>
-      <Text style={styles.rank}>{item.id}</Text>
-      <Text style={styles.size}>{format(new Date(item.datetime), 'PPpp')}</Text>
-      <Text style={styles.size}>{`${convertMojoToChia(item.amount)} XCH`}</Text>
-    </View>
-  </PressableCard>
-);
+const Item = ({ item }) => {
+  const { t } = useTranslation();
+  return (
+    <PressableCard onTap={() => {}}>
+      <View style={{ display: 'flex', flexDirection: 'column', padding: 8, flex: 1 }}>
+        {/* <Text style={styles.rank}>{item.id}</Text>
+      <Text style={styles.date}>{format(new Date(item.datetime), 'PPpp')}</Text>
+      <Text style={styles.size}>{`${convertMojoToChia(item.amount)} XCH`}</Text> */}
+
+        {/* <View style={{ padding: 8, display: 'flex' }}> */}
+        <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
+          <Text style={styles.title}>{t('common:amount')}:</Text>
+          <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(
+            item.amount
+          )} XCH`}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 8 }}>
+          <Text style={styles.title}>{t('common:id')}:</Text>
+          <Text style={styles.val}>{item.id}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 8 }}>
+          <Text style={styles.title}>{t('common:date')}:</Text>
+          <Text style={styles.val}>{format(new Date(item.datetime), 'PPpp')}</Text>
+        </View>
+      </View>
+      {/* </View> */}
+    </PressableCard>
+  );
+};
 
 const Content = () => {
   const refresh = useRefresh();
@@ -73,19 +86,14 @@ const PayoutScreen = ({ navigation }) => (
 );
 
 const styles = StyleSheet.create({
-  rank: {
+  title: {
     fontSize: 14,
-    marginEnd: 12,
+    marginEnd: 8,
   },
-  name: {
+  val: {
     fontSize: 14,
-    marginEnd: 20,
-    color: '#407538',
     flex: 1,
-  },
-  size: {
-    marginLeft: 'auto',
-    fontSize: 14,
+    textAlign: 'right',
   },
 });
 

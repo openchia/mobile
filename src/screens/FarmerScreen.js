@@ -1,45 +1,18 @@
 /* eslint-disable default-case */
 /* eslint-disable no-nested-ternary */
-import React, { Suspense, useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  RefreshControl,
-} from 'react-native';
-import {
-  selectorFamily,
-  useRecoilValue,
-  useRecoilState,
-  useRecoilValueLoadable,
-  useSetRecoilState,
-} from 'recoil';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import { format } from 'date-fns';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { Button, IconButton, Text } from 'react-native-paper';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { useLayoutEffect } from 'react';
-import { getFarmers, getPartialsFromID, getFarmer, getStats, updateFCMToken } from '../Api';
-import { formatBytes, formatPrice } from '../utils/Formatting';
-import LoadingComponent from '../components/LoadingComponent';
-import FarmerGraphScreen from './FarmerGraphScreen';
-import { getObject, saveObject } from '../utils/Utils';
-import { currencyState, farmerRefreshState, launcherIDsState, settingsState } from '../Atoms';
-import CustomCard from '../components/CustomCard';
-import { getCurrencyFromKey } from './CurrencySelectionScreen';
-import FarmerStatsScreen from './FarmerStatsScreen';
-import FarmerPayoutScreen from './FarmerPayoutScreen';
+import React, { useLayoutEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { selectorFamily, useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { getFarmer, getPartialsFromID, getStats, updateFCMToken } from '../Api';
+import { currencyState, farmerRefreshState, launcherIDsState } from '../Atoms';
+import IconButton from '../components/IconButton';
 import FarmerBlockScreen from './FarmerBlocksScreen';
 import FarmerPartialScreen from './FarmerPartialScreen';
+import FarmerPayoutScreen from './FarmerPayoutScreen';
+import FarmerStatsScreen from './FarmerStatsScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -64,19 +37,22 @@ const query = selectorFamily({
     },
 });
 
-export const getHeaderTitle = (route) => {
+export const getHeaderTitle = (route, t) => {
   // If the focused route is not found, we need to assume it's the initial screen
   // This can happen during if there hasn't been any navigation inside the screen
   // In our case, it's "Feed" as that's the first screen inside the navigator
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Stats';
+  // name={t('common:stats')}
 
   switch (routeName) {
     case 'Stats':
-      return 'Launcher ID Stats';
+      return `${t('common:farmerDetails')}`;
+    case 'Partial Chart':
+      return `${t('common:partials')}`;
     case 'FarmerPayouts':
-      return 'Payouts';
+      return `${t('common:payouts')}`;
     case 'FarmerBlocks':
-      return 'Farmed Blocks';
+      return `${t('common:farmedBlocks')}`;
   }
 };
 
@@ -99,7 +75,13 @@ const FarmerScreen = ({ route, navigation }) => {
           }}
         >
           <IconButton
-            icon={launcherIDs.has(launcherId) ? 'delete' : 'content-save'}
+            icon={
+              <Ionicons
+                name={launcherIDs.has(launcherId) ? 'ios-trash-bin-outline' : 'ios-save-outline'}
+                size={24}
+                color="white"
+              />
+            }
             style={{ marginEnd: 20 }}
             color="#fff"
             size={24}
@@ -126,6 +108,63 @@ const FarmerScreen = ({ route, navigation }) => {
               }
             }}
           />
+          {/* <Ionicons.Button
+            name={launcherIDs.has(launcherId) ? 'ios-trash-bin-outline' : 'ios-save-outline'}
+            style={{ marginEnd: 8 }}
+            backgroundColor="transparent"
+            color="#fff"
+            size={24}
+            onPress={() => {
+              if (launcherIDs.has(launcherId)) {
+                setLauncherIDs((prev) => {
+                  const newState = new Map(prev);
+                  const launcherData = prev.get(launcherId);
+                  updateFCMToken(launcherId, launcherData.token, null).then((data) => {
+                    console.log(`Successfully removed FCM Token for launcher ${launcherData.name}`);
+                  });
+                  newState.delete(launcherId);
+                  // getObject('fcm').then((FCMToken) => {
+                  //   // console.log(element);
+                  //   // updateFCMToken(launcherId, launcherData.value.token, null).then((data) => {
+                  //   //   console.log(data);
+                  //   // });
+                  // });
+                  return newState;
+                });
+                navigation.goBack();
+              } else {
+                setLauncherIDs((prev) => new Map(prev.set(launcherId, { name })));
+              }
+            }}
+          /> */}
+          {/* <IconButton
+            icon={launcherIDs.has(launcherId) ? 'delete' : 'content-save'}
+            style={{ marginEnd: 20 }}
+            color="#fff"
+            size={24}
+            onPress={() => {
+              if (launcherIDs.has(launcherId)) {
+                setLauncherIDs((prev) => {
+                  const newState = new Map(prev);
+                  const launcherData = prev.get(launcherId);
+                  updateFCMToken(launcherId, launcherData.token, null).then((data) => {
+                    console.log(`Successfully removed FCM Token for launcher ${launcherData.name}`);
+                  });
+                  newState.delete(launcherId);
+                  // getObject('fcm').then((FCMToken) => {
+                  //   // console.log(element);
+                  //   // updateFCMToken(launcherId, launcherData.value.token, null).then((data) => {
+                  //   //   console.log(data);
+                  //   // });
+                  // });
+                  return newState;
+                });
+                navigation.goBack();
+              } else {
+                setLauncherIDs((prev) => new Map(prev.set(launcherId, { name })));
+              }
+            }}
+          /> */}
         </View>
       ),
     });
@@ -140,7 +179,7 @@ const FarmerScreen = ({ route, navigation }) => {
             height: 45,
           },
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="file-chart" size={24} color="white" />
+            <Ionicons name="document-text-outline" size={24} color="white" />
           ),
         }}
         name="Stats"
@@ -154,7 +193,7 @@ const FarmerScreen = ({ route, navigation }) => {
             height: 45,
           },
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="chart-areaspline-variant" size={24} color="white" />
+            <Ionicons name="ios-bar-chart-outline" size={24} color="white" />
           ),
         }}
         name="Partial Chart"
@@ -167,9 +206,7 @@ const FarmerScreen = ({ route, navigation }) => {
             backgroundColor: 'red',
             height: 45,
           },
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="cash-multiple" size={24} color="white" />
-          ),
+          tabBarIcon: ({ color }) => <Ionicons name="ios-card-outline" size={24} color="white" />,
         }}
         name="FarmerPayouts"
       >
@@ -181,9 +218,7 @@ const FarmerScreen = ({ route, navigation }) => {
             backgroundColor: 'red',
             height: 45,
           },
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="shape-square-plus" size={24} color="white" />
-          ),
+          tabBarIcon: ({ color }) => <Ionicons name="ios-layers-outline" size={24} color="white" />,
         }}
         name="FarmerBlocks"
       >

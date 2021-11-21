@@ -1,22 +1,13 @@
-import React, { Suspense, useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  View,
-  StyleSheet,
-  RefreshControl,
-  ScrollView,
-} from 'react-native';
-import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { format } from 'date-fns';
+import React, { Suspense } from 'react';
+import { FlatList, RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { getPayouts, getPayoutsFromAddress } from '../Api';
-import { formatBytes, convertMojoToChia } from '../utils/Formatting';
-import LoadingComponent from '../components/LoadingComponent';
+import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
+import { getPayoutsFromAddress } from '../Api';
 import { farmerPayoutsRefreshState } from '../Atoms';
-import CustomCard from '../components/CustomCard';
+import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
+import { convertMojoToChia } from '../utils/Formatting';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(farmerPayoutsRefreshState());

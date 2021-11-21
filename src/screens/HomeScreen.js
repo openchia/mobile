@@ -1,59 +1,41 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  View,
-  Linking,
-  Alert,
-  StatusBar,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
-import { Button, IconButton, Text, useTheme } from 'react-native-paper';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import Svg, { Path, Rect, G } from 'react-native-svg';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { ScrollView } from 'react-native-gesture-handler';
-import { useDrawerStatus } from '@react-navigation/drawer';
-import LoadingComponent from '../components/LoadingComponent';
-import CustomCard from '../components/CustomCard';
+import { Alert, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Button, IconButton, Text, useTheme } from 'react-native-paper';
+import Svg, { G, Path, Rect } from 'react-native-svg';
+import { useRecoilValue } from 'recoil';
 import { settingsState } from '../Atoms';
-import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import CustomCard from '../components/CustomCard';
 
-const Item = ({ title, value, color }) => {
-  const theme = useTheme();
-  return (
-    <CustomCard style={styles.item}>
-      <View>
-        <Text
-          adjustsFontSizeToFit
-          style={{
-            color: '#4DB33E',
-            fontSize: 14,
-            textAlign: 'center',
-            fontWeight: 'bold',
-          }}
-        >
-          {title}
-        </Text>
-        <Text
-          adjustsFontSizeToFit
-          style={{
-            color: 'grey',
-            textAlign: 'center',
-            marginTop: 4,
-            marginBottom: 4,
-            fontSize: 12,
-            // fontWeight: 'bold',
-          }}
-        >
-          {value}
-        </Text>
-      </View>
-    </CustomCard>
-  );
-};
+const Item = ({ title, value, color }) => (
+  <CustomCard style={styles.item}>
+    <View>
+      <Text
+        adjustsFontSizeToFit
+        style={{
+          color: '#4DB33E',
+          fontSize: 14,
+          textAlign: 'center',
+          fontWeight: 'bold',
+        }}
+      >
+        {title}
+      </Text>
+      <Text
+        adjustsFontSizeToFit
+        style={{
+          color: 'grey',
+          textAlign: 'center',
+          marginTop: 4,
+          marginBottom: 4,
+          fontSize: 12,
+        }}
+      >
+        {value}
+      </Text>
+    </View>
+  </CustomCard>
+);
 
 const URLButton = ({ url, children, backgroundColor, textColor, icon, style }) => {
   const handlePress = useCallback(async () => {
@@ -72,7 +54,6 @@ const URLButton = ({ url, children, backgroundColor, textColor, icon, style }) =
   return (
     <Button
       color={backgroundColor}
-      // color="#FB6340"
       mode="contained"
       labelStyle={{ color: textColor }}
       onPress={handlePress}
@@ -86,12 +67,9 @@ const URLButton = ({ url, children, backgroundColor, textColor, icon, style }) =
 
 const URLImageButton = ({ url, icon }) => {
   const handlePress = useCallback(async () => {
-    // Checking if the link is supported for links with custom URL scheme.
     const supported = await Linking.canOpenURL(url);
 
     if (supported) {
-      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-      // by some browser in the mobile
       await Linking.openURL(url);
     } else {
       Alert.alert(`Don't know how to open this URL: ${url}`);
@@ -113,22 +91,10 @@ const HomeScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const settings = useRecoilValue(settingsState);
-  // const isDrawerOpen = useDrawerStatus() === 'open';
-
-  // useEffect(
-  //   (isDrawerOpen) => {
-  //     if (isDrawerOpen) {
-  //       StatusBar.setHidden();
-  //     }
-  //   },
-  //   [isDrawerOpen]
-  // );
-
   const fill = settings.isThemeDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      // headerShown: false,
       headerTitle: '',
       headerStyle: {
         elevation: 0,
@@ -148,16 +114,8 @@ const HomeScreen = ({ navigation }) => {
             icon="youtube"
             url="https://www.youtube.com/channel/UCL70j_KiPd49rfp_UEqxiyQ"
           />
-          {/* <URLImageButton icon="discord" url="https://discord.com/invite/2URS9H7RZn" /> */}
           <URLImageButton icon="github" url="https://github.com/openchia" />
           <URLImageButton icon="twitter" url="https://twitter.com/openchia" />
-          {/* <IconButton
-            // icon={launcherIDs.has(launcherId) ? 'delete' : 'content-save'}
-            style={{ marginEnd: 20 }}
-            color="#fff"
-            size={24}
-            onPress={() => {}}
-          /> */}
         </View>
       ),
     });
@@ -171,11 +129,6 @@ const HomeScreen = ({ navigation }) => {
       }}
     >
       <SafeAreaView style={{ flex: 1 }}>
-        {/* <FocusAwareStatusBar
-        barStyle="light-content"
-        backgroundColor={isThemeDark ? theme.colors.primary : theme.colors.primaryLight}
-      /> */}
-        {/* <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}> */}
         <Svg
           width="100%"
           height="100%"
@@ -223,46 +176,14 @@ const HomeScreen = ({ navigation }) => {
             />
           </G>
         </Svg>
-        {/* <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginEnd: 8,
-          }}
-        >
-          <IconButton
-            style={{ marginLeft: 4, marginTop: 4 }}
-            icon="menu"
-            color="#fff"
-            size={24}
-            onPress={() => navigation.openDrawer()}
-          />
-          <View style={{ flex: 1 }} />
-          <URLImageButton
-            icon="youtube"
-            url="https://www.youtube.com/channel/UCL70j_KiPd49rfp_UEqxiyQ"
-          />
-          <URLImageButton icon="github" url="https://github.com/openchia" />
-          <URLImageButton icon="twitter" url="https://twitter.com/openchia" />
-        </View> */}
         <View
           style={{
-            // alignItems: 'center',
-            // flexWrap: 'nowrap',
-            // backgroundColor: 'blue',
             flex: 1,
-            // display: 'flex',
-            // flexDirection: 'column',
-            // justifyContent: 'center',
-            // marginTop: 24,
           }}
         >
           <View
             style={{
               flex: 3.5,
-              // display: 'flex',
-              // flexDirection: 'column',
               marginEnd: 4,
               marginStart: 4,
               justifyContent: 'center',
@@ -309,23 +230,12 @@ const HomeScreen = ({ navigation }) => {
           <View
             style={{
               flex: 3,
-              // height: '30%',
-              // display: 'flex',
-              // flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: 12,
               marginBottom: 12,
               marginEnd: 14,
               marginStart: 14,
-              // backgroundColor: 'red',
-              // alignSelf: 'stretch',
-              // padding: 24,
-              // marginTop: 16,
-              // marginBottom: 16,
-              // marginStart: 24,
-              // marginEnd: 24,
-              // width: '100%',
             }}
           >
             <View style={styles.container}>
@@ -337,23 +247,7 @@ const HomeScreen = ({ navigation }) => {
               <Item title={t('common:transparent')} value={t('common:transparentDesc')} />
             </View>
           </View>
-
-          {/* <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            marginBottom: 16,
-          }}
-        >
-          <URLImageButton
-            icon="youtube"
-            url="https://www.youtube.com/channel/UCL70j_KiPd49rfp_UEqxiyQ"
-          />
-          <URLImageButton icon="github" url="https://github.com/openchia" />
-          <URLImageButton icon="twitter" url="https://twitter.com/openchia" />
-        </View> */}
         </View>
-        {/* </ScrollView> */}
       </SafeAreaView>
     </View>
   );

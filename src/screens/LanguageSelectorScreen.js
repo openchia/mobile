@@ -1,16 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  View,
-  StyleSheet,
-  Pressable,
-  TouchableOpacity,
-} from 'react-native';
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, TouchableRipple } from 'react-native-paper';
+import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
 import CustomCard from '../components/CustomCard';
 import PressableCard from '../components/PressableCard';
 

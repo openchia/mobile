@@ -1,23 +1,14 @@
-import React, { Suspense, useCallback, useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  View,
-  StyleSheet,
-  RefreshControl,
-} from 'react-native';
-import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
-import { format, fromUnixTime, UnixTimefrom } from 'date-fns';
-import { Text } from 'react-native-paper';
+import { format, fromUnixTime } from 'date-fns';
+import React, { Suspense } from 'react';
+import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useFocusEffect } from '@react-navigation/core';
-import { getBlocksFromFarmer, getPayouts, getPayoutsFromAddress } from '../Api';
-import { formatBytes, convertMojoToChia } from '../utils/Formatting';
-import LoadingComponent from '../components/LoadingComponent';
+import { Text } from 'react-native-paper';
+import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
+import { getBlocksFromFarmer } from '../Api';
 import { farmerBlockRefreshState } from '../Atoms';
-import CustomCard from '../components/CustomCard';
+import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
+import { convertMojoToChia } from '../utils/Formatting';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(farmerBlockRefreshState());

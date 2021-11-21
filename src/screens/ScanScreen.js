@@ -1,25 +1,12 @@
-import React, { Component, useRef } from 'react';
-
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Linking,
-  View,
-  SafeAreaView,
-  useWindowDimensions,
-  Dimensions,
-} from 'react-native';
-
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import { RNCamera } from 'react-native-camera';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Dimensions, StyleSheet, Text, useWindowDimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { getObject, saveObject } from '../utils/Utils';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import { useRecoilState } from 'recoil';
 import { getLauncherIDFromToken, updateFCMToken } from '../Api';
-import { tokensState, launcherIDsState, settingsState } from '../Atoms';
+import { launcherIDsState, settingsState, tokensState } from '../Atoms';
+import { getObject } from '../utils/Utils';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -31,26 +18,32 @@ const ScanScreen = ({ navigation }) => {
   const scanner = useRef(null);
   const { width, height } = useWindowDimensions();
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const onSuccess = (e) => {
     const token = e.data;
     setTokens((prev) => new Set(prev.add(token)));
     getLauncherIDFromToken(token).then((data) => {
-      setLauncherIDs((prev) => new Map(prev.set(data.launcher_id, { name: null, token })));
-      if (settings.notifications) {
-        getObject('fcm').then((FCMToken) => {
-          updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
-            navigation.navigate({
-              name: 'Farmer Details',
-              params: { launcherId: data.launcher_id, name: data.name },
+      if (data) {
+        console.log(data);
+        setLauncherIDs((prev) => new Map(prev.set(data.launcher_id, { name: null, token })));
+        if (settings.notifications) {
+          getObject('fcm').then((FCMToken) => {
+            updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
+              navigation.navigate({
+                name: 'Farmer Details',
+                params: { launcherId: data.launcher_id, name: data.name },
+              });
             });
           });
-        });
+        } else {
+          navigation.navigate({
+            name: 'Farmer Details',
+            params: { launcherId: data.launcher_id, name: data.name },
+          });
+        }
       } else {
-        navigation.navigate({
-          name: 'Farmer Details',
-          params: { launcherId: data.launcher_id, name: data.name },
-        });
+        console.log('Error');
       }
     });
   };
@@ -65,7 +58,7 @@ const ScanScreen = ({ navigation }) => {
       showMarker
       topContent={
         <Text style={[{ color: theme.colors.text }, styles.centerText]}>
-          Scan QR code from pool login link to receive notifications.
+          {t('common:scanDesc')}
         </Text>
       }
       markerStyle={{

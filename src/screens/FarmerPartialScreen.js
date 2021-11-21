@@ -1,23 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import Svg, { Rect } from 'react-native-svg';
-
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryStack } from 'victory-native';
+import { Dimensions, SafeAreaView, StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { NetspaceChartIntervals } from '../charts/Constants';
-import CustomCard from '../components/CustomCard';
-import LoadingComponent from '../components/LoadingComponent';
 import TestStackedBarChart from '../charts/TestStackedBarChart';
+import LoadingComponent from '../components/LoadingComponent';
 
 export const { width } = Dimensions.get('window');
 

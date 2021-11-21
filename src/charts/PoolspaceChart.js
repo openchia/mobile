@@ -1,21 +1,19 @@
 /* eslint-disable no-plusplus */
-import React, { useEffect, useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import styled from 'styled-components';
-import { format, fromUnixTime, getUnixTime } from 'date-fns';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useTheme } from 'react-native-paper';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import CustomCard from '../components/CustomCard';
 import {
   ChartDot,
   ChartPath,
   ChartPathProvider,
   ChartXLabel,
   ChartYLabel,
-  monotoneCubicInterpolation,
 } from '../react-native-animated-charts';
 import { NetspaceChartIntervals } from './Constants';
-import CustomCard from '../components/CustomCard';
 
 export const { width } = Dimensions.get('window');
 
@@ -97,6 +95,7 @@ const PoolspaceChart = ({ data, maxSize }) => {
   const current = useSharedValue(0);
   const [points, setPoints] = useState(data[current.value]);
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const style = useAnimatedStyle(() => ({
     transform: [{ translateX: withTiming(BUTTON_WIDTH * current.value) }],
@@ -109,7 +108,7 @@ const PoolspaceChart = ({ data, maxSize }) => {
           {/* <Text>Hello</Text> */}
           <ChartXLabel
             format={formatDatetime}
-            defaultValue="Pool Netspace"
+            defaultValue={t('common:poolSpace')}
             style={{ color: theme.colors.text, padding: 0, fontSize: 16 }}
           />
           <ChartYLabel
@@ -163,7 +162,8 @@ const PoolspaceChart = ({ data, maxSize }) => {
                         { color: index === current.value ? 'black' : theme.colors.text },
                       ]}
                     >
-                      {item.label}
+                      {t(`common:${item.label}`)}
+                      {/* {item.label} */}
                     </Text>
                   </Animated.View>
                 </TouchableWithoutFeedback>

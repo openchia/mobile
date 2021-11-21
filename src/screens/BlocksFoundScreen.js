@@ -1,20 +1,12 @@
-import React, { Suspense, useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  View,
-  StyleSheet,
-  RefreshControl,
-} from 'react-native';
-import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { format, fromUnixTime } from 'date-fns';
+import React, { Suspense } from 'react';
+import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import { getBlocks, getNetspace } from '../Api';
-import { formatBytes } from '../utils/Formatting';
-import LoadingComponent from '../components/LoadingComponent';
+import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useTranslation } from 'react-i18next';
+import { getBlocks } from '../Api';
 import { blocksRequestIDState } from '../Atoms';
-import CustomCard from '../components/CustomCard';
+import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 
 const useRefresh = () => {
@@ -36,21 +28,48 @@ const query = selectorFamily({
     },
 });
 
+const getLuck = (luck) => {
+  if (luck <= 30) {
+    return 'Very Lucky';
+  }
+  if (luck <= 80) {
+    return 'Lucky';
+  }
+  if (luck <= 120) {
+    return 'Average';
+  }
+  if (luck <= 200) {
+    return 'Unlucky';
+  }
+  return 'Very Unlucky';
+};
+
 const Item = ({ item }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   return (
     <PressableCard onTap={() => {}}>
-      <View
-        style={{ padding: 8, display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center' }}
-      >
-        <View style={{ marginEnd: 20 }}>
-          <Text style={styles.index}>{item.confirmed_block_index}</Text>
-          <Text style={styles.date}>{format(fromUnixTime(item.timestamp), 'PPpp')}</Text>
+      <View style={{ padding: 8, display: 'flex' }}>
+        <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
+          <Text style={styles.title}>{t('common:effort')}:</Text>
+          <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${item.luck}% ( ${getLuck(
+            item.luck
+          )} )`}</Text>
         </View>
-        {/* <Text style={styles.luck}>{`${item.luck}%`}</Text> */}
-        <Text numberOfLines={1} style={[styles.name, { color: theme.colors.textLight }]}>
-          {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
-        </Text>
+        <View style={{ flexDirection: 'row', marginTop: 8 }}>
+          <Text style={styles.title}>{t('common:index')}:</Text>
+          <Text style={styles.val}>{item.confirmed_block_index}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 8 }}>
+          <Text style={styles.title}>{t('common:farmer')}:</Text>
+          <Text numberOfLines={1} style={[styles.val, { color: theme.colors.textLight }]}>
+            {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
+          </Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 8 }}>
+          <Text style={styles.title}>{t('common:date')}:</Text>
+          <Text style={styles.val}>{format(fromUnixTime(item.timestamp), 'PPpp')}</Text>
+        </View>
       </View>
     </PressableCard>
   );
@@ -88,23 +107,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  index: {
+  title: {
     fontSize: 14,
-    marginEnd: 20,
+    marginEnd: 8,
   },
-  date: {
-    fontSize: 10,
-    marginEnd: 20,
-  },
-  name: {
+  val: {
     fontSize: 14,
-    marginLeft: 'auto',
-    textAlign: 'right',
     flex: 1,
-  },
-  luck: {
-    fontSize: 14,
-    marginEnd: 20,
+    textAlign: 'right',
   },
 });
 
