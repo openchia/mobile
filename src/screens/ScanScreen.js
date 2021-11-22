@@ -25,7 +25,6 @@ const ScanScreen = ({ navigation }) => {
     setTokens((prev) => new Set(prev.add(token)));
     getLauncherIDFromToken(token).then((data) => {
       if (data) {
-        console.log(data);
         setLauncherIDs((prev) => new Map(prev.set(data.launcher_id, { name: data.name, token })));
         // if (settings.notifications) {
         getObject('fcm').then((FCMToken) => {

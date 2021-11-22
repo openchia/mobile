@@ -209,7 +209,9 @@ const CustomDrawerContent = (props) => {
                   >
                     {item.value.name ? item.value.name : item.name}
                   </Text>
-                  <MaterialIcons name="verified" size={24} color={theme.colors.textGrey} />
+                  {item.value.token && (
+                    <MaterialIcons name="verified" size={24} color={theme.colors.textGrey} />
+                  )}
                 </View>
               </TouchableRipple>
               // <DrawerItem

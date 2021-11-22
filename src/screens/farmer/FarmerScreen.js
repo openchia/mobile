@@ -92,7 +92,13 @@ const FarmerScreen = ({ route, navigation }) => {
           <IconButton
             icon={
               <Ionicons
-                name={launcherIDs.has(mLauncherId) ? 'ios-settings-outline' : 'ios-save-outline'}
+                name={
+                  launcherIDs.has(mLauncherId)
+                    ? launcherIDs.get(mLauncherId).token
+                      ? 'ios-settings-outline'
+                      : 'ios-trash-bin-outline'
+                    : 'ios-save-outline'
+                }
                 size={24}
                 color="white"
               />
@@ -104,19 +110,18 @@ const FarmerScreen = ({ route, navigation }) => {
               if (launcherIDs.has(mLauncherId)) {
                 // navigation.navigate('Farmer Settings');
                 const launcherData = launcherIDs.get(mLauncherId);
-                navigation.navigate({
-                  name: 'Farmer Settings',
-                  params: { name, launcherId: mLauncherId, token: launcherData.token },
-                });
-                // setLauncherIDs((prev) => {
-                //   const newState = new Map(prev);
-                //   const launcherData = prev.get(launcherId);
-                //   updateFCMToken(launcherId, launcherData.token, null).then((data) => {
-                //     console.log(`Successfully removed FCM Token for launcher ${launcherData.name}`);
-                //   });
-                //   newState.delete(launcherId);
-                //   return newState;
-                // });
+                if (launcherData.token) {
+                  navigation.navigate({
+                    name: 'Farmer Settings',
+                    params: { name, launcherId: mLauncherId, token: launcherData.token },
+                  });
+                } else {
+                  setLauncherIDs((prev) => {
+                    const newState = new Map(prev);
+                    newState.delete(mLauncherId);
+                    return newState;
+                  });
+                }
                 // navigation.goBack();
               } else {
                 setLauncherIDs(

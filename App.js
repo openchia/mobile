@@ -1,8 +1,9 @@
 import React, { Node, useCallback, useMemo, useState, Suspense, useEffect } from 'react';
-import { Platform, View } from 'react-native';
+import { Alert, Platform, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RecoilRoot } from 'recoil';
 import { Notifications } from 'react-native-notifications';
+// import { Notifications } from 'react-native-notifications';
 // import * as Sentry from '@sentry/react-native';
 import messaging from '@react-native-firebase/messaging';
 import { saveObject } from './src/utils/Utils';
@@ -13,7 +14,6 @@ import './src/constants/IMLocalize';
 // Sentry.init({
 //   dsn: 'https://7426074fea104d898f7fcaba3e94d45d@o1071760.ingest.sentry.io/6069453',
 // });
-
 if (Platform.OS === 'android') {
   require('intl');
   require('intl/locale-data/jsonp/fr-BE');
@@ -22,43 +22,60 @@ if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/en-IN'); // load the required locale details
 }
+
+const requestUserPermission = async () => {
+  const token = await messaging().getToken();
+  console.log(token);
+  const authStatus = await messaging().requestPermission();
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+  if (enabled) {
+    // console.log('Authorization status:', authStatus);
+  }
+};
+
+const onMessageReceived = (message) => {
+  Notifications.postLocalNotification({
+    title: message.notification.title,
+    body: message.notification.body,
+    extra: message.data,
+  });
+};
+
 const App = () => {
   useEffect(() => {
-    Notifications.registerRemoteNotifications();
+    requestUserPermission();
 
-    Notifications.events().registerRemoteNotificationsRegistered((event) => {
-      saveObject('fcm', event.deviceToken);
-    });
+    // Notifications.registerRemoteNotifications();
 
-    // messaging()
-    //   .subscribeToTopic('blocks')
-    //   .then(() => console.log('Subscribed to topic!'));
+    // Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
+    //   console.log(
+    //     `Notification received in foreground: ${notification.title} : ${notification.body}`
+    //   );
+    //   completion({ alert: false, sound: false, badge: false });
+    // });
 
-    Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
-      console.error(event);
-    });
+    // Notifications.events().registerNotificationOpened((notification, completion) => {
+    //   console.log(`Notification opened: ${notification.payload}`);
+    //   completion();
+    // });
+    const unsubscribe = messaging().onMessage(onMessageReceived);
+    // const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+    //   console.log(remoteMessage);
+    //   // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    // });
 
-    Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
-      // console.log('Notification Received - Foreground', notification.payload);
+    return unsubscribe;
+  }, []);
 
-      // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
-      completion({ alert: true, sound: true, badge: false });
-    });
+  useEffect(() => {
+    const unsubscribe = messaging()
+      .subscribeToTopic('blocks')
+      .then(() => console.log('Subscribed to topic blocks!'));
 
-    Notifications.events().registerNotificationOpened((notification, completion, action) => {
-      // console.log('Notification opened by device user', notification.payload);
-      // console.log(
-      //   `Notification opened with an action identifier: ${action.identifier} and response text: ${action.text}`
-      // );
-      completion();
-    });
-
-    Notifications.events().registerNotificationReceivedBackground((notification, completion) => {
-      // console.log('Notification Received - Background', notification.payload);
-
-      // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
-      completion({ alert: true, sound: true, badge: false });
-    });
+    return unsubscribe;
   }, []);
 
   return (
