@@ -81,15 +81,16 @@ const LIMIT = 50;
 
 const Content = ({
   navigation,
-  refresh,
-  isLoading,
   hasMore,
   setOffset,
-  data,
+  dataProvider,
   width,
-  setIsLoading,
+  queryMoreData,
+  isQuerying,
+  refresh,
+  isRefreshing,
 }) => {
-  const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(data);
+  // const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(data);
 
   const [layoutProvider] = React.useState(
     new LayoutProvider(
@@ -118,7 +119,7 @@ const Content = ({
   const loadMore = () => {
     if (hasMore) {
       setOffset((offset) => offset + LIMIT);
-      setIsLoading(true);
+      queryMoreData();
     }
   };
 
@@ -127,7 +128,7 @@ const Content = ({
       <RecyclerListView
         refreshControl={
           <RefreshControl
-            refreshing={false}
+            refreshing={isRefreshing}
             onRefresh={() => {
               refresh();
             }}
@@ -140,7 +141,7 @@ const Content = ({
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
         renderFooter={() =>
-          isLoading && (
+          isQuerying && (
             <Text style={{ padding: 10, fontWeight: 'bold', textAlign: 'center' }}>Loading</Text>
           )
         }
@@ -150,51 +151,59 @@ const Content = ({
 };
 
 const FarmersScreen = ({ navigation }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(true);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [isRefreshing, setIsRefreshing] = useState(false);
+  // const [initalLoading, setIntialLoading] = useState(true);
+  const [loadState, setLoadState] = useState({ loading: true, refreshing: false, querying: false });
+  const [loading, setLoading] = useState(true);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const { width } = Dimensions.get('window');
   const [data, setData] = useState([]);
+  const [dataProvider, setDataProvider] = useState();
+
+  useEffect(() => {
+    if (data.length > 0) {
+      setDataProvider(new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(data));
+    }
+  }, [data]);
 
   const pulldownRefresh = () => {
+    setLoadState((prevState) => ({ ...prevState, refreshing: true }));
+    setLoading(true);
     setData([]);
-    setIsRefreshing(true);
     setOffset(0);
     setHasMore(true);
   };
 
+  const queryMoreData = () => {
+    setLoadState((prevState) => ({ ...prevState, querying: true }));
+    setLoading(true);
+  };
+
   useEffect(() => {
-    if (isLoading && hasMore) {
+    if (hasMore && (loadState.loading || loadState.refreshing || loadState.querying)) {
       getFarmers(offset, LIMIT).then((farmers) => {
         setHasMore(farmers.results.length === LIMIT);
         setData([...data, ...farmers.results]);
-        setIsLoading(false);
+        setLoadState({ loading: false, refreshing: false, querying: false });
+        setLoading(false);
       });
     }
-  }, [isLoading]);
+  }, [loading]);
 
-  useEffect(() => {
-    if (isRefreshing && hasMore) {
-      getFarmers(offset, LIMIT).then((farmers) => {
-        setHasMore(farmers.results.length === LIMIT);
-        setData([...data, ...farmers.results]);
-        setIsRefreshing(false);
-      });
-    }
-  }, [isRefreshing]);
-
-  if (isRefreshing) return <LoadingComponent />;
+  if (loadState.loading) return <LoadingComponent />;
   return (
     <Content
       navigation={navigation}
-      refresh={pulldownRefresh}
       setOffset={(offset) => setOffset(offset)}
-      isLoading={isLoading}
       hasMore={hasMore}
-      data={data}
       width={width}
-      setIsLoading={setIsLoading}
+      dataProvider={dataProvider}
+      refresh={pulldownRefresh}
+      queryMoreData={queryMoreData}
+      isQuerying={loadState.querying}
+      isRefreshing={loadState.refreshing}
     />
   );
 };

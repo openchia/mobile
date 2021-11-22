@@ -27,7 +27,7 @@ const PressableCard = ({ style, onPress, children, enabled }) => {
       ]}
       onPress={onPress}
     >
-      <View>{children}</View>
+      <>{children}</>
     </TouchableRipple>
   );
 };

@@ -73,7 +73,7 @@ const TouchableRipple = ({ style, onPress, children, enabled }) => {
       <TapGestureHandler onGestureEvent={tapGestureEvent}>
         <Animated.View>
           <View>{children}</View>
-          {enabled && <Animated.View style={rStyle} />}
+          <Animated.View style={rStyle} />
         </Animated.View>
       </TapGestureHandler>
     </View>

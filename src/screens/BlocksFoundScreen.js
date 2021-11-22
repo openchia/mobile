@@ -1,8 +1,8 @@
 import { format, fromUnixTime } from 'date-fns';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
+import { selectorFamily, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { useTranslation } from 'react-i18next';
 import { getBlocks } from '../Api';
 import { blocksRequestIDState } from '../Atoms';
@@ -77,17 +77,38 @@ const Item = ({ item }) => {
 
 const Content = ({ navigation }) => {
   const refresh = useRefresh();
-  const blocks = useRecoilValue(query());
+  const refreshLoadable = useRecoilValueLoadable(query());
+  const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (refreshLoadable.state === 'hasValue') {
+      setData(refreshLoadable.contents.results);
+      setRefreshing(false);
+    }
+  }, [refreshLoadable.contents]);
 
   const renderItem = ({ item, index }) => <Item item={item} />;
+
+  if (refreshLoadable.state === 'loading' && !refreshing) {
+    return <LoadingComponent />;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
         ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
-        data={blocks.results}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              refresh();
+            }}
+          />
+        }
+        data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.name.toString()}
       />
@@ -95,11 +116,46 @@ const Content = ({ navigation }) => {
   );
 };
 
-const BlocksFoundScreen = ({ navigation }) => (
-  <Suspense fallback={<LoadingComponent />}>
-    <Content />
-  </Suspense>
-);
+const BlocksFoundScreen = ({ navigation }) => {
+  const refresh = useRefresh();
+  const refreshLoadable = useRecoilValueLoadable(query());
+  const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (refreshLoadable.state === 'hasValue') {
+      setData(refreshLoadable.contents.results);
+      setRefreshing(false);
+    }
+  }, [refreshLoadable.contents]);
+
+  const renderItem = ({ item, index }) => <Item item={item} />;
+
+  if (refreshLoadable.state === 'loading' && !refreshing) {
+    return <LoadingComponent />;
+  }
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <FlatList
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
+        ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              refresh();
+            }}
+          />
+        }
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.name.toString()}
+      />
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   item: {

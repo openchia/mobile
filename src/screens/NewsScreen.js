@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { Suspense } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -9,13 +9,13 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+// import { FlatList } from 'react-native-gesture-handler';
 import { Text, useTheme } from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
-import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
+import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { getChiaPlotPosts } from '../Api';
 import { newsRefreshState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
-import PressableCard from '../components/PressableCard';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(newsRefreshState());
@@ -65,49 +65,58 @@ const Item = ({ item, width, onPress }) => {
   // };
 
   return (
-    <PressableCard onPress={onPress}>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          paddingTop: 12,
-          paddingBottom: 12,
-          paddingStart: 12,
-          paddingEnd: 12,
+    // <PressableCard onPress={onPress}>
+    <View
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        paddingTop: 12,
+        paddingBottom: 12,
+        paddingStart: 12,
+        paddingEnd: 12,
+      }}
+    >
+      <Image
+        style={{ height: 200, width: '100%', borderRadius: 6 }}
+        source={{
+          uri: item.jetpack_featured_media_url,
         }}
-      >
-        <Image
-          style={{ height: 200, width: '100%', borderRadius: 6 }}
-          source={{
-            uri: item.jetpack_featured_media_url,
-          }}
+      />
+      <View style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingTop: 12 }}>
+        <RenderHtml
+          tagsStyles={tagsStyles}
+          contentWidth={width}
+          // customHTMLElementModels={customHTMLElementModels}
+          source={{ html: `<h2><strong>${item.title.rendered}</strong></h2>` }}
         />
-        <View style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingTop: 12 }}>
+        <View style={{ flex: 1 }}>
           <RenderHtml
+            enableCSSInlineProcessing
             tagsStyles={tagsStyles}
             contentWidth={width}
-            // customHTMLElementModels={customHTMLElementModels}
-            source={{ html: `<h2><strong>${item.title.rendered}</strong></h2>` }}
+            source={{ html: item.excerpt.rendered }}
           />
-          <View style={{ flex: 1 }}>
-            <RenderHtml
-              enableCSSInlineProcessing
-              tagsStyles={tagsStyles}
-              contentWidth={width}
-              source={{ html: item.excerpt.rendered }}
-            />
-          </View>
-          <Text style={styles.date}>{format(new Date(item.modified), 'PP')}</Text>
         </View>
+        <Text style={styles.date}>{format(new Date(item.modified), 'PP')}</Text>
       </View>
-    </PressableCard>
+    </View>
+    // {/* </PressableCard> */}
   );
 };
 
-const Content = ({ navigation }) => {
+const NewsScreen = ({ navigation }) => {
   const { width } = useWindowDimensions();
   const refresh = useRefresh();
-  const posts = useRecoilValue(query());
+  const postsLoadable = useRecoilValueLoadable(query());
+  const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (postsLoadable.state === 'hasValue') {
+      setData(postsLoadable.contents);
+      setRefreshing(false);
+    }
+  }, [postsLoadable.contents]);
 
   const renderItem = ({ item, index }) => (
     <Item
@@ -120,25 +129,31 @@ const Content = ({ navigation }) => {
     />
   );
 
+  if (postsLoadable.state === 'loading' && !refreshing) {
+    return <LoadingComponent />;
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
         ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
-        data={posts}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              refresh();
+            }}
+          />
+        }
+        data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
     </SafeAreaView>
   );
 };
-
-const NewsScreen = ({ navigation }) => (
-  <Suspense fallback={<LoadingComponent />}>
-    <Content navigation={navigation} />
-  </Suspense>
-);
 
 const styles = StyleSheet.create({
   header: {

@@ -2,8 +2,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getStats } from '../Api';
 import { currencyState, statsRequestIDState } from '../Atoms';
 import PressableCard from '../components/PressableCard';
@@ -15,9 +16,9 @@ import {
 } from '../utils/Formatting';
 import { getCurrencyFromKey } from './CurrencySelectionScreen';
 
-const Item = ({ title, value, color, loadable, format, onPress }) => (
-  <PressableCard style={styles.item} onPress={onPress}>
-    <View style={{}}>
+const Item = ({ title, value, color, loadable, format, onPress, icon }) => (
+  <PressableCard style={{ flex: 1 }} onPress={onPress}>
+    <View style={styles.item}>
       <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title.toUpperCase()}</Text>
       <Text
         style={{
@@ -34,6 +35,15 @@ const Item = ({ title, value, color, loadable, format, onPress }) => (
           ? '...'
           : 'Error occured'}
       </Text>
+      <View
+        style={{
+          position: 'absolute',
+          right: 8,
+          bottom: 8,
+        }}
+      >
+        {icon}
+      </View>
     </View>
   </PressableCard>
 );
@@ -62,6 +72,7 @@ const Content = ({ navigation }) => {
   const statsLoadable = useRecoilValueLoadable(statsQuery());
   const refresh = useRefreshStats();
   const { t } = useTranslation();
+  const theme = useTheme();
 
   if (statsLoadable.state === 'hasError') {
     return (
@@ -112,6 +123,9 @@ const Content = ({ navigation }) => {
             format={(item) => formatBytes(item.pool_space)}
             color="#4DB33E"
             title={t('common:poolSpace')}
+            icon={
+              <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
+            }
           />
         </View>
         <View style={styles.container}>
@@ -211,11 +225,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
-    flex: 1,
+    height: '100%',
     // minHeight: 100,
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column',
+    // flexDirection: 'column',
+    // display: 'flex',
     // backgroundColor: '#fff',
     // elevation: 6,
     // margin: 6,

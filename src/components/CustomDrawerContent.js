@@ -7,6 +7,7 @@ import { Switch, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { updateFCMToken } from '../Api';
 import { initialRouteState, settingsState } from '../Atoms';
 import OpenChiaIconWithText from '../images/OpenChiaIconWithText';
@@ -121,7 +122,7 @@ const CustomDrawerContent = (props) => {
             onPress={() => onPress(t('navigate:stats'), true)}
             labelStyle={{ color: theme.colors.textGrey }}
             icon={({ color, size }) => (
-              <Ionicons name="document-text-outline" size={size} color={theme.colors.textGrey} />
+              <MaterialCommunityIcons name="chart-line" size={size} color={theme.colors.textGrey} />
             )}
           />
           {/* <DrawerItem
