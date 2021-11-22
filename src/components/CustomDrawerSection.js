@@ -17,6 +17,7 @@ const CustomDrawerSection = ({ children, title, theme, style, showDivider, ...re
         </View>
       )}
       {children}
+      {/* <View style={{ height: 6 }} /> */}
       {showDivider && <Divider style={{ backgroundColor: colors.divider }} />}
     </View>
   );

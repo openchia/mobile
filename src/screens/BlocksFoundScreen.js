@@ -51,23 +51,23 @@ const Item = ({ item }) => {
     <PressableCard onTap={() => {}}>
       <View style={{ padding: 8, display: 'flex' }}>
         <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
-          <Text style={styles.title}>{t('common:effort')}:</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('common:effort')}</Text>
           <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${item.luck}% ( ${getLuck(
             item.luck
           )} )`}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 8 }}>
-          <Text style={styles.title}>{t('common:index')}:</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('common:index')}</Text>
           <Text style={styles.val}>{item.confirmed_block_index}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 8 }}>
-          <Text style={styles.title}>{t('common:farmer')}:</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('common:farmer')}</Text>
           <Text numberOfLines={1} style={[styles.val, { color: theme.colors.textLight }]}>
             {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
           </Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 8 }}>
-          <Text style={styles.title}>{t('common:date')}:</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('common:date')}</Text>
           <Text style={styles.val}>{format(fromUnixTime(item.timestamp), 'PPpp')}</Text>
         </View>
       </View>

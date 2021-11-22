@@ -54,15 +54,17 @@ import FarmersScreen from './screens/FarmersScreen';
 import BlocksFoundScreen from './screens/BlocksFoundScreen';
 import PayoutScreen from './screens/PayoutScreen';
 import ScanScreen from './screens/ScanScreen';
-import FarmerScreen, { getHeaderTitle } from './screens/FarmerScreen';
+import FarmerScreen, { getHeaderTitle } from './screens/farmer/FarmerScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import { initialRouteState, launcherIDsState, settingsState } from './Atoms';
 import LanguageSelectorScreen from './screens/LanguageSelectorScreen';
 import CurrencySelectionScreen from './screens/CurrencySelectionScreen';
 import CustomDrawerContent from './components/CustomDrawerContent';
-import ChartsScreen from './screens/ChartsScreen';
+import PoolspaceScreen from './screens/charts/PoolspaceScreen';
 import NewsScreen from './screens/NewsScreen';
 import NewsPostScreen from './screens/NewsPostScreen';
+import FarmerSettingsScreen from './screens/farmer/FarmerSettingsScreen';
+import FarmerNameScreen from './screens/farmer/FarmerNameScreen';
 
 // LogBox.ignoreLogs(['Reanimated 2']);
 LogBox.ignoreLogs(['timer']);
@@ -102,7 +104,7 @@ const LightTheme = {
     textGreyLight: '#8c8c8c',
     disabled: '#436B34',
     placeholder: '#436B34',
-    backdrop: '#436B34',
+    // backdrop: '#436B34',
     notification: '#436B34',
     leaves: 'rgba(41, 50, 57, 0.05)',
     borderColor: 'rgba(0,0,0,0.05)',
@@ -133,7 +135,7 @@ const DarkTheme = {
     divider: 'rgba(255, 255, 255, 0.2)',
     disabled: '#f5f5f5',
     placeholder: '#f5f5f5',
-    backdrop: '#f5f5f5',
+    // backdrop: '#f5f5f5',
     notification: '#f5f5f5',
     borderColor: 'rgba(0,0,0,0.05)',
   },
@@ -149,7 +151,7 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => (
       />
     )}
     backBehavior="history"
-    initialRouteName={initialRoute}
+    initialRouteName={initialRoute.name}
     // useLegacyImplementation
     screenOptions={{
       headerShown: true,
@@ -180,8 +182,17 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => (
     <Drawer.Screen name={t('navigate:farmers')} component={FarmersScreen} />
     <Drawer.Screen name={t('navigate:blocksFound')} component={BlocksFoundScreen} />
     <Drawer.Screen name={t('navigate:payouts')} component={PayoutScreen} />
-    <Drawer.Screen name={t('navigate:verifyFarm')} component={ScanScreen} />
-    <Drawer.Screen name={t('navigate:charts')} component={ChartsScreen} />
+    <Drawer.Screen
+      name="Farmer Details Drawer"
+      component={FarmerScreen}
+      options={({ route }) => ({
+        title: getHeaderTitle(route, t),
+        headerRight: () => (
+          <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
+        ),
+      })}
+      // options={({ route, navigation }) => ({})}
+    />
     {/* <Divider /> */}
     {launcherIDsArray.map((item) => (
       <Drawer.Screen
@@ -240,8 +251,12 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRou
           // options={({ route, navigation }) => ({})}
         />
         <Stack.Screen name="Post" component={NewsPostScreen} />
+        <Stack.Screen name="Farmer Settings" component={FarmerSettingsScreen} />
         <Stack.Screen name={t('common:language')} component={LanguageSelectorScreen} />
         <Stack.Screen name={t('common:currency')} component={CurrencySelectionScreen} />
+        <Stack.Screen name={t('common:poolSpace')} component={PoolspaceScreen} />
+        <Stack.Screen name={t('common:name')} component={FarmerNameScreen} />
+        <Stack.Screen name={t('navigate:verifyFarm')} component={ScanScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

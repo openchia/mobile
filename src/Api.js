@@ -181,3 +181,26 @@ export const updateFCMToken = (launcherID, token, FCMToken) =>
     .catch((error) => {
       console.log(error);
     });
+
+export const updateFarmerName = (launcherID, token, name) =>
+  fetch(`${REST_API}launcher/${launcherID}/`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      name,
+    }),
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json)
+    .catch((error) => {
+      console.log(error);
+    });

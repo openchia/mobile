@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { NetspaceChartIntervals } from '../charts/Constants';
-import TestStackedBarChart from '../charts/TestStackedBarChart';
-import LoadingComponent from '../components/LoadingComponent';
+import { NetspaceChartIntervals } from '../../charts/Constants';
+import TestStackedBarChart from '../../charts/TestStackedBarChart';
+import LoadingComponent from '../../components/LoadingComponent';
 
 export const { width } = Dimensions.get('window');
 

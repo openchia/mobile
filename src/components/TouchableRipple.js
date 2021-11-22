@@ -11,7 +11,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-const TouchableRipple = ({ style, onPress, children, contentContainerStyle }) => {
+const TouchableRipple = ({ style, onPress, children, enabled }) => {
   const centerX = useSharedValue(0);
   const centerY = useSharedValue(0);
   const scale = useSharedValue(0);
@@ -71,11 +71,9 @@ const TouchableRipple = ({ style, onPress, children, contentContainerStyle }) =>
   return (
     <View ref={aRef} style={[style, { overflow: 'hidden' }]}>
       <TapGestureHandler onGestureEvent={tapGestureEvent}>
-        <Animated.View
-        // style={[style, { overflow: 'hidden' }]}
-        >
+        <Animated.View>
           <View>{children}</View>
-          <Animated.View style={rStyle} />
+          {enabled && <Animated.View style={rStyle} />}
         </Animated.View>
       </TapGestureHandler>
     </View>

@@ -2,13 +2,13 @@ import { fromUnixTime, getUnixTime, isAfter } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { useSetRecoilState } from 'recoil';
-import { getSpace } from '../Api';
-import { netSpaceRequestIDState } from '../Atoms';
-import { NetspaceChartIntervals } from '../charts/Constants';
-import PoolspaceChart from '../charts/PoolspaceChart';
-import LoadingComponent from '../components/LoadingComponent';
-import { monotoneCubicInterpolation } from '../react-native-animated-charts';
-import { formatBytes } from '../utils/Formatting';
+import { getSpace } from '../../Api';
+import { netSpaceRequestIDState } from '../../Atoms';
+import { NetspaceChartIntervals } from '../../charts/Constants';
+import PoolspaceChart from '../../charts/PoolspaceChart';
+import LoadingComponent from '../../components/LoadingComponent';
+import { monotoneCubicInterpolation } from '../../react-native-animated-charts';
+import { formatBytes } from '../../utils/Formatting';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(netSpaceRequestIDState());
@@ -42,7 +42,7 @@ const filterData = (data, timePeriod) => {
 //     },
 // });
 
-const Charts = ({ navigation }) => {
+const PoolSpaceScreen = ({ navigation }) => {
   const [data, setData] = useState(null);
   const [maxSize, setMaxSize] = useState('');
 
@@ -86,4 +86,4 @@ const Charts = ({ navigation }) => {
   );
 };
 
-export default Charts;
+export default PoolSpaceScreen;

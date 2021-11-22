@@ -26,22 +26,24 @@ const ScanScreen = ({ navigation }) => {
     getLauncherIDFromToken(token).then((data) => {
       if (data) {
         console.log(data);
-        setLauncherIDs((prev) => new Map(prev.set(data.launcher_id, { name: null, token })));
-        if (settings.notifications) {
-          getObject('fcm').then((FCMToken) => {
-            updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
-              navigation.navigate({
-                name: 'Farmer Details',
-                params: { launcherId: data.launcher_id, name: data.name },
-              });
+        setLauncherIDs((prev) => new Map(prev.set(data.launcher_id, { name: data.name, token })));
+        // if (settings.notifications) {
+        getObject('fcm').then((FCMToken) => {
+          updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
+            console.log(FCMToken);
+            navigation.pop();
+            navigation.navigate({
+              name: 'Farmer Details',
+              params: { launcherId: data.launcher_id, name: data.name },
             });
           });
-        } else {
-          navigation.navigate({
-            name: 'Farmer Details',
-            params: { launcherId: data.launcher_id, name: data.name },
-          });
-        }
+        });
+        // } else {
+        //   navigation.navigate({
+        //     name: 'Farmer Details',
+        //     params: { launcherId: data.launcher_id, name: data.name },
+        //   });
+        // }
       } else {
         console.log('Error');
       }
@@ -50,10 +52,10 @@ const ScanScreen = ({ navigation }) => {
 
   return (
     <QRCodeScanner
-      reactivate
+      // reactivate
       ref={scanner}
       onRead={onSuccess}
-      reactivateTimeout={2000}
+      // reactivateTimeout={2000}
       cameraProps={{ ratio: '1:1' }}
       showMarker
       topContent={

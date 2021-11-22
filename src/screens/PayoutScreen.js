@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import React, { Suspense } from 'react';
 import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useTranslation } from 'react-i18next';
 import { getPayouts } from '../Api';
@@ -31,6 +31,7 @@ const query = selectorFamily({
 
 const Item = ({ item }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
   return (
     <PressableCard onTap={() => {}}>
       <View style={{ display: 'flex', flexDirection: 'column', padding: 8, flex: 1 }}>
@@ -40,17 +41,17 @@ const Item = ({ item }) => {
 
         {/* <View style={{ padding: 8, display: 'flex' }}> */}
         <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
-          <Text style={styles.title}>{t('common:amount')}:</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('common:amount')}</Text>
           <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(
             item.amount
           )} XCH`}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 8 }}>
-          <Text style={styles.title}>{t('common:id')}:</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('common:id')}</Text>
           <Text style={styles.val}>{item.id}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 8 }}>
-          <Text style={styles.title}>{t('common:date')}:</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('common:date')}</Text>
           <Text style={styles.val}>{format(new Date(item.datetime), 'PPpp')}</Text>
         </View>
       </View>

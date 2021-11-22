@@ -15,8 +15,8 @@ import {
 } from '../utils/Formatting';
 import { getCurrencyFromKey } from './CurrencySelectionScreen';
 
-const Item = ({ title, value, color, loadable, format }) => (
-  <PressableCard style={styles.item}>
+const Item = ({ title, value, color, loadable, format, onPress }) => (
+  <PressableCard style={styles.item} onPress={onPress}>
     <View style={{}}>
       <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title.toUpperCase()}</Text>
       <Text
@@ -58,7 +58,7 @@ const statsQuery = selectorFamily({
     },
 });
 
-const Content = () => {
+const Content = ({ navigation }) => {
   const statsLoadable = useRecoilValueLoadable(statsQuery());
   const refresh = useRefreshStats();
   const { t } = useTranslation();
@@ -107,6 +107,7 @@ const Content = () => {
             title={t('common:chiaPrice')}
           />
           <Item
+            onPress={() => navigation.navigate(t('common:poolSpace'))}
             loadable={statsLoadable}
             format={(item) => formatBytes(item.pool_space)}
             color="#4DB33E"
@@ -202,7 +203,7 @@ const StatsScreen = ({ navigation }) => (
   //   toast.show(statsLoadable.contents);
   // }
 
-  <Content />
+  <Content navigation={navigation} />
 );
 const styles = StyleSheet.create({
   container: {

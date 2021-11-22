@@ -5,10 +5,15 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { selectorFamily, useRecoilState, useRecoilValueLoadable } from 'recoil';
-import { getFarmer, getPartialsFromID, getStats, updateFCMToken } from '../Api';
-import { currencyState, farmerRefreshState, launcherIDsState } from '../Atoms';
-import IconButton from '../components/IconButton';
+import { selectorFamily, useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { getFarmer, getPartialsFromID, getStats, updateFCMToken } from '../../Api';
+import {
+  currencyState,
+  farmerRefreshState,
+  launcherIDsState,
+  initialRouteState,
+} from '../../Atoms';
+import IconButton from '../../components/IconButton';
 import FarmerBlockScreen from './FarmerBlocksScreen';
 import FarmerPartialScreen from './FarmerPartialScreen';
 import FarmerPayoutScreen from './FarmerPayoutScreen';
@@ -58,12 +63,21 @@ export const getHeaderTitle = (route, t) => {
 
 const FarmerScreen = ({ route, navigation }) => {
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
+  const initialRoute = useRecoilValue(initialRouteState);
   // const settings = useRecoilValue(settingsState);
-  const { launcherId, name } = route.params;
-  const dataLoadable = useRecoilValueLoadable(query(launcherId));
+  let mLauncherId;
+  let name;
+  if (route.params) {
+    mLauncherId = route.params.launcherId;
+    name = route.params.name;
+  } else {
+    mLauncherId = initialRoute.launcherId;
+    name = initialRoute.launcherName;
+  }
+
+  const dataLoadable = useRecoilValueLoadable(query(mLauncherId));
 
   useLayoutEffect(() => {
-    // const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
     navigation.setOptions({
       headerRight: (props) => (
         <View
@@ -74,10 +88,11 @@ const FarmerScreen = ({ route, navigation }) => {
             alignItems: 'center',
           }}
         >
+          {/* {dataLoadable.state === 'hasValue' && ( */}
           <IconButton
             icon={
               <Ionicons
-                name={launcherIDs.has(launcherId) ? 'ios-trash-bin-outline' : 'ios-save-outline'}
+                name={launcherIDs.has(mLauncherId) ? 'ios-settings-outline' : 'ios-save-outline'}
                 size={24}
                 color="white"
               />
@@ -86,89 +101,40 @@ const FarmerScreen = ({ route, navigation }) => {
             color="#fff"
             size={24}
             onPress={() => {
-              if (launcherIDs.has(launcherId)) {
-                setLauncherIDs((prev) => {
-                  const newState = new Map(prev);
-                  const launcherData = prev.get(launcherId);
-                  updateFCMToken(launcherId, launcherData.token, null).then((data) => {
-                    console.log(`Successfully removed FCM Token for launcher ${launcherData.name}`);
-                  });
-                  newState.delete(launcherId);
-                  // getObject('fcm').then((FCMToken) => {
-                  //   // console.log(element);
-                  //   // updateFCMToken(launcherId, launcherData.value.token, null).then((data) => {
-                  //   //   console.log(data);
-                  //   // });
-                  // });
-                  return newState;
+              if (launcherIDs.has(mLauncherId)) {
+                // navigation.navigate('Farmer Settings');
+                const launcherData = launcherIDs.get(mLauncherId);
+                navigation.navigate({
+                  name: 'Farmer Settings',
+                  params: { name, launcherId: mLauncherId, token: launcherData.token },
                 });
-                navigation.goBack();
+                // setLauncherIDs((prev) => {
+                //   const newState = new Map(prev);
+                //   const launcherData = prev.get(launcherId);
+                //   updateFCMToken(launcherId, launcherData.token, null).then((data) => {
+                //     console.log(`Successfully removed FCM Token for launcher ${launcherData.name}`);
+                //   });
+                //   newState.delete(launcherId);
+                //   return newState;
+                // });
+                // navigation.goBack();
               } else {
-                setLauncherIDs((prev) => new Map(prev.set(launcherId, { name })));
+                setLauncherIDs(
+                  (prev) =>
+                    new Map(
+                      prev.set(mLauncherId, {
+                        name,
+                      })
+                    )
+                );
               }
             }}
           />
-          {/* <Ionicons.Button
-            name={launcherIDs.has(launcherId) ? 'ios-trash-bin-outline' : 'ios-save-outline'}
-            style={{ marginEnd: 8 }}
-            backgroundColor="transparent"
-            color="#fff"
-            size={24}
-            onPress={() => {
-              if (launcherIDs.has(launcherId)) {
-                setLauncherIDs((prev) => {
-                  const newState = new Map(prev);
-                  const launcherData = prev.get(launcherId);
-                  updateFCMToken(launcherId, launcherData.token, null).then((data) => {
-                    console.log(`Successfully removed FCM Token for launcher ${launcherData.name}`);
-                  });
-                  newState.delete(launcherId);
-                  // getObject('fcm').then((FCMToken) => {
-                  //   // console.log(element);
-                  //   // updateFCMToken(launcherId, launcherData.value.token, null).then((data) => {
-                  //   //   console.log(data);
-                  //   // });
-                  // });
-                  return newState;
-                });
-                navigation.goBack();
-              } else {
-                setLauncherIDs((prev) => new Map(prev.set(launcherId, { name })));
-              }
-            }}
-          /> */}
-          {/* <IconButton
-            icon={launcherIDs.has(launcherId) ? 'delete' : 'content-save'}
-            style={{ marginEnd: 20 }}
-            color="#fff"
-            size={24}
-            onPress={() => {
-              if (launcherIDs.has(launcherId)) {
-                setLauncherIDs((prev) => {
-                  const newState = new Map(prev);
-                  const launcherData = prev.get(launcherId);
-                  updateFCMToken(launcherId, launcherData.token, null).then((data) => {
-                    console.log(`Successfully removed FCM Token for launcher ${launcherData.name}`);
-                  });
-                  newState.delete(launcherId);
-                  // getObject('fcm').then((FCMToken) => {
-                  //   // console.log(element);
-                  //   // updateFCMToken(launcherId, launcherData.value.token, null).then((data) => {
-                  //   //   console.log(data);
-                  //   // });
-                  // });
-                  return newState;
-                });
-                navigation.goBack();
-              } else {
-                setLauncherIDs((prev) => new Map(prev.set(launcherId, { name })));
-              }
-            }}
-          /> */}
+          {/* )} */}
         </View>
       ),
     });
-  }, [navigation, route]);
+  }, [navigation, route, launcherIDs]);
 
   return (
     <Tab.Navigator labeled={false}>
@@ -184,7 +150,7 @@ const FarmerScreen = ({ route, navigation }) => {
         }}
         name="Stats"
       >
-        {() => <FarmerStatsScreen launcherId={launcherId} dataLoadable={dataLoadable} />}
+        {() => <FarmerStatsScreen launcherId={mLauncherId} dataLoadable={dataLoadable} />}
       </Tab.Screen>
       <Tab.Screen
         options={{
@@ -198,7 +164,7 @@ const FarmerScreen = ({ route, navigation }) => {
         }}
         name="Partial Chart"
       >
-        {() => <FarmerPartialScreen launcherId={launcherId} dataLoadable={dataLoadable} />}
+        {() => <FarmerPartialScreen launcherId={mLauncherId} dataLoadable={dataLoadable} />}
       </Tab.Screen>
       <Tab.Screen
         options={{
@@ -210,7 +176,7 @@ const FarmerScreen = ({ route, navigation }) => {
         }}
         name="FarmerPayouts"
       >
-        {() => <FarmerPayoutScreen launcherId={launcherId} dataLoadable={dataLoadable} />}
+        {() => <FarmerPayoutScreen launcherId={mLauncherId} dataLoadable={dataLoadable} />}
       </Tab.Screen>
       <Tab.Screen
         options={{
@@ -222,7 +188,7 @@ const FarmerScreen = ({ route, navigation }) => {
         }}
         name="FarmerBlocks"
       >
-        {() => <FarmerBlockScreen launcherId={launcherId} dataLoadable={dataLoadable} />}
+        {() => <FarmerBlockScreen launcherId={mLauncherId} dataLoadable={dataLoadable} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

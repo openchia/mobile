@@ -6,11 +6,19 @@ import * as RNLocalize from 'react-native-localize';
 import en from './translations/en';
 import fr from './translations/fr';
 import de from './translations/de';
+import es from './translations/es';
+import hu from './translations/hu';
+import pl from './translations/pl';
+import ru from './translations/ru';
 
 const LANGUAGES = {
   en,
   fr,
   de,
+  es,
+  hu,
+  pl,
+  ru,
 };
 
 const LANG_CODES = Object.keys(LANGUAGES);

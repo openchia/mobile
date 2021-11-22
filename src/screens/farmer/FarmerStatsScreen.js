@@ -5,35 +5,38 @@ import { format } from 'date-fns';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSetRecoilState } from 'recoil';
-import { farmerRefreshState } from '../Atoms';
-import CustomCard from '../components/CustomCard';
-import { formatBytes, formatPrice } from '../utils/Formatting';
-import { getCurrencyFromKey } from './CurrencySelectionScreen';
+import { farmerRefreshState } from '../../Atoms';
+import CustomCard from '../../components/CustomCard';
+import { formatBytes, formatPrice } from '../../utils/Formatting';
+import { getCurrencyFromKey } from '../CurrencySelectionScreen';
 
-const Item = ({ title, value, color, loadable, format }) => (
-  <CustomCard style={styles.item}>
-    <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
-    <Text
-      style={{
-        textAlign: 'center',
-        // marginTop: 10,
-        // marginBottom: 10,
-        fontSize: 20,
-        fontWeight: 'bold',
-      }}
-    >
-      {loadable.state === 'hasValue' ? format(loadable.contents.partials) : '...'}
-    </Text>
-  </CustomCard>
-);
+const Item = ({ title, value, color, loadable, format }) => {
+  const theme = useTheme();
+  return (
+    <CustomCard style={styles.item}>
+      <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
+      <Text
+        style={{
+          textAlign: 'center',
+          // marginTop: 10,
+          // marginBottom: 10,
+          fontSize: 20,
+          // color: theme.colors.textGrey,
+        }}
+      >
+        {loadable.state === 'hasValue' ? format(loadable.contents.partials) : '...'}
+      </Text>
+    </CustomCard>
+  );
+};
 
-const HeaderItem = ({ loadable, launcherId, currency, t }) => (
+const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
   <CustomCard style={styles.headerItem}>
     <View style={{ display: 'flex', flexDirection: 'row' }}>
-      <Text style={{ flex: 1, fontWeight: 'bold' }}>{t('common:friendlyName')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('common:friendlyName')}:</Text>
       <Text>
         {loadable.state === 'hasValue'
           ? loadable.contents.farmer.name
@@ -43,7 +46,7 @@ const HeaderItem = ({ loadable, launcherId, currency, t }) => (
       </Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'column', marginTop: 6 }}>
-      <Text style={{ fontWeight: 'bold' }}>Launcher ID:</Text>
+      <Text style={{ color: theme.colors.textGrey }}>Launcher ID:</Text>
       <TouchableOpacity
         style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: 20 }}
         onPress={() => Clipboard.setString(launcherId)}
@@ -53,13 +56,13 @@ const HeaderItem = ({ loadable, launcherId, currency, t }) => (
       </TouchableOpacity>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, fontWeight: 'bold' }}>{t('common:difficulty')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('common:difficulty')}:</Text>
       <Text style={{}}>
         {loadable.state === 'hasValue' ? loadable.contents.farmer.difficulty : '...'}
       </Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, fontWeight: 'bold' }}>{t('common:joinedAt')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('common:joinedAt')}:</Text>
       {/* <Text style={{}}>{format(new Date(item.joined_at), 'PPpp')}</Text> */}
       <Text style={{}}>
         {loadable.state === 'hasValue'
@@ -68,7 +71,9 @@ const HeaderItem = ({ loadable, launcherId, currency, t }) => (
       </Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, fontWeight: 'bold' }}>{t('common:estimatedDailyEarnings')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>
+        {t('common:estimatedDailyEarnings')}:
+      </Text>
       <Text>
         {loadable.state === 'hasValue'
           ? `${formatPrice(
@@ -81,11 +86,11 @@ const HeaderItem = ({ loadable, launcherId, currency, t }) => (
       </Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, fontWeight: 'bold' }}>{t('common:points')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('common:points')}:</Text>
       <Text>{loadable.state === 'hasValue' ? loadable.contents.farmer.points : '...'}</Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, fontWeight: 'bold' }}>{t('common:utilizationSpace')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('common:utilizationSpace')}:</Text>
       <Text>
         {loadable.state === 'hasValue'
           ? `${loadable.contents.farmer.points_of_total.toFixed(5)}%`
@@ -94,7 +99,7 @@ const HeaderItem = ({ loadable, launcherId, currency, t }) => (
       {/* <Text style={{}}>{formatBytes(item.estimated_size)}</Text> */}
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, fontWeight: 'bold' }}>{t('common:estimatedSize')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('common:estimatedSize')}:</Text>
       <Text>
         {loadable.state === 'hasValue'
           ? formatBytes(loadable.contents.farmer.estimated_size)
@@ -115,6 +120,7 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, navigation }) => {
   const errors = [];
   const harvesters = new Set();
   const { t } = useTranslation();
+  const theme = useTheme();
   let points = 0;
 
   if (dataLoadable.state === 'hasValue') {
@@ -136,7 +142,13 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, navigation }) => {
       contentContainerStyle={{ padding: 4, flexGrow: 1 }}
       refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
     >
-      <HeaderItem loadable={dataLoadable} launcherId={launcherId} currency={currency} t={t} />
+      <HeaderItem
+        loadable={dataLoadable}
+        launcherId={launcherId}
+        currency={currency}
+        t={t}
+        theme={theme}
+      />
       <View style={styles.container}>
         <Item
           loadable={dataLoadable}

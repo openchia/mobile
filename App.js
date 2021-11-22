@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RecoilRoot } from 'recoil';
 import { Notifications } from 'react-native-notifications';
 // import * as Sentry from '@sentry/react-native';
+import messaging from '@react-native-firebase/messaging';
 import { saveObject } from './src/utils/Utils';
 import ApplicationNavigator from './src/ApplicationNavigator';
 import LoadingComponent from './src/components/LoadingComponent';
@@ -25,26 +26,14 @@ const App = () => {
   useEffect(() => {
     Notifications.registerRemoteNotifications();
 
-    // if (Platform.OS === 'ios') {
-    //   Notifications.ios.checkPermissions().then((currentPermissions) => {
-    //     console.log(`Badges enabled: ${!!currentPermissions.badge}`);
-    //     console.log(`Sounds enabled: ${!!currentPermissions.sound}`);
-    //     console.log(`Alerts enabled: ${!!currentPermissions.alert}`);
-    //     console.log(`Car Play enabled: ${!!currentPermissions.carPlay}`);
-    //     console.log(`Critical Alerts enabled: ${!!currentPermissions.criticalAlert}`);
-    //     console.log(`Provisioanl enabled: ${!!currentPermissions.provisional}`);
-    //     console.log(
-    //       `Provides App Notification Settings enabled: ${!!currentPermissions.providesAppNotificationSettings}`
-    //     );
-    //     console.log(`Announcement enabled: ${!!currentPermissions.announcement}`);
-    //   });
-    // }
-
     Notifications.events().registerRemoteNotificationsRegistered((event) => {
       saveObject('fcm', event.deviceToken);
-      // TODO: Send the token to my server so it could send back push notifications...
-      // console.log('Device Token Received', event.deviceToken);
     });
+
+    // messaging()
+    //   .subscribeToTopic('blocks')
+    //   .then(() => console.log('Subscribed to topic!'));
+
     Notifications.events().registerRemoteNotificationsRegistrationFailed((event) => {
       console.error(event);
     });

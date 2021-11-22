@@ -61,4 +61,12 @@ export default {
   date: 'Date',
   amount: 'Amount',
   id: 'ID',
+  appearance: 'Appearance',
+  appearanceDesc: 'Light, Dark',
+  general: 'General',
+  name: 'Name',
+  notifications: 'Notifications',
+  notificationsDesc: 'Partials, Payouts',
+  notification: 'Notification',
+  notificationDesc: 'Blocks Won',
 };

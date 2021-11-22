@@ -3,10 +3,11 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import TouchableRipple from './TouchableRipple';
 
-const PressableCard = ({ style, onPress, children, contentContainerStyle }) => {
+const PressableCard = ({ style, onPress, children, enabled }) => {
   const theme = useTheme();
   return (
     <TouchableRipple
+      enabled={enabled}
       style={[
         {
           backgroundColor: theme.colors.onSurface,

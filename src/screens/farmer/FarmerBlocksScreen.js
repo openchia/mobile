@@ -1,26 +1,27 @@
-import { format } from 'date-fns';
+import { format, fromUnixTime } from 'date-fns';
 import React, { Suspense } from 'react';
-import { FlatList, RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
 import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
-import { getPayoutsFromAddress } from '../Api';
-import { farmerPayoutsRefreshState } from '../Atoms';
-import LoadingComponent from '../components/LoadingComponent';
-import PressableCard from '../components/PressableCard';
-import { convertMojoToChia } from '../utils/Formatting';
+import { getBlocksFromFarmer } from '../../Api';
+import { farmerBlockRefreshState } from '../../Atoms';
+import LoadingComponent from '../../components/LoadingComponent';
+import PressableCard from '../../components/PressableCard';
+import { convertMojoToChia } from '../../utils/Formatting';
 
 const useRefresh = () => {
-  const setRequestId = useSetRecoilState(farmerPayoutsRefreshState());
+  const setRequestId = useSetRecoilState(farmerBlockRefreshState());
   return () => setRequestId((id) => id + 1);
 };
 
 const query = selectorFamily({
-  key: 'farmerPayouts',
+  key: 'farmerBlocks',
   get:
     (launcherId) =>
     async ({ get }) => {
-      get(farmerPayoutsRefreshState());
-      const response = await getPayoutsFromAddress(launcherId);
+      get(farmerBlockRefreshState());
+      const response = await getBlocksFromFarmer(launcherId);
       if (response.error) {
         throw response.error;
       }
@@ -44,7 +45,7 @@ const Item = ({ item }) => (
       <View style={{ flex: 1 }} />
       <View style={{ display: 'flex', flexDirection: 'column' }}>
         <Text style={styles.block}>{item.confirmed_block_index}</Text>
-        <Text style={styles.date}>{format(new Date(item.payout.datetime), 'PPpp')}</Text>
+        <Text style={styles.date}>{format(fromUnixTime(item.timestamp), 'PPpp')}</Text>
       </View>
     </View>
   </PressableCard>
@@ -52,20 +53,18 @@ const Item = ({ item }) => (
 
 const Content = ({ launcherId }) => {
   const refresh = useRefresh();
-  const payouts = useRecoilValue(query(launcherId));
-
-  // console.log(payouts.results);
+  const blocks = useRecoilValue(query(launcherId));
 
   const renderItem = ({ item }) => <Item item={item} />;
 
-  if (payouts.results.length === 0) {
+  if (blocks.results.length === 0) {
     return (
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
       >
         <Text style={{ textAlign: 'center', fontSize: 30, padding: 10 }}>
-          No payouts received yet. Pull down to refresh.
+          No blocks won yet. Pull down to refresh.
         </Text>
       </ScrollView>
     );
@@ -75,17 +74,17 @@ const Content = ({ launcherId }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
         contentContainerStyle={{ flexGrow: 1 }}
-        ListHeaderComponent={<View style={{ marginTop: 6 }} />}
+        ListHeaderComponent={<View style={{ marginTop: 8 }} />}
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
-        data={payouts.results}
+        data={blocks.results}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.confirmed_block_index.toString()}
       />
     </SafeAreaView>
   );
 };
 
-const FarmerPayoutScreen = ({ navigation, launcherId }) => (
+const FarmerBlockScreen = ({ launcherId }) => (
   <Suspense fallback={<LoadingComponent />}>
     <Content launcherId={launcherId} />
   </Suspense>
@@ -101,8 +100,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   amount: {
-    fontSize: 14,
+    fontSize: 16,
   },
 });
 
-export default FarmerPayoutScreen;
+export default FarmerBlockScreen;

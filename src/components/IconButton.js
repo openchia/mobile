@@ -8,7 +8,6 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { TouchableRipple, withTheme } from 'react-native-paper';
-import color from 'color';
 
 const IconButton = ({
   icon,
@@ -23,7 +22,8 @@ const IconButton = ({
   ...rest
 }) => {
   const iconColor = typeof customColor !== 'undefined' ? customColor : theme.colors.text;
-  const rippleColor = color(iconColor).alpha(0.32).rgb().string();
+  // const rippleColor = color(iconColor).alpha(0.32).rgb().string();
+  const rippleColor = theme.colors.textGreyLight;
   const buttonSize = size * 1.5;
   return (
     <TouchableRipple

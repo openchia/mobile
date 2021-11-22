@@ -32,6 +32,11 @@ export const currencies = [
 export const getCurrencyFromKey = (key) =>
   Object.values(currencies.find((currency) => currency.key === key))[1];
 
+export const getCurrencyTitle = (key) =>
+  Object.values(currencies.find((currency) => currency.key === key))[2];
+// export const getCurrencyIcon = (key) =>
+// Object.values(currencies.find((currency) => currency.key === key))[1];
+
 const Item = ({ item, selected, onPress }) => {
   if (selected) {
     return (
