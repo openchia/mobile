@@ -71,7 +71,7 @@ const PayoutScreen = ({ navigation }) => {
       setData(payoutsLoadable.contents.results);
       setRefreshing(false);
     }
-  }, [payoutsLoadable.contents]);
+  }, [payoutsLoadable.state]);
 
   const renderItem = ({ item, index }) => <Item item={item} rank={index} />;
 

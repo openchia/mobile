@@ -127,7 +127,7 @@ const BlocksFoundScreen = ({ navigation }) => {
       setData(refreshLoadable.contents.results);
       setRefreshing(false);
     }
-  }, [refreshLoadable.contents]);
+  }, [refreshLoadable.state]);
 
   const renderItem = ({ item, index }) => <Item item={item} />;
 

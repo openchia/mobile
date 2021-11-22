@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
@@ -70,16 +70,31 @@ const statsQuery = selectorFamily({
 
 const Content = ({ navigation }) => {
   const statsLoadable = useRecoilValueLoadable(statsQuery());
+  const [refreshing, setRefreshing] = useState(false);
   const refresh = useRefreshStats();
   const { t } = useTranslation();
   const theme = useTheme();
+
+  useEffect(() => {
+    if (statsLoadable.state === 'hasValue') {
+      setRefreshing(false);
+    }
+  }, [statsLoadable.state]);
 
   if (statsLoadable.state === 'hasError') {
     return (
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              refresh();
+            }}
+          />
+        }
       >
         contentContainerStyle=
         {{
@@ -104,7 +119,15 @@ const Content = ({ navigation }) => {
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              refresh();
+            }}
+          />
+        }
       >
         <View style={styles.container}>
           <Item

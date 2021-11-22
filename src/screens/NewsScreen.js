@@ -116,7 +116,7 @@ const NewsScreen = ({ navigation }) => {
       setData(postsLoadable.contents);
       setRefreshing(false);
     }
-  }, [postsLoadable.contents]);
+  }, [postsLoadable.state]);
 
   const renderItem = ({ item, index }) => (
     <Item
