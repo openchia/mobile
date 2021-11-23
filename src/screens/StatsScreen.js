@@ -141,14 +141,14 @@ const Content = ({ navigation }) => {
               )} ${getCurrencyFromKey(statsLoadable.contents.currency)}`
             }
             color="#4DB33E"
-            title={t('common:chiaPrice')}
+            title={t('chiaPrice')}
           />
           <Item
-            onPress={() => navigation.navigate(t('common:poolSpace'))}
+            onPress={() => navigation.navigate(t('Poolspace'))}
             loadable={statsLoadable}
             format={(item) => formatBytes(item.pool_space)}
             color="#4DB33E"
-            title={t('common:poolSpace')}
+            title={t('poolSpace')}
             icon={
               <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
             }
@@ -159,13 +159,13 @@ const Content = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => `${(item.estimate_win / 60 / 24).toFixed(3)} days`}
             color="#3DD292"
-            title={t('common:etw')}
+            title={t('etw')}
           />
           <Item
             loadable={statsLoadable}
             format={(item) => item.rewards_blocks}
             color="#FB6D4C"
-            title={t('common:blocks')}
+            title={t('blocks')}
           />
         </View>
         <View style={styles.container}>
@@ -173,13 +173,13 @@ const Content = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => item.farmers}
             color="#34D4F1"
-            title={t('common:farmers')}
+            title={t('farmers')}
           />
           <Item
             loadable={statsLoadable}
             format={(item) => formatBytes(item.blockchain_space)}
             color="#34D4F1"
-            title={t('common:netspace')}
+            title={t('netspace')}
           />
         </View>
         <View style={styles.container}>
@@ -189,14 +189,14 @@ const Content = ({ navigation }) => {
               `${((item.time_since_last_win / (item.estimate_win * 60)) * 100).toFixed(0)}%`
             }
             color="#4DB33E"
-            title={t('common:currentEffort')}
+            title={t('currentEffort')}
           />
           <Item
             loadable={statsLoadable}
             // value="average_effort"
             format={(item) => `${item.average_effort.toFixed(0)}%`}
             color="#4DB33E"
-            title={t('common:effort')}
+            title={t('effort')}
           />
         </View>
         <View style={styles.container}>
@@ -204,13 +204,13 @@ const Content = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => convertSecondsToHourMin(item.time_since_last_win)}
             color="#4DB33E"
-            title={t('common:sinceLastWin')}
+            title={t('sinceLastWin')}
           />
           <Item
             loadable={statsLoadable}
             format={(item) => `${convertMojoToChia(item.rewards_amount)} XCH`}
             color="#4DB33E"
-            title={t('common:rewards')}
+            title={t('rewards')}
           />
         </View>
         <View style={styles.container}>
@@ -218,7 +218,7 @@ const Content = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => `${item.xch_tb_month.toFixed(8)} XCH/TiB/day`}
             color="#4DB33E"
-            title={t('common:profitability')}
+            title={t('profitability')}
           />
         </View>
       </ScrollView>

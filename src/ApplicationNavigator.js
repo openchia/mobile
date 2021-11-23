@@ -97,17 +97,20 @@ const LightTheme = {
     divider: 'rgba(0, 0, 0, 0.4)',
     statusBarColor: '#436B34',
     // statusBarColor: '#243F1E',
-    text: '#6E6E6E',
+    text: '#636363',
     textLight: '#436B34',
     textDark: '#243F1E',
-    textGrey: '#6E6E6E',
+    textGrey: '#8c8c8c',
+    drawerText: '#636363',
     textGreyLight: '#8c8c8c',
-    disabled: '#436B34',
-    placeholder: '#436B34',
+    // disabled: '#436B34',
+    placeholder: '#8c8c8c',
     // backdrop: '#436B34',
     notification: '#436B34',
     leaves: 'rgba(41, 50, 57, 0.05)',
     borderColor: 'rgba(0,0,0,0.05)',
+    tabNavigator: '#436B34',
+    tabNavigatorText: '#f5f5f5',
   },
 };
 
@@ -122,6 +125,7 @@ const DarkTheme = {
     textLight: '#70b056',
     textDark: '#243F1E',
     textGrey: '#bababa',
+    drawerText: '#bababa',
     textGreyLight: '#8c8c8c',
     accentColor: '#f5f5f5',
     surface: '#212428',
@@ -133,11 +137,14 @@ const DarkTheme = {
     statusBarColor: '#243F1E',
     leaves: 'rgba(245, 245, 245, 0.07)',
     divider: 'rgba(255, 255, 255, 0.2)',
-    disabled: '#f5f5f5',
-    placeholder: '#f5f5f5',
+    // disabled: '#f5f5f5',
+    placeholder: '#bababa',
+    enabled: 'pink',
     // backdrop: '#f5f5f5',
     notification: '#f5f5f5',
     borderColor: 'rgba(0,0,0,0.05)',
+    tabNavigator: '#436B34',
+    tabNavigatorText: '#f5f5f5',
   },
 };
 
@@ -176,12 +183,48 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => (
       drawerStyle: { backgroundColor: theme.colors.surface },
     }}
   >
-    <Drawer.Screen name={t('navigate:home')} component={HomeScreen} />
-    <Drawer.Screen name={t('navigate:news')} component={NewsScreen} />
-    <Drawer.Screen name={t('navigate:stats')} component={StatsScreen} />
-    <Drawer.Screen name={t('navigate:farmers')} component={FarmersScreen} />
-    <Drawer.Screen name={t('navigate:blocksFound')} component={BlocksFoundScreen} />
-    <Drawer.Screen name={t('navigate:payouts')} component={PayoutScreen} />
+    <Drawer.Screen
+      name="Home"
+      component={HomeScreen}
+      // options={({ route }) => ({
+      //   title: 'Test',
+      // })}
+    />
+    <Drawer.Screen
+      name="News"
+      component={NewsScreen}
+      options={() => ({
+        title: t('news'),
+      })}
+    />
+    <Drawer.Screen
+      name="Stats"
+      component={StatsScreen}
+      options={() => ({
+        title: t('stats'),
+      })}
+    />
+    <Drawer.Screen
+      name="Farmers"
+      component={FarmersScreen}
+      options={() => ({
+        title: t('farmers'),
+      })}
+    />
+    <Drawer.Screen
+      name="Blocks Found"
+      component={BlocksFoundScreen}
+      options={() => ({
+        title: t('blocksFound'),
+      })}
+    />
+    <Drawer.Screen
+      name="Payouts"
+      component={PayoutScreen}
+      options={() => ({
+        title: t('payouts'),
+      })}
+    />
     <Drawer.Screen
       name="Farmer Details Drawer"
       component={FarmerScreen}
@@ -201,7 +244,13 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => (
         component={FarmerScreen}
       />
     ))}
-    <Drawer.Screen name="Settings" component={SettingsScreen} />
+    <Drawer.Screen
+      name="Settings"
+      component={SettingsScreen}
+      options={() => ({
+        title: t('settings'),
+      })}
+    />
   </Drawer.Navigator>
 );
 
@@ -250,13 +299,55 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRou
           })}
           // options={({ route, navigation }) => ({})}
         />
-        <Stack.Screen name="Post" component={NewsPostScreen} />
-        <Stack.Screen name="Farmer Settings" component={FarmerSettingsScreen} />
-        <Stack.Screen name={t('common:language')} component={LanguageSelectorScreen} />
-        <Stack.Screen name={t('common:currency')} component={CurrencySelectionScreen} />
-        <Stack.Screen name={t('common:poolSpace')} component={PoolspaceScreen} />
-        <Stack.Screen name={t('common:name')} component={FarmerNameScreen} />
-        <Stack.Screen name={t('navigate:verifyFarm')} component={ScanScreen} />
+        <Stack.Screen
+          name="Post"
+          component={NewsPostScreen}
+          options={() => ({
+            title: t('post'),
+          })}
+        />
+        <Stack.Screen
+          name="Farmer Settings"
+          component={FarmerSettingsScreen}
+          options={() => ({
+            title: t('farmerSettings'),
+          })}
+        />
+        <Stack.Screen
+          name="Language"
+          component={LanguageSelectorScreen}
+          options={() => ({
+            title: t('language'),
+          })}
+        />
+        <Stack.Screen
+          name="Currency"
+          component={CurrencySelectionScreen}
+          options={() => ({
+            title: t('currency'),
+          })}
+        />
+        <Stack.Screen
+          name="Poolspace"
+          component={PoolspaceScreen}
+          options={() => ({
+            title: t('poolSpace'),
+          })}
+        />
+        <Stack.Screen
+          name="Farmer Name"
+          component={FarmerNameScreen}
+          options={() => ({
+            title: t('farmName'),
+          })}
+        />
+        <Stack.Screen
+          name="Verify Farm"
+          component={ScanScreen}
+          options={() => ({
+            title: t('verifyFarm'),
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

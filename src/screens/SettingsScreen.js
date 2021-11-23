@@ -6,6 +6,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import messaging from '@react-native-firebase/messaging';
 import { LANGUAGES } from './LanguageSelectorScreen';
 import { currencyState, settingsState } from '../Atoms';
 import PressableCard from '../components/PressableCard';
@@ -25,6 +26,20 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   const toggleNotifications = () => {
+    setSettings((prev) => ({ ...prev, blockNotifications: !prev.blockNotifications }));
+    if (!settings.blockNotifications) {
+      messaging()
+        .subscribeToTopic('blocks')
+        .then(() => {
+          console.log('Subscribed to block notifications');
+        });
+    } else {
+      messaging()
+        .unsubscribeFromTopic('blocks')
+        .then(() => {
+          console.log('Unsubscribed from block notifications');
+        });
+    }
     // if (launcherIDsArray.length > 0) {
     //   getObject('fcm').then((FCMToken) => {
     //     launcherIDsArray.forEach((element) => {
@@ -32,14 +47,13 @@ const SettingsScreen = ({ navigation }) => {
     //       updateFCMToken(
     //         element.name,
     //         element.value.token,
-    //         !settings.notifications ? FCMToken : null
+    //         !settings.blockNotifications ? FCMToken : null
     //       ).then((data) => {
-    //         console.log(`Successfully set notifications to: ${!settings.notifications}\n`, data);
+    //         console.log(`Successfully set notifications to: ${!settings.blockNotifications}\n`, data);
     //       });
     //     });
     //   });
     // }
-    setSettings((prev) => ({ ...prev, notifications: !prev.notifications }));
   };
 
   return (
@@ -49,8 +63,8 @@ const SettingsScreen = ({ navigation }) => {
         flex: 1,
       }}
     >
-      {/* <Text style={{ fontSize: 20, padding: 10 }}>{t('common:general')}</Text> */}
-      <PressableCard onPress={() => navigation.navigate(`${t('common:currency')}`)}>
+      {/* <Text style={{ fontSize: 20, padding: 10 }}>{t('general')}</Text> */}
+      <PressableCard onPress={() => navigation.navigate('Currency')}>
         <View style={styles.content}>
           <MaterialCommunityIcons
             name="currency-usd-circle-outline"
@@ -59,10 +73,10 @@ const SettingsScreen = ({ navigation }) => {
             style={{ marginEnd: 16 }}
           />
           <View style={styles.mainContent}>
-            <Text style={styles.title}>{t('common:currency')}</Text>
+            <Text style={styles.title}>{t('currency')}</Text>
             <Text numberOfLines={1} style={styles.subtitle}>
               {getCurrencyTitle(currency)}
-              {/* {t('common:currencyDesc')} */}
+              {/* {t('currencyDesc')} */}
               {/* Set preferred currency. */}
             </Text>
           </View>
@@ -75,7 +89,7 @@ const SettingsScreen = ({ navigation }) => {
           {/* <Text style={styles.desc}>{currency.toUpperCase()}</Text> */}
         </View>
       </PressableCard>
-      <PressableCard onPress={() => navigation.navigate(`${t('common:language')}`)}>
+      <PressableCard onPress={() => navigation.navigate('Language')}>
         <View style={styles.content}>
           <Ionicons
             name="language"
@@ -84,10 +98,10 @@ const SettingsScreen = ({ navigation }) => {
             style={{ marginEnd: 16 }}
           />
           <View style={styles.mainContent}>
-            <Text style={styles.title}>{t('common:language')}</Text>
+            <Text style={styles.title}>{t('language')}</Text>
             <Text numberOfLines={1} style={styles.subtitle}>
               {LANGUAGES.filter((item) => item.code === selectedLanguageCode)[0].label}
-              {/* {t('common:languageDesc')} */}
+              {/* {t('languageDesc')} */}
             </Text>
           </View>
           {/* <Text style={styles.desc}>
@@ -110,13 +124,13 @@ const SettingsScreen = ({ navigation }) => {
             style={{ marginEnd: 16 }}
           />
           <View style={styles.mainContent}>
-            <Text style={styles.title}>{t('common:notification')}</Text>
+            <Text style={styles.title}>{t('notification')}</Text>
             <Text numberOfLines={1} style={styles.subtitle}>
-              {t('common:notificationDesc')}
+              {t('notificationDesc')}
             </Text>
           </View>
           <View pointerEvents="none">
-            <Switch value={settings.notifications} />
+            <Switch value={settings.blockNotifications} />
           </View>
           {/* <Text style={styles.desc}>
             {LANGUAGES.filter((item) => item.code === selectedLanguageCode)[0].label}
@@ -125,16 +139,22 @@ const SettingsScreen = ({ navigation }) => {
       </PressableCard>
       <PressableCard onPress={toggleTheme}>
         <View style={styles.content}>
-          <MaterialCommunityIcons
-            name="theme-light-dark"
+          <Ionicons
+            name={settings.isThemeDark ? 'ios-moon-outline' : 'ios-sunny-outline'}
             size={30}
             color={theme.colors.textGrey}
             style={{ marginEnd: 16 }}
           />
+          {/* <MaterialCommunityIcons
+            name="theme-light-dark"
+            size={30}
+            color={theme.colors.textGrey}
+            style={{ marginEnd: 16 }}
+          /> */}
           <View style={styles.mainContent}>
-            <Text style={styles.title}>{t('common:appearance')}</Text>
+            <Text style={styles.title}>{t('appearance')}</Text>
             <Text numberOfLines={1} style={styles.subtitle}>
-              {t('common:appearanceDesc')}
+              {t('appearanceDesc')}
             </Text>
           </View>
           <View pointerEvents="none">

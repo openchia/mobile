@@ -4,7 +4,9 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { selectorFamily, useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { getFarmer, getPartialsFromID, getStats, updateFCMToken } from '../../Api';
 import {
@@ -47,23 +49,24 @@ export const getHeaderTitle = (route, t) => {
   // This can happen during if there hasn't been any navigation inside the screen
   // In our case, it's "Feed" as that's the first screen inside the navigator
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Stats';
-  // name={t('common:stats')}
+  // name={t('stats')}
 
   switch (routeName) {
     case 'Stats':
-      return `${t('common:farmerDetails')}`;
+      return `${t('farmerDetails')}`;
     case 'Partial Chart':
-      return `${t('common:partials')}`;
+      return `${t('partials')}`;
     case 'FarmerPayouts':
-      return `${t('common:payouts')}`;
+      return `${t('payouts')}`;
     case 'FarmerBlocks':
-      return `${t('common:farmedBlocks')}`;
+      return `${t('farmedBlocks')}`;
   }
 };
 
 const FarmerScreen = ({ route, navigation }) => {
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
   const initialRoute = useRecoilValue(initialRouteState);
+  const theme = useTheme();
   // const settings = useRecoilValue(settingsState);
   let mLauncherId;
   let name;
@@ -142,15 +145,18 @@ const FarmerScreen = ({ route, navigation }) => {
   }, [navigation, route, launcherIDs]);
 
   return (
-    <Tab.Navigator labeled={false}>
+    <Tab.Navigator labeled={false} barStyle={{ backgroundColor: theme.colors.tabNavigator }}>
       <Tab.Screen
         options={{
           style: {
-            backgroundColor: 'red',
             height: 45,
           },
           tabBarIcon: ({ color }) => (
-            <Ionicons name="document-text-outline" size={24} color="white" />
+            <MaterialCommunityIcons
+              name="chart-line"
+              size={24}
+              color={theme.colors.tabNavigatorText}
+            />
           ),
         }}
         name="Stats"
@@ -164,7 +170,11 @@ const FarmerScreen = ({ route, navigation }) => {
             height: 45,
           },
           tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-bar-chart-outline" size={24} color="white" />
+            <Ionicons
+              name="ios-bar-chart-outline"
+              size={24}
+              color={theme.colors.tabNavigatorText}
+            />
           ),
         }}
         name="Partial Chart"
@@ -177,7 +187,9 @@ const FarmerScreen = ({ route, navigation }) => {
             backgroundColor: 'red',
             height: 45,
           },
-          tabBarIcon: ({ color }) => <Ionicons name="ios-card-outline" size={24} color="white" />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="ios-card-outline" size={24} color={theme.colors.tabNavigatorText} />
+          ),
         }}
         name="FarmerPayouts"
       >
@@ -189,7 +201,9 @@ const FarmerScreen = ({ route, navigation }) => {
             backgroundColor: 'red',
             height: 45,
           },
-          tabBarIcon: ({ color }) => <Ionicons name="ios-layers-outline" size={24} color="white" />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="ios-layers-outline" size={24} color={theme.colors.tabNavigatorText} />
+          ),
         }}
         name="FarmerBlocks"
       >

@@ -102,6 +102,7 @@ const NewsScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
+    console.log(postsLoadable.state);
     if (postsLoadable.state === 'hasValue') {
       setData(postsLoadable.contents);
       setRefreshing(false);

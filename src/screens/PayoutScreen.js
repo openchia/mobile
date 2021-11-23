@@ -41,17 +41,17 @@ const Item = ({ item }) => {
 
         {/* <View style={{ padding: 8, display: 'flex' }}> */}
         <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('common:amount')}</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('amount')}</Text>
           <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(
             item.amount
           )} XCH`}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 8 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('common:id')}</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('id')}</Text>
           <Text style={styles.val}>{item.id}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 8 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('common:date')}</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('date')}</Text>
           <Text style={styles.val}>{format(new Date(item.datetime), 'PPpp')}</Text>
         </View>
       </View>

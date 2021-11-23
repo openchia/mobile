@@ -22,17 +22,13 @@ import IconButton from '../../components/IconButton';
 import { updateFCMToken } from '../../Api';
 
 const FarmerSettingsScreen = ({ route, navigation }) => {
-  // const theme = useTheme();
-  // const LeftContent = (props) => <Text style={{ marginEnd: 16 }}>test</Text>;
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
   const { launcherId, token } = route.params;
   const [settings, setSettings] = useRecoilState(settingsState);
-  const { t, i18n } = useTranslation();
-  const selectedLanguageCode = i18n.language;
-  const currency = useRecoilValue(currencyState);
   const theme = useTheme();
   const [visible, setVisible] = React.useState(false);
   const setIntialRoute = useSetRecoilState(initialRouteState);
+  const { t } = useTranslation();
 
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
@@ -69,7 +65,11 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
     >
       <PressableCard
         onPress={() => {
-          if (token) navigation.navigate({ name: 'Name', params: { launcherId, token } });
+          if (token)
+            navigation.navigate({
+              name: 'Farmer Name',
+              params: { launcherId, token, name: launcherIDs.get(launcherId).name },
+            });
         }}
       >
         <View
@@ -85,7 +85,7 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
             style={{ marginEnd: 16 }}
           />
           <View style={styles.mainContent}>
-            <Text style={styles.title}>{t('common:name')}</Text>
+            <Text style={styles.title}>{t('farmerName')}</Text>
             <Text numberOfLines={1} style={styles.subtitle}>
               {launcherIDs.get(launcherId) ? launcherIDs.get(launcherId).name : ''}
             </Text>
@@ -102,7 +102,12 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
         </View>
       </PressableCard>
       <PressableCard onPress={() => {}}>
-        <View style={styles.content}>
+        <View
+          style={[
+            styles.content,
+            // { backgroundColor: settings.isThemeDark ? '#292929' : '#bdbdbd' },
+          ]}
+        >
           <Ionicons
             name="ios-notifications-outline"
             size={30}
@@ -110,9 +115,9 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
             style={{ marginEnd: 16 }}
           />
           <View style={styles.mainContent}>
-            <Text style={styles.title}>{t('common:notifications')}</Text>
+            <Text style={styles.title}>{t('notifications')} (Disabled)</Text>
             <Text numberOfLines={1} style={styles.subtitle}>
-              {t('common:notificationsDesc')}
+              {t('notificationsDesc')}
             </Text>
           </View>
           <MaterialIcons
@@ -147,13 +152,15 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
                   newState.delete(launcherId);
                   return newState;
                 });
-                setIntialRoute({ name: t('navigate:farmers') });
-                navigation.pop();
-                navigation.pop();
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: t('navigate:farmers') }],
-                });
+                hideDialog();
+                setIntialRoute({ name: 'Home' });
+                navigation.goBack();
+                // navigation.pop();
+                // navigation.pop();
+                // navigation.reset({
+                //   index: 0,
+                //   routes: [{ name: t('navigate:farmers') }],
+                // });
               }}
             >
               Remove

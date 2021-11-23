@@ -3,13 +3,13 @@ import { initReactI18next } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as RNLocalize from 'react-native-localize';
 
-import en from './translations/en';
-import fr from './translations/fr';
-import de from './translations/de';
-import es from './translations/es';
-import hu from './translations/hu';
-import pl from './translations/pl';
-import ru from './translations/ru';
+import en from './en';
+import fr from './fr';
+import de from './de';
+import es from './es';
+import hu from './hu';
+import pl from './pl';
+import ru from './ru';
 
 const LANGUAGES = {
   en,
@@ -65,5 +65,5 @@ i18n
     interpolation: {
       escapeValue: false,
     },
-    defaultNS: 'common',
+    // defaultNS: '',
   });

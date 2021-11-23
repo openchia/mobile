@@ -26,7 +26,7 @@ const ScanScreen = ({ navigation }) => {
     getLauncherIDFromToken(token).then((data) => {
       if (data) {
         setLauncherIDs((prev) => new Map(prev.set(data.launcher_id, { name: data.name, token })));
-        // if (settings.notifications) {
+        // if (settings.blockNotifications) {
         getObject('fcm').then((FCMToken) => {
           updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
             console.log(FCMToken);
@@ -58,9 +58,7 @@ const ScanScreen = ({ navigation }) => {
       cameraProps={{ ratio: '1:1' }}
       showMarker
       topContent={
-        <Text style={[{ color: theme.colors.text }, styles.centerText]}>
-          {t('common:scanDesc')}
-        </Text>
+        <Text style={[{ color: theme.colors.text }, styles.centerText]}>{t('scanDesc')}</Text>
       }
       markerStyle={{
         borderColor: 'white',

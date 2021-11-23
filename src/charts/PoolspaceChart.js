@@ -108,7 +108,7 @@ const PoolspaceChart = ({ data, maxSize }) => {
           {/* <Text>Hello</Text> */}
           <ChartXLabel
             format={formatDatetime}
-            defaultValue={t('common:poolSpace')}
+            defaultValue={t('poolSpace')}
             style={{ color: theme.colors.text, padding: 0, fontSize: 16 }}
           />
           <ChartYLabel
@@ -162,7 +162,7 @@ const PoolspaceChart = ({ data, maxSize }) => {
                         { color: index === current.value ? 'black' : theme.colors.text },
                       ]}
                     >
-                      {t(`common:${item.label}`)}
+                      {t(`${item.label}`)}
                       {/* {item.label} */}
                     </Text>
                   </Animated.View>

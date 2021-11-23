@@ -36,7 +36,7 @@ const Item = ({ item, rank, onPress }) => {
         <Text style={styles.utilization}>{`${item.points_of_total.toFixed(5)}%`}</Text>
         <Text style={styles.size}>{formatBytes(item.estimated_size)}</Text> */}
         <View style={{ flexDirection: 'row' }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>Launcher ID:</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>Launcher ID</Text>
           <Text
             numberOfLines={1}
             style={[styles.val, { color: theme.colors.textLight, fontWeight: 'bold' }]}
@@ -45,31 +45,25 @@ const Item = ({ item, rank, onPress }) => {
           </Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('common:rank')}:</Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('rank')}</Text>
           <Text style={[styles.val, { fontWeight: 'bold' }]}>{rank}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>
-            {t('common:points')}:
-          </Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('points')}</Text>
           <Text style={styles.val}>{item.points}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>
-            {t('common:difficulty')}:
-          </Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('difficulty')}</Text>
           <Text style={styles.val}>{item.difficulty}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 2 }}>
           <Text style={[styles.title, { color: theme.colors.textGrey }]}>
-            {t('common:utilizationSpace')}:
+            {t('utilizationSpace')}
           </Text>
           <Text style={styles.val}>{`${item.points_of_total.toFixed(5)}%`}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>
-            {t('common:estimatedSize')}:
-          </Text>
+          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('estimatedSize')}</Text>
           <Text style={styles.val}>{formatBytes(item.estimated_size)}</Text>
         </View>
       </View>
