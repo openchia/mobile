@@ -1,18 +1,19 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { SafeAreaView, View, TextInput } from 'react-native';
-// import { TextInput } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilState } from 'recoil';
+import { useTranslation } from 'react-i18next';
 import IconButton from '../../components/IconButton';
 import { updateFarmerName } from '../../Api';
 import { launcherIDsState } from '../../Atoms';
-import { getObject } from '../../utils/Utils';
 
 const FarmerNameScreen = ({ route, navigation }) => {
   const [farmerName, setFarmerName] = useState(null);
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
-
-  const { launcherId, token } = route.params;
+  const { t } = useTranslation();
+  const { launcherId, token, name } = route.params;
+  const theme = useTheme();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -56,15 +57,35 @@ const FarmerNameScreen = ({ route, navigation }) => {
 
   return (
     <SafeAreaView>
-      <TextInput
-        //   style={styles.input}
-        onChangeText={(text) => {
-          setFarmerName(text);
+      <View
+        style={{
+          marginTop: 24,
+          padding: 8,
+          paddingStart: 16,
+          paddingEnd: 16,
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: theme.colors.onSurface,
+          borderColor: theme.colors.borderColor,
         }}
-        value={farmerName}
-        placeholder="Display Name"
-        keyboardType="default"
-      />
+      >
+        <Text
+          style={{ fontSize: 18, fontWeight: 'bold', color: theme.colors.textGrey, marginEnd: 16 }}
+        >
+          Name
+        </Text>
+        <TextInput
+          placeholderTextColor={theme.colors.textGreyLight}
+          style={{ flex: 1, color: theme.colors.text, fontSize: 18 }}
+          mode="flat"
+          onChangeText={(text) => {
+            setFarmerName(text);
+          }}
+          value={farmerName}
+          placeholder={name}
+          keyboardType="default"
+        />
+      </View>
     </SafeAreaView>
   );
 };

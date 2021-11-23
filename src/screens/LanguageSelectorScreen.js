@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import CustomCard from '../components/CustomCard';
 import PressableCard from '../components/PressableCard';
 
@@ -50,9 +51,10 @@ const Item = ({ item, selected, onPress }) => {
   );
 };
 
-const LanguageSelectorScreen = ({ navigation }) => {
+const LanguageSelectorScreen = () => {
   const { t, i18n } = useTranslation();
   const selectedLanguageCode = i18n.language;
+  const navigation = useNavigation();
 
   const setLanguage = (code) => i18n.changeLanguage(code);
 

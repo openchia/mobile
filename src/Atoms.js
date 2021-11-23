@@ -65,7 +65,7 @@ export const initialRouteState = atom({
 
 export const settingsState = atom({
   key: 'atomTheme',
-  default: { isThemeDark: false, notifications: true },
+  default: { isThemeDark: false, blockNotifications: false },
   effects_UNSTABLE: [localEffect('settings')],
 });
 

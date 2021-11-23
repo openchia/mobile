@@ -87,7 +87,7 @@ const Content = ({ data }) => {
     });
     setTestData(newData);
     setIntialData(newData);
-    console.log(newData);
+    // console.log(newData);
   }, []);
 
   const style = useAnimatedStyle(() => ({

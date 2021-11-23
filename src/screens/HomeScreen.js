@@ -201,21 +201,17 @@ const HomeScreen = ({ navigation }) => {
                 color: '#fff',
               }}
             >
-              {t('common:welcome')}
+              {t('welcome')}
             </Text>
-            <Text style={{ fontSize: 16, textAlign: 'center', color: '#fff' }}>
-              {t('common:trust')}
-            </Text>
-            <Text style={{ fontSize: 16, textAlign: 'center', color: '#fff' }}>
-              {t('common:open')}
-            </Text>
+            <Text style={{ fontSize: 16, textAlign: 'center', color: '#fff' }}>{t('trust')}</Text>
+            <Text style={{ fontSize: 16, textAlign: 'center', color: '#fff' }}>{t('open')}</Text>
             <URLButton
               url="https://openchia.io/en/join"
               backgroundColor="#FB6340"
               textColor="#fff"
               style={{ marginTop: 24 }}
             >
-              {t('common:join')}
+              {t('join')}
             </URLButton>
             <URLButton
               url="https://discord.com/invite/2URS9H7RZn"
@@ -224,7 +220,7 @@ const HomeScreen = ({ navigation }) => {
               icon="discord"
               style={{ marginTop: 16 }}
             >
-              {t('common:chat')}
+              {t('chat')}
             </URLButton>
           </View>
           <View
@@ -239,12 +235,12 @@ const HomeScreen = ({ navigation }) => {
             }}
           >
             <View style={styles.container}>
-              <Item title={t('common:fee')} value={t('common:feeDesc')} />
-              <Item title={t('common:minPayout')} value={t('common:minPayoutDesc')} />
+              <Item title={t('fee')} value={t('feeDesc')} />
+              <Item title={t('minPayout')} value={t('minPayoutDesc')} />
             </View>
             <View style={styles.container}>
-              <Item title={t('common:instantPayout')} value={t('common:instantPayoutDesc')} />
-              <Item title={t('common:transparent')} value={t('common:transparentDesc')} />
+              <Item title={t('instantPayout')} value={t('instantPayoutDesc')} />
+              <Item title={t('transparent')} value={t('transparentDesc')} />
             </View>
           </View>
         </View>

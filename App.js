@@ -9,7 +9,8 @@ import messaging from '@react-native-firebase/messaging';
 import { saveObject } from './src/utils/Utils';
 import ApplicationNavigator from './src/ApplicationNavigator';
 import LoadingComponent from './src/components/LoadingComponent';
-import './src/constants/IMLocalize';
+// import './src/constants/IMLocalize';
+import './src/localization/i18n';
 
 // Sentry.init({
 //   dsn: 'https://7426074fea104d898f7fcaba3e94d45d@o1071760.ingest.sentry.io/6069453',
@@ -70,13 +71,13 @@ const App = () => {
     return unsubscribe;
   }, []);
 
-  useEffect(() => {
-    const unsubscribe = messaging()
-      .subscribeToTopic('blocks')
-      .then(() => console.log('Subscribed to topic blocks!'));
+  // useEffect(() => {
+  //   const unsubscribe = messaging()
+  //     .subscribeToTopic('blocks')
+  //     .then(() => console.log('Subscribed to topic blocks!'));
 
-    return unsubscribe;
-  }, []);
+  //   return unsubscribe;
+  // }, []);
 
   return (
     <RecoilRoot>
