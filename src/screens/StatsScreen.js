@@ -127,7 +127,7 @@ const Content = ({ navigation }) => {
             refreshing={refreshing}
             onRefresh={() => {
               setRefreshing(true);
-              refresh();
+              // refresh();
             }}
           />
         }
