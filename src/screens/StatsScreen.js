@@ -81,6 +81,10 @@ const Content = ({ navigation }) => {
     }
   }, [statsLoadable.state]);
 
+  useEffect(() => {
+    refresh();
+  }, [refreshing]);
+
   if (statsLoadable.state === 'hasError') {
     return (
       <ScrollView
@@ -91,7 +95,6 @@ const Content = ({ navigation }) => {
             refreshing={refreshing}
             onRefresh={() => {
               setRefreshing(true);
-              refresh();
             }}
           />
         }
