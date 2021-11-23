@@ -21,7 +21,7 @@ const Item = ({ item, rank, onPress }) => {
           flexDirection: 'column',
           // flexDirection: 'row',
           padding: 8,
-          // justifyContent: 'center',
+          justifyContent: 'center',
           // alignItems: 'center',
           height: HEIGHT,
         }}

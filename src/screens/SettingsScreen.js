@@ -45,7 +45,7 @@ const SettingsScreen = ({ navigation }) => {
   return (
     <SafeAreaView
       style={{
-        paddingTop: 8,
+        marginTop: 8,
         flex: 1,
       }}
     >
