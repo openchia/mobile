@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -12,10 +12,17 @@ import {
 // import { FlatList } from 'react-native-gesture-handler';
 import { Text, useTheme } from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
-import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import {
+  selectorFamily,
+  useRecoilState,
+  useRecoilValue,
+  useRecoilValueLoadable,
+  useSetRecoilState,
+} from 'recoil';
 import { getChiaPlotPosts } from '../Api';
-import { newsRefreshState } from '../Atoms';
+import { newsRefreshState, settingsState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
+import PressableCard from '../components/PressableCard';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(newsRefreshState());
@@ -36,36 +43,8 @@ const query = selectorFamily({
     },
 });
 
-const Item = ({ item, width, onPress }) => {
-  const theme = useTheme();
-  const tagsStyles = {
-    body: {
-      color: theme.colors.text,
-    },
-    p: {
-      fontSize: 12,
-    },
-    h2: {
-      fontSize: 14,
-    },
-  };
-
-  // const customHTMLElementModels = {
-  //   'blue-circle': HTMLElementModel.fromCustomModel({
-  //     tagName: 'blue-circle',
-  //     mixedUAStyles: {
-  //       width: 50,
-  //       height: 50,
-  //       borderRadius: 25,
-  //       alignSelf: 'center',
-  //       backgroundColor: 'blue',
-  //     },
-  //     contentModel: HTMLContentModel.block,
-  //   }),
-  // };
-
-  return (
-    // <PressableCard onPress={onPress}>
+const Item = ({ item, width, onPress, tagsStyles }) => (
+  <PressableCard onPress={onPress}>
     <View
       style={{
         display: 'flex',
@@ -100,16 +79,27 @@ const Item = ({ item, width, onPress }) => {
         <Text style={styles.date}>{format(new Date(item.modified), 'PP')}</Text>
       </View>
     </View>
-    // {/* </PressableCard> */}
-  );
-};
-
+  </PressableCard>
+);
 const NewsScreen = ({ navigation }) => {
   const { width } = useWindowDimensions();
   const refresh = useRefresh();
   const postsLoadable = useRecoilValueLoadable(query());
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const theme = useTheme();
+
+  const tagsStyles = {
+    body: {
+      color: theme.colors.text,
+    },
+    p: {
+      fontSize: 12,
+    },
+    h2: {
+      fontSize: 14,
+    },
+  };
 
   useEffect(() => {
     if (postsLoadable.state === 'hasValue') {
@@ -123,6 +113,7 @@ const NewsScreen = ({ navigation }) => {
       item={item}
       rank={index}
       width={width}
+      tagsStyles={tagsStyles}
       onPress={() => {
         navigation.navigate('Post', { post: item });
       }}
