@@ -1,6 +1,6 @@
 import { fromUnixTime, getUnixTime, isAfter } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native';
+import { RefreshControl, SafeAreaView, ScrollView } from 'react-native';
 import { useSetRecoilState } from 'recoil';
 import { getSpace } from '../../Api';
 import { netSpaceRequestIDState } from '../../Atoms';
@@ -20,31 +20,11 @@ const filterData = (data, timePeriod) => {
   return data.filter((item) => isAfter(fromUnixTime(item.x), date));
 };
 
-// const netspaceQuery = selectorFamily({
-//   key: 'netspaceSelector',
-//   get:
-//     () =>
-//     async ({ get }) => {
-//       get(netSpaceRequestIDState());
-//       const response = await getNetspace();
-//       const convertedData = response.map((item) => ({
-//         x: getUnixTime(new Date(item.date)),
-//         y: item.size,
-//       }));
-//       const data = NetspaceChartIntervals.map((item) => {
-//         if (item.time === -1) return convertedData;
-//         return filterData(convertedData, item.time);
-//       });
-//       if (response.error) {
-//         throw response.error;
-//       }
-//       return data;
-//     },
-// });
-
 const PoolSpaceScreen = ({ navigation }) => {
   const [data, setData] = useState(null);
   const [maxSize, setMaxSize] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+  const refresh = useRefresh();
 
   useEffect(() => {
     getSpace().then((netspace) => {
@@ -68,10 +48,15 @@ const PoolSpaceScreen = ({ navigation }) => {
       });
       setMaxSize(formatBytes(netspace[netspace.length - 1].size));
       setData(data);
+      setRefreshing(false);
     });
-  }, []);
+  }, [refreshing]);
 
-  if (data === null) {
+  useEffect(() => {
+    refresh();
+  }, [refreshing]);
+
+  if (!data && !refreshing) {
     return <LoadingComponent />;
   }
 
@@ -81,7 +66,20 @@ const PoolSpaceScreen = ({ navigation }) => {
         flex: 1,
       }}
     >
-      <PoolspaceChart data={data} maxSize={maxSize} />
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+            }}
+          />
+        }
+      >
+        <PoolspaceChart data={data} maxSize={maxSize} />
+      </ScrollView>
     </SafeAreaView>
   );
 };

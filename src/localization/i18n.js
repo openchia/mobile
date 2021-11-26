@@ -15,12 +15,12 @@ import cs from './cs';
 const LANGUAGES = {
   en,
   fr,
-  de,
-  es,
-  hu,
-  pl,
-  ru,
   cs,
+  // de,
+  // es,
+  // hu,
+  // pl,
+  // ru,
 };
 
 const LANG_CODES = Object.keys(LANGUAGES);
