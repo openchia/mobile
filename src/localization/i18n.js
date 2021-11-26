@@ -10,6 +10,7 @@ import es from './es';
 import hu from './hu';
 import pl from './pl';
 import ru from './ru';
+import cs from './cs';
 
 const LANGUAGES = {
   en,
@@ -19,6 +20,7 @@ const LANGUAGES = {
   hu,
   pl,
   ru,
+  cs,
 };
 
 const LANG_CODES = Object.keys(LANGUAGES);

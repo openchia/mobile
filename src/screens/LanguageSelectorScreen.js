@@ -14,6 +14,7 @@ export const LANGUAGES = [
   { code: 'hu', label: 'Magyar' },
   { code: 'pl', label: 'Polski' },
   { code: 'ru', label: 'Русский' },
+  { code: 'cs', label: 'Čeština' },
 ];
 
 const Item = ({ item, selected, onPress }) => {
@@ -76,7 +77,7 @@ const LanguageSelectorScreen = () => {
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
         ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
-        data={LANGUAGES}
+        data={LANGUAGES.sort((a, b) => a.label.localeCompare(b.label))}
         renderItem={renderItem}
         keyExtractor={(item) => item.code.toString()}
       />

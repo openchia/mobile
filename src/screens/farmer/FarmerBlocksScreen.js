@@ -1,9 +1,10 @@
 import { format, fromUnixTime } from 'date-fns';
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
+
 import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
-import { selectorFamily, useRecoilValue, useSetRecoilState } from 'recoil';
+import { selectorFamily, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { getBlocksFromFarmer } from '../../Api';
 import { farmerBlockRefreshState } from '../../Atoms';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -53,15 +54,36 @@ const Item = ({ item }) => (
 
 const Content = ({ launcherId }) => {
   const refresh = useRefresh();
-  const blocks = useRecoilValue(query(launcherId));
+  const blocksLoadable = useRecoilValueLoadable(query(launcherId));
+  const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (blocksLoadable.state === 'hasValue') {
+      setData(blocksLoadable.contents.results);
+      setRefreshing(false);
+    }
+  }, [blocksLoadable.state]);
+
+  if (blocksLoadable.state === 'loading' && !refreshing) {
+    return <LoadingComponent />;
+  }
 
   const renderItem = ({ item }) => <Item item={item} />;
 
-  if (blocks.results.length === 0) {
+  if (data.length === 0) {
     return (
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              refresh();
+            }}
+          />
+        }
       >
         <Text style={{ textAlign: 'center', fontSize: 30, padding: 10 }}>
           No blocks won yet. Pull down to refresh.
@@ -75,8 +97,16 @@ const Content = ({ launcherId }) => {
       <FlatList
         contentContainerStyle={{ flexGrow: 1 }}
         ListHeaderComponent={<View style={{ marginTop: 8 }} />}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
-        data={blocks.results}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              refresh();
+            }}
+          />
+        }
+        data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.confirmed_block_index.toString()}
       />

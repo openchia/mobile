@@ -56,7 +56,7 @@ import PayoutScreen from './screens/PayoutScreen';
 import ScanScreen from './screens/ScanScreen';
 import FarmerScreen, { getHeaderTitle } from './screens/farmer/FarmerScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import { initialRouteState, launcherIDsState, settingsState } from './Atoms';
+import { currencyState, initialRouteState, launcherIDsState, settingsState } from './Atoms';
 import LanguageSelectorScreen from './screens/LanguageSelectorScreen';
 import CurrencySelectionScreen from './screens/CurrencySelectionScreen';
 import CustomDrawerContent from './components/CustomDrawerContent';
@@ -111,6 +111,7 @@ const LightTheme = {
     borderColor: 'rgba(0,0,0,0.05)',
     tabNavigator: '#436B34',
     tabNavigatorText: '#f5f5f5',
+    jellyBarText: '#424242',
   },
 };
 
@@ -145,6 +146,7 @@ const DarkTheme = {
     borderColor: 'rgba(0,0,0,0.05)',
     tabNavigator: '#436B34',
     tabNavigatorText: '#f5f5f5',
+    jellyBarText: '#f5f5f5',
   },
 };
 
@@ -292,7 +294,7 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRou
           name="Farmer Details"
           component={FarmerScreen}
           options={({ route }) => ({
-            title: getHeaderTitle(route, t),
+            // title: getHeaderTitle(route, t),
             headerRight: () => (
               <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
             ),
@@ -358,6 +360,7 @@ const ApplicationNavigator = () => {
   const settings = useRecoilValue(settingsState);
   const launcherIDs = useRecoilValue(launcherIDsState);
   const initialRoute = useRecoilValue(initialRouteState);
+  const currency = useRecoilValue(currencyState);
 
   useEffect(() => {
     SplashScreen.hide();

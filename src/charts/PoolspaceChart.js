@@ -141,7 +141,13 @@ const PoolspaceChart = ({ data, maxSize }) => {
               <View
                 style={[StyleSheet.absoluteFill, { marginTop: 4, marginBottom: 4, marginStart: 4 }]}
               >
-                <Animated.View style={[styles.backgroundSelection, style]} />
+                <Animated.View
+                  style={[
+                    styles.backgroundSelection,
+                    { backgroundColor: theme.colors.accent },
+                    style,
+                  ]}
+                />
               </View>
               {NetspaceChartIntervals.map((item, index) => (
                 <TouchableWithoutFeedback
@@ -157,13 +163,9 @@ const PoolspaceChart = ({ data, maxSize }) => {
                   <Animated.View style={[styles.labelContainer]}>
                     <Text
                       adjustsFontSizeToFit
-                      style={[
-                        styles.label,
-                        { color: index === current.value ? 'black' : theme.colors.text },
-                      ]}
+                      style={[styles.label, { color: theme.colors.jellyBarText }]}
                     >
                       {t(`${item.label}`)}
-                      {/* {item.label} */}
                     </Text>
                   </Animated.View>
                 </TouchableWithoutFeedback>
