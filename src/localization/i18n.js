@@ -16,7 +16,7 @@ const LANGUAGES = {
   en,
   fr,
   cs,
-  // de,
+  de,
   // es,
   // hu,
   // pl,

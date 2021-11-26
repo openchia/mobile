@@ -36,4 +36,16 @@
         </activity>
     </application>
 
+    <queries>
+<!--        <package android:name="com.openchia" />-->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data  android:scheme="https" android:host="youtube.com" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data  android:scheme="https" android:host="openchia.io" />
+        </intent>
+    </queries>
+
 </manifest>

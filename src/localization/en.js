@@ -1,6 +1,5 @@
 export default {
   translation: {
-    hello: 'Hello',
     languageSelector: 'Select Your Language',
     welcome: 'Welcome to OpenChia.io Official Pool Protocol',
     trust: 'A pool you can trust.',
@@ -49,9 +48,8 @@ export default {
     partial: 'partial',
     successfulPartials: 'Successful Partials',
     failedPartials: 'Failed Partials',
-    performance: 'Performance',
-    harvesters: 'Harvesters',
-    count: 'count',
+    partialPerfomance: 'Partial Performance',
+    harvesterCount: 'Harvesters Count',
     farmerDetails: 'Farmer Details',
     payouts: 'Payouts',
     farmedBlocks: 'Farmed Blocks',

@@ -25,8 +25,7 @@ if (Platform.OS === 'android') {
 }
 
 const requestUserPermission = async () => {
-  const token = await messaging().getToken();
-  console.log(token);
+  // const token = await messaging().getToken();
   const authStatus = await messaging().requestPermission();
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||

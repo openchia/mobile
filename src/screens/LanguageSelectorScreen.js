@@ -10,7 +10,7 @@ export const LANGUAGES = [
   { code: 'en', label: 'English' },
   { code: 'cs', label: 'Čeština' },
   { code: 'fr', label: 'Français' },
-  // { code: 'de', label: 'Deutsch' },
+  { code: 'de', label: 'Deutsch' },
   // { code: 'es', label: 'Español' },
   // { code: 'hu', label: 'Magyar' },
   // { code: 'pl', label: 'Polski' },
