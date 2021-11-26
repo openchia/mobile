@@ -11,16 +11,20 @@ import hu from './hu';
 import pl from './pl';
 import ru from './ru';
 import cs from './cs';
+import zh from './zh';
+import pt from './pt';
 
 const LANGUAGES = {
   en,
   fr,
   cs,
   de,
-  // es,
-  // hu,
-  // pl,
-  // ru,
+  es,
+  hu,
+  pl,
+  ru,
+  zh,
+  pt,
 };
 
 const LANG_CODES = Object.keys(LANGUAGES);
