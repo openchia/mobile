@@ -48,7 +48,7 @@ const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
       </Text>
     </View> */}
     <View style={{ display: 'flex', flexDirection: 'column' }}>
-      <Text style={{ color: theme.colors.textGrey }}>Launcher ID:</Text>
+      <Text style={{ color: theme.colors.textGrey }}>Launcher ID</Text>
       <TouchableOpacity
         style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: 20 }}
         onPress={() => Clipboard.setString(launcherId)}
@@ -58,13 +58,13 @@ const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
       </TouchableOpacity>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('difficulty')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('difficulty')}</Text>
       <Text style={{}}>
         {loadable.state === 'hasValue' ? loadable.contents.farmer.difficulty : '...'}
       </Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('joinedAt')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('joinedAt')}</Text>
       {/* <Text style={{}}>{format(new Date(item.joined_at), 'PPpp')}</Text> */}
       <Text style={{}}>
         {loadable.state === 'hasValue'
@@ -73,7 +73,7 @@ const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
       </Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('estimatedDailyEarnings')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('estimatedDailyEarnings')}</Text>
       <Text>
         {loadable.state === 'hasValue'
           ? `${formatPrice(
@@ -86,11 +86,11 @@ const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
       </Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('points')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('points')}</Text>
       <Text>{loadable.state === 'hasValue' ? loadable.contents.farmer.points : '...'}</Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('utilizationSpace')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('utilizationSpace')}</Text>
       <Text>
         {loadable.state === 'hasValue'
           ? `${loadable.contents.farmer.points_of_total.toFixed(5)}%`
@@ -99,7 +99,7 @@ const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
       {/* <Text style={{}}>{formatBytes(item.estimated_size)}</Text> */}
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('estimatedSize')}:</Text>
+      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('estimatedSize')}</Text>
       <Text>
         {loadable.state === 'hasValue'
           ? formatBytes(loadable.contents.farmer.estimated_size)
@@ -183,13 +183,13 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
           loadable={dataLoadable}
           format={(item) => `${(((item.count - errors.length) * 100) / item.count).toFixed(1)}%`}
           color="#FB6D4C"
-          title={`${t('partial').toUpperCase()}\n${t('performance').toUpperCase()}`}
+          title={t('partialPerfomance').toUpperCase()}
         />
         <Item
           loadable={dataLoadable}
           format={() => harvesters.size}
           color="#34D4F1"
-          title={`${t('harvesters').toUpperCase()}\n${t('count').toUpperCase()}`}
+          title={t('harvesterCount').toUpperCase()}
         />
       </View>
     </ScrollView>

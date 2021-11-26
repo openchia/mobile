@@ -159,10 +159,11 @@ const PoolspaceChart = ({ data, maxSize }) => {
                     transition.value = withTiming(1);
                     setPoints(data[index]);
                   }}
+                  style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
                 >
                   <Animated.View style={[styles.labelContainer]}>
                     <Text
-                      adjustsFontSizeToFit
+                      // adjustsFontSizeToFit
                       style={[styles.label, { color: theme.colors.jellyBarText }]}
                     >
                       {t(`${item.label}`)}
@@ -193,6 +194,9 @@ const styles = StyleSheet.create({
   selection: {
     display: 'flex',
     // marginTop: 16,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'row',
     width: SELECTION_WIDTH,
     alignSelf: 'center',
@@ -208,6 +212,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     textAlign: 'center',
+    textAlignVertical: 'center',
   },
 });
 

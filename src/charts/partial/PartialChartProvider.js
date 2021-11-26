@@ -86,6 +86,9 @@ const styles = StyleSheet.create({
   selection: {
     display: 'flex',
     // marginTop: 16,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'row',
     width: SELECTION_WIDTH,
     alignSelf: 'center',

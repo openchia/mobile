@@ -19,7 +19,7 @@ import { getCurrencyFromKey } from './CurrencySelectionScreen';
 const Item = ({ title, value, color, loadable, format, onPress, icon }) => (
   <PressableCard style={{ flex: 1 }} onPress={onPress}>
     <View style={styles.item}>
-      <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title.toUpperCase()}</Text>
+      <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
       <Text
         style={{
           textAlign: 'center',
@@ -141,14 +141,14 @@ const Content = ({ navigation }) => {
               )} ${getCurrencyFromKey(statsLoadable.contents.currency)}`
             }
             color="#4DB33E"
-            title={t('chiaPrice')}
+            title={t('chiaPrice').toUpperCase()}
           />
           <Item
-            onPress={() => navigation.navigate(t('Poolspace'))}
+            onPress={() => navigation.navigate('Poolspace')}
             loadable={statsLoadable}
             format={(item) => formatBytes(item.pool_space)}
             color="#4DB33E"
-            title={t('poolSpace')}
+            title={t('poolSpace').toUpperCase()}
             icon={
               <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
             }
@@ -159,13 +159,13 @@ const Content = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => `${(item.estimate_win / 60 / 24).toFixed(3)} days`}
             color="#3DD292"
-            title={t('etw')}
+            title={t('etw').toUpperCase()}
           />
           <Item
             loadable={statsLoadable}
             format={(item) => item.rewards_blocks}
             color="#FB6D4C"
-            title={t('blocks')}
+            title={t('blocks').toUpperCase()}
           />
         </View>
         <View style={styles.container}>
@@ -173,13 +173,13 @@ const Content = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => item.farmers}
             color="#34D4F1"
-            title={t('farmers')}
+            title={t('farmers').toUpperCase()}
           />
           <Item
             loadable={statsLoadable}
             format={(item) => formatBytes(item.blockchain_space)}
             color="#34D4F1"
-            title={t('netspace')}
+            title={t('netspace').toUpperCase()}
           />
         </View>
         <View style={styles.container}>
@@ -189,14 +189,14 @@ const Content = ({ navigation }) => {
               `${((item.time_since_last_win / (item.estimate_win * 60)) * 100).toFixed(0)}%`
             }
             color="#4DB33E"
-            title={t('currentEffort')}
+            title={t('currentEffort').toUpperCase()}
           />
           <Item
             loadable={statsLoadable}
             // value="average_effort"
             format={(item) => `${item.average_effort.toFixed(0)}%`}
             color="#4DB33E"
-            title={t('effort')}
+            title={t('effort').toUpperCase()}
           />
         </View>
         <View style={styles.container}>
@@ -204,13 +204,13 @@ const Content = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => convertSecondsToHourMin(item.time_since_last_win)}
             color="#4DB33E"
-            title={t('sinceLastWin')}
+            title={t('sinceLastWin').toUpperCase()}
           />
           <Item
             loadable={statsLoadable}
             format={(item) => `${convertMojoToChia(item.rewards_amount)} XCH`}
             color="#4DB33E"
-            title={t('rewards')}
+            title={t('rewards').toUpperCase()}
           />
         </View>
         <View style={styles.container}>
@@ -218,7 +218,7 @@ const Content = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => `${item.xch_tb_month.toFixed(8)} XCH/TiB/day`}
             color="#4DB33E"
-            title={t('profitability')}
+            title={t('profitability').toUpperCase()}
           />
         </View>
       </ScrollView>
