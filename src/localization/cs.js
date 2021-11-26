@@ -86,8 +86,8 @@ export default {
     farmerSettings: 'Nastavené farmáře',
     displayName: 'Zobrazené jméno',
     farmName: 'Nastavte jméno',
-    totalChiaAccumulated: 'Total Paid',
-    noPayoutsRecieved: 'No payouts received yet. Pull down to refresh.',
-    overView: 'Overview',
+    totalChiaAccumulated: 'Vyplaceno celkem',
+    noPayoutsRecieved: 'Nebyla přijata žádná platba. Tahem dolu obnovte stránku',
+    overView: 'Přehled',
   },
 };

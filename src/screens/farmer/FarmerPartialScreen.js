@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, SafeAreaView, View } from 'react-native';
+import { Dimensions, SafeAreaView, View, ScrollView, RefreshControl } from 'react-native';
 import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { getPartialsFromIDTest } from '../../Api';
 import { partialRefreshState } from '../../Atoms';
@@ -34,6 +34,7 @@ const FarmerPartialScreen = ({ launcherId }) => {
   const partialsLoadable = useRecoilValueLoadable(query(launcherId));
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState(null);
+  const refresh = useRefresh();
 
   useEffect(() => {
     if (partialsLoadable.state === 'hasValue') {
@@ -89,15 +90,32 @@ const FarmerPartialScreen = ({ launcherId }) => {
     }
   }, [partialsLoadable]);
 
+  useEffect(() => {
+    refresh();
+  }, [refreshing]);
+
   if (!data && !refreshing) {
     return <LoadingComponent />;
   }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <PartialChartProvider data={data} />
-      </View>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+            }}
+          />
+        }
+      >
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <PartialChartProvider data={data} />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

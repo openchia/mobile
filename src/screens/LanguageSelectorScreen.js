@@ -8,13 +8,13 @@ import PressableCard from '../components/PressableCard';
 
 export const LANGUAGES = [
   { code: 'en', label: 'English' },
-  { code: 'de', label: 'Deutsch' },
-  { code: 'fr', label: 'Français' },
-  { code: 'es', label: 'Español' },
-  { code: 'hu', label: 'Magyar' },
-  { code: 'pl', label: 'Polski' },
-  { code: 'ru', label: 'Русский' },
   { code: 'cs', label: 'Čeština' },
+  { code: 'fr', label: 'Français' },
+  // { code: 'de', label: 'Deutsch' },
+  // { code: 'es', label: 'Español' },
+  // { code: 'hu', label: 'Magyar' },
+  // { code: 'pl', label: 'Polski' },
+  // { code: 'ru', label: 'Русский' },
 ];
 
 const Item = ({ item, selected, onPress }) => {
