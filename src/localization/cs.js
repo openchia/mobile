@@ -1,6 +1,5 @@
 export default {
   translation: {
-    hello: 'Dobrý den',
     languageSelector: 'Vyberte jazyk',
     welcome: 'Vítejte na OpenChia.io poolu - Oficiální pooling protokol',
     trust: 'Pool, kterému můžete důvěřovat',

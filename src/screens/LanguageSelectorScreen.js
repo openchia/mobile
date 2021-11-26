@@ -11,10 +11,12 @@ export const LANGUAGES = [
   { code: 'cs', label: 'Čeština' },
   { code: 'fr', label: 'Français' },
   { code: 'de', label: 'Deutsch' },
-  // { code: 'es', label: 'Español' },
-  // { code: 'hu', label: 'Magyar' },
-  // { code: 'pl', label: 'Polski' },
-  // { code: 'ru', label: 'Русский' },
+  { code: 'es', label: 'Español' },
+  { code: 'hu', label: 'Magyar' },
+  { code: 'pl', label: 'Polski' },
+  { code: 'ru', label: 'Русский' },
+  { code: 'zh', label: '中文' },
+  { code: 'pt', label: 'Português' },
 ];
 
 const Item = ({ item, selected, onPress }) => {
@@ -27,9 +29,7 @@ const Item = ({ item, selected, onPress }) => {
           flexDirection: 'row',
           flex: 1,
           alignItems: 'center',
-        }} // style={([styles.item], { backgroundColor: 'rgba(219, 219, 219, 0.6)' })}
-        // selected
-        // onPress={onPress}
+        }}
       >
         <Text style={styles.label}>{item.label}</Text>
       </CustomCard>
@@ -90,36 +90,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   item: {
-    // backgroundColor: '#fff',
-    // padding: 14,
-    // paddingEnd: 20,
-    // marginVertical: 8,
-    // borderRadius: 8,
-    // marginHorizontal: 16,
-    // borderColor: '#fff', // if you need
-    // borderWidth: 1,
-    // overflow: 'hidden',
-    // shadowColor: '#000',
-    // shadowRadius: 10,
-    // shadowOpacity: 1,
-    // elevation: 6,
     display: 'flex',
     flexDirection: 'row',
   },
   itemNotSelected: {
-    // backgroundColor: '#dbdbdb',
-    // padding: 14,
-    // paddingEnd: 20,
-    // marginVertical: 8,
-    // borderRadius: 8,
-    // marginHorizontal: 16,
-    // borderColor: '#c9c9c9', // if you need
-    // borderWidth: 1,
-    // overflow: 'hidden',
-    // shadowColor: '#000',
-    // shadowRadius: 10,
-    // shadowOpacity: 1,
-    // elevation: 6,
     display: 'flex',
     flexDirection: 'row',
   },
