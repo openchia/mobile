@@ -135,3 +135,8 @@ export const newsRefreshState = atomFamily({
   key: 'newsRefreshState',
   default: 0,
 });
+
+export const partialRefreshState = atomFamily({
+  key: 'partialRefreshState',
+  default: 0,
+});

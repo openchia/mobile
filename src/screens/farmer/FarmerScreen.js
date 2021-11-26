@@ -8,6 +8,7 @@ import { useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { selectorFamily, useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { useTranslation } from 'react-i18next';
 import { getFarmer, getPartialsFromID, getStats, updateFCMToken } from '../../Api';
 import {
   currencyState,
@@ -44,7 +45,7 @@ const query = selectorFamily({
     },
 });
 
-export const getHeaderTitle = (route, t) => {
+export const getHeaderTitle = (route, t, name) => {
   // If the focused route is not found, we need to assume it's the initial screen
   // This can happen during if there hasn't been any navigation inside the screen
   // In our case, it's "Feed" as that's the first screen inside the navigator
@@ -53,7 +54,8 @@ export const getHeaderTitle = (route, t) => {
 
   switch (routeName) {
     case 'Stats':
-      return `${t('farmerDetails')}`;
+      // return `${t('farmerDetails')}`;
+      return `${name || t('farmerDetails')}`;
     case 'Partial Chart':
       return `${t('partials')}`;
     case 'FarmerPayouts':
@@ -67,6 +69,7 @@ const FarmerScreen = ({ route, navigation }) => {
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
   const initialRoute = useRecoilValue(initialRouteState);
   const theme = useTheme();
+  const { t } = useTranslation();
   // const settings = useRecoilValue(settingsState);
   let mLauncherId;
   let name;
@@ -77,6 +80,14 @@ const FarmerScreen = ({ route, navigation }) => {
     mLauncherId = initialRoute.launcherId;
     name = initialRoute.launcherName;
   }
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ headerTitle: getHeaderTitle(route, t, name) });
+
+    // if (routeName === 'Stats') {
+    //   navigation.setOptions({ headerTitle: getHeaderTitle(route, t) });
+    // }
+  }, [navigation, route]);
 
   const dataLoadable = useRecoilValueLoadable(query(mLauncherId));
 

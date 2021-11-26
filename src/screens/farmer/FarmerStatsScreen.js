@@ -17,7 +17,9 @@ const Item = ({ title, value, color, loadable, format }) => {
   const theme = useTheme();
   return (
     <CustomCard style={styles.item}>
-      <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
+      <Text numberOfLines={2} style={{ color, fontSize: 16, textAlign: 'center', maxWidth: 120 }}>
+        {title}
+      </Text>
       <Text
         style={{
           textAlign: 'center',
@@ -35,7 +37,7 @@ const Item = ({ title, value, color, loadable, format }) => {
 
 const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
   <CustomCard style={styles.headerItem}>
-    <View style={{ display: 'flex', flexDirection: 'row' }}>
+    {/* <View style={{ display: 'flex', flexDirection: 'row' }}>
       <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('friendlyName')}:</Text>
       <Text>
         {loadable.state === 'hasValue'
@@ -44,8 +46,8 @@ const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
             : 'None'
           : '...'}
       </Text>
-    </View>
-    <View style={{ display: 'flex', flexDirection: 'column', marginTop: 6 }}>
+    </View> */}
+    <View style={{ display: 'flex', flexDirection: 'column' }}>
       <Text style={{ color: theme.colors.textGrey }}>Launcher ID:</Text>
       <TouchableOpacity
         style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: 20 }}
@@ -113,7 +115,7 @@ const useRefresh = () => {
   return () => setRequestId((id) => id + 1);
 };
 
-const FarmerStatsScreen = ({ launcherId, dataLoadable, navigation }) => {
+const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
   const refresh = useRefresh();
   const errors = [];
   const harvesters = new Set();
@@ -167,13 +169,13 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, navigation }) => {
           loadable={dataLoadable}
           format={(item) => item.count - errors.length}
           color="#3DD292"
-          title={`${t('successful').toUpperCase()}\n${t('partials').toUpperCase()}`}
+          title={`${t('successfulPartials').toUpperCase()}`}
         />
         <Item
           loadable={dataLoadable}
           format={() => errors.length}
           color="#FB6D4C"
-          title={`${t('failed').toUpperCase()}\n${t('partials').toUpperCase()}`}
+          title={`${t('failedPartials').toUpperCase()}`}
         />
       </View>
       <View style={styles.container}>

@@ -13,6 +13,8 @@ import { initialRouteState, settingsState } from '../Atoms';
 import OpenChiaIconWithText from '../images/OpenChiaIconWithText';
 import { getObject } from '../utils/Utils';
 import CustomDrawerSection from './CustomDrawerSection';
+import ChiaIcon from '../images/ChiaIcon';
+import ChiaIconVerified from '../images/ChiaIconVerified';
 
 const CustomDrawerContent = (props) => {
   const { navigation, launcherIDsArray } = props;
@@ -210,16 +212,25 @@ const CustomDrawerContent = (props) => {
                 }}
               >
                 <View style={styles.preference}>
-                  <Ionicons name="ios-person-outline" size={24} color={theme.colors.drawerText} />
+                  {item.value.token ? (
+                    <ChiaIconVerified
+                      style={{ height: 24, width: 24 }}
+                      color={theme.colors.drawerText}
+                    />
+                  ) : (
+                    <ChiaIcon style={{ height: 24, width: 24 }} color={theme.colors.drawerText} />
+                  )}
+                  {/* <ChiaIcon style={{ height: 24, width: 24 }} color={theme.colors.drawerText} />
+                  <Ionicons name="ios-person-outline" size={24} color={theme.colors.drawerText} /> */}
                   <Text
                     numberOfLines={1}
                     style={{ color: theme.colors.drawerText, flex: 1, marginStart: 32 }}
                   >
                     {item.value.name ? item.value.name : item.name}
                   </Text>
-                  {item.value.token && (
+                  {/* {item.value.token && (
                     <MaterialIcons name="verified" size={24} color={theme.colors.drawerText} />
-                  )}
+                  )} */}
                 </View>
               </TouchableRipple>
               // <DrawerItem

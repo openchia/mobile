@@ -124,6 +124,23 @@ export const getPartialsFromID = (launcherID, timestamp) =>
       console.log(error);
     });
 
+export const getPartialsFromIDTest = (launcherID, timestamp) =>
+  fetch(
+    `${REST_API}partial/?ordering=-timestamp&min_timestamp=${timestamp.toString()}&launcher=${launcherID}&limit=2000`
+    // `https://openchia.io/api/v1.0/partial/?ordering=-timestamp&min_timestamp=${timestamp}&launcher=${launcherID}/?format=json`
+    // `https://openchia.io/api/v1.0/partial/?limit=200&offset=200`
+  )
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json)
+    .catch((error) => {
+      console.log(error);
+    });
+
 export const getChiaPlotPosts = () =>
   fetch(`${CHIA_PLOT_REST_API}posts`)
     .then((response) => {

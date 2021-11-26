@@ -73,11 +73,11 @@ const PayoutScreen = ({ navigation }) => {
     }
   }, [payoutsLoadable.state]);
 
-  const renderItem = ({ item, index }) => <Item item={item} rank={index} />;
-
   if (payoutsLoadable.state === 'loading' && !refreshing) {
     return <LoadingComponent />;
   }
+
+  const renderItem = ({ item, index }) => <Item item={item} rank={index} />;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
