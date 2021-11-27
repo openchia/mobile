@@ -37,53 +37,30 @@ export const getCurrencyTitle = (key) =>
 // export const getCurrencyIcon = (key) =>
 // Object.values(currencies.find((currency) => currency.key === key))[1];
 
-const Item = ({ item, selected, onPress }) => {
-  if (selected) {
-    return (
-      <PressableCard>
-        <View
-          style={{
-            padding: 14,
-            display: 'flex',
-            flexDirection: 'row',
-            flex: 1,
-            alignItems: 'center',
-          }}
-        >
-          <Text style={styles.label}>{item.title}</Text>
-          <Text> Selected</Text>
-          <View style={{ flex: 1 }} />
-          <Text style={styles.label}>{item[item.key.toUpperCase()]}</Text>
-        </View>
-      </PressableCard>
-    );
-  }
-  return (
-    <PressableCard onPress={onPress}>
-      <View
-        style={{
-          padding: 14,
-          display: 'flex',
-          flexDirection: 'row',
-          flex: 1,
-          alignItems: 'center',
-        }}
-      >
-        <Text style={styles.label}>{item.title}</Text>
-        <View style={{ flex: 1 }} />
-        <Text style={styles.label}>{item[item.key.toUpperCase()]}</Text>
-      </View>
-    </PressableCard>
-  );
-};
+const Item = ({ item, onPress }) => (
+  <PressableCard onPress={onPress}>
+    <View
+      style={{
+        padding: 14,
+        display: 'flex',
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+      }}
+    >
+      <Text style={styles.label}>{item.title}</Text>
+      <View style={{ flex: 1 }} />
+      <Text style={styles.label}>{item[item.key.toUpperCase()]}</Text>
+    </View>
+  </PressableCard>
+);
 
 const CurrencySelectionScreen = ({ navigation }) => {
   const [currency, setCurrency] = useRecoilState(currencyState);
 
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({ item }) => (
     <Item
       item={item}
-      selected={currency === item.key}
       onPress={() => {
         if (currency !== item.key) {
           setCurrency(item.key);
@@ -96,9 +73,10 @@ const CurrencySelectionScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
+        initialNumToRender={currencies.length - 1}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
         ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
-        data={currencies}
+        data={currencies.filter((item) => currency !== item.key)}
         renderItem={renderItem}
         keyExtractor={(item) => item.key.toString()}
       />

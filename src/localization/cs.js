@@ -87,5 +87,6 @@ export default {
     totalChiaAccumulated: 'Vyplaceno celkem',
     noPayoutsRecieved: 'Nebyla přijata žádná platba. Tahem dolu obnovte stránku',
     overView: 'Přehled',
+    height: 'Výška',
   },
 };

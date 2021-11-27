@@ -2,16 +2,25 @@
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { format } from 'date-fns';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import {
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { Button, Text, useTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSetRecoilState } from 'recoil';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { farmerRefreshState } from '../../Atoms';
 import CustomCard from '../../components/CustomCard';
 import { formatBytes, formatPrice } from '../../utils/Formatting';
 import { getCurrencyFromKey } from '../CurrencySelectionScreen';
+import LoadingComponent from '../../components/LoadingComponent';
 
 const Item = ({ title, value, color, loadable, format }) => {
   const theme = useTheme();
@@ -121,7 +130,35 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
   const harvesters = new Set();
   const { t } = useTranslation();
   const theme = useTheme();
+  const netInfo = useNetInfo();
+  const [error, setError] = useState(false);
   let points = 0;
+
+  useEffect(() => {
+    if (dataLoadable.state === 'hasError') {
+      setError(true);
+    } else if (dataLoadable.state === 'hasValue') {
+      setError(false);
+    }
+  }, [dataLoadable]);
+
+  if (dataLoadable.state === 'hasError') {
+    return (
+      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+          Cant Connect to Network
+        </Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            if (netInfo.isConnected) refresh();
+          }}
+        >
+          Retry
+        </Button>
+      </SafeAreaView>
+    );
+  }
 
   if (dataLoadable.state === 'hasValue') {
     dataLoadable.contents.partials.results.forEach((item) => {
@@ -135,6 +172,10 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
   }
 
   const { currency } = dataLoadable.contents;
+
+  if (error && dataLoadable.state === 'loading') {
+    return <LoadingComponent />;
+  }
 
   return (
     <ScrollView

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { Text, useTheme, Button } from 'react-native-paper';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { useTranslation } from 'react-i18next';
 import { getFarmers } from '../Api';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 import { formatBytes } from '../utils/Formatting';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 const HEIGHT = 142;
 
@@ -145,9 +146,6 @@ const Content = ({
 };
 
 const FarmersScreen = ({ navigation }) => {
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isRefreshing, setIsRefreshing] = useState(false);
-  // const [initalLoading, setIntialLoading] = useState(true);
   const [loadState, setLoadState] = useState({ loading: true, refreshing: false, querying: false });
   const [loading, setLoading] = useState(true);
   const [offset, setOffset] = useState(0);
@@ -155,6 +153,8 @@ const FarmersScreen = ({ navigation }) => {
   const { width } = Dimensions.get('window');
   const [data, setData] = useState([]);
   const [dataProvider, setDataProvider] = useState();
+  const [error, setError] = useState();
+  const netInfo = useNetInfo();
 
   useEffect(() => {
     if (data.length > 0) {
@@ -177,16 +177,44 @@ const FarmersScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (hasMore && (loadState.loading || loadState.refreshing || loadState.querying)) {
-      getFarmers(offset, LIMIT).then((farmers) => {
-        setHasMore(farmers.results.length === LIMIT);
-        setData([...data, ...farmers.results]);
-        setLoadState({ loading: false, refreshing: false, querying: false });
-        setLoading(false);
-      });
+      getFarmers(offset, LIMIT)
+        .then((farmers) => {
+          setHasMore(farmers.results.length === LIMIT);
+          setData([...data, ...farmers.results]);
+          setLoadState({ loading: false, refreshing: false, querying: false });
+          setLoading(false);
+        })
+        .catch((error) => {
+          setLoading(false);
+          setLoadState({ loading: false, refreshing: false, querying: false });
+          setError(true);
+        });
     }
   }, [loading]);
 
   if (loadState.loading) return <LoadingComponent />;
+  if (error) {
+    return (
+      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+          Cant Connect to Network
+        </Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            if (netInfo.isConnected) {
+              setLoadState({ loading: true, refreshing: false, querying: false });
+              setLoading(true);
+              setError(false);
+            }
+          }}
+        >
+          Retry
+        </Button>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <Content
       navigation={navigation}

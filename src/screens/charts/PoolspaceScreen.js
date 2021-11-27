@@ -1,6 +1,7 @@
 import { fromUnixTime, getUnixTime, isAfter } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 import { useSetRecoilState } from 'recoil';
 import { getSpace } from '../../Api';
 import { netSpaceRequestIDState } from '../../Atoms';
@@ -25,36 +26,62 @@ const PoolSpaceScreen = ({ navigation }) => {
   const [maxSize, setMaxSize] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const refresh = useRefresh();
+  const [error, setError] = useState();
 
   useEffect(() => {
-    getSpace().then((netspace) => {
-      const convertedData = netspace.map((item) => ({
-        x: getUnixTime(new Date(item.date)),
-        y: item.size,
-      }));
-      const filteredData = convertedData.filter((item) => item.y !== 0);
-      const data = NetspaceChartIntervals.map((item) => {
-        if (item.time === -1)
+    getSpace()
+      .then((netspace) => {
+        const convertedData = netspace.map((item) => ({
+          x: getUnixTime(new Date(item.date)),
+          y: item.size,
+        }));
+        const filteredData = convertedData.filter((item) => item.y !== 0);
+        const data = NetspaceChartIntervals.map((item) => {
+          if (item.time === -1)
+            return monotoneCubicInterpolation({
+              data: filteredData,
+              includeExtremes: true,
+              range: 100,
+            });
           return monotoneCubicInterpolation({
-            data: filteredData,
+            data: filterData(filteredData, item.time),
             includeExtremes: true,
             range: 100,
           });
-        return monotoneCubicInterpolation({
-          data: filterData(filteredData, item.time),
-          includeExtremes: true,
-          range: 100,
         });
+        setMaxSize(formatBytes(netspace[netspace.length - 1].size));
+        setData(data);
+        setRefreshing(false);
+      })
+      .catch((error) => {
+        setRefreshing(false);
+        setData(null);
+        setError(true);
       });
-      setMaxSize(formatBytes(netspace[netspace.length - 1].size));
-      setData(data);
-      setRefreshing(false);
-    });
-  }, [refreshing]);
+  }, [refreshing, error]);
 
   useEffect(() => {
     refresh();
   }, [refreshing]);
+
+  if (error) {
+    return (
+      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+          Cant Connect to Network
+        </Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            setError(false);
+            refresh();
+          }}
+        >
+          Retry
+        </Button>
+      </SafeAreaView>
+    );
+  }
 
   if (!data && !refreshing) {
     return <LoadingComponent />;

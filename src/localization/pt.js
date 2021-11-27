@@ -88,5 +88,6 @@ export default {
     noPayoutsRecieved:
       'Ainda não foram recebidos quaisquer pagamentos. Puxe para baixo para refrescar',
     overView: 'Resumo',
+    height: 'Altura',
   },
 };

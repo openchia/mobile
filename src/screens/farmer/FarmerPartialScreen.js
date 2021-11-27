@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, SafeAreaView, View, ScrollView, RefreshControl } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { getPartialsFromIDTest } from '../../Api';
 import { partialRefreshState } from '../../Atoms';
 import { PartChartIntervals } from '../../charts/Constants';
@@ -35,6 +37,7 @@ const FarmerPartialScreen = ({ launcherId }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState(null);
   const refresh = useRefresh();
+  const netInfo = useNetInfo();
 
   useEffect(() => {
     if (partialsLoadable.state === 'hasValue') {
@@ -87,12 +90,33 @@ const FarmerPartialScreen = ({ launcherId }) => {
       setData({ globalData, extraData });
 
       setRefreshing(false);
+    } else if (partialsLoadable.state === 'hasError') {
+      setRefreshing(false);
+      setData(null);
     }
   }, [partialsLoadable]);
 
   useEffect(() => {
     refresh();
   }, [refreshing]);
+
+  if (partialsLoadable.state === 'hasError') {
+    return (
+      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+          Cant Connect to Network
+        </Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            if (netInfo.isConnected) refresh();
+          }}
+        >
+          Retry
+        </Button>
+      </SafeAreaView>
+    );
+  }
 
   if (!data && !refreshing) {
     return <LoadingComponent />;
