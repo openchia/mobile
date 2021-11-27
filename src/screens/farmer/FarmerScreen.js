@@ -40,6 +40,8 @@ const query = selectorFamily({
         throw partials.error;
       } else if (farmer.error) {
         throw farmer.error;
+      } else if (stats.error) {
+        throw stats.error;
       }
       return { farmer, partials, stats, currency };
     },

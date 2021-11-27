@@ -115,7 +115,7 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
             style={{ marginEnd: 16 }}
           />
           <View style={styles.mainContent}>
-            <Text style={styles.title}>{t('notifications')} (Disabled)</Text>
+            <Text style={styles.title}>{t('notifications')} (Coming Soon...)</Text>
             <Text numberOfLines={1} style={styles.subtitle}>
               {t('notificationsDesc')}
             </Text>

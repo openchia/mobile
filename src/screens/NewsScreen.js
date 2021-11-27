@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 // import { FlatList } from 'react-native-gesture-handler';
-import { Text, useTheme } from 'react-native-paper';
+import { Button, Text, useTheme } from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
 import {
   selectorFamily,
@@ -19,6 +19,7 @@ import {
   useRecoilValueLoadable,
   useSetRecoilState,
 } from 'recoil';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { getChiaPlotPosts } from '../Api';
 import { newsRefreshState, settingsState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
@@ -88,6 +89,7 @@ const NewsScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const theme = useTheme();
+  const netInfo = useNetInfo();
 
   const tagsStyles = {
     body: {
@@ -120,6 +122,24 @@ const NewsScreen = ({ navigation }) => {
       }}
     />
   );
+
+  if (postsLoadable.state === 'hasError') {
+    return (
+      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+          Cant Connect to Network
+        </Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            if (netInfo.isConnected) refresh();
+          }}
+        >
+          Retry
+        </Button>
+      </SafeAreaView>
+    );
+  }
 
   if (postsLoadable.state === 'loading' && !refreshing) {
     return <LoadingComponent />;

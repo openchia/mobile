@@ -88,5 +88,6 @@ export default {
     totalChiaAccumulated: 'Total pagado',
     noPayoutsRecieved: 'No se han recibido pagos todavía. Tire hacia abajo para actualizar',
     overView: 'Resumen',
+    height: 'Altura',
   },
 };

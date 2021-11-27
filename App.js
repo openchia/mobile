@@ -6,6 +6,8 @@ import { Notifications } from 'react-native-notifications';
 // import { Notifications } from 'react-native-notifications';
 // import * as Sentry from '@sentry/react-native';
 import messaging from '@react-native-firebase/messaging';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
+import NetInfo from '@react-native-community/netinfo';
 import { saveObject } from './src/utils/Utils';
 import ApplicationNavigator from './src/ApplicationNavigator';
 import LoadingComponent from './src/components/LoadingComponent';
@@ -48,6 +50,8 @@ const App = () => {
   useEffect(() => {
     requestUserPermission();
 
+    // SystemNavigationBar.navigationHide();
+
     // Notifications.registerRemoteNotifications();
 
     // Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
@@ -60,7 +64,7 @@ const App = () => {
     // Notifications.events().registerNotificationOpened((notification, completion) => {
     //   console.log(`Notification opened: ${notification.payload}`);
     //   completion();
-    // });
+    // });r
     const unsubscribe = messaging().onMessage(onMessageReceived);
     // const unsubscribe = messaging().onMessage(async (remoteMessage) => {
     //   console.log(remoteMessage);
@@ -69,7 +73,6 @@ const App = () => {
 
     return unsubscribe;
   }, []);
-
   // useEffect(() => {
   //   const unsubscribe = messaging()
   //     .subscribeToTopic('blocks')

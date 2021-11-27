@@ -40,6 +40,7 @@ import {
   useRecoilStateLoadable,
   useRecoilValue,
   useRecoilValueLoadable,
+  useSetRecoilState,
 } from 'recoil';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import { createStackNavigator } from '@react-navigation/stack';
@@ -48,6 +49,7 @@ import { TransitionPresets, createStackNavigator } from '@react-navigation/stack
 import { createDrawerNavigator, useDrawerStatus } from '@react-navigation/drawer';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
+import NetInfo from '@react-native-community/netinfo';
 import HomeScreen from './screens/HomeScreen';
 import StatsScreen from './screens/StatsScreen';
 import FarmersScreen from './screens/FarmersScreen';
@@ -56,7 +58,13 @@ import PayoutScreen from './screens/PayoutScreen';
 import ScanScreen from './screens/ScanScreen';
 import FarmerScreen, { getHeaderTitle } from './screens/farmer/FarmerScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import { currencyState, initialRouteState, launcherIDsState, settingsState } from './Atoms';
+import {
+  currencyState,
+  initialRouteState,
+  launcherIDsState,
+  networkState,
+  settingsState,
+} from './Atoms';
 import LanguageSelectorScreen from './screens/LanguageSelectorScreen';
 import CurrencySelectionScreen from './screens/CurrencySelectionScreen';
 import CustomDrawerContent from './components/CustomDrawerContent';
@@ -95,6 +103,7 @@ const LightTheme = {
     // textPrimary: '#fff',
     // textSecondary: '#436B34',
     divider: 'rgba(0, 0, 0, 0.4)',
+    selected: 'rgba(0, 0, 0, 0.2)',
     statusBarColor: '#436B34',
     // statusBarColor: '#243F1E',
     text: '#636363',
@@ -138,6 +147,7 @@ const DarkTheme = {
     statusBarColor: '#243F1E',
     leaves: 'rgba(245, 245, 245, 0.07)',
     divider: 'rgba(255, 255, 255, 0.2)',
+    selected: 'rgba(255, 255, 255, 0.2)',
     // disabled: '#f5f5f5',
     placeholder: '#bababa',
     enabled: 'pink',
@@ -361,6 +371,12 @@ const ApplicationNavigator = () => {
   const launcherIDs = useRecoilValue(launcherIDsState);
   const initialRoute = useRecoilValue(initialRouteState);
   const currency = useRecoilValue(currencyState);
+  // const setNetworkStatus = useSetRecoilState(networkState);
+
+  // NetInfo.addEventListener((state) => {
+  //   console.log(state.isConnected);
+  //   setNetworkStatus(state.isConnected);
+  // });
 
   useEffect(() => {
     SplashScreen.hide();

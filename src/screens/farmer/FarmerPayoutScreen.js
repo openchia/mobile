@@ -3,8 +3,9 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { FlatList, RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { Button, Text, useTheme } from 'react-native-paper';
 import { selectorFamily, useRecoilValue, useSetRecoilState, useRecoilValueLoadable } from 'recoil';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { getPayoutsFromAddress } from '../../Api';
 import { farmerPayoutsRefreshState } from '../../Atoms';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -85,6 +86,7 @@ const Content = ({ launcherId }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState([]);
   const { t } = useTranslation();
+  const netInfo = useNetInfo();
   const theme = useTheme();
   // console.log(payouts.results);
 
@@ -96,6 +98,24 @@ const Content = ({ launcherId }) => {
   }, [payoutsLoadable.state]);
 
   const renderItem = ({ item }) => <Item item={item} theme={theme} t={t} />;
+
+  if (payoutsLoadable.state === 'hasError') {
+    return (
+      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+          Cant Connect to Network
+        </Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            if (netInfo.isConnected) refresh();
+          }}
+        >
+          Retry
+        </Button>
+      </SafeAreaView>
+    );
+  }
 
   if (payoutsLoadable.state === 'loading' && !refreshing) {
     return <LoadingComponent />;

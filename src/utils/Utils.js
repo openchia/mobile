@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform, NetInfo, Alert } from 'react-native';
 
 export const getObject = async (key) => {
   try {

@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
-import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import { Button, Text, useTheme } from 'react-native-paper';
+import { selectorFamily, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { getStats } from '../Api';
-import { currencyState, statsRequestIDState } from '../Atoms';
+import { currencyState, networkState, statsRequestIDState } from '../Atoms';
 import PressableCard from '../components/PressableCard';
 import {
   convertMojoToChia,
@@ -15,6 +16,7 @@ import {
   formatBytes,
 } from '../utils/Formatting';
 import { getCurrencyFromKey } from './CurrencySelectionScreen';
+import LoadingComponent from '../components/LoadingComponent';
 
 const Item = ({ title, value, color, loadable, format, onPress, icon }) => (
   <PressableCard style={{ flex: 1 }} onPress={onPress}>
@@ -68,16 +70,21 @@ const statsQuery = selectorFamily({
     },
 });
 
-const Content = ({ navigation }) => {
+const StatsScreen = ({ navigation }) => {
   const statsLoadable = useRecoilValueLoadable(statsQuery());
   const [refreshing, setRefreshing] = useState(false);
   const refresh = useRefreshStats();
   const { t } = useTranslation();
   const theme = useTheme();
+  const [failed, setFailed] = useState(false);
+  const netInfo = useNetInfo();
 
   useEffect(() => {
     if (statsLoadable.state === 'hasValue') {
+      setFailed(false);
       setRefreshing(false);
+    } else if (statsLoadable.state === 'hasError') {
+      setFailed(true);
     }
   }, [statsLoadable.state]);
 
@@ -87,34 +94,24 @@ const Content = ({ navigation }) => {
 
   if (statsLoadable.state === 'hasError') {
     return (
-      <ScrollView
-        style={{ flex: 1 }}
-        contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => {
-              setRefreshing(true);
-            }}
-          />
-        }
-      >
-        contentContainerStyle=
-        {{
-          padding: 8,
-          flex: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-        refreshControl=
-        <RefreshControl refreshing={false} onRefresh={() => refresh()} />
-        <Text style={{ fontSize: 20, textAlign: 'center' }}>
-          Could not fetch data. Please make sure you have an internet connection. Pull down to try
-          refresh again.
+      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+          Cant Connect to Network
         </Text>
-      </ScrollView>
+        <Button
+          mode="contained"
+          onPress={() => {
+            if (netInfo.isConnected) refresh();
+          }}
+        >
+          Retry
+        </Button>
+      </SafeAreaView>
     );
+  }
+
+  if (failed) {
+    return <LoadingComponent />;
   }
 
   return (
@@ -226,25 +223,6 @@ const Content = ({ navigation }) => {
   );
 };
 
-function ErrorFallback({ error, resetErrorBoundary }) {
-  return (
-    <View role="alert">
-      <Text>Something went wrong:</Text>
-    </View>
-  );
-}
-
-const StatsScreen = ({ navigation }) => (
-  // const toast = useToast();
-  // const statsLoadable = useRecoilValueLoadable(statsQuery());
-  // const refresh = useRefreshStats();
-
-  // if (statsLoadable.state === 'hasError') {
-  //   toast.show(statsLoadable.contents);
-  // }
-
-  <Content navigation={navigation} />
-);
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',

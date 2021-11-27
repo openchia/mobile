@@ -1,9 +1,10 @@
 import { format, fromUnixTime } from 'date-fns';
 import React, { Suspense, useEffect, useState } from 'react';
 import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { Button, Text, useTheme } from 'react-native-paper';
 import { selectorFamily, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { useTranslation } from 'react-i18next';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { getBlocks } from '../Api';
 import { blocksRequestIDState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
@@ -121,6 +122,7 @@ const BlocksFoundScreen = ({ navigation }) => {
   const refreshLoadable = useRecoilValueLoadable(query());
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const netInfo = useNetInfo();
 
   useEffect(() => {
     if (refreshLoadable.state === 'hasValue') {
@@ -129,10 +131,30 @@ const BlocksFoundScreen = ({ navigation }) => {
     }
   }, [refreshLoadable.state]);
 
-  const renderItem = ({ item, index }) => <Item item={item} />;
+  const renderItem = ({ item }) => <Item item={item} />;
 
   if (refreshLoadable.state === 'loading' && !refreshing) {
     return <LoadingComponent />;
+  }
+
+  if (refreshLoadable.state === 'hasError') {
+    return (
+      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+          Cant Connect to Network
+        </Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            if (netInfo.isConnected) {
+              refresh();
+            }
+          }}
+        >
+          Retry
+        </Button>
+      </SafeAreaView>
+    );
   }
 
   return (

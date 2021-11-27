@@ -88,5 +88,6 @@ export default {
     totalChiaAccumulated: 'Összesen fizetett',
     noPayoutsRecieved: 'Még nem érkezett kifizetés. Húzza le a frissítéshez.',
     overView: 'Áttekintés',
+    height: 'Magasság',
   },
 };

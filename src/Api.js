@@ -11,10 +11,7 @@ export const getSpace = () =>
       }
       throw Error(response.statusText);
     })
-    .then((json) => json)
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((json) => json);
 
 export const getStats = () =>
   fetch(`${REST_API}stats`)
@@ -25,9 +22,6 @@ export const getStats = () =>
       throw new Error(response.statusText);
     })
     .then((json) => json);
-// .catch((error) => {
-//   console.log(error);
-// });
 
 export const getFarmers = (offset, limit) =>
   fetch(`${REST_API}launcher/?limit=${limit}&offset=${offset}&is_pool_member=true`)
@@ -37,10 +31,7 @@ export const getFarmers = (offset, limit) =>
       }
       throw Error(response.statusText);
     })
-    .then((json) => json)
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((json) => json);
 
 export const getFarmer = (launcherID) =>
   fetch(`${REST_API}launcher/${launcherID}`)
@@ -50,10 +41,7 @@ export const getFarmer = (launcherID) =>
       }
       throw Error(response.statusText);
     })
-    .then((json) => json)
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((json) => json);
 
 export const getBlocks = () =>
   fetch(`${REST_API}block`)
@@ -63,10 +51,7 @@ export const getBlocks = () =>
       }
       throw Error(response.statusText);
     })
-    .then((json) => json)
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((json) => json);
 
 export const getBlocksFromFarmer = (launcherId) =>
   fetch(`${REST_API}block/?farmed_by=${launcherId}`)
@@ -76,10 +61,7 @@ export const getBlocksFromFarmer = (launcherId) =>
       }
       throw Error(response.statusText);
     })
-    .then((json) => json)
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((json) => json);
 
 export const getPayouts = () =>
   fetch(`${REST_API}payout`)
@@ -89,10 +71,7 @@ export const getPayouts = () =>
       }
       throw Error(response.statusText);
     })
-    .then((json) => json)
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((json) => json);
 
 export const getPayoutsFromAddress = (launcherId) =>
   fetch(`${REST_API}payoutaddress/?launcher=${launcherId}`)
@@ -102,16 +81,11 @@ export const getPayoutsFromAddress = (launcherId) =>
       }
       throw Error(response.statusText);
     })
-    .then((json) => json)
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((json) => json);
 
 export const getPartialsFromID = (launcherID, timestamp) =>
   fetch(
     `${REST_API}partial/?ordering=-timestamp&min_timestamp=${timestamp.toString()}&launcher=${launcherID}&limit=900`
-    // `https://openchia.io/api/v1.0/partial/?ordering=-timestamp&min_timestamp=${timestamp}&launcher=${launcherID}/?format=json`
-    // `https://openchia.io/api/v1.0/partial/?limit=200&offset=200`
   )
     .then((response) => {
       if (response.ok) {
@@ -119,16 +93,11 @@ export const getPartialsFromID = (launcherID, timestamp) =>
       }
       throw Error(response.statusText);
     })
-    .then((json) => json)
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((json) => json);
 
 export const getPartialsFromIDTest = (launcherID, timestamp) =>
   fetch(
     `${REST_API}partial/?ordering=-timestamp&min_timestamp=${timestamp.toString()}&launcher=${launcherID}&limit=2000`
-    // `https://openchia.io/api/v1.0/partial/?ordering=-timestamp&min_timestamp=${timestamp}&launcher=${launcherID}/?format=json`
-    // `https://openchia.io/api/v1.0/partial/?limit=200&offset=200`
   )
     .then((response) => {
       if (response.ok) {
@@ -149,10 +118,7 @@ export const getChiaPlotPosts = () =>
       }
       throw Error(response.statusText);
     })
-    .then((json) => json)
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((json) => json);
 
 export const getLauncherIDFromToken = (token) =>
   fetch(`${REST_API}login_qr`, {

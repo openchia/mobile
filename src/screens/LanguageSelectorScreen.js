@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import CustomCard from '../components/CustomCard';
 import PressableCard from '../components/PressableCard';
@@ -19,50 +19,33 @@ export const LANGUAGES = [
   { code: 'pt', label: 'Português' },
 ];
 
-const Item = ({ item, selected, onPress }) => {
-  if (selected) {
-    return (
-      <CustomCard
-        style={{
-          padding: 14,
-          display: 'flex',
-          flexDirection: 'row',
-          flex: 1,
-          alignItems: 'center',
-        }}
-      >
-        <Text style={styles.label}>{item.label}</Text>
-      </CustomCard>
-    );
-  }
-  return (
-    <PressableCard onPress={onPress}>
-      <View
-        style={{
-          padding: 14,
-          display: 'flex',
-          flexDirection: 'row',
-          flex: 1,
-          alignItems: 'center',
-        }}
-      >
-        <Text style={styles.label}>{item.label}</Text>
-      </View>
-    </PressableCard>
-  );
-};
-
+const Item = ({ item, onPress }) => (
+  <PressableCard onPress={onPress}>
+    <View
+      style={{
+        padding: 14,
+        display: 'flex',
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+      }}
+    >
+      <Text style={styles.label}>{item.label}</Text>
+    </View>
+  </PressableCard>
+);
 const LanguageSelectorScreen = () => {
   const { t, i18n } = useTranslation();
   const selectedLanguageCode = i18n.language;
   const navigation = useNavigation();
+  const theme = useTheme();
 
   const setLanguage = (code) => i18n.changeLanguage(code);
 
   const renderItem = ({ item, index }) => (
     <Item
       item={item}
-      selected={selectedLanguageCode === item.code}
+      theme={theme}
       onPress={() => {
         if (item.code !== selectedLanguageCode) {
           setLanguage(item.code);
@@ -75,9 +58,12 @@ const LanguageSelectorScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
+        initialNumToRender={LANGUAGES.length - 1}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
         ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
-        data={LANGUAGES.sort((a, b) => a.label.localeCompare(b.label))}
+        data={LANGUAGES.sort((a, b) => a.label.localeCompare(b.label)).filter(
+          (item) => selectedLanguageCode !== item.code
+        )}
         renderItem={renderItem}
         keyExtractor={(item) => item.code.toString()}
       />

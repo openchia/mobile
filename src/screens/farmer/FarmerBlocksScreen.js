@@ -1,10 +1,12 @@
 import { format, fromUnixTime } from 'date-fns';
 import React, { Suspense, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Text } from 'react-native-paper';
+import { Button, Text, useTheme } from 'react-native-paper';
 import { selectorFamily, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { getBlocksFromFarmer } from '../../Api';
 import { farmerBlockRefreshState } from '../../Atoms';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -30,25 +32,51 @@ const query = selectorFamily({
     },
 });
 
-const Item = ({ item }) => (
+const Item = ({ item, color, t }) => (
+  // <PressableCard onTap={() => {}}>
+  //   <View
+  //     style={{
+  //       display: 'flex',
+  //       flexDirection: 'row',
+  //       justifyContent: 'center',
+  //       alignItems: 'center',
+  //       padding: 10,
+  //     }}
+  //   >
+  //     {/* <Text style={styles.rank}>{item.transaction}</Text> */}
+  //     <Text style={styles.amount}>{`${convertMojoToChia(item.amount)} XCH`}</Text>
+  //     <View style={{ flex: 1 }} />
+  //     <View style={{ display: 'flex', flexDirection: 'column' }}>
+  //       <Text style={styles.block}>{item.confirmed_block_index}</Text>
+  //       <Text style={styles.date}>{format(fromUnixTime(item.timestamp), 'PPpp')}</Text>
+  //     </View>
+  //   </View>
+  // </PressableCard>
   <PressableCard onTap={() => {}}>
-    <View
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10,
-      }}
-    >
-      {/* <Text style={styles.rank}>{item.transaction}</Text> */}
-      <Text style={styles.amount}>{`${convertMojoToChia(item.amount)} XCH`}</Text>
-      <View style={{ flex: 1 }} />
-      <View style={{ display: 'flex', flexDirection: 'column' }}>
-        <Text style={styles.block}>{item.confirmed_block_index}</Text>
-        <Text style={styles.date}>{format(fromUnixTime(item.timestamp), 'PPpp')}</Text>
+    <View style={{ display: 'flex', flexDirection: 'column', padding: 8 }}>
+      {/* <Text style={styles.rank}>{item.id}</Text>
+      <Text style={styles.date}>{format(new Date(item.datetime), 'PPpp')}</Text>
+      <Text style={styles.size}>{`${convertMojoToChia(item.amount)} XCH`}</Text> */}
+
+      {/* <View style={{ padding: 8, display: 'flex' }}> */}
+      <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
+        <Text style={[styles.title, { color }]}>{t('amount')}</Text>
+        <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(
+          item.amount
+        )} XCH`}</Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 8 }}>
+        <Text style={[styles.title, { color }]}>{t('height')}</Text>
+        <Text style={[styles.val, { fontWeight: 'bold' }]}>{item.confirmed_block_index}</Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 8 }}>
+        <Text style={[styles.title, { color }]}>{t('date')}</Text>
+        <Text style={[styles.val, { fontWeight: 'bold' }]}>
+          {format(fromUnixTime(item.timestamp), 'PPpp')}
+        </Text>
       </View>
     </View>
+    {/* </View> */}
   </PressableCard>
 );
 
@@ -57,6 +85,9 @@ const Content = ({ launcherId }) => {
   const blocksLoadable = useRecoilValueLoadable(query(launcherId));
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const netInfo = useNetInfo();
 
   useEffect(() => {
     if (blocksLoadable.state === 'hasValue') {
@@ -65,11 +96,29 @@ const Content = ({ launcherId }) => {
     }
   }, [blocksLoadable.state]);
 
+  if (blocksLoadable.state === 'hasError') {
+    return (
+      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+          Cant Connect to Network
+        </Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            if (netInfo.isConnected) refresh();
+          }}
+        >
+          Retry
+        </Button>
+      </SafeAreaView>
+    );
+  }
+
   if (blocksLoadable.state === 'loading' && !refreshing) {
     return <LoadingComponent />;
   }
 
-  const renderItem = ({ item }) => <Item item={item} />;
+  const renderItem = ({ item }) => <Item item={item} color={theme.colors.textGrey} t={t} />;
 
   if (data.length === 0) {
     return (
@@ -121,16 +170,14 @@ const FarmerBlockScreen = ({ launcherId }) => (
 );
 
 const styles = StyleSheet.create({
-  date: {
-    marginLeft: 'auto',
-    fontSize: 12,
-  },
-  block: {
-    marginLeft: 'auto',
+  title: {
     fontSize: 14,
+    marginEnd: 8,
   },
-  amount: {
-    fontSize: 16,
+  val: {
+    fontSize: 14,
+    flex: 1,
+    textAlign: 'right',
   },
 });
 

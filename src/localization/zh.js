@@ -87,5 +87,6 @@ export default {
     totalChiaAccumulated: '已支付总额',
     noPayoutsRecieved: '还没有收到赔款。下拉刷新。',
     overView: '概览',
+    height: '高度',
   },
 };

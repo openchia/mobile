@@ -86,6 +86,11 @@ export const statsState = atom({
   default: 'Testing', // default value (aka initial value)
 });
 
+export const networkState = atom({
+  key: 'networkStateAtom', // unique ID (with respect to other atoms/selectors)
+  default: true, // default value (aka initial value)
+});
+
 export const statsRequestIDState = atomFamily({
   key: 'statsRequestAtomFamily',
   default: 0,
