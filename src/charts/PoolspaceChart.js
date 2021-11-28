@@ -161,24 +161,26 @@ const PoolspaceChart = ({ results }) => {
           />
         </View>
         <View style={{ flex: 1, justifyContent: 'center' }}>
-          <View style={{}}>
-            <ChartPath
-              hapticsEnabled={false}
-              hitSlop={30}
-              smoothingWhileTransitioningEnabled={false}
-              fill="none"
-              height={width / 2}
-              stroke={theme.colors.primaryLight}
-              backgroundColor="url(#prefix__paint0_linear)"
-              strokeWidth="2"
-              width={width}
-            />
-            <ChartDot
-              style={{
-                backgroundColor: theme.colors.accentColor,
-              }}
-            />
-          </View>
+          {chartVisible ? (
+            <>
+              <ChartPath
+                hapticsEnabled={false}
+                hitSlop={30}
+                smoothingWhileTransitioningEnabled={false}
+                fill="none"
+                height={width / 2}
+                stroke={theme.colors.primaryLight}
+                backgroundColor="url(#prefix__paint0_linear)"
+                strokeWidth="2"
+                width={width}
+              />
+              <ChartDot
+                style={{
+                  backgroundColor: theme.colors.accentColor,
+                }}
+              />
+            </>
+          ) : null}
           <CustomCard style={{ marginTop: 16 }}>
             <View style={styles.selection}>
               <View
