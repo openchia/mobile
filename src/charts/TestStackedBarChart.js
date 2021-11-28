@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 import React from 'react';
 import { View } from 'react-native';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import { LongPressGestureHandler, PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, { useAnimatedGestureHandler, useSharedValue } from 'react-native-reanimated';
 import { Path, Svg } from 'react-native-svg';
 import useAnimatedPath from './useAnimatedPath';
@@ -18,6 +18,9 @@ const Bar = ({ color, path, itemKey, points, pressed, selectedPoints }) => {
   });
 
   const eventHandler = useAnimatedGestureHandler({
+    onActive: (event, ctx) => {
+      console.log('active');
+    },
     onStart: (event, ctx) => {
       selectedPoints.value = points;
       pressed.value = itemKey;
@@ -30,9 +33,15 @@ const Bar = ({ color, path, itemKey, points, pressed, selectedPoints }) => {
   });
 
   return (
-    <PanGestureHandler onGestureEvent={eventHandler}>
+    <LongPressGestureHandler
+      enabled
+      maxDist={100000}
+      minDurationMs={0}
+      shouldCancelWhenOutside={false}
+      {...{ onGestureEvent: eventHandler }}
+    >
       <AnimatedPath animatedProps={animatedProps} fill={color} />
-    </PanGestureHandler>
+    </LongPressGestureHandler>
   );
 };
 
