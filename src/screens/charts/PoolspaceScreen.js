@@ -16,14 +16,14 @@ const useRefresh = () => {
   return () => setRequestId((id) => id + 1);
 };
 
-const filterData = (data, timePeriod) => {
-  const date = new Date(new Date().getTime() - timePeriod * 60 * 60 * 1000);
-  return data.filter((item) => isAfter(fromUnixTime(item.x), date));
-};
+// const filterData = (data, timePeriod) => {
+//   const date = new Date(new Date().getTime() - timePeriod * 60 * 60 * 1000);
+//   return data.filter((item) => isAfter(fromUnixTime(item.x), date));
+// };
 
 const PoolSpaceScreen = ({ navigation }) => {
   const [data, setData] = useState(null);
-  const [maxSize, setMaxSize] = useState('');
+  // const [maxSize, setMaxSize] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const refresh = useRefresh();
   const [error, setError] = useState();
@@ -31,26 +31,7 @@ const PoolSpaceScreen = ({ navigation }) => {
   useEffect(() => {
     getSpace()
       .then((netspace) => {
-        const convertedData = netspace.map((item) => ({
-          x: getUnixTime(new Date(item.date)),
-          y: item.size,
-        }));
-        const filteredData = convertedData.filter((item) => item.y !== 0);
-        const data = NetspaceChartIntervals.map((item) => {
-          if (item.time === -1)
-            return monotoneCubicInterpolation({
-              data: filteredData,
-              includeExtremes: true,
-              range: 100,
-            });
-          return monotoneCubicInterpolation({
-            data: filterData(filteredData, item.time),
-            includeExtremes: true,
-            range: 100,
-          });
-        });
-        setMaxSize(formatBytes(netspace[netspace.length - 1].size));
-        setData(data);
+        setData(netspace);
         setRefreshing(false);
       })
       .catch((error) => {
@@ -105,7 +86,7 @@ const PoolSpaceScreen = ({ navigation }) => {
           />
         }
       >
-        <PoolspaceChart data={data} maxSize={maxSize} />
+        <PoolspaceChart results={data} />
       </ScrollView>
     </SafeAreaView>
   );
