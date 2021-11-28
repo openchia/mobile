@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
-import { addMinutes, fromUnixTime, max, min, getUnixTime } from 'date-fns';
+import { addMinutes, fromUnixTime, max, min, getUnixTime, toDate, parse } from 'date-fns';
 import { getPartialsFromIDTest } from '../../Api';
 import { partialRefreshState } from '../../Atoms';
 import { PartChartIntervals } from '../../charts/Constants';
@@ -39,7 +39,7 @@ const getTotalChartData = (data, maxDate, numHours, numBars, label) => {
   const minuteGap = (numHours * 60) / numBars;
   let totalPassed = 0;
   let totalFailed = 0;
-  let x = maxDate;
+  let x = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
   while (x <= maxDate) x = addMinutes(x, minuteGap);
   let periodStart = addMinutes(x, -minuteGap * numBars);
   let k = data.length - 1;
@@ -82,67 +82,11 @@ const FarmerPartialScreen = ({ launcherId }) => {
   useEffect(() => {
     if (partialsLoadable.state === 'hasValue') {
       const globalData = [];
-      const extraData = [];
       const data1 = partialsLoadable.contents.results;
       const maxDate = max(data1.map((item) => fromUnixTime(item.timestamp)));
       PartChartIntervals.forEach((item, index) => {
-        // const x = getTotalChartData(data1, maxDate, 4, 12);
-        // console.log(x);
         globalData[index] = getTotalChartData(data1, maxDate, item.time, 12, item.label);
       });
-      // console.log(JSON.stringify(partialsLoadable.contents.results));
-      // let string;
-      // partialsLoadable.contents.results.forEach((item) => {
-      //   string += `${item.timestamp}\t${item.error ? 0 : 1}\t${item.error ? 1 : 0}\n`;
-      // });
-      // // .join('\n')
-      // // console.log('\n');
-      // // console.log(string);
-      // const globalData = [];
-      // const extraData = [];
-      // let totalPassed = 0;
-      // let totalFailed = 0;
-      // PartChartIntervals.forEach((item, index) => {
-      //   const timespan = 3600 * item.interval;
-      //   let startTime =
-      //     Math.floor(partialsLoadable.contents.results[0].timestamp / timespan) * timespan;
-      //   let passed = 0;
-      //   let failed = 0;
-      //   let x = 0;
-      //   const localData = [];
-      //   partialsLoadable.contents.results.forEach((element) => {
-      //     const time = Math.floor(element.timestamp / timespan) * timespan;
-      //     if (startTime === time) {
-      //       if (element.error) {
-      //         failed += 1;
-      //       } else {
-      //         passed += 1;
-      //       }
-      //     } else {
-      //       startTime = time;
-      //       localData[x] = { startTime, failed, passed };
-      //       failed = 0;
-      //       passed = 0;
-      //       x += 1;
-      //     }
-      //   });
-      //   const results = localData.slice(0, item.time / item.interval).reverse();
-      //   results.forEach((item) => {
-      //     totalPassed += item.passed;
-      //     totalFailed += item.failed;
-      //   });
-      //   globalData[index] = results;
-
-      //   extraData[index] = {
-      //     totalPassed,
-      //     totalFailed,
-      //     time: item.time,
-      //     interval: item.interval,
-      //     label: item.label,
-      //   };
-      //   totalPassed = 0;
-      //   totalFailed = 0;
-      // });
 
       setData(globalData);
 
