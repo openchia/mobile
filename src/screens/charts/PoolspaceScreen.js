@@ -27,6 +27,7 @@ const PoolSpaceScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const refresh = useRefresh();
   const [error, setError] = useState();
+  const [loaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     getSpace()
@@ -58,7 +59,13 @@ const PoolSpaceScreen = ({ navigation }) => {
         setData(null);
         setError(true);
       });
-  }, [refreshing, error, setData]);
+  }, [refreshing, error]);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      setIsLoaded(true);
+    }
+  }, [data]);
 
   useEffect(() => {
     refresh();
@@ -83,7 +90,7 @@ const PoolSpaceScreen = ({ navigation }) => {
     );
   }
 
-  if (!data && !refreshing) {
+  if (!data && !refreshing && !loaded) {
     return <LoadingComponent />;
   }
 
