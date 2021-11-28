@@ -23,7 +23,7 @@ const CustomDrawerContent = (props) => {
   const { t } = useTranslation();
 
   const [settings, setSettings] = useRecoilState(settingsState);
-  const setIntialRoute = useSetRecoilState(initialRouteState);
+  const [initialRoute, setIntialRoute] = useRecoilState(initialRouteState);
 
   const toggleTheme = () => {
     setSettings((prev) => ({ ...prev, isThemeDark: !prev.isThemeDark }));
@@ -106,17 +106,45 @@ const CustomDrawerContent = (props) => {
           <DrawerItem
             label={t('home')}
             onPress={() => onPress('Home', true)}
-            labelStyle={{ color: theme.colors.drawerText }}
+            labelStyle={{
+              fontWeight: 'bold',
+              color:
+                initialRoute.name === 'Home'
+                  ? theme.colors.drawerSelected
+                  : theme.colors.drawerText,
+            }}
             icon={({ color, size }) => (
-              <Ionicons name="ios-home-outline" size={size} color={theme.colors.drawerText} />
+              <Ionicons
+                name="ios-home-outline"
+                size={size}
+                color={
+                  initialRoute.name === 'Home'
+                    ? theme.colors.drawerSelected
+                    : theme.colors.drawerText
+                }
+              />
             )}
           />
           <DrawerItem
             label={t('news')}
             onPress={() => onPress('News', true)}
-            labelStyle={{ color: theme.colors.drawerText }}
+            labelStyle={{
+              fontWeight: 'bold',
+              color:
+                initialRoute.name === 'News'
+                  ? theme.colors.drawerSelected
+                  : theme.colors.drawerText,
+            }}
             icon={({ color, size }) => (
-              <Ionicons name="ios-newspaper-outline" size={size} color={theme.colors.drawerText} />
+              <Ionicons
+                name="ios-newspaper-outline"
+                size={size}
+                color={
+                  initialRoute.name === 'News'
+                    ? theme.colors.drawerSelected
+                    : theme.colors.drawerText
+                }
+              />
             )}
           />
         </CustomDrawerSection>
@@ -125,12 +153,22 @@ const CustomDrawerContent = (props) => {
           <DrawerItem
             label={t('stats')}
             onPress={() => onPress('Stats', true)}
-            labelStyle={{ color: theme.colors.drawerText }}
+            labelStyle={{
+              fontWeight: 'bold',
+              color:
+                initialRoute.name === 'Stats'
+                  ? theme.colors.drawerSelected
+                  : theme.colors.drawerText,
+            }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons
                 name="chart-line"
                 size={size}
-                color={theme.colors.drawerText}
+                color={
+                  initialRoute.name === 'Stats'
+                    ? theme.colors.drawerSelected
+                    : theme.colors.drawerText
+                }
               />
             )}
           />
@@ -139,47 +177,93 @@ const CustomDrawerContent = (props) => {
             onPress={() => onPress(t('charts'))}
             labelStyle={{ color: theme.colors.drawerText }}
             icon={({ color, size }) => (
-              <Ionicons name="stats-chart-outline" size={size} color={theme.colors.drawerText} />
+              <Ionicons name="stats-chart-outline" size={size}         color={initialRoute.name === 'Home'
+                  ? theme.colors.drawerSelected
+                  : theme.colors.drawerText} />
             )}
           /> */}
           <DrawerItem
             label={t('farmers')}
             onPress={() => onPress('Farmers', true)}
-            labelStyle={{ color: theme.colors.drawerText }}
+            labelStyle={{
+              fontWeight: 'bold',
+              color:
+                initialRoute.name === 'Farmers'
+                  ? theme.colors.drawerSelected
+                  : theme.colors.drawerText,
+            }}
             icon={({ color, size }) => (
-              <Ionicons name="ios-people-outline" size={size} color={theme.colors.drawerText} />
+              <Ionicons
+                name="ios-people-outline"
+                size={size}
+                color={
+                  initialRoute.name === 'Farmers'
+                    ? theme.colors.drawerSelected
+                    : theme.colors.drawerText
+                }
+              />
             )}
           />
           <DrawerItem
             label={t('blocksFound')}
             onPress={() => onPress('Blocks Found', true)}
-            labelStyle={{ color: theme.colors.drawerText }}
+            labelStyle={{
+              fontWeight: 'bold',
+              color:
+                initialRoute.name === 'Blocks Found'
+                  ? theme.colors.drawerSelected
+                  : theme.colors.drawerText,
+            }}
             icon={({ color, size }) => (
-              <Ionicons name="layers-outline" size={size} color={theme.colors.drawerText} />
+              <Ionicons
+                name="layers-outline"
+                size={size}
+                color={
+                  initialRoute.name === 'Blocks Found'
+                    ? theme.colors.drawerSelected
+                    : theme.colors.drawerText
+                }
+              />
             )}
           />
           <DrawerItem
             label={t('payouts')}
             onPress={() => onPress('Payouts', true)}
-            labelStyle={{ color: theme.colors.drawerText }}
+            labelStyle={{
+              fontWeight: 'bold',
+              color:
+                initialRoute.name === 'Payouts'
+                  ? theme.colors.drawerSelected
+                  : theme.colors.drawerText,
+            }}
             icon={({ color, size }) => (
-              <Ionicons name="ios-card-outline" size={size} color={theme.colors.drawerText} />
+              <Ionicons
+                name="ios-card-outline"
+                size={size}
+                color={
+                  initialRoute.name === 'Payouts'
+                    ? theme.colors.drawerSelected
+                    : theme.colors.drawerText
+                }
+              />
             )}
           />
         </CustomDrawerSection>
-        <CustomDrawerSection>
+        {/* <CustomDrawerSection>
           <DrawerItem
             label={t('verifyFarm')}
             onPress={() => {
-              navigation.navigate('Verify Farm');
               navigation.closeDrawer();
+              navigation.navigate('Verify Farm');
             }}
             labelStyle={{ color: theme.colors.drawerText }}
             icon={({ color, size }) => (
-              <Ionicons name="qr-code-outline" size={size} color={theme.colors.drawerText} />
+              <Ionicons name="qr-code-outline" size={size}         color={initialRoute.name === 'Home'
+                  ? theme.colors.drawerSelected
+                  : theme.colors.drawerText} />
             )}
           />
-        </CustomDrawerSection>
+        </CustomDrawerSection> */}
         {launcherIDsArray.length > 0 && (
           <CustomDrawerSection title={t('farms')}>
             {launcherIDsArray.map((item) => (
@@ -197,96 +281,101 @@ const CustomDrawerContent = (props) => {
                       },
                     ],
                   });
-                  // console.log(item);
-                  // setIntialRoute('Farmer Details Drawer');
                   setIntialRoute({
                     name: 'Farmer Details Drawer',
                     launcherId: item.name,
                     launcherName: item.value.name,
-                    // laucherName: item.
                   });
-                  //   onPress({ name: 'Farmer Details Drawer', params: { launcherId: item.name } });
-                  // navigation.navigate({ name: 'Farmer Details', params: { launcherId: item.name } });
-                  // setIntialRoute({ name: 'Farmer Details', params: { launcherId: item.name } });
-                  // navigation.closeDrawer();
                 }}
               >
                 <View style={styles.preference}>
                   {item.value.token ? (
                     <ChiaIconVerified
                       style={{ height: 24, width: 24 }}
-                      color={theme.colors.drawerText}
+                      color={
+                        initialRoute.name === item.value.name
+                          ? theme.colors.drawerSelected
+                          : theme.colors.drawerText
+                      }
                     />
                   ) : (
-                    <ChiaIcon style={{ height: 24, width: 24 }} color={theme.colors.drawerText} />
+                    <ChiaIcon
+                      style={{ height: 24, width: 24 }}
+                      color={
+                        initialRoute.name === item.value.name
+                          ? theme.colors.drawerSelected
+                          : theme.colors.drawerText
+                      }
+                    />
                   )}
-                  {/* <ChiaIcon style={{ height: 24, width: 24 }} color={theme.colors.drawerText} />
-                  <Ionicons name="ios-person-outline" size={24} color={theme.colors.drawerText} /> */}
                   <Text
                     numberOfLines={1}
-                    style={{ color: theme.colors.drawerText, flex: 1, marginStart: 32 }}
+                    style={{
+                      fontWeight: 'bold',
+                      color:
+                        initialRoute.name === item.value.name
+                          ? theme.colors.drawerSelected
+                          : theme.colors.drawerText,
+                      flex: 1,
+                      marginStart: 32,
+                    }}
                   >
                     {item.value.name ? item.value.name : item.name}
                   </Text>
-                  {/* {item.value.token && (
-                    <MaterialIcons name="verified" size={24} color={theme.colors.drawerText} />
-                  )} */}
                 </View>
               </TouchableRipple>
-              // <DrawerItem
-              //   labelStyle={{ color: theme.colors.drawerText }}
-              //   key={item.name}
-              //   label={item.value.name ? item.value.name : item.name}
-              // onPress={() => {
-              //   onPress({ name: 'Farmer Details', params: { launcherId: item.name } });
-              //   // getFarmer(item.name)
-              //   //   .then((data) => {
-              //   //     onPress({ name: 'Farmer Details', params: { item: data } });
-              //   //   })
-              //   //   .catch((error) => console.log(error));
-              // }}
-              //   icon={({ color, size }) => (
-              //     <MaterialCommunityIcons name="silo" size={size} color={theme.colors.drawerText} />
-              //   )}
-              // />
             ))}
           </CustomDrawerSection>
         )}
-        {/* <CustomDrawerSection label="Preferences">
-          <TouchableRipple onPress={() => toggleTheme()}>
-            <View style={styles.preference}>
-              <Ionicons
-                name={settings.isThemeDark ? 'ios-moon-outline' : 'ios-sunny-outline'}
-                size={24}
-                color={theme.colors.drawerText}
-              />
-              <Text style={{ color: theme.colors.drawerText, flex: 1, marginStart: 32 }}>
-                {t('darkMode')}
-              </Text>
-              <View pointerEvents="none">
-                <Switch value={settings.isThemeDark} />
-              </View>
-            </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={() => toggleNotifications()}>
-            <View style={styles.preference}>
-              <Ionicons name="ios-notifications-outline" size={24} color={theme.colors.drawerText} />
-              <Text style={{ color: theme.colors.drawerText, flex: 1, marginStart: 32 }}>
-                {t('notifications')}
-              </Text>
-              <View pointerEvents="none">
-                <Switch value={settings.blockNotifications} />
-              </View>
-            </View>
-          </TouchableRipple>
-        </CustomDrawerSection> */}
         <CustomDrawerSection showDivider={false}>
           <DrawerItem
-            label={t('settings')}
-            onPress={() => onPress('Settings', false)}
-            labelStyle={{ color: theme.colors.drawerText }}
+            label={t('verifyFarm')}
+            onPress={() => {
+              navigation.closeDrawer();
+              navigation.navigate('Verify Farm');
+            }}
+            labelStyle={{
+              fontWeight: 'bold',
+              color:
+                initialRoute.name === 'Verify Farm'
+                  ? theme.colors.drawerSelected
+                  : theme.colors.drawerText,
+            }}
             icon={({ color, size }) => (
-              <Ionicons name="ios-settings-outline" size={size} color={theme.colors.drawerText} />
+              <Ionicons
+                name="qr-code-outline"
+                size={size}
+                color={
+                  initialRoute.name === 'Verify Farm'
+                    ? theme.colors.drawerSelected
+                    : theme.colors.drawerText
+                }
+              />
+            )}
+          />
+          <DrawerItem
+            label={t('settings')}
+            onPress={() => {
+              navigation.closeDrawer();
+              navigation.navigate('Settings');
+            }}
+            labelStyle={{
+              fontWeight: 'bold',
+              color:
+                initialRoute.name === 'Settings'
+                  ? theme.colors.drawerSelected
+                  : theme.colors.drawerText,
+            }}
+            icon={({ color, size }) => (
+              <Ionicons
+                name="ios-settings-outline"
+                size={size}
+                color={
+                  initialRoute.name === 'Settings'
+                    ? theme.colors.drawerSelected
+                    : theme.colors.drawerText
+                }
+              />
             )}
           />
         </CustomDrawerSection>

@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,12 +16,11 @@ import {
 import { Button, Text, useTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSetRecoilState } from 'recoil';
-import { useNetInfo } from '@react-native-community/netinfo';
 import { farmerRefreshState } from '../../Atoms';
 import CustomCard from '../../components/CustomCard';
+import LoadingComponent from '../../components/LoadingComponent';
 import { formatBytes, formatPrice } from '../../utils/Formatting';
 import { getCurrencyFromKey } from '../CurrencySelectionScreen';
-import LoadingComponent from '../../components/LoadingComponent';
 
 const Item = ({ title, value, color, loadable, format }) => {
   const theme = useTheme();
@@ -242,16 +242,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     display: 'flex',
+    // paddingBottom: 4,
   },
   item: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
+    marginVertical: 4,
   },
   headerItem: {
     justifyContent: 'center',
     flexDirection: 'column',
+    marginVertical: 8,
     padding: 6,
   },
 });

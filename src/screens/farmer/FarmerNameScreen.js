@@ -1,12 +1,12 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { SafeAreaView, View, TextInput } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView, TextInput, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilState } from 'recoil';
-import { useTranslation } from 'react-i18next';
-import IconButton from '../../components/IconButton';
 import { updateFarmerName } from '../../Api';
 import { launcherIDsState } from '../../Atoms';
+import IconButton from '../../components/IconButton';
 
 const FarmerNameScreen = ({ route, navigation }) => {
   const [farmerName, setFarmerName] = useState(null);
@@ -32,7 +32,6 @@ const FarmerNameScreen = ({ route, navigation }) => {
             color="#fff"
             size={24}
             onPress={() => {
-              console.log(launcherIDs);
               updateFarmerName(launcherId, token, farmerName)
                 .then(() => {
                   setLauncherIDs(

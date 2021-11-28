@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ActivityIndicator, FlatList, View, StyleSheet } from 'react-native';
-import { Card, useTheme, Text, Switch } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import messaging from '@react-native-firebase/messaging';
-import { LANGUAGES } from './LanguageSelectorScreen';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { Switch, Text, useTheme } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { currencyState, settingsState } from '../Atoms';
 import PressableCard from '../components/PressableCard';
 import { getCurrencyTitle } from './CurrencySelectionScreen';
+import { LANGUAGES } from './LanguageSelectorScreen';
 
 const SettingsScreen = ({ navigation }) => {
   // const theme = useTheme();

@@ -1,9 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import CustomCard from '../components/CustomCard';
 import PressableCard from '../components/PressableCard';
 
 export const LANGUAGES = [

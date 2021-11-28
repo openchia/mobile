@@ -10,8 +10,7 @@ const CustomCard = ({ style, children }) => {
         {
           backgroundColor: theme.colors.onSurface,
           borderColor: theme.colors.borderColor,
-          // borderColor: 'grey',
-          marginVertical: 8,
+          marginVertical: 2,
           borderRadius: 8,
           marginHorizontal: 8,
           borderWidth: 1,
@@ -24,7 +23,7 @@ const CustomCard = ({ style, children }) => {
         style,
       ]}
     >
-      <View>{children}</View>
+      <>{children}</>
     </View>
   );
 };

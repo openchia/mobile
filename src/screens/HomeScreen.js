@@ -228,8 +228,9 @@ const HomeScreen = ({ navigation }) => {
               flex: 3,
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: 12,
-              marginBottom: 12,
+              // marginTop: 12,
+              // padding: 16,
+              marginBottom: 16,
               marginEnd: 14,
               marginStart: 14,
             }}
@@ -252,6 +253,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    padding: 10,
     flex: 1,
   },
   item: {

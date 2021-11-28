@@ -1,25 +1,14 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { SafeAreaView, ActivityIndicator, FlatList, View, StyleSheet } from 'react-native';
-import {
-  Card,
-  useTheme,
-  Text,
-  Switch,
-  Portal,
-  Dialog,
-  Paragraph,
-  Button,
-} from 'react-native-paper';
+import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { Button, Dialog, Paragraph, Portal, Text, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { currencyState, initialRouteState, launcherIDsState, settingsState } from '../../Atoms';
-import PressableCard from '../../components/PressableCard';
-import LoadingComponent from '../../components/LoadingComponent';
-import IconButton from '../../components/IconButton';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { updateFCMToken } from '../../Api';
+import { initialRouteState, launcherIDsState, settingsState } from '../../Atoms';
+import IconButton from '../../components/IconButton';
+import PressableCard from '../../components/PressableCard';
 
 const FarmerSettingsScreen = ({ route, navigation }) => {
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);

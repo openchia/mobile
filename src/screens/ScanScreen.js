@@ -29,7 +29,6 @@ const ScanScreen = ({ navigation }) => {
         // if (settings.blockNotifications) {
         getObject('fcm').then((FCMToken) => {
           updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
-            console.log(FCMToken);
             navigation.pop();
             navigation.navigate({
               name: 'Farmer Details',

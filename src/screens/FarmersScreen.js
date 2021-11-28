@@ -1,13 +1,13 @@
+import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Text, useTheme, Button } from 'react-native-paper';
-import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { useTranslation } from 'react-i18next';
+import { Dimensions, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Button, Text, useTheme } from 'react-native-paper';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { getFarmers } from '../Api';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 import { formatBytes } from '../utils/Formatting';
-import { useNetInfo } from '@react-native-community/netinfo';
 
 const HEIGHT = 142;
 
@@ -102,7 +102,6 @@ const Content = ({
       rank={index + 1}
       item={data}
       onPress={() => {
-        console.log(data);
         navigation.navigate({
           name: 'Farmer Details',
           params: { launcherId: data.launcher_id, name: data.name },

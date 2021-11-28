@@ -3,7 +3,6 @@ import { SafeAreaView } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import IconButton from '../../components/IconButton';
-import { updateFarmerName } from '../../Api';
 
 const FarmerNotificationScreen = ({ route, navigation }) => {
   const [name, onNameChange] = React.useState(null);

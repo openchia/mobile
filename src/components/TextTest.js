@@ -11,12 +11,12 @@ import Animated, {
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
-const TestLabel = ({ defaultValue = '', interval, format, selectedPoints, style, type }) => {
+const TestLabel = ({ defaultValue = '', format, selectedPoints, style, type, type2 }) => {
   const formattedValue = useDerivedValue(
     () =>
       selectedPoints.value
         ? format
-          ? `${format(selectedPoints.value[type], interval)}`
+          ? `${format(selectedPoints.value[type])}`
           : selectedPoints.value[type].toString()
         : null,
     [defaultValue]
