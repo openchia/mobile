@@ -48,115 +48,116 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
   return (
     <SafeAreaView
       style={{
-        paddingTop: 8,
         flex: 1,
       }}
     >
-      <PressableCard
-        onPress={() => {
-          if (token)
-            navigation.navigate({
-              name: 'Farmer Name',
-              params: { launcherId, token, name: launcherIDs.get(launcherId).name },
-            });
-        }}
-      >
-        <View
-          style={[
-            styles.content,
-            { backgroundColor: token ? 'rgba(0, 0, 0, 0.0)' : 'rgba(0, 0, 0, 0.25)' },
-          ]}
+      <View style={{ paddingTop: 12 }}>
+        <PressableCard
+          onPress={() => {
+            if (token)
+              navigation.navigate({
+                name: 'Farmer Name',
+                params: { launcherId, token, name: launcherIDs.get(launcherId).name },
+              });
+          }}
         >
-          <Ionicons
-            name="ios-person-outline"
-            size={30}
-            color={theme.colors.textGrey}
-            style={{ marginEnd: 16 }}
-          />
-          <View style={styles.mainContent}>
-            <Text style={styles.title}>{t('farmerName')}</Text>
-            <Text numberOfLines={1} style={styles.subtitle}>
-              {launcherIDs.get(launcherId) ? launcherIDs.get(launcherId).name : ''}
-            </Text>
-          </View>
-          <Ionicons
-            name="ios-create-outline"
-            size={30}
-            color={theme.colors.textGrey}
-            // style={{ marginEnd: 16 }}
-          />
-          {/* <Text style={styles.desc}>
+          <View
+            style={[
+              styles.content,
+              { backgroundColor: token ? 'rgba(0, 0, 0, 0.0)' : 'rgba(0, 0, 0, 0.25)' },
+            ]}
+          >
+            <Ionicons
+              name="ios-person-outline"
+              size={30}
+              color={theme.colors.textGrey}
+              style={{ marginEnd: 16 }}
+            />
+            <View style={styles.mainContent}>
+              <Text style={styles.title}>{t('farmerName')}</Text>
+              <Text numberOfLines={1} style={styles.subtitle}>
+                {launcherIDs.get(launcherId) ? launcherIDs.get(launcherId).name : ''}
+              </Text>
+            </View>
+            <Ionicons
+              name="ios-create-outline"
+              size={30}
+              color={theme.colors.textGrey}
+              // style={{ marginEnd: 16 }}
+            />
+            {/* <Text style={styles.desc}>
             {LANGUAGES.filter((item) => item.code === selectedLanguageCode)[0].label}
           </Text> */}
-        </View>
-      </PressableCard>
-      <PressableCard onPress={() => {}}>
-        <View
-          style={[
-            styles.content,
-            // { backgroundColor: settings.isThemeDark ? '#292929' : '#bdbdbd' },
-          ]}
-        >
-          <Ionicons
-            name="ios-notifications-outline"
-            size={30}
-            color={theme.colors.textGrey}
-            style={{ marginEnd: 16 }}
-          />
-          <View style={styles.mainContent}>
-            <Text style={styles.title}>{t('notifications')} (Coming Soon...)</Text>
-            <Text numberOfLines={1} style={styles.subtitle}>
-              {t('notificationsDesc')}
-            </Text>
           </View>
-          <MaterialIcons
-            name="keyboard-arrow-right"
-            size={30}
-            color={theme.colors.textGrey}
-            // style={{ marginEnd: 16 }}
-          />
-          {/* <Text style={styles.desc}>{currency.toUpperCase()}</Text> */}
-        </View>
-      </PressableCard>
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>Remove Farm</Dialog.Title>
-          <Dialog.Content>
-            <Paragraph>Are you sure you want to remove it ?</Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
-            <Button
-              onPress={() => {
-                setLauncherIDs((prev) => {
-                  const newState = new Map(prev);
-                  const launcherData = prev.get(launcherId);
-                  if (launcherData.toke) {
-                    updateFCMToken(launcherId, launcherData.token, null).then((data) => {
-                      console.log(
-                        `Successfully removed FCM Token for launcher ${launcherData.name}`
-                      );
-                    });
-                  }
-                  newState.delete(launcherId);
-                  return newState;
-                });
-                hideDialog();
-                setIntialRoute({ name: 'Home' });
-                navigation.goBack();
-                // navigation.pop();
-                // navigation.pop();
-                // navigation.reset({
-                //   index: 0,
-                //   routes: [{ name: t('navigate:farmers') }],
-                // });
-              }}
-            >
-              Remove
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+        </PressableCard>
+        <PressableCard onPress={() => {}}>
+          <View
+            style={[
+              styles.content,
+              // { backgroundColor: settings.isThemeDark ? '#292929' : '#bdbdbd' },
+            ]}
+          >
+            <Ionicons
+              name="ios-notifications-outline"
+              size={30}
+              color={theme.colors.textGrey}
+              style={{ marginEnd: 16 }}
+            />
+            <View style={styles.mainContent}>
+              <Text style={styles.title}>{t('notifications')} (Coming Soon...)</Text>
+              <Text numberOfLines={1} style={styles.subtitle}>
+                {t('notificationsDesc')}
+              </Text>
+            </View>
+            <MaterialIcons
+              name="keyboard-arrow-right"
+              size={30}
+              color={theme.colors.textGrey}
+              // style={{ marginEnd: 16 }}
+            />
+            {/* <Text style={styles.desc}>{currency.toUpperCase()}</Text> */}
+          </View>
+        </PressableCard>
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Title>Remove Farm</Dialog.Title>
+            <Dialog.Content>
+              <Paragraph>Are you sure you want to remove it ?</Paragraph>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideDialog}>Cancel</Button>
+              <Button
+                onPress={() => {
+                  setLauncherIDs((prev) => {
+                    const newState = new Map(prev);
+                    const launcherData = prev.get(launcherId);
+                    if (launcherData.toke) {
+                      updateFCMToken(launcherId, launcherData.token, null).then((data) => {
+                        console.log(
+                          `Successfully removed FCM Token for launcher ${launcherData.name}`
+                        );
+                      });
+                    }
+                    newState.delete(launcherId);
+                    return newState;
+                  });
+                  hideDialog();
+                  setIntialRoute({ name: 'Home' });
+                  navigation.goBack();
+                  // navigation.pop();
+                  // navigation.pop();
+                  // navigation.reset({
+                  //   index: 0,
+                  //   routes: [{ name: t('navigate:farmers') }],
+                  // });
+                }}
+              >
+                Remove
+              </Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+      </View>
     </SafeAreaView>
   );
 };
