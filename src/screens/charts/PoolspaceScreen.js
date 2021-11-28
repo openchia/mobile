@@ -58,7 +58,7 @@ const PoolSpaceScreen = ({ navigation }) => {
         setData(null);
         setError(true);
       });
-  }, [refreshing, error]);
+  }, [refreshing, error, setData]);
 
   useEffect(() => {
     refresh();
