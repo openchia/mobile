@@ -19,6 +19,7 @@ const CustomCard = ({ style, children }) => {
           overflow: 'hidden',
           shadowOpacity: 1,
           elevation: 6,
+          shadowOffset: { width: 0, height: 1 },
         },
         style,
       ]}
