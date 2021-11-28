@@ -108,10 +108,7 @@ const PoolspaceChart = ({ results }) => {
   const [currentPoints, setCurrentPoints] = useState([]);
   const theme = useTheme();
   const { t } = useTranslation();
-
-  const style = useAnimatedStyle(() => ({
-    transform: [{ translateX: withTiming(BUTTON_WIDTH * current.value) }],
-  }));
+  const [chartVisible, setChartVisible] = useState(false);
 
   useEffect(() => {
     const convertedData = results.map((item) => ({
@@ -138,6 +135,15 @@ const PoolspaceChart = ({ results }) => {
     setMaxSize(formatBytes(results[results.length - 1].size));
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setChartVisible(true);
+    }, 0);
+  }, [points]);
+
+  const style = useAnimatedStyle(() => ({
+    transform: [{ translateX: withTiming(BUTTON_WIDTH * current.value) }],
+  }));
   return (
     <View style={styles.container}>
       <ChartPathProvider data={{ points: currentPoints, smoothingStrategy: 'bezier' }}>
