@@ -1,15 +1,16 @@
+import { useNetInfo } from '@react-native-community/netinfo';
 import { format } from 'date-fns';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { selectorFamily, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
-import { useTranslation } from 'react-i18next';
-import { useNetInfo } from '@react-native-community/netinfo';
+import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { getPayouts } from '../Api';
 import { payoutsRequestIDState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 import { convertMojoToChia } from '../utils/Formatting';
+import CustomCard from '../components/CustomCard';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(payoutsRequestIDState());
@@ -30,50 +31,42 @@ const query = selectorFamily({
     },
 });
 
-const Item = ({ item }) => {
-  const { t } = useTranslation();
-  const theme = useTheme();
-  return (
-    <PressableCard onTap={() => {}}>
-      <View style={{ display: 'flex', flexDirection: 'column', padding: 8, flex: 1 }}>
-        {/* <Text style={styles.rank}>{item.id}</Text>
-      <Text style={styles.date}>{format(new Date(item.datetime), 'PPpp')}</Text>
-      <Text style={styles.size}>{`${convertMojoToChia(item.amount)} XCH`}</Text> */}
+const Item = ({ item, theme, t }) => (
+  <CustomCard style={{ padding: 8, display: 'flex' }} onTap={() => {}}>
+    <View style={{ display: 'flex', flexDirection: 'row' }}>
+      <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('amount')}</Text>
+      <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(
+        item.amount
+      )} XCH`}</Text>
+    </View>
+    <View style={{ flexDirection: 'row', paddingTop: 8 }}>
+      <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('id')}</Text>
+      <Text style={styles.val}>{item.id}</Text>
+    </View>
+    <View style={{ flexDirection: 'row', paddingTop: 8 }}>
+      <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('date')}</Text>
+      <Text style={styles.val}>{format(new Date(item.datetime), 'PPpp')}</Text>
+    </View>
+  </CustomCard>
+);
 
-        {/* <View style={{ padding: 8, display: 'flex' }}> */}
-        <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('amount')}</Text>
-          <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(
-            item.amount
-          )} XCH`}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 8 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('id')}</Text>
-          <Text style={styles.val}>{item.id}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 8 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('date')}</Text>
-          <Text style={styles.val}>{format(new Date(item.datetime), 'PPpp')}</Text>
-        </View>
-      </View>
-      {/* </View> */}
-    </PressableCard>
-  );
-};
-
-const PayoutScreen = ({ navigation }) => {
+const PayoutScreen = () => {
   const refresh = useRefresh();
   const payoutsLoadable = useRecoilValueLoadable(query());
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const netInfo = useNetInfo();
+  const { t } = useTranslation();
+  const theme = useTheme();
 
   useEffect(() => {
     if (payoutsLoadable.state === 'hasValue') {
       setData(payoutsLoadable.contents.results);
       setRefreshing(false);
     }
-  }, [payoutsLoadable.state]);
+  }, [payoutsLoadable]);
+
+  const renderItem = ({ item, index }) => <Item item={item} rank={index} theme={theme} t={t} />;
 
   if (payoutsLoadable.state === 'loading' && !refreshing) {
     return <LoadingComponent />;
@@ -96,8 +89,6 @@ const PayoutScreen = ({ navigation }) => {
       </SafeAreaView>
     );
   }
-
-  const renderItem = ({ item, index }) => <Item item={item} rank={index} />;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

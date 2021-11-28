@@ -14,14 +14,15 @@ const SELECTION_WIDTH = width - 32;
 const BUTTON_WIDTH = (width - 32) / PartChartIntervals.length;
 
 const PartialChartProvider = ({ data }) => {
-  const { globalData, extraData } = data;
+  // const { globalData, extraData } = data;
   const theme = useTheme();
   const transition = useSharedValue(0);
   const current = useSharedValue(4);
   const { t } = useTranslation();
 
-  const [partials, setPartials] = useState(globalData[current.value]);
-  const stats = useSharedValue(extraData[current.value]);
+  const [partials, setPartials] = useState(data[current.value].results);
+  // const stats = useSharedValue(extraData[current.value]);
+  const [stats, setStats] = useState(data[current.value].stats);
 
   const style = useAnimatedStyle(() => ({
     transform: [{ translateX: withTiming(BUTTON_WIDTH * current.value) }],
@@ -50,8 +51,9 @@ const PartialChartProvider = ({ data }) => {
                   transition.value = 0;
                   current.value = index;
                   transition.value = withTiming(1);
-                  setPartials(globalData[index]);
-                  stats.value = extraData[index];
+                  setPartials(data[index].results);
+                  setStats(data[index].stats);
+                  // stats.value = extraData[index];
                   //   setStats(extraData[index]);
                 }}
               >

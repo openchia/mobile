@@ -121,6 +121,7 @@ const LightTheme = {
     tabNavigator: '#436B34',
     tabNavigatorText: '#f5f5f5',
     jellyBarText: '#424242',
+    drawerSelected: '#436B34',
   },
 };
 
@@ -157,6 +158,7 @@ const DarkTheme = {
     tabNavigator: '#436B34',
     tabNavigatorText: '#f5f5f5',
     jellyBarText: '#f5f5f5',
+    drawerSelected: '#70b056',
   },
 };
 
@@ -246,9 +248,7 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => (
           <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
         ),
       })}
-      // options={({ route, navigation }) => ({})}
     />
-    {/* <Divider /> */}
     {launcherIDsArray.map((item) => (
       <Drawer.Screen
         key={item.name}
@@ -256,13 +256,6 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => (
         component={FarmerScreen}
       />
     ))}
-    <Drawer.Screen
-      name="Settings"
-      component={SettingsScreen}
-      options={() => ({
-        title: t('settings'),
-      })}
-    />
   </Drawer.Navigator>
 );
 
@@ -360,36 +353,26 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRou
             title: t('verifyFarm'),
           })}
         />
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={() => ({
+            title: t('settings'),
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 const ApplicationNavigator = () => {
-  // const isThemeDark = useRecoilValueLoadable(themeState);
-  // const launcherIDs = useRecoilValueLoadable(launcherIDsState);
   const settings = useRecoilValue(settingsState);
   const launcherIDs = useRecoilValue(launcherIDsState);
   const initialRoute = useRecoilValue(initialRouteState);
   const currency = useRecoilValue(currencyState);
-  // const setNetworkStatus = useSetRecoilState(networkState);
-
-  // NetInfo.addEventListener((state) => {
-  //   console.log(state.isConnected);
-  //   setNetworkStatus(state.isConnected);
-  // });
 
   useEffect(() => {
     SplashScreen.hide();
   }, []);
-
-  // if (launcherIDs.state === 'loading' || isThemeDark.state === 'loading') {
-  //   return <LoadingComponent />;
-  // }
-
-  // console.log(launcherIDs.contents, isThemeDark.contents);
-
-  // const launcherIDsArray = Array.from(launcherIDs.contents, ([name, value]) => ({ name, value }));
-  // const theme = isThemeDark.contents ? DarkTheme : LightTheme;
 
   const launcherIDsArray = Array.from(launcherIDs, ([name, value]) => ({ name, value }));
   const theme = settings.isThemeDark ? DarkTheme : LightTheme;

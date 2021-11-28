@@ -1,12 +1,11 @@
+import { useNetInfo } from '@react-native-community/netinfo';
 import { format, fromUnixTime } from 'date-fns';
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { selectorFamily, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
-import { useNetInfo } from '@react-native-community/netinfo';
+import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { getBlocksFromFarmer } from '../../Api';
 import { farmerBlockRefreshState } from '../../Atoms';
 import LoadingComponent from '../../components/LoadingComponent';

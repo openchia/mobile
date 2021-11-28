@@ -1,13 +1,14 @@
 /* eslint-disable no-nested-ternary */
+import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { selectorFamily, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNetInfo } from '@react-native-community/netinfo';
+import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { getStats } from '../Api';
-import { currencyState, networkState, statsRequestIDState } from '../Atoms';
+import { currencyState, statsRequestIDState } from '../Atoms';
+import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 import {
   convertMojoToChia,
@@ -16,7 +17,6 @@ import {
   formatBytes,
 } from '../utils/Formatting';
 import { getCurrencyFromKey } from './CurrencySelectionScreen';
-import LoadingComponent from '../components/LoadingComponent';
 
 const Item = ({ title, value, color, loadable, format, onPress, icon }) => (
   <PressableCard style={{ flex: 1 }} onPress={onPress}>

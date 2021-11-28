@@ -1,11 +1,10 @@
+import { useNetInfo } from '@react-native-community/netinfo';
 import { format } from 'date-fns';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { FlatList, RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { selectorFamily, useRecoilValue, useSetRecoilState, useRecoilValueLoadable } from 'recoil';
-import { useNetInfo } from '@react-native-community/netinfo';
+import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { getPayoutsFromAddress } from '../../Api';
 import { farmerPayoutsRefreshState } from '../../Atoms';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -88,7 +87,6 @@ const Content = ({ launcherId }) => {
   const { t } = useTranslation();
   const netInfo = useNetInfo();
   const theme = useTheme();
-  // console.log(payouts.results);
 
   useEffect(() => {
     if (payoutsLoadable.state === 'hasValue') {

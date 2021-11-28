@@ -1,5 +1,6 @@
+import { useNetInfo } from '@react-native-community/netinfo';
 import { format } from 'date-fns';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -12,16 +13,9 @@ import {
 // import { FlatList } from 'react-native-gesture-handler';
 import { Button, Text, useTheme } from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
-import {
-  selectorFamily,
-  useRecoilState,
-  useRecoilValue,
-  useRecoilValueLoadable,
-  useSetRecoilState,
-} from 'recoil';
-import { useNetInfo } from '@react-native-community/netinfo';
+import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { getChiaPlotPosts } from '../Api';
-import { newsRefreshState, settingsState } from '../Atoms';
+import { newsRefreshState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 
@@ -104,7 +98,6 @@ const NewsScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    console.log(postsLoadable.state);
     if (postsLoadable.state === 'hasValue') {
       setData(postsLoadable.contents);
       setRefreshing(false);

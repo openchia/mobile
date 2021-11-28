@@ -3,18 +3,18 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { selectorFamily, useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
-import { useTranslation } from 'react-i18next';
-import { getFarmer, getPartialsFromID, getStats, updateFCMToken } from '../../Api';
+import { getFarmer, getPartialsFromID, getStats } from '../../Api';
 import {
   currencyState,
   farmerRefreshState,
-  launcherIDsState,
   initialRouteState,
+  launcherIDsState,
 } from '../../Atoms';
 import IconButton from '../../components/IconButton';
 import FarmerBlockScreen from './FarmerBlocksScreen';
