@@ -5,6 +5,8 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useTheme } from 'react-native-paper';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { useEffect } from 'react';
+import { fromUnixTime, getUnixTime, isAfter } from 'date-fns';
 import CustomCard from '../components/CustomCard';
 import {
   ChartDot,
@@ -12,8 +14,10 @@ import {
   ChartPathProvider,
   ChartXLabel,
   ChartYLabel,
+  monotoneCubicInterpolation,
 } from '../react-native-animated-charts';
 import { NetspaceChartIntervals } from './Constants';
+import { formatBytes } from '../utils/Formatting';
 
 export const { width } = Dimensions.get('window');
 
@@ -89,11 +93,19 @@ const formatDatetime = (value) => {
   return res;
 };
 
-const PoolspaceChart = ({ data, maxSize }) => {
+const filterData = (data, timePeriod) => {
+  const date = new Date(new Date().getTime() - timePeriod * 60 * 60 * 1000);
+  return data.filter((item) => isAfter(fromUnixTime(item.x), date));
+};
+
+const PoolspaceChart = ({ results }) => {
   const transition = useSharedValue(0);
   const previous = useSharedValue(0);
   const current = useSharedValue(4);
-  const [points, setPoints] = useState(data[current.value]);
+  const [maxSize, setMaxSize] = useState();
+  // const [data, setData] = useState(results);
+  const [points, setPoints] = useState([]);
+  const [currentPoints, setCurrentPoints] = useState([]);
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -101,9 +113,34 @@ const PoolspaceChart = ({ data, maxSize }) => {
     transform: [{ translateX: withTiming(BUTTON_WIDTH * current.value) }],
   }));
 
+  useEffect(() => {
+    const convertedData = results.map((item) => ({
+      x: getUnixTime(new Date(item.date)),
+      y: item.size,
+    }));
+    const filteredData = convertedData.filter((item) => item.y !== 0);
+    const data = NetspaceChartIntervals.map((item) => {
+      if (item.time === -1)
+        return monotoneCubicInterpolation({
+          data: filteredData,
+          includeExtremes: true,
+          range: 100,
+        });
+      return monotoneCubicInterpolation({
+        data: filterData(filteredData, item.time),
+        includeExtremes: true,
+        range: 100,
+      });
+    });
+    setPoints(data);
+    // console.log(data);
+    setCurrentPoints(data[current.value]);
+    setMaxSize(formatBytes(results[results.length - 1].size));
+  }, []);
+
   return (
     <View style={styles.container}>
-      <ChartPathProvider data={{ points, smoothingStrategy: 'bezier' }}>
+      <ChartPathProvider data={{ points: currentPoints, smoothingStrategy: 'bezier' }}>
         <View style={{ marginTop: 16, marginLeft: 16, alignSelf: 'auto' }}>
           {/* <Text>Hello</Text> */}
           <ChartXLabel
@@ -157,7 +194,7 @@ const PoolspaceChart = ({ data, maxSize }) => {
                     transition.value = 0;
                     current.value = index;
                     transition.value = withTiming(1);
-                    setPoints(data[index]);
+                    setCurrentPoints(points[index]);
                   }}
                   style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
                 >
