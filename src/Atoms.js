@@ -59,7 +59,7 @@ export const tokensState = atom({
 
 export const initialRouteState = atom({
   key: 'atomInitialRoute',
-  default: 'Home',
+  default: { name: 'Home' },
   effects_UNSTABLE: [localEffect('initialRouteName')],
 });
 

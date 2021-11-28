@@ -25,49 +25,17 @@ const CustomDrawerContent = (props) => {
   const [settings, setSettings] = useRecoilState(settingsState);
   const [initialRoute, setIntialRoute] = useRecoilState(initialRouteState);
 
-  const toggleTheme = () => {
-    setSettings((prev) => ({ ...prev, isThemeDark: !prev.isThemeDark }));
-  };
-
-  const toggleNotifications = () => {
-    if (launcherIDsArray.length > 0) {
-      getObject('fcm').then((FCMToken) => {
-        launcherIDsArray.forEach((element) => {
-          // console.log(element);
-          updateFCMToken(
-            element.name,
-            element.value.token,
-            !settings.blockNotifications ? FCMToken : null
-          ).then((data) => {
-            console.log(
-              `Successfully set notifications to: ${!settings.blockNotifications}\n`,
-              data
-            );
-          });
-        });
-      });
-    }
-    setSettings((prev) => ({ ...prev, notifications: !prev.notifications }));
-  };
-
   const onPress = (location, saveroute) => {
     navigation.navigate('Root', { screen: location, intial: false });
     if (saveroute) {
       setIntialRoute({ name: location });
     }
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: location }],
-    // });
   };
 
-  const font = theme.fonts.medium;
-  //   console.log(launcherIDsArray);
   return (
     <View
       style={{
         flex: 1,
-        // backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
       }}
     >
       <View
@@ -83,25 +51,12 @@ const CustomDrawerContent = (props) => {
       >
         <OpenChiaIconWithText style={{ width: '100%', height: 36 }} color="#f5f5f5" />
       </View>
-      {/* <Divider style={{ backgroundColor: theme.colors.divider }} /> */}
       <DrawerContentScrollView
         contentContainerStyle={{
           paddingTop: 0,
-          // backgroundColor: isThemeDark ? theme.colors.primary : theme.colors.primary,
         }}
         {...props}
       >
-        {/* <View
-          style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'center',
-            padding: 12,
-            height: 72,
-          }}
-        >
-          <OpenChiaIconWithText style={{ width: '100%', height: 36 }} color="#f5f5f5" />
-        </View> */}
         <CustomDrawerSection>
           <DrawerItem
             label={t('home')}
