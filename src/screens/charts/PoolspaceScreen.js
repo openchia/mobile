@@ -58,11 +58,15 @@ const PoolSpaceScreen = ({ navigation }) => {
         setData(null);
         setError(true);
       });
-  }, [refreshing, error, setData]);
+  }, [refreshing, error]);
 
   useEffect(() => {
     refresh();
   }, [refreshing]);
+
+  if (!data && !refreshing) {
+    return <LoadingComponent />;
+  }
 
   if (error) {
     return (
@@ -81,10 +85,6 @@ const PoolSpaceScreen = ({ navigation }) => {
         </Button>
       </SafeAreaView>
     );
-  }
-
-  if (!data && !refreshing && !maxSize) {
-    return <LoadingComponent />;
   }
 
   return (
