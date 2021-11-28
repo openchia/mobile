@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import React from 'react';
-import { View } from 'react-native';
+import { PanResponder, View } from 'react-native';
 import { LongPressGestureHandler, PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, { useAnimatedGestureHandler, useSharedValue } from 'react-native-reanimated';
 import { Path, Svg } from 'react-native-svg';
@@ -17,31 +17,43 @@ const Bar = ({ color, path, itemKey, points, pressed, selectedPoints }) => {
     path,
   });
 
-  const eventHandler = useAnimatedGestureHandler({
-    onActive: (event, ctx) => {
-      console.log('active');
-    },
-    onStart: (event, ctx) => {
+  // const eventHandler = useAnimatedGestureHandler({
+  //   onActive: (event, ctx) => {
+  //     console.log('active');
+  //   },
+  //   onStart: (event, ctx) => {
+  // selectedPoints.value = points;
+  // pressed.value = itemKey;
+  //   },
+
+  //   onFinish: (event, ctx) => {
+  // selectedPoints.value = null;
+  // pressed.value = -1;
+  //   },
+  // });
+
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderGrant: () => {
       selectedPoints.value = points;
       pressed.value = itemKey;
     },
-
-    onFinish: (event, ctx) => {
+    onPanResponderRelease: () => {
       selectedPoints.value = null;
       pressed.value = -1;
     },
   });
 
   return (
-    <LongPressGestureHandler
-      enabled
-      maxDist={100000}
-      minDurationMs={0}
-      shouldCancelWhenOutside={false}
-      {...{ onGestureEvent: eventHandler }}
-    >
-      <AnimatedPath animatedProps={animatedProps} fill={color} />
-    </LongPressGestureHandler>
+    // <LongPressGestureHandler
+    //   enabled
+    //   maxDist={100000}
+    //   minDurationMs={0}
+    //   shouldCancelWhenOutside={false}
+    //   {...{ onGestureEvent: eventHandler }}
+    // >
+    <AnimatedPath animatedProps={animatedProps} fill={color} {...panResponder.panHandlers} />
+    // </LongPressGestureHandler>
   );
 };
 
