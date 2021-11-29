@@ -34,18 +34,28 @@ const query = selectorFamily({
 const Item = ({ item, theme, t }) => (
   <CustomCard style={{ padding: 8, display: 'flex' }} onTap={() => {}}>
     <View style={{ display: 'flex', flexDirection: 'row' }}>
-      <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('amount')}</Text>
-      <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('amount')}
+      </Text>
+      <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(
         item.amount
       )} XCH`}</Text>
     </View>
     <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-      <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('id')}</Text>
-      <Text style={styles.val}>{item.id}</Text>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('id')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
+        {item.id}
+      </Text>
     </View>
     <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-      <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('date')}</Text>
-      <Text style={styles.val}>{format(new Date(item.datetime), 'PPpp')}</Text>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('date')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
+        {format(new Date(item.datetime), 'PPpp')}
+      </Text>
     </View>
   </CustomCard>
 );

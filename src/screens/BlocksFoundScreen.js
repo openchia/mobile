@@ -48,24 +48,36 @@ const getLuck = (luck) => {
 const Item = ({ item, theme, t }) => (
   <PressableCard style={{ padding: 8, display: 'flex' }} onTap={() => {}}>
     <View style={{ display: 'flex', flexDirection: 'row' }}>
-      <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('effort')}</Text>
-      <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${item.luck}% ( ${getLuck(
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('effort')}
+      </Text>
+      <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>{`${
         item.luck
-      )} )`}</Text>
+      }% ( ${getLuck(item.luck)} )`}</Text>
     </View>
     <View style={{ flexDirection: 'row', marginTop: 8 }}>
-      <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('index')}</Text>
-      <Text style={styles.val}>{item.confirmed_block_index}</Text>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('index')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
+        {item.confirmed_block_index}
+      </Text>
     </View>
     <View style={{ flexDirection: 'row', marginTop: 8 }}>
-      <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('farmer')}</Text>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('farmer')}
+      </Text>
       <Text numberOfLines={1} style={[styles.val, { color: theme.colors.textLight }]}>
         {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
       </Text>
     </View>
     <View style={{ flexDirection: 'row', marginTop: 8 }}>
-      <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('date')}</Text>
-      <Text style={styles.val}>{format(fromUnixTime(item.timestamp), 'PPpp')}</Text>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('date')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
+        {format(fromUnixTime(item.timestamp), 'PPpp')}
+      </Text>
     </View>
   </PressableCard>
 );

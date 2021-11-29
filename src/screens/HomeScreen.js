@@ -11,7 +11,8 @@ const Item = ({ title, value, color }) => (
   <CustomCard style={styles.item}>
     <View>
       <Text
-        adjustsFontSizeToFit
+        // adjustsFontSizeToFit
+        numberOfLines={1}
         style={{
           color: '#4DB33E',
           fontSize: 14,
@@ -22,12 +23,13 @@ const Item = ({ title, value, color }) => (
         {title}
       </Text>
       <Text
-        adjustsFontSizeToFit
+        // adjustsFontSizeToFit
+        numberOfLines={3}
         style={{
           color: 'grey',
           textAlign: 'center',
-          marginTop: 4,
-          marginBottom: 4,
+          paddingTop: 4,
+          paddingBottom: 4,
           fontSize: 12,
         }}
       >
