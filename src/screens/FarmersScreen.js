@@ -15,19 +15,21 @@ const Item = ({ item, rank, onPress }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   return (
-    <PressableCard onPress={onPress}>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          // flexDirection: 'row',
-          padding: 8,
-          justifyContent: 'center',
-          // alignItems: 'center',
-          height: HEIGHT,
-        }}
-      >
-        {/* <Text style={styles.rank}>{rank}</Text>
+    <PressableCard
+      style={{
+        // display: 'flex',
+        flexDirection: 'column',
+        // flexDirection: 'row',
+        padding: 8,
+        flex: 1,
+        // justifyContent: 'center',
+        // flex: 1,
+        // alignItems: 'center',
+        // height: HEIGHT,
+      }}
+      onPress={onPress}
+    >
+      {/* <Text style={styles.rank}>{rank}</Text>
         <Text
           numberOfLines={1}
           style={[styles.name, { color: theme.colors.textLight, fontSize: 14 }]}
@@ -36,37 +38,54 @@ const Item = ({ item, rank, onPress }) => {
         </Text>
         <Text style={styles.utilization}>{`${item.points_of_total.toFixed(5)}%`}</Text>
         <Text style={styles.size}>{formatBytes(item.estimated_size)}</Text> */}
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>Launcher ID</Text>
-          <Text
-            numberOfLines={1}
-            style={[styles.val, { color: theme.colors.textLight, fontWeight: 'bold' }]}
-          >
-            {item.name ? item.name : item.launcher_id}
-          </Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('rank')}</Text>
-          <Text style={[styles.val, { fontWeight: 'bold' }]}>{rank}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('points')}</Text>
-          <Text style={styles.val}>{item.points}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('difficulty')}</Text>
-          <Text style={styles.val}>{item.difficulty}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>
-            {t('utilizationSpace')}
-          </Text>
-          <Text style={styles.val}>{`${item.points_of_total.toFixed(5)}%`}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('estimatedSize')}</Text>
-          <Text style={styles.val}>{formatBytes(item.estimated_size)}</Text>
-        </View>
+      <View style={{ flexDirection: 'row' }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          Launcher ID
+        </Text>
+        <Text
+          numberOfLines={1}
+          style={[styles.val, { color: theme.colors.textLight, fontWeight: 'bold' }]}
+        >
+          {item.name ? item.name : item.launcher_id}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 2 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('rank')}
+        </Text>
+        <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>
+          {rank}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 2 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('points')}
+        </Text>
+        <Text numberOfLines={1} style={styles.val}>
+          {item.points}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 2 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('difficulty')}
+        </Text>
+        <Text numberOfLines={1} style={styles.val}>
+          {item.difficulty}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 2 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('utilizationSpace')}
+        </Text>
+        <Text numberOfLines={1} style={styles.val}>{`${item.points_of_total.toFixed(5)}%`}</Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 2 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('estimatedSize')}
+        </Text>
+        <Text numberOfLines={1} style={styles.val}>
+          {formatBytes(item.estimated_size)}
+        </Text>
       </View>
     </PressableCard>
   );
@@ -79,13 +98,13 @@ const Content = ({
   hasMore,
   setOffset,
   dataProvider,
-  width,
   queryMoreData,
   isQuerying,
   refresh,
   isRefreshing,
 }) => {
   // const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(data);
+  const { width } = Dimensions.get('window');
 
   const [layoutProvider] = React.useState(
     new LayoutProvider(
@@ -120,6 +139,7 @@ const Content = ({
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <RecyclerListView
+        forceNonDeterministicRendering
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing}
@@ -149,7 +169,6 @@ const FarmersScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const { width } = Dimensions.get('window');
   const [data, setData] = useState([]);
   const [dataProvider, setDataProvider] = useState();
   const [error, setError] = useState();
@@ -219,7 +238,6 @@ const FarmersScreen = ({ navigation }) => {
       navigation={navigation}
       setOffset={(offset) => setOffset(offset)}
       hasMore={hasMore}
-      width={width}
       dataProvider={dataProvider}
       refresh={pulldownRefresh}
       queryMoreData={queryMoreData}
@@ -230,39 +248,6 @@ const FarmersScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#fff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 8,
-    borderColor: '#fff', // if you need
-    borderWidth: 1,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowRadius: 10,
-    shadowOpacity: 1,
-    elevation: 6,
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  rank: {
-    fontSize: 14,
-    marginEnd: 20,
-  },
-  name: {
-    fontSize: 14,
-    marginEnd: 20,
-    flex: 1,
-  },
-  utilization: {
-    marginEnd: 20,
-    fontSize: 14,
-  },
-  size: {
-    marginLeft: 'auto',
-    fontSize: 14,
-  },
   title: {
     fontSize: 14,
     marginEnd: 8,

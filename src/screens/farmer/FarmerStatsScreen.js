@@ -57,7 +57,9 @@ const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
       </Text>
     </View> */}
     <View style={{ display: 'flex', flexDirection: 'column' }}>
-      <Text style={{ color: theme.colors.textGrey }}>Launcher ID</Text>
+      <Text numberOfLines={1} style={{ color: theme.colors.textGrey }}>
+        Launcher ID
+      </Text>
       <TouchableOpacity
         style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: 20 }}
         onPress={() => Clipboard.setString(launcherId)}
@@ -67,23 +69,29 @@ const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
       </TouchableOpacity>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('difficulty')}</Text>
-      <Text style={{}}>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('difficulty')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
         {loadable.state === 'hasValue' ? loadable.contents.farmer.difficulty : '...'}
       </Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('joinedAt')}</Text>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('joinedAt')}
+      </Text>
       {/* <Text style={{}}>{format(new Date(item.joined_at), 'PPpp')}</Text> */}
-      <Text style={{}}>
+      <Text numberOfLines={1} style={styles.val}>
         {loadable.state === 'hasValue'
           ? format(new Date(loadable.contents.farmer.joined_at), 'PPpp')
           : '...'}
       </Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('estimatedDailyEarnings')}</Text>
-      <Text>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('estimatedDailyEarnings')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
         {loadable.state === 'hasValue'
           ? `${formatPrice(
               (loadable.contents.farmer.estimated_size / 1099511627776) *
@@ -95,26 +103,32 @@ const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
       </Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('points')}</Text>
-      <Text>{loadable.state === 'hasValue' ? loadable.contents.farmer.points : '...'}</Text>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('points')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
+        {loadable.state === 'hasValue' ? loadable.contents.farmer.points : '...'}
+      </Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('utilizationSpace')}</Text>
-      <Text>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('utilizationSpace')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
         {loadable.state === 'hasValue'
           ? `${loadable.contents.farmer.points_of_total.toFixed(5)}%`
           : '...'}
       </Text>
-      {/* <Text style={{}}>{formatBytes(item.estimated_size)}</Text> */}
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
-      <Text style={{ flex: 1, color: theme.colors.textGrey }}>{t('estimatedSize')}</Text>
-      <Text>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('estimatedSize')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
         {loadable.state === 'hasValue'
           ? formatBytes(loadable.contents.farmer.estimated_size)
           : '...'}
       </Text>
-      {/* <Text style={{}}>{formatBytes(item.estimated_size)}</Text> */}
     </View>
   </CustomCard>
 );
@@ -256,6 +270,15 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginVertical: 8,
     padding: 6,
+  },
+  title: {
+    fontSize: 14,
+    marginEnd: 8,
+  },
+  val: {
+    fontSize: 14,
+    flex: 1,
+    textAlign: 'right',
   },
 });
 

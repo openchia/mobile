@@ -60,17 +60,19 @@ const Item = ({ item, color, t }) => (
       {/* <View style={{ padding: 8, display: 'flex' }}> */}
       <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
         <Text style={[styles.title, { color }]}>{t('amount')}</Text>
-        <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(
+        <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(
           item.amount
         )} XCH`}</Text>
       </View>
       <View style={{ flexDirection: 'row', marginTop: 8 }}>
         <Text style={[styles.title, { color }]}>{t('height')}</Text>
-        <Text style={[styles.val, { fontWeight: 'bold' }]}>{item.confirmed_block_index}</Text>
+        <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>
+          {item.confirmed_block_index}
+        </Text>
       </View>
       <View style={{ flexDirection: 'row', marginTop: 8 }}>
         <Text style={[styles.title, { color }]}>{t('date')}</Text>
-        <Text style={[styles.val, { fontWeight: 'bold' }]}>
+        <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>
           {format(fromUnixTime(item.timestamp), 'PPpp')}
         </Text>
       </View>

@@ -145,8 +145,11 @@ const Content = ({ launcherId }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ margin: 16, flexDirection: 'row' }}>
-        <Text style={{ marginEnd: 16, fontSize: 16 }}>{t('totalChiaAccumulated')}</Text>
-        <Text style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'right', flex: 1 }}>
+        <Text style={{ marginEnd: 4, fontSize: 16 }}>{t('totalChiaAccumulated')}</Text>
+        <Text
+          numberOfLines={1}
+          style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'right', flex: 1 }}
+        >
           {convertMojoToChia(totalChia)} XCH
         </Text>
       </View>
