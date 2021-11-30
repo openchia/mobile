@@ -92,7 +92,7 @@ const formatDatetime = (value) => {
 const PoolspaceChart = ({ data, maxSize }) => {
   const transition = useSharedValue(0);
   const previous = useSharedValue(0);
-  const current = useSharedValue(0);
+  const current = useSharedValue(4);
   const [points, setPoints] = useState(data[current.value]);
   const theme = useTheme();
   const { t } = useTranslation();
