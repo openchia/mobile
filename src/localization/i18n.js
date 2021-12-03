@@ -44,7 +44,7 @@ const LANGUAGE_DETECTOR = {
         }
         const findBestAvailableLanguage = RNLocalize.findBestAvailableLanguage(LANG_CODES);
 
-        callback(findBestAvailableLanguage.languageTag || 'en');
+        callback(findBestAvailableLanguage ? findBestAvailableLanguage.languageTag : 'en');
         return;
       }
       callback(language);
