@@ -96,6 +96,16 @@ export const statsRequestIDState = atomFamily({
   default: 0,
 });
 
+export const giveawayRequestState = atomFamily({
+  key: 'giveawayRequestState',
+  default: 0,
+});
+
+export const giveawayWinnersState = atomFamily({
+  key: 'giveawayWinnersState',
+  default: 0,
+});
+
 export const farmersRequestIDState = atomFamily({
   key: 'farmersRequestAtomFamily',
   default: 0,
@@ -128,6 +138,11 @@ export const farmerBlockRefreshState = atomFamily({
 
 export const farmerPayoutsRefreshState = atomFamily({
   key: 'farmerPayoutsRefreshState',
+  default: 0,
+});
+
+export const ticketsRefreshState = atomFamily({
+  key: 'ticketsRefreshState',
   default: 0,
 });
 

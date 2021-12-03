@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const REST_API = 'https://openchia.io/api/v1.0/';
 const CHIA_PLOT_REST_API = 'https://thechiaplot.net/wp-json/wp/v2/';
+const COINGECKO_API = 'https://api.coingecko.com/api/v3/';
 
 export const getSpace = () =>
   fetch(`${REST_API}space?days=365`)
@@ -119,6 +120,60 @@ export const getChiaPlotPosts = () =>
       throw Error(response.statusText);
     })
     .then((json) => json);
+
+export const getTickets = (launcherID) =>
+  fetch(`${REST_API}giveaway/tickets/?ordering=-created_at&launcher=${launcherID}&limit=1`)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json);
+
+export const getRound = () =>
+  fetch(`${REST_API}giveaway/round/`)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json);
+
+// export const getMarketChart = (currency, days, interval) => {
+//   console.log(
+//     `${COINGECKO_API}coins/chia/market_chart?vs_currency=${currency}&days=${
+//       days || 'max'
+//     }&interval=${interval || 1}`
+//   );
+//   return axios
+//     .get(
+//       `${COINGECKO_API}coins/chia/market_chart?vs_currency=${currency}&days=${
+//         days || 'max'
+//       }&interval=${interval || 1}`
+//     )
+//     .then((response) => {
+//       if (response.ok) {
+//         return response.json();
+//       }
+//       throw Error(response.statusText);
+//     })
+//     .then((json) => json);
+// };
+
+export const getMarketChart = async (currency, days, interval) => {
+  try {
+    return await axios.get(
+      `${COINGECKO_API}coins/chia/market_chart?vs_currency=${currency}&days=${
+        days || 'max'
+      }&interval=${interval || 1}`
+    );
+    // console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const getLauncherIDFromToken = (token) =>
   fetch(`${REST_API}login_qr`, {

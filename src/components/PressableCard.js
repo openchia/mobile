@@ -15,7 +15,7 @@ const PressableCard = ({ style, onPress, children, enabled }) => {
           // borderColor: 'grey',
           marginVertical: 2,
           borderRadius: 8,
-          marginHorizontal: 8,
+          marginHorizontal: 4,
           borderWidth: 1,
           shadowColor: '#000',
           shadowRadius: 10,

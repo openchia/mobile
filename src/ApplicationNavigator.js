@@ -43,7 +43,6 @@ import {
   useSetRecoilState,
 } from 'recoil';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import { createStackNavigator } from '@react-navigation/stack';
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TransitionPresets, createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, useDrawerStatus } from '@react-navigation/drawer';
@@ -73,6 +72,8 @@ import NewsScreen from './screens/NewsScreen';
 import NewsPostScreen from './screens/NewsPostScreen';
 import FarmerSettingsScreen from './screens/farmer/FarmerSettingsScreen';
 import FarmerNameScreen from './screens/farmer/FarmerNameScreen';
+import GiveawaySceen from './screens/giveaway/GiveawayScreen';
+import ChiaPriceScreen from './screens/charts/ChiaPriceScreen';
 
 // LogBox.ignoreLogs(['Reanimated 2']);
 LogBox.ignoreLogs(['timer']);
@@ -239,6 +240,13 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => (
         title: t('payouts'),
       })}
     />
+    {/* <Drawer.Screen
+      name="Giveaway"
+      component={GiveawaySceen}
+      options={() => ({
+        title: t('giveaway'),
+      })}
+    /> */}
     <Drawer.Screen
       name="Farmer Details Drawer"
       component={FarmerScreen}
@@ -337,6 +345,13 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRou
           component={PoolspaceScreen}
           options={() => ({
             title: t('poolSpace'),
+          })}
+        />
+        <Stack.Screen
+          name="Chia Price Chart"
+          component={ChiaPriceScreen}
+          options={() => ({
+            title: t('chiaPriceChart'),
           })}
         />
         <Stack.Screen

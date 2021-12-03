@@ -17,6 +17,8 @@ import {
   launcherIDsState,
 } from '../../Atoms';
 import IconButton from '../../components/IconButton';
+import TicketIcon from '../../images/TicketIcon';
+import TicketsScreen from '../giveaway/TicketsScreen';
 import FarmerBlockScreen from './FarmerBlocksScreen';
 import FarmerPartialScreen from './FarmerPartialScreen';
 import FarmerPayoutScreen from './FarmerPayoutScreen';
@@ -64,6 +66,8 @@ export const getHeaderTitle = (route, t, name) => {
       return `${t('payouts')}`;
     case 'FarmerBlocks':
       return `${t('farmedBlocks')}`;
+    case 'Tickets':
+      return `${t('tickets')}`;
   }
 };
 
@@ -85,10 +89,6 @@ const FarmerScreen = ({ route, navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({ headerTitle: getHeaderTitle(route, t, name) });
-
-    // if (routeName === 'Stats') {
-    //   navigation.setOptions({ headerTitle: getHeaderTitle(route, t) });
-    // }
   }, [navigation, route]);
 
   const dataLoadable = useRecoilValueLoadable(query(mLauncherId));
@@ -221,6 +221,18 @@ const FarmerScreen = ({ route, navigation }) => {
         name="FarmerBlocks"
       >
         {() => <FarmerBlockScreen launcherId={mLauncherId} dataLoadable={dataLoadable} />}
+      </Tab.Screen>
+      <Tab.Screen
+        options={{
+          style: {
+            backgroundColor: 'red',
+            height: 45,
+          },
+          tabBarIcon: ({ color }) => <TicketIcon size={24} color={theme.colors.tabNavigatorText} />,
+        }}
+        name="Tickets"
+      >
+        {() => <TicketsScreen launcherId={mLauncherId} dataLoadable={dataLoadable} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

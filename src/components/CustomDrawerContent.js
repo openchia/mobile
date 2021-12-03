@@ -206,16 +206,25 @@ const CustomDrawerContent = (props) => {
         </CustomDrawerSection>
         {/* <CustomDrawerSection>
           <DrawerItem
-            label={t('verifyFarm')}
-            onPress={() => {
-              navigation.closeDrawer();
-              navigation.navigate('Verify Farm');
-            }}
-            labelStyle={{ color: theme.colors.drawerText }}
-            icon={({ color, size }) => (
-              <Ionicons name="qr-code-outline" size={size}         color={initialRoute.name === 'Home'
+            label={t('giveaway')}
+            onPress={() => onPress('Giveaway', true)}
+            labelStyle={{
+              fontWeight: 'bold',
+              color:
+                initialRoute.name === 'Giveaway'
                   ? theme.colors.drawerSelected
-                  : theme.colors.drawerText} />
+                  : theme.colors.drawerText,
+            }}
+            icon={({ color, size }) => (
+              <Ionicons
+                name="ios-gift-outline"
+                size={size}
+                color={
+                  initialRoute.name === 'Giveaway'
+                    ? theme.colors.drawerSelected
+                    : theme.colors.drawerText
+                }
+              />
             )}
           />
         </CustomDrawerSection> */}
