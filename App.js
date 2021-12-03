@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RecoilRoot } from 'recoil';
 import { Notifications } from 'react-native-notifications';
 import messaging from '@react-native-firebase/messaging';
+import * as Sentry from '@sentry/react-native';
 import ApplicationNavigator from './src/ApplicationNavigator';
 import LoadingComponent from './src/components/LoadingComponent';
 // import './src/constants/IMLocalize';
@@ -12,6 +13,7 @@ import './src/localization/i18n';
 // Sentry.init({
 //   dsn: 'https://7426074fea104d898f7fcaba3e94d45d@o1071760.ingest.sentry.io/6069453',
 // });
+
 if (Platform.OS === 'android') {
   require('intl');
   require('intl/locale-data/jsonp/fr-BE');
@@ -65,7 +67,6 @@ const App = () => {
     //   console.log(remoteMessage);
     //   // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     // });
-
     return unsubscribe;
   }, []);
   // useEffect(() => {
