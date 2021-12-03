@@ -131,6 +131,7 @@ const StatsScreen = ({ navigation }) => {
       >
         <View style={styles.container}>
           <Item
+            // onPress={() => navigation.navigate('Chia Price Chart')}
             loadable={statsLoadable}
             format={(item) =>
               `${currencyFormat(
