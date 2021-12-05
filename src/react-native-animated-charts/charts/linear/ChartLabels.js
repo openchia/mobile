@@ -8,12 +8,12 @@ import ChartContext from '../../helpers/ChartContext';
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 function ChartLabelFactory(style) {
-  return function ChartLabel({ defaultValue = '', format, ...props }) {
+  return function ChartLabel({ defaultValue = '', format, extraVal, ...props }) {
     const { [style]: val = 0 } = useContext(ChartContext);
     // console.log(val);
     const formattedValue = useDerivedValue(
       // eslint-disable-next-line no-nested-ternary
-      () => (val.value ? (format ? `${format(val.value)}` : val.value) : defaultValue),
+      () => (val.value ? (format ? `${format(val.value, extraVal)}` : val.value) : defaultValue),
       []
     );
     const textProps = useAnimatedStyle(

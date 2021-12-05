@@ -131,7 +131,16 @@ const StatsScreen = ({ navigation }) => {
       >
         <View style={styles.container}>
           <Item
-            // onPress={() => navigation.navigate('Chia Price Chart')}
+            onPress={() => {
+              // navigation.navigate('Chia Price Chart');
+              navigation.navigate({
+                name: 'Chia Price Chart',
+                params: {
+                  chiaPrice:
+                    statsLoadable.contents.stats.xch_current_price[statsLoadable.contents.currency],
+                },
+              });
+            }}
             loadable={statsLoadable}
             format={(item) =>
               `${currencyFormat(
