@@ -107,5 +107,6 @@ export default {
     prize: 'Prize',
     issuedTickets: 'Issued Tickets',
     winner: 'Winner',
+    chiaPriceChart: 'Chia Price Chart',
   },
 };

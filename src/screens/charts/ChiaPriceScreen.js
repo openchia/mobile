@@ -1,5 +1,5 @@
 import { fromUnixTime, getUnixTime, isAfter } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { useSetRecoilState, useRecoilValue, selectorFamily } from 'recoil';
@@ -22,75 +22,9 @@ const filterData = (data, timePeriod) => {
   return data.filter((item) => isAfter(fromUnixTime(item.x), date));
 };
 
-const query = selectorFamily({
-  key: 'farmer',
-  get:
-    (element) =>
-    async ({ get }) => {
-      // get(farmerRefreshState());
-      const response = getMarketChart(element.currency, element.days, element.interval);
-      if (response.data) {
-        return response.data.prices.map((item) => ({
-          x: item[0],
-          y: item[1],
-        }));
-      }
-      return response.statusText;
-    },
-});
-
-const ChiaPriceScreen = ({ navigation }) => {
-  const [data, setData] = useState(null);
-  const [maxSize, setMaxSize] = useState('');
+const ChiaPriceScreen = ({ route, navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
-  const refresh = useRefresh();
-  const [error, setError] = useState();
-  const currency = useRecoilValue(currencyState);
-
-  useEffect(() => {
-    getMarketChart(currency)
-      .then((response) => {
-        const convertedData = response.data.prices.map((item) => ({
-          x: item[0],
-          y: item[1],
-        }));
-        setData(convertedData);
-        setRefreshing(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setRefreshing(false);
-        setData(null);
-        setError(true);
-      });
-  }, [refreshing, error]);
-
-  useEffect(() => {
-    refresh();
-  }, [refreshing]);
-
-  if (error) {
-    return (
-      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
-          Cant Connect to Network
-        </Text>
-        <Button
-          mode="contained"
-          onPress={() => {
-            setError(false);
-            refresh();
-          }}
-        >
-          Retry
-        </Button>
-      </SafeAreaView>
-    );
-  }
-
-  if (!data && !refreshing) {
-    return <LoadingComponent />;
-  }
+  const { chiaPrice } = route.params;
 
   return (
     <SafeAreaView
@@ -110,7 +44,7 @@ const ChiaPriceScreen = ({ navigation }) => {
           />
         }
       >
-        <ChiaPriceChart data={data} />
+        <ChiaPriceChart chiaPrice={chiaPrice} />
       </ScrollView>
     </SafeAreaView>
   );

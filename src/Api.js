@@ -169,7 +169,6 @@ export const getMarketChart = async (currency, days, interval) => {
         days || 'max'
       }&interval=${interval || 1}`
     );
-    // console.log(response);
   } catch (error) {
     console.error(error);
   }
