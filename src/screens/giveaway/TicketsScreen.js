@@ -111,6 +111,24 @@ const TicketsScreen = ({ navigation, launcherId }) => {
     return <LoadingComponent />;
   }
 
+  if (ticketsLoadable.contents.results.length === 0) {
+    return (
+      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+          No tickets received yet.
+        </Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            if (netInfo.isConnected) refresh();
+          }}
+        >
+          Retry
+        </Button>
+      </SafeAreaView>
+    );
+  }
+
   const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
     ticketsLoadable.contents.results[0].tickets
   );
