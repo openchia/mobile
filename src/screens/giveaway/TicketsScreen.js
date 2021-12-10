@@ -87,19 +87,7 @@ const TicketsScreen = ({ navigation, launcherId }) => {
   const [refreshing, setRefreshing] = useState(false);
   const { t } = useTranslation();
   const theme = useTheme();
-  // const [dataProvider, setDataProvider] = useState();
   const { width } = Dimensions.get('window');
-
-  // useEffect(() => {
-  //   console.log('called');
-  //   if (ticketsLoadable.state === 'hasValue') {
-  //     setDataProvider(
-  // new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
-  //   ticketsLoadable.contents.results[0].tickets
-  //       )
-  //     );
-  //   }
-  // }, [ticketsLoadable]);
 
   if (ticketsLoadable.state === 'hasError') {
     return (
@@ -127,10 +115,6 @@ const TicketsScreen = ({ navigation, launcherId }) => {
     ticketsLoadable.contents.results[0].tickets
   );
 
-  console.log(ticketsLoadable.contents.results);
-
-  // console.log(ticketsLoadable.contents.results[0].tickets);
-
   return (
     <Content
       navigation={navigation}
@@ -140,11 +124,6 @@ const TicketsScreen = ({ navigation, launcherId }) => {
       width={width}
     />
   );
-  // return (
-  //   <Suspense fallback={<LoadingComponent />}>
-  //     <Content launcherId={launcherId} />
-  //   </Suspense>
-  // );
 };
 
 const styles = StyleSheet.create({
