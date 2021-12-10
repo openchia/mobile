@@ -148,6 +148,9 @@ const StatsScreen = ({ navigation }) => {
               )} ${getCurrencyFromKey(statsLoadable.contents.currency)}`
             }
             color="#4DB33E"
+            icon={
+              <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
+            }
             title={t('chiaPrice').toUpperCase()}
           />
           <Item

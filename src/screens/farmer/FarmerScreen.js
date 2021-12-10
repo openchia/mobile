@@ -222,7 +222,7 @@ const FarmerScreen = ({ route, navigation }) => {
       >
         {() => <FarmerBlockScreen launcherId={mLauncherId} dataLoadable={dataLoadable} />}
       </Tab.Screen>
-      {/* <Tab.Screen
+      <Tab.Screen
         options={{
           style: {
             backgroundColor: 'red',
@@ -233,7 +233,7 @@ const FarmerScreen = ({ route, navigation }) => {
         name="Tickets"
       >
         {() => <TicketsScreen launcherId={mLauncherId} dataLoadable={dataLoadable} />}
-      </Tab.Screen> */}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };

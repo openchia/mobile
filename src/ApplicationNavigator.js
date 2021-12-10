@@ -43,8 +43,8 @@ import {
   useSetRecoilState,
 } from 'recoil';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { TransitionPresets, createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import { TransitionPresets, createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, useDrawerStatus } from '@react-navigation/drawer';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
@@ -80,8 +80,8 @@ LogBox.ignoreLogs(['timer']);
 LogBox.ignoreLogs(['keyboardDidShow: ...']); // Ignore log notification by message
 LogBox.ignoreLogs(['keyboardDidHide: ...']); // Ignore log notification by message
 
-// const Stack = createNativeStackNavigator();
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
+// const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const CombinedDefaultTheme = merge(PaperDefaultTheme, NavigationDefaultTheme);
@@ -240,13 +240,13 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => (
         title: t('payouts'),
       })}
     />
-    {/* <Drawer.Screen
+    <Drawer.Screen
       name="Giveaway"
       component={GiveawaySceen}
       options={() => ({
         title: t('giveaway'),
       })}
-    /> */}
+    />
     <Drawer.Screen
       name="Farmer Details Drawer"
       component={FarmerScreen}
@@ -287,7 +287,7 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRou
           drawerStyle: { backgroundColor: theme.colors.primary },
           headerBackTitleVisible: false,
           gestureEnabled: true, // If you want to swipe back like iOS on Android
-          ...TransitionPresets.SlideFromRightIOS,
+          // ...TransitionPresets.SlideFromRightIOS,
         }}
       >
         <Stack.Screen name="Root" options={{ headerShown: false }}>

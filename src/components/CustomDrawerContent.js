@@ -204,7 +204,7 @@ const CustomDrawerContent = (props) => {
             )}
           />
         </CustomDrawerSection>
-        {/* <CustomDrawerSection>
+        <CustomDrawerSection>
           <DrawerItem
             label={t('giveaway')}
             onPress={() => onPress('Giveaway', true)}
@@ -227,7 +227,7 @@ const CustomDrawerContent = (props) => {
               />
             )}
           />
-        </CustomDrawerSection> */}
+        </CustomDrawerSection>
         {launcherIDsArray.length > 0 && (
           <CustomDrawerSection title={t('farms')}>
             {launcherIDsArray.map((item) => (
