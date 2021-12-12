@@ -92,7 +92,7 @@ const GiveawayInfoSceen = ({ navigation }) => {
   const data = statsLoadable.contents.round.results;
 
   return (
-    <SafeAreaView style={{ flex: 1, padding: 8 }}>
+    <SafeAreaView style={{ flex: 1, margin: 8 }}>
       <Text
         style={{
           fontSize: 18,

@@ -179,6 +179,7 @@ const HomeScreen = ({ navigation }) => {
         <View
           style={{
             flex: 1,
+            margin:8,
           }}
         >
           <View

@@ -63,11 +63,12 @@ const CalculatorScreen = ({ navigation }) => {
   const [ticketCount, setTicketCount] = useState(0);
 
   return (
-    <SafeAreaView style={{ flex: 1, padding: 16 }}>
+    <SafeAreaView style={{ flex: 1, margin: 8 }}>
       <Text
         style={[
           styles.desc,
           {
+            textAlign: 'center',
             padding: 8,
             fontSize: 18,
             fontWeight: 'bold',
