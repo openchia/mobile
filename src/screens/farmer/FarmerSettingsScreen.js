@@ -51,8 +51,9 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
         flex: 1,
       }}
     >
-      <View style={{ paddingTop: 12 }}>
+      <View style={{ marginTop: 8 }}>
         <PressableCard
+          style={{ marginVertical: 4, marginHorizontal: 8 }}
           onPress={() => {
             if (token)
               navigation.navigate({
@@ -90,7 +91,7 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
           </Text> */}
           </View>
         </PressableCard>
-        <PressableCard onPress={() => {}}>
+        <PressableCard style={{ marginVertical: 4, marginHorizontal: 8 }} onPress={() => {}}>
           <View
             style={[
               styles.content,
