@@ -193,8 +193,8 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
 
   return (
     <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={{ padding: 4, flexGrow: 1 }}
+      style={{ flex: 1, backgroundColor: theme.colors.background }}
+      contentContainerStyle={{ flexGrow: 1, padding: 8 }}
       refreshControl={<RefreshControl refreshing={false} onRefresh={() => refresh()} />}
     >
       <HeaderItem
@@ -204,6 +204,7 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
         t={t}
         theme={theme}
       />
+      <View style={{ height: 8 }} />
       <View style={styles.container}>
         <Item
           loadable={dataLoadable}
@@ -219,6 +220,7 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
           title={`${t('points').toUpperCase()}\n(${t('24Hours').toUpperCase()})`}
         />
       </View>
+      <View style={{ height: 8 }} />
       <View style={styles.container}>
         <Item
           loadable={dataLoadable}
@@ -233,6 +235,7 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
           title={`${t('failedPartials').toUpperCase()}`}
         />
       </View>
+      <View style={{ height: 8 }} />
       <View style={styles.container}>
         <Item
           loadable={dataLoadable}
@@ -247,6 +250,7 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
           title={t('harvesterCount').toUpperCase()}
         />
       </View>
+      {/* <View style={{ height: 8 }} /> */}
     </ScrollView>
   );
 };
@@ -263,12 +267,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    marginVertical: 4,
+    // marginVertical: 4,
   },
   headerItem: {
     justifyContent: 'center',
     flexDirection: 'column',
-    marginVertical: 8,
+    // marginVertical: 8,
     padding: 6,
   },
   title: {
