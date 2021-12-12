@@ -213,6 +213,7 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
           title={`${t('partials').toUpperCase()}\n(${t('24Hours').toUpperCase()})`}
           // title={`PARTIALS\n(24 HOURS)`}
         />
+        <View style={{ width: 8 }} />
         <Item
           loadable={dataLoadable}
           format={() => points}
@@ -228,6 +229,7 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
           color="#3DD292"
           title={`${t('successfulPartials').toUpperCase()}`}
         />
+        <View style={{ width: 8 }} />
         <Item
           loadable={dataLoadable}
           format={() => errors.length}
@@ -243,6 +245,7 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
           color="#FB6D4C"
           title={t('partialPerfomance').toUpperCase()}
         />
+        <View style={{ width: 8 }} />
         <Item
           loadable={dataLoadable}
           format={() => harvesters.size}
