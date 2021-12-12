@@ -19,8 +19,8 @@ const PressableCard = ({ style, onPress, children, enabled }) => {
           shadowRadius: 10,
           overflow: 'hidden',
           shadowOpacity: 1,
-          elevation: 6,
-          shadowOffset: { width: 0, height: 1 },
+          // elevation: 6,
+          // shadowOffset: { width: 0, height: 1 },
         },
         style,
       ]}

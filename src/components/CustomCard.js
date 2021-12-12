@@ -18,8 +18,8 @@ const CustomCard = ({ style, children }) => {
           shadowRadius: 10,
           overflow: 'hidden',
           shadowOpacity: 1,
-          elevation: 6,
-          shadowOffset: { width: 0, height: 1 },
+          // elevation: 4,
+          // shadowOffset: { width: 0, height: 1 },
         },
         style,
       ]}
