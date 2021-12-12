@@ -179,7 +179,7 @@ const HomeScreen = ({ navigation }) => {
         <View
           style={{
             flex: 1,
-            margin:8,
+            margin: 8,
           }}
         >
           <View
@@ -238,10 +238,12 @@ const HomeScreen = ({ navigation }) => {
           >
             <View style={styles.container}>
               <Item title={t('fee')} value={t('feeDesc')} />
+              <View style={{ width: 8 }} />
               <Item title={t('minPayout')} value={t('minPayoutDesc')} />
             </View>
             <View style={styles.container}>
               <Item title={t('instantPayout')} value={t('instantPayoutDesc')} />
+              <View style={{ width: 8 }} />
               <Item title={t('transparent')} value={t('transparentDesc')} />
             </View>
           </View>
@@ -254,7 +256,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    padding: 10,
+    padding: 4,
     flex: 1,
   },
   item: {

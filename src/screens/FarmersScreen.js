@@ -9,86 +9,83 @@ import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 import { formatBytes } from '../utils/Formatting';
 
-const HEIGHT = 142;
+const HEIGHT = 140;
 
 const Item = ({ item, rank, onPress }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   return (
-    <PressableCard
-      style={{
-        // display: 'flex',
-        flexDirection: 'column',
-        // flexDirection: 'row',
-        padding: 8,
-        marginHorizontal: 8,
-        flex: 1,
-        // justifyContent: 'center',
-        // flex: 1,
-        // alignItems: 'center',
-        // height: HEIGHT,
-      }}
-      onPress={onPress}
-    >
-      {/* <Text style={styles.rank}>{rank}</Text>
-        <Text
-          numberOfLines={1}
-          style={[styles.name, { color: theme.colors.textLight, fontSize: 14 }]}
-        >
-          {item.name ? item.name : item.launcher_id}
-        </Text>
-        <Text style={styles.utilization}>{`${item.points_of_total.toFixed(5)}%`}</Text>
-        <Text style={styles.size}>{formatBytes(item.estimated_size)}</Text> */}
-      <View style={{ flexDirection: 'row' }}>
-        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-          Launcher ID
-        </Text>
-        <Text
-          numberOfLines={1}
-          style={[styles.val, { color: theme.colors.textLight, fontWeight: 'bold' }]}
-        >
-          {item.name ? item.name : item.launcher_id}
-        </Text>
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 2 }}>
-        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-          {t('rank')}
-        </Text>
-        <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>
-          {rank}
-        </Text>
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 2 }}>
-        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-          {t('points')}
-        </Text>
-        <Text numberOfLines={1} style={styles.val}>
-          {item.points}
-        </Text>
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 2 }}>
-        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-          {t('difficulty')}
-        </Text>
-        <Text numberOfLines={1} style={styles.val}>
-          {item.difficulty}
-        </Text>
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 2 }}>
-        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-          {t('utilizationSpace')}
-        </Text>
-        <Text numberOfLines={1} style={styles.val}>{`${item.points_of_total.toFixed(5)}%`}</Text>
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 2 }}>
-        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-          {t('estimatedSize')}
-        </Text>
-        <Text numberOfLines={1} style={styles.val}>
-          {formatBytes(item.estimated_size)}
-        </Text>
-      </View>
-    </PressableCard>
+    <View style={{ width: '100%' }}>
+      <PressableCard
+        style={{
+          // display: 'flex',
+          flexDirection: 'column',
+          // flexDirection: 'row',
+          padding: 8,
+          marginStart: 8,
+          marginEnd: 8,
+          // width: '100%',
+          // marginHorizontal: 8,
+          flex: 1,
+          // justifyContent: 'center',
+          // flex: 1,
+          // alignItems: 'center',
+          height: HEIGHT,
+        }}
+        onPress={onPress}
+      >
+        <View style={{ flexDirection: 'row' }}>
+          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+            Launcher ID
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={[styles.val, { color: theme.colors.textLight, fontWeight: 'bold' }]}
+          >
+            {item.name ? item.name : item.launcher_id}
+          </Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 2 }}>
+          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+            {t('rank')}
+          </Text>
+          <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>
+            {rank}
+          </Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 2 }}>
+          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+            {t('points')}
+          </Text>
+          <Text numberOfLines={1} style={styles.val}>
+            {item.points}
+          </Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 2 }}>
+          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+            {t('difficulty')}
+          </Text>
+          <Text numberOfLines={1} style={styles.val}>
+            {item.difficulty}
+          </Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 2 }}>
+          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+            {t('utilizationSpace')}
+          </Text>
+          <Text numberOfLines={1} style={styles.val}>{`${item.points_of_total.toFixed(5)}%`}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 2 }}>
+          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+            {t('estimatedSize')}
+          </Text>
+          <Text numberOfLines={1} style={styles.val}>
+            {formatBytes(item.estimated_size)}
+          </Text>
+        </View>
+      </PressableCard>
+      <View style={{ height: 8 }} />
+    </View>
   );
 };
 
@@ -140,7 +137,6 @@ const Content = ({
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <RecyclerListView
-        forceNonDeterministicRendering
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing}
@@ -149,12 +145,13 @@ const Content = ({
             }}
           />
         }
-        contentContainerStyle={{ marginTop: 6, paddingBottom: 14 }}
+        contentContainerStyle={{ marginTop: 8 }}
         dataProvider={dataProvider}
         layoutProvider={layoutProvider}
         rowRenderer={rowRenderer}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
+        forceNonDeterministicRendering
         renderFooter={() =>
           isQuerying && (
             <Text style={{ padding: 10, fontWeight: 'bold', textAlign: 'center' }}>Loading</Text>

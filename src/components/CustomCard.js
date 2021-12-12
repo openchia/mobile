@@ -10,9 +10,9 @@ const CustomCard = ({ style, children }) => {
         {
           backgroundColor: theme.colors.onSurface,
           borderColor: theme.colors.borderColor,
-          marginVertical: 2,
+          // marginVertical: 2,
           borderRadius: 8,
-          marginHorizontal: 4,
+          // marginHorizontal: 4,
           borderWidth: 1,
           shadowColor: '#000',
           shadowRadius: 10,
