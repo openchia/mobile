@@ -39,7 +39,7 @@ const query = selectorFamily({
 });
 
 const Item = ({ item, width, onPress, tagsStyles }) => (
-  <PressableCard onPress={onPress} style={{ marginHorizontal: 8 }}>
+  <PressableCard onPress={onPress} style={{ marginHorizontal: 8, marginVertical: 4 }}>
     <View
       style={{
         display: 'flex',

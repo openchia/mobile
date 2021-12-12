@@ -19,7 +19,7 @@ import {
 import { getCurrencyFromKey } from './CurrencySelectionScreen';
 
 const Item = ({ title, value, color, loadable, format, onPress, icon }) => (
-  <PressableCard style={{ flex: 1 }} onPress={onPress}>
+  <PressableCard style={{ flex: 1, marginVertical: 4 }} onPress={onPress}>
     <View style={styles.item}>
       <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
       <Text

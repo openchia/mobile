@@ -46,7 +46,10 @@ const getLuck = (luck) => {
 };
 
 const Item = ({ item, theme, t }) => (
-  <PressableCard style={{ padding: 8, display: 'flex', marginHorizontal: 8 }} onTap={() => {}}>
+  <PressableCard
+    style={{ padding: 8, display: 'flex', marginHorizontal: 8, marginVertical: 4 }}
+    onTap={() => {}}
+  >
     <View style={{ display: 'flex', flexDirection: 'row' }}>
       <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
         {t('effort')}

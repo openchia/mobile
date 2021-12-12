@@ -64,7 +64,10 @@ const SettingsScreen = ({ navigation }) => {
       }}
     >
       {/* <Text style={{ fontSize: 20, padding: 10 }}>{t('general')}</Text> */}
-      <PressableCard onPress={() => navigation.navigate('Currency')}>
+      <PressableCard
+        style={{ marginVertical: 4, marginHorizontal: 8 }}
+        onPress={() => navigation.navigate('Currency')}
+      >
         <View style={styles.content}>
           <MaterialCommunityIcons
             name="currency-usd-circle-outline"
@@ -89,7 +92,10 @@ const SettingsScreen = ({ navigation }) => {
           {/* <Text style={styles.desc}>{currency.toUpperCase()}</Text> */}
         </View>
       </PressableCard>
-      <PressableCard onPress={() => navigation.navigate('Language')}>
+      <PressableCard
+        style={{ marginVertical: 4, marginHorizontal: 8 }}
+        onPress={() => navigation.navigate('Language')}
+      >
         <View style={styles.content}>
           <Ionicons
             name="language"
@@ -115,7 +121,10 @@ const SettingsScreen = ({ navigation }) => {
           />
         </View>
       </PressableCard>
-      <PressableCard onPress={toggleNotifications}>
+      <PressableCard
+        style={{ marginVertical: 4, marginHorizontal: 8 }}
+        onPress={toggleNotifications}
+      >
         <View style={styles.content}>
           <Ionicons
             name="ios-notifications-outline"
@@ -137,7 +146,7 @@ const SettingsScreen = ({ navigation }) => {
           </Text> */}
         </View>
       </PressableCard>
-      <PressableCard onPress={toggleTheme}>
+      <PressableCard style={{ marginVertical: 4, marginHorizontal: 8 }} onPress={toggleTheme}>
         <View style={styles.content}>
           <Ionicons
             name={settings.isThemeDark ? 'ios-moon-outline' : 'ios-sunny-outline'}

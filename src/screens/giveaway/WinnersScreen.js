@@ -31,7 +31,10 @@ const query = selectorFamily({
 });
 
 const Item = ({ item, theme, t }) => (
-  <CustomCard style={{ padding: 8, display: 'flex' }} onTap={() => {}}>
+  <CustomCard
+    style={{ padding: 8, display: 'flex', marginVertical: 4, marginHorizontal: 8 }}
+    onTap={() => {}}
+  >
     <View style={{ display: 'flex', flexDirection: 'row' }}>
       <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
         {t('winner')}

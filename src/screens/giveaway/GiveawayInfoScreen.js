@@ -124,6 +124,7 @@ const GiveawayInfoSceen = ({ navigation }) => {
             </Text>
           </View>
         </CustomCard>
+        <View style={{ width: 8 }} />
         <CustomCard style={{ flex: 1 }}>
           <View
             style={{
@@ -144,6 +145,7 @@ const GiveawayInfoSceen = ({ navigation }) => {
           </View>
         </CustomCard>
       </View>
+      <View style={{ height: 8 }} />
       <View style={styles.container}>
         <CustomCard style={{ flex: 1 }}>
           <View
@@ -164,6 +166,7 @@ const GiveawayInfoSceen = ({ navigation }) => {
             </Text>
           </View>
         </CustomCard>
+        <View style={{ width: 8 }} />
         <CustomCard style={{ flex: 1 }}>
           <View
             style={{

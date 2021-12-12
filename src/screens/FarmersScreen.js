@@ -25,7 +25,6 @@ const Item = ({ item, rank, onPress }) => {
           marginStart: 8,
           marginEnd: 8,
           // width: '100%',
-          // marginHorizontal: 8,
           flex: 1,
           // justifyContent: 'center',
           // flex: 1,

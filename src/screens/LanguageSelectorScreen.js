@@ -19,7 +19,7 @@ export const LANGUAGES = [
 ];
 
 const Item = ({ item, onPress }) => (
-  <PressableCard onPress={onPress}>
+  <PressableCard style={{ marginVertical: 4, marginHorizontal: 8 }} onPress={onPress}>
     <View
       style={{
         padding: 14,
