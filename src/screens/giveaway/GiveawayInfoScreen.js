@@ -187,7 +187,7 @@ const GiveawayInfoSceen = ({ navigation }) => {
           </View>
         </CustomCard>
       </View>
-      <View style={{ flexDirection: 'row', flex: 1 }}>
+      <View style={{ flexDirection: 'row', flex: 1, marginStart: 8 }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', marginTop: 16 }}>
           <Text style={{ color: theme.colors.textGrey }}>{t('ticketDrawing')}</Text>
         </ScrollView>
