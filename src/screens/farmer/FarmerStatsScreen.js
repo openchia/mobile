@@ -26,7 +26,10 @@ const Item = ({ title, value, color, loadable, format }) => {
   const theme = useTheme();
   return (
     <CustomCard style={styles.item}>
-      <Text numberOfLines={2} style={{ color, fontSize: 16, textAlign: 'center', maxWidth: 120 }}>
+      <Text
+        numberOfLines={2}
+        style={{ color, fontSize: 16, textAlign: 'center', maxWidth: 120, fontWeight: 'bold' }}
+      >
         {title}
       </Text>
       <Text

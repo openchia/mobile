@@ -32,6 +32,24 @@ const CustomDrawerContent = (props) => {
     }
   };
 
+  const Icon = ({ selected, size, iconName, iconNameSelected }) => {
+    if (selected)
+      return (
+        <Ionicons
+          name={iconNameSelected}
+          size={size}
+          color={selected ? theme.colors.drawerSelected : theme.colors.drawerText}
+        />
+      );
+    return (
+      <Ionicons
+        name={iconName}
+        size={size}
+        color={selected ? theme.colors.drawerSelected : theme.colors.drawerText}
+      />
+    );
+  };
+
   return (
     <View
       style={{
@@ -70,14 +88,11 @@ const CustomDrawerContent = (props) => {
                   : theme.colors.drawerText,
             }}
             icon={({ color, size }) => (
-              <Ionicons
-                name="ios-home-outline"
+              <Icon
+                selected={initialRoute.name === 'Home'}
                 size={size}
-                color={
-                  initialRoute.name === 'Home'
-                    ? theme.colors.drawerSelected
-                    : theme.colors.drawerText
-                }
+                iconName="ios-home-outline"
+                iconNameSelected="ios-home"
               />
             )}
           />
@@ -92,14 +107,11 @@ const CustomDrawerContent = (props) => {
                   : theme.colors.drawerText,
             }}
             icon={({ color, size }) => (
-              <Ionicons
-                name="ios-newspaper-outline"
+              <Icon
+                selected={initialRoute.name === 'News'}
                 size={size}
-                color={
-                  initialRoute.name === 'News'
-                    ? theme.colors.drawerSelected
-                    : theme.colors.drawerText
-                }
+                iconName="ios-newspaper-outline"
+                iconNameSelected="ios-newspaper"
               />
             )}
           />
@@ -118,7 +130,7 @@ const CustomDrawerContent = (props) => {
             }}
             icon={({ color, size }) => (
               <MaterialCommunityIcons
-                name="chart-line"
+                name={initialRoute.name === 'Stats' ? 'chart-areaspline' : 'chart-line'}
                 size={size}
                 color={
                   initialRoute.name === 'Stats'
@@ -149,14 +161,11 @@ const CustomDrawerContent = (props) => {
                   : theme.colors.drawerText,
             }}
             icon={({ color, size }) => (
-              <Ionicons
-                name="ios-people-outline"
+              <Icon
+                selected={initialRoute.name === 'Farmers'}
                 size={size}
-                color={
-                  initialRoute.name === 'Farmers'
-                    ? theme.colors.drawerSelected
-                    : theme.colors.drawerText
-                }
+                iconName="ios-people-outline"
+                iconNameSelected="ios-people"
               />
             )}
           />
@@ -171,14 +180,11 @@ const CustomDrawerContent = (props) => {
                   : theme.colors.drawerText,
             }}
             icon={({ color, size }) => (
-              <Ionicons
-                name="layers-outline"
+              <Icon
+                selected={initialRoute.name === 'Blocks Found'}
                 size={size}
-                color={
-                  initialRoute.name === 'Blocks Found'
-                    ? theme.colors.drawerSelected
-                    : theme.colors.drawerText
-                }
+                iconName="layers-outline"
+                iconNameSelected="layers"
               />
             )}
           />
@@ -193,14 +199,11 @@ const CustomDrawerContent = (props) => {
                   : theme.colors.drawerText,
             }}
             icon={({ color, size }) => (
-              <Ionicons
-                name="ios-card-outline"
+              <Icon
+                selected={initialRoute.name === 'Payouts'}
                 size={size}
-                color={
-                  initialRoute.name === 'Payouts'
-                    ? theme.colors.drawerSelected
-                    : theme.colors.drawerText
-                }
+                iconName="ios-card-outline"
+                iconNameSelected="ios-card"
               />
             )}
           />
@@ -217,14 +220,11 @@ const CustomDrawerContent = (props) => {
                   : theme.colors.drawerText,
             }}
             icon={({ color, size }) => (
-              <Ionicons
-                name="ios-gift-outline"
+              <Icon
+                selected={initialRoute.name === 'Giveaway'}
                 size={size}
-                color={
-                  initialRoute.name === 'Giveaway'
-                    ? theme.colors.drawerSelected
-                    : theme.colors.drawerText
-                }
+                iconName="ios-gift-outline"
+                iconNameSelected="ios-gift"
               />
             )}
           />
@@ -258,7 +258,7 @@ const CustomDrawerContent = (props) => {
                     <ChiaIconVerified
                       style={{ height: 24, width: 24 }}
                       color={
-                        initialRoute.name === item.value.name
+                        initialRoute.launcherId === item.name
                           ? theme.colors.drawerSelected
                           : theme.colors.drawerText
                       }
@@ -267,7 +267,7 @@ const CustomDrawerContent = (props) => {
                     <ChiaIcon
                       style={{ height: 24, width: 24 }}
                       color={
-                        initialRoute.name === item.value.name
+                        initialRoute.launcherId === item.name
                           ? theme.colors.drawerSelected
                           : theme.colors.drawerText
                       }
@@ -278,7 +278,7 @@ const CustomDrawerContent = (props) => {
                     style={{
                       fontWeight: 'bold',
                       color:
-                        initialRoute.name === item.value.name
+                        initialRoute.launcherId === item.name
                           ? theme.colors.drawerSelected
                           : theme.colors.drawerText,
                       flex: 1,

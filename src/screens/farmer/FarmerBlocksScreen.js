@@ -51,7 +51,7 @@ const Item = ({ item, color, t }) => (
   //     </View>
   //   </View>
   // </PressableCard>
-  <PressableCard onTap={() => {}}>
+  <PressableCard style={{ marginHorizontal: 8, marginVertical: 4 }} onTap={() => {}}>
     <View style={{ display: 'flex', flexDirection: 'column', padding: 8 }}>
       {/* <Text style={styles.rank}>{item.id}</Text>
       <Text style={styles.date}>{format(new Date(item.datetime), 'PPpp')}</Text>
