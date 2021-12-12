@@ -13,7 +13,7 @@ const CustomCard = ({ style, children }) => {
           // marginVertical: 2,
           borderRadius: 8,
           // marginHorizontal: 4,
-          borderWidth: 1,
+          borderWidth: 2,
           shadowColor: '#000',
           shadowRadius: 10,
           overflow: 'hidden',
