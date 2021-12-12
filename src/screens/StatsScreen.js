@@ -153,6 +153,7 @@ const StatsScreen = ({ navigation }) => {
             }
             title={t('chiaPrice').toUpperCase()}
           />
+          <View style={{ width: 8 }} />
           <Item
             onPress={() => navigation.navigate('Poolspace')}
             loadable={statsLoadable}
@@ -171,6 +172,7 @@ const StatsScreen = ({ navigation }) => {
             color="#3DD292"
             title={t('etw').toUpperCase()}
           />
+          <View style={{ width: 8 }} />
           <Item
             loadable={statsLoadable}
             format={(item) => item.rewards_blocks}
@@ -185,6 +187,7 @@ const StatsScreen = ({ navigation }) => {
             color="#34D4F1"
             title={t('farmers').toUpperCase()}
           />
+          <View style={{ width: 8 }} />
           <Item
             loadable={statsLoadable}
             format={(item) => formatBytes(item.blockchain_space)}
@@ -201,6 +204,7 @@ const StatsScreen = ({ navigation }) => {
             color="#4DB33E"
             title={t('currentEffort').toUpperCase()}
           />
+          <View style={{ width: 8 }} />
           <Item
             loadable={statsLoadable}
             // value="average_effort"
@@ -216,6 +220,7 @@ const StatsScreen = ({ navigation }) => {
             color="#4DB33E"
             title={t('sinceLastWin').toUpperCase()}
           />
+          <View style={{ width: 8 }} />
           <Item
             loadable={statsLoadable}
             format={(item) => `${convertMojoToChia(item.rewards_amount)} XCH`}
@@ -240,6 +245,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flex: 1,
+    marginHorizontal: 8,
   },
   item: {
     height: '100%',
