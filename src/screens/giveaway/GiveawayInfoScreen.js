@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View, ScrollView } from 'react-native';
 import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { selectorFamily, useSetRecoilState, useRecoilValueLoadable } from 'recoil';
@@ -188,9 +188,10 @@ const GiveawayInfoSceen = ({ navigation }) => {
         </CustomCard>
       </View>
       <View style={{ flexDirection: 'row', flex: 1 }}>
-        <Text style={{ color: theme.colors.textGrey, flex: 1, alignSelf: 'center', padding: 8 }}>
-          {t('ticketDrawing')}
-        </Text>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', marginTop: 16 }}>
+          <Text style={{ color: theme.colors.textGrey }}>{t('ticketDrawing')}</Text>
+        </ScrollView>
+
         <PlantIcon style={{ padding: 8 }} size={180} />
       </View>
     </SafeAreaView>

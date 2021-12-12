@@ -118,7 +118,7 @@ const LightTheme = {
     // backdrop: '#436B34',
     notification: '#436B34',
     leaves: 'rgba(41, 50, 57, 0.05)',
-    borderColor: 'rgba(0,0,0,0.05)',
+    borderColor: 'rgba(0,0,0,0.08)',
     tabNavigator: '#436B34',
     tabNavigatorText: '#f5f5f5',
     jellyBarText: '#424242',
