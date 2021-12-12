@@ -134,7 +134,7 @@ const DarkTheme = {
     background: '#212428',
     // text: '#ffffff',
     text: '#ffffff',
-    textLight: '#70b056',
+    textLight: '#61914e',
     textDark: '#243F1E',
     textGrey: '#bababa',
     drawerText: '#bababa',
@@ -144,7 +144,7 @@ const DarkTheme = {
     accent: '#c57e49',
     onSurface: '#33373d',
     primary: '#436B34',
-    primaryLight: '#69A951',
+    primaryLight: '#588746',
     primaryDark: '#243F1E',
     statusBarColor: '#243F1E',
     leaves: 'rgba(245, 245, 245, 0.07)',
@@ -159,7 +159,7 @@ const DarkTheme = {
     tabNavigator: '#436B34',
     tabNavigatorText: '#f5f5f5',
     jellyBarText: '#f5f5f5',
-    drawerSelected: '#70b056',
+    drawerSelected: '#61914e',
   },
 };
 
