@@ -36,6 +36,7 @@ const CustomDrawerContent = (props) => {
     <View
       style={{
         flex: 1,
+        backgroundColor: theme.colors.background,
       }}
     >
       <View
@@ -57,7 +58,7 @@ const CustomDrawerContent = (props) => {
         }}
         {...props}
       >
-        <CustomDrawerSection>
+        <CustomDrawerSection style={{ backgroundColor: theme.colors.background }}>
           <DrawerItem
             label={t('home')}
             onPress={() => onPress('Home', true)}

@@ -92,7 +92,7 @@ const LightTheme = {
   roundness: 2,
   colors: {
     ...CombinedDefaultTheme.colors,
-    background: '#f5f5f5',
+    background: '#e3e3e3',
     border: '#436B34',
     accent: '#c57e49',
     surface: '#f5f5f5',
