@@ -148,7 +148,7 @@ const PoolspaceChart = ({ data, maxSize }) => {
               />
             </View>
           ) : null}
-          <CustomCard style={{ marginTop: 16 }}>
+          <CustomCard style={{ marginTop: 16, marginHorizontal: 8 }}>
             <View style={styles.selection}>
               <View
                 style={[StyleSheet.absoluteFill, { marginTop: 4, marginBottom: 4, marginStart: 4 }]}

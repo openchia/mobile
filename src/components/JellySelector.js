@@ -23,7 +23,7 @@ const JellySelector = ({ items, onPress, defaultVal }) => {
   }));
 
   return (
-    <CustomCard style={{ marginTop: 16 }}>
+    <CustomCard style={{ marginTop: 16, marginHorizontal: 8 }}>
       <View
         style={{
           display: 'flex',

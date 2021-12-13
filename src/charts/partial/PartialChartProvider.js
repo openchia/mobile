@@ -33,7 +33,7 @@ const PartialChartProvider = ({ data }) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center' }}>
       <PartialChart partials={partials} stats={stats}>
-        <CustomCard style={{ marginTop: 16 }}>
+        <CustomCard style={{ marginTop: 16, marginHorizontal: 8 }}>
           <View style={styles.selection}>
             <View
               style={[StyleSheet.absoluteFill, { marginTop: 4, marginBottom: 4, marginStart: 4 }]}
