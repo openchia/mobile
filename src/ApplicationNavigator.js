@@ -79,6 +79,7 @@ import ChiaPriceScreen from './screens/charts/ChiaPriceScreen';
 LogBox.ignoreLogs(['timer']);
 LogBox.ignoreLogs(['keyboardDidShow: ...']); // Ignore log notification by message
 LogBox.ignoreLogs(['keyboardDidHide: ...']); // Ignore log notification by message
+LogBox.ignoreLogs(['cycle']);
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();

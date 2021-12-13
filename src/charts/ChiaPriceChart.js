@@ -20,7 +20,7 @@ import {
 import { NetspaceChartIntervals } from './Constants';
 import { getMarketChart } from '../Api';
 import JellySelector from '../components/JellySelector';
-import { currencyState } from '../Atoms';
+import { currencyState, settingsState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
 import { currencyFormat } from '../utils/Formatting';
 import { getCurrencyFromKey } from '../screens/CurrencySelectionScreen';
@@ -237,7 +237,8 @@ const ITEMS = [
 ];
 
 const ChiaPriceChart = ({ chiaPrice }) => {
-  const [element, setElement] = useState(ITEMS[0]);
+  const [settings, setSettings] = useRecoilState(settingsState);
+  const [element, setElement] = useState(ITEMS[settings.priceDefault ? settings.priceDefault : 0]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -246,9 +247,11 @@ const ChiaPriceChart = ({ chiaPrice }) => {
         chiaPrice={chiaPrice}
         bottomContent={
           <JellySelector
+            defaultVal={settings.priceDefault}
             items={ITEMS}
-            onPress={(item) => {
+            onPress={(item, index) => {
               setElement(item);
+              setSettings((prev) => ({ ...prev, priceDefault: index }));
             }}
           />
         }

@@ -5,6 +5,7 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useTheme } from 'react-native-paper';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { useRecoilState } from 'recoil';
 import CustomCard from '../components/CustomCard';
 import {
   ChartDot,
@@ -14,6 +15,7 @@ import {
   ChartYLabel,
 } from '../react-native-animated-charts';
 import { NetspaceChartIntervals } from './Constants';
+import { settingsState } from '../Atoms';
 
 export const { width } = Dimensions.get('window');
 
@@ -90,9 +92,10 @@ const formatDatetime = (value) => {
 };
 
 const PoolspaceChart = ({ data, maxSize }) => {
+  const [settings, setSettings] = useRecoilState(settingsState);
   const transition = useSharedValue(0);
   const previous = useSharedValue(0);
-  const current = useSharedValue(4);
+  const current = useSharedValue(settings.poolspaceDefault ? settings.poolspaceDefault : 4);
   const [points, setPoints] = useState(data[current.value]);
   const theme = useTheme();
   const { t } = useTranslation();
@@ -167,6 +170,7 @@ const PoolspaceChart = ({ data, maxSize }) => {
                     current.value = index;
                     transition.value = withTiming(1);
                     setPoints(data[index]);
+                    setSettings((prev) => ({ ...prev, poolspaceDefault: index }));
                   }}
                   style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
                 >

@@ -158,17 +158,21 @@ const FarmerScreen = ({ route, navigation }) => {
   }, [navigation, route, launcherIDs]);
 
   return (
-    <Tab.Navigator labeled={false} barStyle={{ backgroundColor: theme.colors.tabNavigator }}>
+    <Tab.Navigator
+      labeled={false}
+      activeColor={theme.colors.tabNavigatorText}
+      barStyle={{ backgroundColor: theme.colors.tabNavigator }}
+    >
       <Tab.Screen
         options={{
           style: {
             height: 45,
           },
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
-              name="chart-line"
+              name={focused ? 'chart-areaspline' : 'chart-line'}
               size={24}
-              color={theme.colors.tabNavigatorText}
+              color={color}
             />
           ),
         }}
@@ -182,11 +186,11 @@ const FarmerScreen = ({ route, navigation }) => {
             backgroundColor: 'red',
             height: 45,
           },
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name="ios-bar-chart-outline"
+              name={focused ? 'ios-bar-chart' : 'ios-bar-chart-outline'}
               size={24}
-              color={theme.colors.tabNavigatorText}
+              color={color}
             />
           ),
         }}
@@ -200,8 +204,8 @@ const FarmerScreen = ({ route, navigation }) => {
             backgroundColor: 'red',
             height: 45,
           },
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-card-outline" size={24} color={theme.colors.tabNavigatorText} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'ios-card' : 'ios-card-outline'} size={24} color={color} />
           ),
         }}
         name="FarmerPayouts"
@@ -214,8 +218,12 @@ const FarmerScreen = ({ route, navigation }) => {
             backgroundColor: 'red',
             height: 45,
           },
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-layers-outline" size={24} color={theme.colors.tabNavigatorText} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? 'ios-layers' : 'ios-layers-outline'}
+              size={24}
+              color={color}
+            />
           ),
         }}
         name="FarmerBlocks"
@@ -228,7 +236,14 @@ const FarmerScreen = ({ route, navigation }) => {
             backgroundColor: 'red',
             height: 45,
           },
-          tabBarIcon: ({ color }) => <TicketIcon size={24} color={theme.colors.tabNavigatorText} />,
+          tabBarIcon: ({ color, focused }) => (
+            <TicketIcon
+              size={24}
+              color={color}
+              filled={focused}
+              greenColor={theme.colors.primary}
+            />
+          ),
         }}
         name="Tickets"
       >

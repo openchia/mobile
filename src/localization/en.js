@@ -91,8 +91,8 @@ export default {
     post: 'Post',
     giveaway: 'Giveaway',
     drawDate: 'Draw Date',
-    ticketIssuance: 'TICKETS ISSUANCE',
-    ticketsIssued: 'TICKETS ISSUED',
+    ticketIssuance: 'Tickets Issuance',
+    ticketsIssued: 'Tickets Issued',
     giveawayEveryone:
       'All farmers participating in our pool are automatically eligible in our giveaway!',
     giveawayEveryday:
@@ -101,7 +101,7 @@ export default {
       'Draw of the ticket number will happen live in our YouTube channel and done using Google random number generator. The winner will be the farmer with the ticket closest to the number draw. If two farmers are within the same range another number will be drawed until there is only one winner.',
     ticketAvailabilty: 'All tickets issued are made available in each farmer detail page.',
     ticketNumber: 'Ticket Number',
-    tickets: 'Tickets',
+    tickets: 'Giveaway Tickets',
     ticketsCalculator: 'Tickets Calculator',
     winners: 'Winners',
     prize: 'Prize',

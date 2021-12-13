@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import { selectorFamily, useRecoilValueLoadable, useSetRecoilState, useRecoilState } from 'recoil';
 import { getStats } from '../Api';
-import { currencyState, statsRequestIDState } from '../Atoms';
+import { currencyState, statsRequestIDState, initialRouteState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 import {
@@ -78,6 +78,7 @@ const StatsScreen = ({ navigation }) => {
   const theme = useTheme();
   const [failed, setFailed] = useState(false);
   const netInfo = useNetInfo();
+  const [initialRoute, setIntialRoute] = useRecoilState(initialRouteState);
 
   useEffect(() => {
     if (statsLoadable.state === 'hasValue') {
@@ -174,6 +175,10 @@ const StatsScreen = ({ navigation }) => {
           />
           <View style={{ width: 8 }} />
           <Item
+            onPress={() => {
+              navigation.navigate('Root', { screen: 'Blocks Found', intial: false });
+              setIntialRoute({ name: 'Blocks Found' });
+            }}
             loadable={statsLoadable}
             format={(item) => item.rewards_blocks}
             color="#FB6D4C"
@@ -182,6 +187,10 @@ const StatsScreen = ({ navigation }) => {
         </View>
         <View style={styles.container}>
           <Item
+            onPress={() => {
+              navigation.navigate('Root', { screen: 'Farmers', intial: false });
+              setIntialRoute({ name: 'Farmers' });
+            }}
             loadable={statsLoadable}
             format={(item) => item.farmers}
             color="#34D4F1"
@@ -222,6 +231,10 @@ const StatsScreen = ({ navigation }) => {
           />
           <View style={{ width: 8 }} />
           <Item
+            onPress={() => {
+              navigation.navigate('Root', { screen: 'Payouts', intial: false });
+              setIntialRoute({ name: 'Payouts' });
+            }}
             loadable={statsLoadable}
             format={(item) => `${convertMojoToChia(item.rewards_amount)} XCH`}
             color="#4DB33E"

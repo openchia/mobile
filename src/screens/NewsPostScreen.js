@@ -14,7 +14,7 @@ const NewsPostScreen = ({ navigation, route }) => {
       color: theme.colors.text,
     },
     a: {
-      color: 'green',
+      color: theme.colors.primaryLight,
     },
     span: {
       fontSize: 12,
