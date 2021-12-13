@@ -16,6 +16,7 @@ export const LANGUAGES = [
   { code: 'ru', label: 'Русский' },
   { code: 'zh', label: '中文' },
   { code: 'pt', label: 'Português' },
+  { code: 'nl', label: 'Nederlands' },
 ];
 
 const Item = ({ item, onPress }) => (
