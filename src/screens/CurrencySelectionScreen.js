@@ -38,7 +38,7 @@ export const getCurrencyTitle = (key) =>
 // Object.values(currencies.find((currency) => currency.key === key))[1];
 
 const Item = ({ item, onPress }) => (
-  <PressableCard style={{ marginVertical: 4, marginHorizontal: 8 }} onPress={onPress}>
+  <PressableCard style={{ marginVertical: 2, marginHorizontal: 8 }} onPress={onPress}>
     <View
       style={{
         padding: 14,

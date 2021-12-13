@@ -30,36 +30,9 @@ const query = selectorFamily({
     },
 });
 
-// const Item = ({ item }) => (
-//   <PressableCard onTap={() => {}}>
-//     <View
-//       style={{
-//         display: 'flex',
-//         flexDirection: 'row',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         padding: 10,
-//       }}
-//     >
-//       {/* <Text style={styles.rank}>{item.transaction}</Text> */}
-//       <Text style={styles.amount}>{`${convertMojoToChia(item.amount)} XCH`}</Text>
-//       <View style={{ flex: 1 }} />
-//       <View style={{ display: 'flex', flexDirection: 'column' }}>
-//         <Text style={styles.block}>{item.confirmed_block_index}</Text>
-//         <Text style={styles.date}>{format(new Date(item.payout.datetime), 'PPpp')}</Text>
-//       </View>
-//     </View>
-//   </PressableCard>
-// );
-
 const Item = ({ item, theme, t }) => (
-  <PressableCard style={{ marginHorizontal: 8, marginVertical: 4 }} onTap={() => {}}>
+  <PressableCard style={{ marginHorizontal: 8, marginVertical: 2 }} onTap={() => {}}>
     <View style={{ display: 'flex', flexDirection: 'column', padding: 8, flex: 1 }}>
-      {/* <Text style={styles.rank}>{item.id}</Text>
-      <Text style={styles.date}>{format(new Date(item.datetime), 'PPpp')}</Text>
-      <Text style={styles.size}>{`${convertMojoToChia(item.amount)} XCH`}</Text> */}
-
-      {/* <View style={{ padding: 8, display: 'flex' }}> */}
       <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
         <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('amount')}</Text>
         <Text style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(

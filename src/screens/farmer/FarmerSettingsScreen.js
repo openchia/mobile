@@ -51,9 +51,9 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
         flex: 1,
       }}
     >
-      <View style={{ marginTop: 8 }}>
+      <View style={{ marginTop: 4 }}>
         <PressableCard
-          style={{ marginVertical: 4, marginHorizontal: 8 }}
+          style={{ marginVertical: 2, marginHorizontal: 8 }}
           onPress={() => {
             if (token)
               navigation.navigate({

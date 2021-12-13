@@ -187,8 +187,8 @@ const GiveawayInfoSceen = ({ navigation }) => {
           </View>
         </CustomCard>
       </View>
-      <View style={{ flexDirection: 'row', flex: 1, marginStart: 8 }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', marginTop: 16 }}>
+      <View style={{ flexDirection: 'row', flex: 1, marginStart: 4, marginTop: 16 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }}>
           <Text style={{ color: theme.colors.textGrey }}>{t('ticketDrawing')}</Text>
         </ScrollView>
 
@@ -211,11 +211,13 @@ const styles = StyleSheet.create({
   title: {
     paddingTop: 24,
     fontSize: 14,
+    paddingHorizontal: 1,
     // marginEnd: 8,
   },
   val: {
     fontSize: 14,
     paddingTop: 4,
+    paddingHorizontal: 1,
     paddingBottom: 24,
     // flex: 1,
   },

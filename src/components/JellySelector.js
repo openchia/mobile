@@ -9,12 +9,12 @@ import CustomCard from './CustomCard';
 
 export const { width } = Dimensions.get('window');
 
-const JellySelector = ({ items, onPress }) => {
+const JellySelector = ({ items, onPress, defaultVal }) => {
   const SELECTION_WIDTH = width - 32;
   const BUTTON_WIDTH = (width - 32) / items.length;
   const transition = useSharedValue(0);
   const previous = useSharedValue(0);
-  const current = useSharedValue(0);
+  const current = useSharedValue(defaultVal || 0);
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -56,7 +56,7 @@ const JellySelector = ({ items, onPress }) => {
               transition.value = 0;
               current.value = index;
               transition.value = withTiming(1);
-              onPress(item);
+              onPress(item, index);
             }}
             style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
           >

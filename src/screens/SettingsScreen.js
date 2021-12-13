@@ -65,7 +65,7 @@ const SettingsScreen = ({ navigation }) => {
     >
       {/* <Text style={{ fontSize: 20, padding: 10 }}>{t('general')}</Text> */}
       <PressableCard
-        style={{ marginVertical: 4, marginHorizontal: 8 }}
+        style={{ marginVertical: 2, marginHorizontal: 8 }}
         onPress={() => navigation.navigate('Currency')}
       >
         <View style={styles.content}>

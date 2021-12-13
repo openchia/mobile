@@ -65,7 +65,13 @@ export const initialRouteState = atom({
 
 export const settingsState = atom({
   key: 'atomTheme',
-  default: { isThemeDark: false, blockNotifications: false },
+  default: {
+    isThemeDark: false,
+    blockNotifications: false,
+    poolspaceDefault: 4,
+    partialDefault: 4,
+    priceDefault: 3,
+  },
   effects_UNSTABLE: [localEffect('settings')],
 });
 

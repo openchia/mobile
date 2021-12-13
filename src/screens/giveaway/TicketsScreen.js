@@ -61,7 +61,7 @@ const Item = ({ item, theme, t }) => (
   </CustomCard>
 );
 
-const Content = ({ navigation, dataProvider, theme, t, width }) => {
+const Content = ({ navigation, dataProvider, theme, t, width, ticketCount }) => {
   const [layoutProvider] = React.useState(
     new LayoutProvider(
       (index) => 0,
@@ -76,12 +76,21 @@ const Content = ({ navigation, dataProvider, theme, t, width }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ margin: 16, flexDirection: 'row' }}>
+        <Text style={{ marginEnd: 4, fontSize: 16 }}>{t('ticketsIssued')}</Text>
+        <Text
+          numberOfLines={1}
+          style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'right', flex: 1 }}
+        >
+          {ticketCount}
+        </Text>
+      </View>
       <RecyclerListView
         // forceNonDeterministicRendering
         rowRenderer={rowRenderer}
         dataProvider={dataProvider}
         layoutProvider={layoutProvider}
-        contentContainerStyle={{ marginTop: 6, paddingBottom: 14 }}
+        contentContainerStyle={{ paddingBottom: 14 }}
       />
     </SafeAreaView>
   );
@@ -142,6 +151,7 @@ const TicketsScreen = ({ navigation, launcherId }) => {
 
   return (
     <Content
+      ticketCount={ticketsLoadable.contents.results[0].tickets.length}
       navigation={navigation}
       dataProvider={dataProvider}
       t={t}

@@ -39,14 +39,18 @@ const GiveawaySceen = ({ route, navigation }) => {
   }, [navigation, route]);
 
   return (
-    <Tab.Navigator labeled={false} barStyle={{ backgroundColor: theme.colors.tabNavigator }}>
+    <Tab.Navigator
+      labeled={false}
+      activeColor={theme.colors.tabNavigatorText}
+      barStyle={{ backgroundColor: theme.colors.tabNavigator }}
+    >
       <Tab.Screen
         options={{
           style: {
             height: 45,
           },
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-gift-outline" size={24} color={theme.colors.tabNavigatorText} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'ios-gift' : 'ios-gift-outline'} size={24} color={color} />
           ),
         }}
         name="Info"
@@ -59,11 +63,11 @@ const GiveawaySceen = ({ route, navigation }) => {
             backgroundColor: 'red',
             height: 45,
           },
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name="ios-calculator-outline"
+              name={focused ? 'ios-calculator' : 'ios-calculator-outline'}
               size={24}
-              color={theme.colors.tabNavigatorText}
+              color={color}
             />
           ),
         }}
@@ -77,8 +81,12 @@ const GiveawaySceen = ({ route, navigation }) => {
             backgroundColor: 'red',
             height: 45,
           },
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-trophy-outline" size={24} color={theme.colors.tabNavigatorText} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? 'ios-trophy' : 'ios-trophy-outline'}
+              size={24}
+              color={color}
+            />
           ),
         }}
         name="Winners"

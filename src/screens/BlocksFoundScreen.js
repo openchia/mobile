@@ -47,7 +47,7 @@ const getLuck = (luck) => {
 
 const Item = ({ item, theme, t }) => (
   <PressableCard
-    style={{ padding: 8, display: 'flex', marginHorizontal: 8, marginVertical: 4 }}
+    style={{ padding: 8, display: 'flex', marginHorizontal: 8, marginVertical: 2 }}
     onTap={() => {}}
   >
     <View style={{ display: 'flex', flexDirection: 'row' }}>

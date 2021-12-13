@@ -4,9 +4,11 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Text, useTheme } from 'react-native-paper';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
+import { useRecoilState } from 'recoil';
 import CustomCard from '../../components/CustomCard';
 import PartialChart from '../../screens/farmer/PartialChart';
 import { PartChartIntervals } from '../Constants';
+import { settingsState } from '../../Atoms';
 
 export const { width } = Dimensions.get('window');
 
@@ -15,13 +17,13 @@ const BUTTON_WIDTH = (width - 32) / PartChartIntervals.length;
 
 const PartialChartProvider = ({ data }) => {
   // const { globalData, extraData } = data;
+  const [settings, setSettings] = useRecoilState(settingsState);
   const theme = useTheme();
   const transition = useSharedValue(0);
-  const current = useSharedValue(4);
+  const current = useSharedValue(settings.partialDefault ? settings.partialDefault : 4);
   const { t } = useTranslation();
 
   const [partials, setPartials] = useState(data[current.value].results);
-  // const stats = useSharedValue(extraData[current.value]);
   const [stats, setStats] = useState(data[current.value].stats);
 
   const style = useAnimatedStyle(() => ({
@@ -53,8 +55,7 @@ const PartialChartProvider = ({ data }) => {
                   transition.value = withTiming(1);
                   setPartials(data[index].results);
                   setStats(data[index].stats);
-                  // stats.value = extraData[index];
-                  //   setStats(extraData[index]);
+                  setSettings((prev) => ({ ...prev, partialDefault: index }));
                 }}
               >
                 <Animated.View style={[styles.labelContainer]}>

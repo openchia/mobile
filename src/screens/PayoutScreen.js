@@ -33,7 +33,7 @@ const query = selectorFamily({
 
 const Item = ({ item, theme, t }) => (
   <CustomCard
-    style={{ padding: 8, display: 'flex', marginHorizontal: 8, marginVertical: 4 }}
+    style={{ padding: 8, display: 'flex', marginHorizontal: 8, marginVertical: 2 }}
     onTap={() => {}}
   >
     <View style={{ display: 'flex', flexDirection: 'row' }}>

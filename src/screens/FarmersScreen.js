@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
+import { BaseItemAnimator, DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
+import { getFontScale } from 'react-native-device-info';
 import { getFarmers } from '../Api';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
@@ -15,76 +16,77 @@ const Item = ({ item, rank, onPress }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   return (
-    <View style={{ width: '100%' }}>
-      <PressableCard
-        style={{
-          // display: 'flex',
-          flexDirection: 'column',
-          // flexDirection: 'row',
-          padding: 8,
-          marginStart: 8,
-          marginEnd: 8,
-          // width: '100%',
-          flex: 1,
-          // justifyContent: 'center',
-          // flex: 1,
-          // alignItems: 'center',
-          height: HEIGHT,
-        }}
-        onPress={onPress}
-      >
-        <View style={{ flexDirection: 'row' }}>
-          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-            Launcher ID
-          </Text>
-          <Text
-            numberOfLines={1}
-            style={[styles.val, { color: theme.colors.textLight, fontWeight: 'bold' }]}
-          >
-            {item.name ? item.name : item.launcher_id}
-          </Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-            {t('rank')}
-          </Text>
-          <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>
-            {rank}
-          </Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-            {t('points')}
-          </Text>
-          <Text numberOfLines={1} style={styles.val}>
-            {item.points}
-          </Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-            {t('difficulty')}
-          </Text>
-          <Text numberOfLines={1} style={styles.val}>
-            {item.difficulty}
-          </Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-            {t('utilizationSpace')}
-          </Text>
-          <Text numberOfLines={1} style={styles.val}>{`${item.points_of_total.toFixed(5)}%`}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginTop: 2 }}>
-          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-            {t('estimatedSize')}
-          </Text>
-          <Text numberOfLines={1} style={styles.val}>
-            {formatBytes(item.estimated_size)}
-          </Text>
-        </View>
-      </PressableCard>
-      <View style={{ height: 8 }} />
-    </View>
+    // <View style={{ width: '100%' }}>
+    <PressableCard
+      style={{
+        // display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        marginVertical: 2,
+        // flexDirection: 'row',
+
+        padding: 8,
+        marginHorizontal: 8,
+        // width: '100%',
+        flex: 1,
+        // justifyContent: 'center',
+        // flex: 1,
+        // alignItems: 'center',
+        // height: HEIGHT,
+      }}
+      onPress={onPress}
+    >
+      <View style={{ flexDirection: 'row' }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          Launcher ID
+        </Text>
+        <Text
+          numberOfLines={1}
+          style={[styles.val, { color: theme.colors.textLight, fontWeight: 'bold' }]}
+        >
+          {item.name ? item.name : item.launcher_id}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 2 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('rank')}
+        </Text>
+        <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>
+          {rank}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 2 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('points')}
+        </Text>
+        <Text numberOfLines={1} style={styles.val}>
+          {item.points}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 2 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('difficulty')}
+        </Text>
+        <Text numberOfLines={1} style={styles.val}>
+          {item.difficulty}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 2 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('utilizationSpace')}
+        </Text>
+        <Text numberOfLines={1} style={styles.val}>{`${item.points_of_total.toFixed(5)}%`}</Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 2 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('estimatedSize')}
+        </Text>
+        <Text numberOfLines={1} style={styles.val}>
+          {formatBytes(item.estimated_size)}
+        </Text>
+      </View>
+    </PressableCard>
+    // </View>
   );
 };
 
@@ -99,6 +101,7 @@ const Content = ({
   isQuerying,
   refresh,
   isRefreshing,
+  fontScale,
 }) => {
   // const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(data);
   const { width } = Dimensions.get('window');
@@ -108,7 +111,7 @@ const Content = ({
       (index) => 1,
       (type, dim) => {
         dim.width = width;
-        dim.height = HEIGHT + 8;
+        dim.height = HEIGHT * fontScale;
       }
     )
   );
@@ -149,8 +152,10 @@ const Content = ({
         layoutProvider={layoutProvider}
         rowRenderer={rowRenderer}
         onEndReached={loadMore}
+        // itemAnimator={new BaseItemAnimator()}
         onEndReachedThreshold={0.5}
-        forceNonDeterministicRendering
+        // canChangeSize
+        // forceNonDeterministicRendering
         renderFooter={() =>
           isQuerying && (
             <Text style={{ padding: 10, fontWeight: 'bold', textAlign: 'center' }}>Loading</Text>
@@ -170,6 +175,13 @@ const FarmersScreen = ({ navigation }) => {
   const [dataProvider, setDataProvider] = useState();
   const [error, setError] = useState();
   const netInfo = useNetInfo();
+  const [fontScale, setFontScale] = useState();
+
+  useEffect(() => {
+    getFontScale().then((fontScale) => {
+      setFontScale(fontScale || 1);
+    });
+  }, []);
 
   useEffect(() => {
     if (data.length > 0) {
@@ -207,7 +219,7 @@ const FarmersScreen = ({ navigation }) => {
     }
   }, [loading]);
 
-  if (loadState.loading) return <LoadingComponent />;
+  if (loadState.loading || !fontScale) return <LoadingComponent />;
   if (error) {
     return (
       <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
@@ -240,6 +252,7 @@ const FarmersScreen = ({ navigation }) => {
       queryMoreData={queryMoreData}
       isQuerying={loadState.querying}
       isRefreshing={loadState.refreshing}
+      fontScale={fontScale}
     />
   );
 };

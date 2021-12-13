@@ -16,6 +16,7 @@ import {
 import { Button, Text, useTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSetRecoilState } from 'recoil';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { farmerRefreshState } from '../../Atoms';
 import CustomCard from '../../components/CustomCard';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -68,7 +69,7 @@ const HeaderItem = ({ loadable, launcherId, currency, t, theme }) => (
         onPress={() => Clipboard.setString(launcherId)}
       >
         <Text style={{ textAlign: 'center', marginEnd: 16 }}>{launcherId}</Text>
-        <MaterialCommunityIcons name="content-copy" size={16} color="grey" />
+        <Ionicons name="copy-outline" size={16} color="grey" />
       </TouchableOpacity>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', marginTop: 6 }}>
