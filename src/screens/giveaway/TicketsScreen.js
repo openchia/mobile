@@ -34,7 +34,11 @@ const query = selectorFamily({
     (launcherId) =>
     async ({ get }) => {
       get(ticketsRefreshState());
-      const response = await getTickets(launcherId);
+      const roundResponse = await getRound();
+      if (roundResponse.error) {
+        throw roundResponse.error;
+      }
+      const response = await getTickets(launcherId, roundResponse.results.length);
       if (response.error) {
         throw response.error;
       }
@@ -145,13 +149,17 @@ const TicketsScreen = ({ navigation, launcherId }) => {
     );
   }
 
-  const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
-    ticketsLoadable.contents.results[0].tickets
-  );
+  let allTickets = [];
+
+  ticketsLoadable.contents.results.forEach((element) => {
+    allTickets = allTickets.concat(element.tickets);
+  });
+
+  const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(allTickets);
 
   return (
     <Content
-      ticketCount={ticketsLoadable.contents.results[0].tickets.length}
+      ticketCount={allTickets.length}
       navigation={navigation}
       dataProvider={dataProvider}
       t={t}

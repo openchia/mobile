@@ -121,8 +121,10 @@ export const getChiaPlotPosts = () =>
     })
     .then((json) => json);
 
-export const getTickets = (launcherID) =>
-  fetch(`${REST_API}giveaway/tickets/?ordering=-created_at&launcher=${launcherID}&limit=1`)
+export const getTickets = (launcherID, round) =>
+  fetch(
+    `${REST_API}giveaway/tickets/?ordering=-created_at&launcher=${launcherID}&giveaway=${round}`
+  )
     .then((response) => {
       if (response.ok) {
         return response.json();
