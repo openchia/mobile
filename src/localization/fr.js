@@ -85,7 +85,7 @@ export default {
     displayName: 'Nom affiché',
     farmName: 'Nom',
     totalChiaAccumulated: 'Total payé',
-    noPayoutsRecieved: 'Aucun paiement reçu pour le moment. Tirez vers le bas pour rafraîchir.',
+    noPayoutsRecieved: 'Aucun paiement reçu pour le moment. Glisser vers le bas pour rafraîchir.',
     overView: 'Aperçu',
     height: 'Hauteur',
     post: 'Publier',
@@ -97,7 +97,7 @@ export default {
       'Tous les farmer participant à notre pool sont automatiquement éligibles pour le tirage au sort !',
     giveawayEveryday:
       'Chaque jour, les farmers recevront des billets en fonction de la taille estimée de leur exploitation.',
-    ticketDrawing: `Le tirage au sort du numéro du ticket se fera en direct sur notre chaîne YouTube, à l'aide d'un générateur de numéros aléatoires Google. Le gagnant sera le farmer dont le ticket sera le plus proche du numéro tiré au sort. Si deux agriculteurs se trouvent dans la même fourchette, un autre numéro sera tiré au sort jusqu'à ce qu'il n'y ait qu'un seul gagnant.`,
+    ticketDrawing: `Le tirage au sort du numéro du ticket se fera en direct sur notre chaîne YouTube, à l'aide d'un générateur de numéros aléatoires Google. Le gagnant sera le farmer dont le ticket sera le plus proche du numéro tiré au sort. Si deux farmers se trouvent dans la même fourchette, un autre numéro sera tiré au sort jusqu'à ce qu'il n'y ait qu'un seul gagnant.`,
     ticketAvailabilty:
       'Tous les tickets émis sont disponibles sur la page de détail de chaque farmer.',
     ticketNumber: 'Numéro de billet',
