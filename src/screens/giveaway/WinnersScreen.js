@@ -30,48 +30,51 @@ const query = selectorFamily({
     },
 });
 
-const Item = ({ item, theme, t }) => (
-  <CustomCard
-    style={{ padding: 8, display: 'flex', marginVertical: 4, marginHorizontal: 8 }}
-    onTap={() => {}}
-  >
-    <View style={{ display: 'flex', flexDirection: 'row' }}>
-      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-        {t('winner')}
-      </Text>
-      <Text
-        numberOfLines={1}
-        style={[styles.val, { fontWeight: 'bold', color: theme.colors.drawerSelected }]}
-      >
-        {item.winner ? item.winner : 'None'}
-      </Text>
-    </View>
-    <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-        {t('date')}
-      </Text>
-      <Text numberOfLines={1} style={styles.val}>
-        {format(new Date(item.draw_datetime), 'PPpp')}
-      </Text>
-    </View>
-    <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-        {t('prize')}
-      </Text>
-      <Text numberOfLines={1} style={styles.val}>
-        {`${convertMojoToChia(item.prize_amount)} XCH`}
-      </Text>
-    </View>
-    <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-        {t('issuedTickets')}
-      </Text>
-      <Text numberOfLines={1} style={styles.val}>
-        {item.issued_tickets}
-      </Text>
-    </View>
-  </CustomCard>
-);
+const Item = ({ item, theme, t }) => {
+  console.log(item);
+  return (
+    <CustomCard
+      style={{ padding: 8, display: 'flex', marginVertical: 4, marginHorizontal: 8 }}
+      onTap={() => {}}
+    >
+      <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('winner')}
+        </Text>
+        <Text
+          numberOfLines={1}
+          style={[styles.val, { fontWeight: 'bold', color: theme.colors.drawerSelected }]}
+        >
+          {item.winner ? item.winner.name || item.winner.launcher_id : 'None'}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', paddingTop: 8 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('date')}
+        </Text>
+        <Text numberOfLines={1} style={styles.val}>
+          {format(new Date(item.draw_datetime), 'PPpp')}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', paddingTop: 8 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('prize')}
+        </Text>
+        <Text numberOfLines={1} style={styles.val}>
+          {`${convertMojoToChia(item.prize_amount)} XCH`}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', paddingTop: 8 }}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+          {t('issuedTickets')}
+        </Text>
+        <Text numberOfLines={1} style={styles.val}>
+          {item.issued_tickets}
+        </Text>
+      </View>
+    </CustomCard>
+  );
+};
 
 const WinnersScreen = () => {
   const refresh = useRefresh();
