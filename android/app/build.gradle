@@ -136,8 +136,8 @@ android {
         applicationId "com.openchia"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 11
-        versionName "1.0.7"
+        versionCode 12
+        versionName "1.0.8"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {

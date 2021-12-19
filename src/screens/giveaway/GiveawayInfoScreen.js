@@ -182,7 +182,7 @@ const GiveawayInfoSceen = ({ navigation }) => {
               {t('ticketsIssued').toUpperCase()}
             </Text>
             <Text numberOfLines={1} style={styles.val}>
-              {data[0].issued_tickets}
+              {data[0].issued_tickets || 0}
             </Text>
           </View>
         </CustomCard>
