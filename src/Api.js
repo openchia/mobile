@@ -243,3 +243,49 @@ export const updateFarmerName = (launcherID, token, name) =>
     .catch((error) => {
       console.log(error);
     });
+
+export const updateFarmerBlockNotification = (launcherID, token, enabled) =>
+  fetch(`${REST_API}launcher/${launcherID}/`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      push_block_farmed: enabled,
+    }),
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json)
+    .catch((error) => {
+      console.log(error);
+    });
+
+export const updateFarmerMissingPartialsNotification = (launcherID, token, enabled) =>
+  fetch(`${REST_API}launcher/${launcherID}/`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      push_missing_partials_hours: enabled,
+    }),
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json)
+    .catch((error) => {
+      console.log(error);
+    });
