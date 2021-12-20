@@ -127,7 +127,7 @@ const SettingsScreen = ({ navigation }) => {
       >
         <View style={styles.content}>
           <Ionicons
-            name="ios-notifications-outline"
+            name={settings.blockNotifications ? 'ios-notifications' : 'ios-notifications-outline'}
             size={30}
             color={theme.colors.textGrey}
             style={{ marginEnd: 16 }}

@@ -74,6 +74,7 @@ import FarmerSettingsScreen from './screens/farmer/FarmerSettingsScreen';
 import FarmerNameScreen from './screens/farmer/FarmerNameScreen';
 import GiveawaySceen from './screens/giveaway/GiveawayScreen';
 import ChiaPriceScreen from './screens/charts/ChiaPriceScreen';
+import FarmerNotificationScreen from './screens/farmer/FarmerNotificationScreen';
 
 // LogBox.ignoreLogs(['Reanimated 2']);
 LogBox.ignoreLogs(['timer']);
@@ -375,6 +376,13 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRou
           component={SettingsScreen}
           options={() => ({
             title: t('settings'),
+          })}
+        />
+        <Stack.Screen
+          name="Farmer Notifications"
+          component={FarmerNotificationScreen}
+          options={() => ({
+            title: t('farmerNotifications'),
           })}
         />
       </Stack.Navigator>

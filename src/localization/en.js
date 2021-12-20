@@ -68,7 +68,7 @@ export default {
     appearanceDesc: 'Light, Dark',
     general: 'General',
     notifications: 'Notifications',
-    notificationsDesc: 'Partials, Payouts',
+    notificationsDesc: 'Offline, Blocks',
     notification: 'Notification',
     notificationDesc: 'Blocks Won',
     home: 'Home',
@@ -108,5 +108,9 @@ export default {
     issuedTickets: 'Issued Tickets',
     winner: 'Winner',
     chiaPriceChart: 'Chia Price Chart',
+    farmerOffline: 'Offline',
+    farmerOfflineNotification: 'No Partials Passed For 1h',
+    farmerBlockNotification: 'Block Won By Farmer',
+    farmerNotifications: 'Farm Notifications',
   },
 };
