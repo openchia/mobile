@@ -109,5 +109,9 @@ export default {
     issuedTickets: 'Kiadott jegyek',
     winner: 'Nyertes',
     chiaPriceChart: 'Chia árdiagram',
+    farmerOffline: 'Offline',
+    farmerOfflineNotification: 'No Partials Passed For 1h',
+    farmerBlockNotification: 'Block Won By Farmer',
+    farmerNotifications: 'Farm Notifications',
   },
 };

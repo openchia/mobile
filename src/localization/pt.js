@@ -110,5 +110,9 @@ export default {
     issuedTickets: 'Bilhetes emitidos',
     winner: 'Vencedor',
     chiaPriceChart: 'Tabela de Preços Chia',
+    farmerOffline: 'Offline',
+    farmerOfflineNotification: 'No Partials Passed For 1h',
+    farmerBlockNotification: 'Block Won By Farmer',
+    farmerNotifications: 'Farm Notifications',
   },
 };

@@ -99,7 +99,8 @@ export default {
       'Elke dag krijgen alle farmers automatisch tickets toegewezen aan de hand van farm grootte in de pool.',
     ticketDrawing:
       'Ticket nummer zal live via ons Youtube kanaal getrokken worden door de Google Random Number Generator. Het ticket met het nummer dichtst bij het getrokken nummer wint. Indien meerdere tickets even dicht bij het gewonnen nummer uitkomen zal een nieuw nummer getrokken worden tot er maar één winnaar is.',
-    ticketAvailabilty: 'Alle toegekende tickets zijn voor elke farmer beschibaar via de ticketpagina',
+    ticketAvailabilty:
+      'Alle toegekende tickets zijn voor elke farmer beschibaar via de ticketpagina',
     ticketNumber: 'Ticket Nummer',
     tickets: 'Toegekende Tickets',
     ticketsCalculator: 'Berekening van Tickets',
@@ -108,5 +109,9 @@ export default {
     issuedTickets: 'Toegekende Tickets',
     winner: 'Winnaar',
     chiaPriceChart: 'Chia Prijs overzicht',
+    farmerOffline: 'Offline',
+    farmerOfflineNotification: 'No Partials Passed For 1h',
+    farmerBlockNotification: 'Block Won By Farmer',
+    farmerNotifications: 'Farm Notifications',
   },
 };
