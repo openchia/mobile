@@ -111,8 +111,8 @@ export default {
     winner: 'Vencedor',
     chiaPriceChart: 'Tabela de Preços Chia',
     farmerOffline: 'Offline',
-    farmerOfflineNotification: 'No Partials Passed For 1h',
-    farmerBlockNotification: 'Block Won By Farmer',
-    farmerNotifications: 'Farm Notifications',
+    farmerOfflineNotification: 'Sem Parciais Aprovados por 1h',
+    farmerBlockNotification: 'Bloco Ganho pelo Agricultor',
+    farmerNotifications: 'Notificações agrícolas',
   },
 };
