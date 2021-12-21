@@ -106,5 +106,9 @@ export default {
     issuedTickets: '已发行的门票',
     winner: '赢家',
     chiaPriceChart: 'Chia图表',
+    farmerOffline: 'Offline',
+    farmerOfflineNotification: 'No Partials Passed For 1h',
+    farmerBlockNotification: 'Block Won By Farmer',
+    farmerNotifications: 'Farm Notifications',
   },
 };
