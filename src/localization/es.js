@@ -2,7 +2,7 @@ export default {
   translation: {
     languageSelector: 'Seleccione su idioma',
     welcome: 'Bienvenido a la pool OpenChia.io de protocolo oficial',
-    trust: 'Un pool en el que puedes confiar',
+    trust: 'Una pool en la que puedes confiar',
     open: 'Todo nuestro software es de código abierto',
     join: 'Únete a nuestra pool',
     chat: 'Chatea con nosotros',
@@ -10,7 +10,7 @@ export default {
     minPayout: 'Sin pago mínimo',
     instantPayout: 'Pago instantáneo',
     transparent: 'Transparente',
-    feeDesc: 'Baja comisión con opción de recomendados',
+    feeDesc: 'Comisión baja con opción de recomendados',
     minPayoutDesc: '¿Por qué esperar para obtener sus recompensas?',
     instantPayoutDesc: 'Obtenga su recompensa lo antes posible',
     transparentDesc: 'No tenemos nada que ocultar. Explorador completo y registros en tiempo real',
