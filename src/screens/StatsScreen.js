@@ -156,7 +156,14 @@ const StatsScreen = ({ navigation }) => {
           />
           <View style={{ width: 8 }} />
           <Item
-            onPress={() => navigation.navigate('Poolspace')}
+            onPress={() => {
+              navigation.navigate({
+                name: 'Poolspace',
+                params: {
+                  poolSpace: formatBytes(statsLoadable.contents.stats.pool_space),
+                },
+              });
+            }}
             loadable={statsLoadable}
             format={(item) => formatBytes(item.pool_space)}
             color="#4DB33E"

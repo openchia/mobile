@@ -1,28 +1,52 @@
 /* eslint-disable no-plusplus */
+import { getUnixTime } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { useTheme } from 'react-native-paper';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { useRecoilState } from 'recoil';
-import CustomCard from '../components/CustomCard';
+import { Dimensions, SafeAreaView, View } from 'react-native';
+import { ActivityIndicator, useTheme } from 'react-native-paper';
+import { selectorFamily, useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { getSpace } from '../Api';
+import { settingsState } from '../Atoms';
+import JellySelector from '../components/JellySelector';
 import {
   ChartDot,
   ChartPath,
   ChartPathProvider,
   ChartXLabel,
   ChartYLabel,
+  monotoneCubicInterpolation,
 } from '../react-native-animated-charts';
-import { NetspaceChartIntervals } from './Constants';
-import { settingsState } from '../Atoms';
 
 export const { width } = Dimensions.get('window');
-
-const SELECTION_WIDTH = width - 32;
-const BUTTON_WIDTH = (width - 32) / NetspaceChartIntervals.length;
 const units = ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+const ITEMS = [
+  {
+    label: '24h',
+    value: 1,
+  },
+  {
+    label: '3d',
+    value: 3,
+  },
+  {
+    label: '7d',
+    value: 7,
+  },
+  {
+    label: '30d',
+    value: 30,
+  },
+  {
+    label: '90d',
+    value: 90,
+  },
+  {
+    label: '1y',
+    value: 365,
+  },
+];
 
 export const formatY = (value) => {
   'worklet';
@@ -91,31 +115,44 @@ const formatDatetime = (value) => {
   return res;
 };
 
-const PoolspaceChart = ({ data, maxSize }) => {
-  const [settings, setSettings] = useRecoilState(settingsState);
-  const transition = useSharedValue(0);
-  const previous = useSharedValue(0);
-  const current = useSharedValue(settings.poolspaceDefault ? settings.poolspaceDefault : 4);
-  const [points, setPoints] = useState(data[current.value]);
+const query = selectorFamily({
+  key: 'poolSpace',
+  get:
+    (element) =>
+    async ({ get }) => {
+      const response = await getSpace(element.value);
+      if (response) {
+        const convertedData = response.map((item) => ({
+          x: getUnixTime(new Date(item.date)),
+          y: item.size,
+        }));
+
+        return monotoneCubicInterpolation({
+          data: convertedData,
+          includeExtremes: true,
+          range: 100,
+        });
+      }
+      return response.statusText;
+    },
+});
+
+const Chart = ({ poolSpace, element, bottomContent }) => {
+  const loadableData = useRecoilValueLoadable(query(element));
+  const [points, setPoints] = useState([]);
   const theme = useTheme();
   const { t } = useTranslation();
-  const [chartVisible, setChartVisible] = useState(false);
-
-  const style = useAnimatedStyle(() => ({
-    transform: [{ translateX: withTiming(BUTTON_WIDTH * current.value) }],
-  }));
 
   useEffect(() => {
-    setTimeout(() => {
-      setChartVisible(true);
-    }, 0);
-  }, [points]);
+    if (loadableData.state === 'hasValue') {
+      setPoints(loadableData.contents);
+    }
+  }, [loadableData]);
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1 }}>
       <ChartPathProvider data={{ points, smoothingStrategy: 'bezier' }}>
         <View style={{ marginTop: 16, marginLeft: 16, alignSelf: 'auto' }}>
-          {/* <Text>Hello</Text> */}
           <ChartXLabel
             format={formatDatetime}
             defaultValue={t('poolSpace')}
@@ -123,110 +160,75 @@ const PoolspaceChart = ({ data, maxSize }) => {
           />
           <ChartYLabel
             format={formatY}
-            defaultValue={maxSize}
+            defaultValue={poolSpace}
             style={{ color: theme.colors.text, padding: 0, fontSize: 24 }}
           />
         </View>
         <View style={{ flex: 1, justifyContent: 'center' }}>
-          {chartVisible ? (
-            <View style={{}}>
-              <ChartPath
-                hapticsEnabled={false}
-                hitSlop={30}
-                smoothingWhileTransitioningEnabled={false}
-                fill="none"
-                height={width / 2}
-                stroke={theme.colors.primaryLight}
-                backgroundColor="url(#prefix__paint0_linear)"
-                strokeWidth="2"
-                width={width}
-              />
-              <ChartDot
+          <View>
+            {points.length === 0 && (
+              <ActivityIndicator
                 style={{
-                  backgroundColor: theme.colors.accentColor,
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  margin: 'auto',
+                  position: 'absolute',
                 }}
+                size={60}
+                color="#119400"
               />
-            </View>
-          ) : null}
-          <CustomCard style={{ marginTop: 16, marginHorizontal: 8 }}>
-            <View style={styles.selection}>
-              <View
-                style={[StyleSheet.absoluteFill, { marginTop: 4, marginBottom: 4, marginStart: 4 }]}
-              >
-                <Animated.View
-                  style={[
-                    styles.backgroundSelection,
-                    { backgroundColor: theme.colors.accent },
-                    style,
-                  ]}
-                />
-              </View>
-              {NetspaceChartIntervals.map((item, index) => (
-                <TouchableWithoutFeedback
-                  key={item.label}
-                  onPress={() => {
-                    previous.value = current.value;
-                    transition.value = 0;
-                    current.value = index;
-                    transition.value = withTiming(1);
-                    setPoints(data[index]);
-                    setSettings((prev) => ({ ...prev, poolspaceDefault: index }));
-                  }}
-                  style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
-                >
-                  <Animated.View style={[styles.labelContainer]}>
-                    <Text
-                      // adjustsFontSizeToFit
-                      style={[styles.label, { color: theme.colors.jellyBarText }]}
-                    >
-                      {t(`${item.label}`)}
-                    </Text>
-                  </Animated.View>
-                </TouchableWithoutFeedback>
-              ))}
-            </View>
-          </CustomCard>
+            )}
+            <ChartPath
+              hapticsEnabled={false}
+              hitSlop={30}
+              smoothingWhileTransitioningEnabled={false}
+              fill="none"
+              height={width / 2}
+              stroke={theme.colors.primaryLight}
+              backgroundColor="url(#prefix__paint0_linear)"
+              selectedStrokeWidth="1.8"
+              strokeWidth="2"
+              width={width}
+            />
+            <ChartDot
+              style={{
+                backgroundColor: theme.colors.accentColor,
+              }}
+            />
+            {bottomContent}
+          </View>
         </View>
       </ChartPathProvider>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: 'center',
-    // backgroundColor: 'white',
-  },
-  backgroundSelection: {
-    backgroundColor: '#f3f3f3',
-    ...StyleSheet.absoluteFillObject,
-    width: BUTTON_WIDTH - 6,
-    borderRadius: 8,
-  },
-  selection: {
-    display: 'flex',
-    // marginTop: 16,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: SELECTION_WIDTH,
-    alignSelf: 'center',
-  },
-  labelContainer: {
-    padding: 8,
-    paddingTop: 12,
-    paddingBottom: 12,
-    width: BUTTON_WIDTH,
-  },
-  label: {
-    fontSize: 12,
-    color: 'black',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-  },
-});
+const PoolspaceChart = ({ poolSpace }) => {
+  const [settings, setSettings] = useRecoilState(settingsState);
+  const [element, setElement] = useState(
+    ITEMS[settings.poolspaceDefault ? settings.poolspaceDefault : 4]
+  );
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <Chart
+        element={element}
+        poolSpace={poolSpace}
+        bottomContent={
+          <JellySelector
+            defaultVal={settings.priceDefault}
+            items={ITEMS}
+            onPress={(item, index) => {
+              setElement(item);
+              setSettings((prev) => ({ ...prev, priceDefault: index }));
+            }}
+          />
+        }
+      />
+    </SafeAreaView>
+  );
+};
 
 export default PoolspaceChart;

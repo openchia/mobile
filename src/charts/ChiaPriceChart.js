@@ -3,7 +3,7 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { useTheme } from 'react-native-paper';
+import { ActivityIndicator, useTheme } from 'react-native-paper';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { selectorFamily, useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,6 +15,7 @@ import {
   ChartPathProvider,
   ChartXLabel,
   ChartYLabel,
+  monotoneCubicInterpolation,
   simplifyData,
 } from '../react-native-animated-charts';
 import { NetspaceChartIntervals } from './Constants';
@@ -101,16 +102,6 @@ const query = selectorFamily({
       const currency = await get(currencyState);
       const response = await getMarketChart(currency, element.value, element.interval);
       if (response.data) {
-        if (element.label === '90d' || element.label === '30d') {
-          return simplifyData(
-            response.data.prices.map((item) => ({
-              x: item[0],
-              y: item[1],
-            })),
-            10,
-            true
-          );
-        }
         if (element.label === '1h') {
           let now = Date.now();
           now = subHours(now, 1);
@@ -122,24 +113,50 @@ const query = selectorFamily({
             }));
           return data;
         }
-        return simplifyData(
-          response.data.prices.map((item) => ({
+
+        return monotoneCubicInterpolation({
+          data: response.data.prices.map((item) => ({
             x: item[0],
             y: item[1],
           })),
-          4,
-          true
-        );
-        // return response.data.prices.map((item) => ({
-        //   x: item[0],
-        //   y: item[1],
-        // }));
+          includeExtremes: true,
+          range: 100,
+        });
+        // if (element.label === '90d' || element.label === '30d') {
+        //   return simplifyData(
+        //     response.data.prices.map((item) => ({
+        //       x: item[0],
+        //       y: item[1],
+        //     })),
+        //     10,
+        //     true
+        //   );
+        // }
+        // if (element.label === '1h') {
+        //   let now = Date.now();
+        //   now = subHours(now, 1);
+        //   const data = response.data.prices
+        //     .filter((item) => isAfter(new Date(item[0]), now))
+        //     .map((item) => ({
+        //       x: item[0],
+        //       y: item[1],
+        //     }));
+        //   return data;
+        // }
+        // return simplifyData(
+        //   response.data.prices.map((item) => ({
+        //     x: item[0],
+        //     y: item[1],
+        //   })),
+        //   4,
+        //   true
+        // );
       }
       return response.statusText;
     },
 });
 
-const Chart = ({ data, chiaPrice, element, bottomContent }) => {
+const Chart = ({ chiaPrice, element, bottomContent }) => {
   const loadableData = useRecoilValueLoadable(query(element));
   const currency = useRecoilValue(currencyState);
   const theme = useTheme();
@@ -151,6 +168,7 @@ const Chart = ({ data, chiaPrice, element, bottomContent }) => {
       setPoints(loadableData.contents);
     }
   }, [loadableData]);
+
   return (
     <>
       <ChartPathProvider
@@ -173,7 +191,21 @@ const Chart = ({ data, chiaPrice, element, bottomContent }) => {
           />
         </View>
         <View style={{ flex: 1, justifyContent: 'center' }}>
-          <View style={{}}>
+          <View>
+            {points.length === 0 && (
+              <ActivityIndicator
+                style={{
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  margin: 'auto',
+                  position: 'absolute',
+                }}
+                size={60}
+                color="#119400"
+              />
+            )}
             <ChartPath
               hapticsEnabled={false}
               hitSlop={30}
@@ -182,6 +214,7 @@ const Chart = ({ data, chiaPrice, element, bottomContent }) => {
               height={width / 2}
               stroke={theme.colors.primaryLight}
               // backgroundColor="url(#prefix__paint0_linear)"
+              selectedStrokeWidth="1.8"
               strokeWidth="2"
               width={width}
             />
@@ -259,42 +292,5 @@ const ChiaPriceChart = ({ chiaPrice }) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: 'center',
-    // backgroundColor: 'white',
-  },
-  backgroundSelection: {
-    backgroundColor: '#f3f3f3',
-    ...StyleSheet.absoluteFillObject,
-    width: BUTTON_WIDTH - 6,
-    borderRadius: 8,
-  },
-  selection: {
-    display: 'flex',
-    // marginTop: 16,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: SELECTION_WIDTH,
-    alignSelf: 'center',
-  },
-  labelContainer: {
-    padding: 8,
-    paddingTop: 12,
-    paddingBottom: 12,
-    width: BUTTON_WIDTH,
-  },
-  label: {
-    fontSize: 12,
-    color: 'black',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-  },
-});
 
 export default ChiaPriceChart;

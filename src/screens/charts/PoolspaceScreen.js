@@ -21,71 +21,68 @@ const filterData = (data, timePeriod) => {
   return data.filter((item) => isAfter(fromUnixTime(item.x), date));
 };
 
-const PoolSpaceScreen = ({ navigation }) => {
-  const [data, setData] = useState(null);
-  const [maxSize, setMaxSize] = useState('');
+const PoolSpaceScreen = ({ route, navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
-  const refresh = useRefresh();
-  const [error, setError] = useState();
+  const { poolSpace } = route.params;
 
-  useEffect(() => {
-    getSpace()
-      .then((netspace) => {
-        const convertedData = netspace.map((item) => ({
-          x: getUnixTime(new Date(item.date)),
-          y: item.size,
-        }));
-        const filteredData = convertedData.filter((item) => item.y !== 0);
-        const data = NetspaceChartIntervals.map((item) => {
-          if (item.time === -1)
-            return monotoneCubicInterpolation({
-              data: filteredData,
-              includeExtremes: true,
-              range: 100,
-            });
-          return monotoneCubicInterpolation({
-            data: filterData(filteredData, item.time),
-            includeExtremes: true,
-            range: 100,
-          });
-        });
-        setMaxSize(formatBytes(netspace[netspace.length - 1].size));
-        setData(data);
-        setRefreshing(false);
-      })
-      .catch((error) => {
-        setRefreshing(false);
-        setData(null);
-        setError(true);
-      });
-  }, [refreshing, error]);
+  //   useEffect(() => {
+  //     getSpace()
+  //       .then((netspace) => {
+  //         const convertedData = netspace.map((item) => ({
+  //           x: getUnixTime(new Date(item.date)),
+  //           y: item.size,
+  //         }));
+  //         const filteredData = convertedData.filter((item) => item.y !== 0);
+  //         const data = NetspaceChartIntervals.map((item) => {
+  //           if (item.time === -1)
+  //             return monotoneCubicInterpolation({
+  //               data: filteredData,
+  //               includeExtremes: true,
+  //               range: 100,
+  //             });
+  //           return monotoneCubicInterpolation({
+  //             data: filterData(filteredData, item.time),
+  //             includeExtremes: true,
+  //             range: 100,
+  //           });
+  //         });
+  //         setMaxSize(formatBytes(netspace[netspace.length - 1].size));
+  //         setData(data);
+  //         setRefreshing(false);
+  //       })
+  //       .catch((error) => {
+  //         setRefreshing(false);
+  //         setData(null);
+  //         setError(true);
+  //       });
+  //   }, [refreshing, error]);
 
-  useEffect(() => {
-    refresh();
-  }, [refreshing]);
+  // useEffect(() => {
+  //   refresh();
+  // }, [refreshing]);
 
-  if (error) {
-    return (
-      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
-          Cant Connect to Network
-        </Text>
-        <Button
-          mode="contained"
-          onPress={() => {
-            setError(false);
-            refresh();
-          }}
-        >
-          Retry
-        </Button>
-      </SafeAreaView>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+  //       <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+  //         Cant Connect to Network
+  //       </Text>
+  //       <Button
+  //         mode="contained"
+  //         onPress={() => {
+  //           setError(false);
+  //           refresh();
+  //         }}
+  //       >
+  //         Retry
+  //       </Button>
+  //     </SafeAreaView>
+  //   );
+  // }
 
-  if (!data && !refreshing) {
-    return <LoadingComponent />;
-  }
+  // if (!data && !refreshing) {
+  //   return <LoadingComponent />;
+  // }
 
   return (
     <SafeAreaView
@@ -105,7 +102,7 @@ const PoolSpaceScreen = ({ navigation }) => {
           />
         }
       >
-        <PoolspaceChart data={data} maxSize={maxSize} />
+        <PoolspaceChart poolSpace={poolSpace} />
       </ScrollView>
     </SafeAreaView>
   );
