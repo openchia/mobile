@@ -4,8 +4,8 @@ const REST_API = 'https://openchia.io/api/v1.0/';
 const CHIA_PLOT_REST_API = 'https://thechiaplot.net/wp-json/wp/v2/';
 const COINGECKO_API = 'https://api.coingecko.com/api/v3/';
 
-export const getSpace = () =>
-  fetch(`${REST_API}space?days=365`)
+export const getSpace = (days) =>
+  fetch(`${REST_API}space?days=${days}`)
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -13,6 +13,16 @@ export const getSpace = () =>
       throw Error(response.statusText);
     })
     .then((json) => json);
+
+// export const getSpace = () =>
+//   fetch(`${REST_API}space?days=365`)
+//     .then((response) => {
+//       if (response.ok) {
+//         return response.json();
+//       }
+//       throw Error(response.statusText);
+//     })
+//     .then((json) => json);
 
 export const getStats = () =>
   fetch(`${REST_API}stats`)
