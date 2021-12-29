@@ -10,6 +10,8 @@ import { partialRefreshState } from '../../Atoms';
 import { PartChartIntervals } from '../../charts/Constants';
 import PartialChartProvider from '../../charts/partial/PartialChartProvider';
 import LoadingComponent from '../../components/LoadingComponent';
+import useOrientation from '../../hooks/useOrientation';
+import PartialChart from './PartialChart';
 
 export const { width } = Dimensions.get('window');
 
@@ -73,76 +75,60 @@ const getTotalChartData = (data, maxDate, numHours, numBars, label) => {
 };
 
 const FarmerPartialScreen = ({ launcherId }) => {
-  const partialsLoadable = useRecoilValueLoadable(query(launcherId));
-  const [refreshing, setRefreshing] = useState(false);
-  const [data, setData] = useState(null);
-  const refresh = useRefresh();
-  const netInfo = useNetInfo();
+  const orientation = useOrientation();
+  // const partialsLoadable = useRecoilValueLoadable(query(launcherId));
+  // const [refreshing, setRefreshing] = useState(false);
+  // const [data, setData] = useState(null);
+  // const refresh = useRefresh();
+  // const netInfo = useNetInfo();
 
-  useEffect(() => {
-    if (partialsLoadable.state === 'hasValue') {
-      const globalData = [];
-      const data1 = partialsLoadable.contents.results;
-      const maxDate = max(data1.map((item) => fromUnixTime(item.timestamp)));
-      PartChartIntervals.forEach((item, index) => {
-        globalData[index] = getTotalChartData(data1, maxDate, item.time, 12, item.label);
-      });
+  // useEffect(() => {
+  //   if (partialsLoadable.state === 'hasValue') {
+  //     const globalData = [];
+  //     const data1 = partialsLoadable.contents.results;
+  //     const maxDate = max(data1.map((item) => fromUnixTime(item.timestamp)));
+  //     PartChartIntervals.forEach((item, index) => {
+  //       globalData[index] = getTotalChartData(data1, maxDate, item.time, 12, item.label);
+  //     });
 
-      setData(globalData);
+  //     setData(globalData);
 
-      setRefreshing(false);
-    } else if (partialsLoadable.state === 'hasError') {
-      setRefreshing(false);
-      setData(null);
-    }
-  }, [partialsLoadable]);
+  //     setRefreshing(false);
+  //   } else if (partialsLoadable.state === 'hasError') {
+  //     setRefreshing(false);
+  //     setData(null);
+  //   }
+  // }, [partialsLoadable]);
 
-  useEffect(() => {
-    refresh();
-  }, [refreshing]);
+  // useEffect(() => {
+  //   refresh();
+  // }, [refreshing]);
 
-  if (partialsLoadable.state === 'hasError') {
-    return (
-      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
-          Cant Connect to Network
-        </Text>
-        <Button
-          mode="contained"
-          onPress={() => {
-            if (netInfo.isConnected) refresh();
-          }}
-        >
-          Retry
-        </Button>
-      </SafeAreaView>
-    );
-  }
+  // if (partialsLoadable.state === 'hasError') {
+  //   return (
+  //     <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+  //       <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+  //         Cant Connect to Network
+  //       </Text>
+  //       <Button
+  //         mode="contained"
+  //         onPress={() => {
+  //           if (netInfo.isConnected) refresh();
+  //         }}
+  //       >
+  //         Retry
+  //       </Button>
+  //     </SafeAreaView>
+  //   );
+  // }
 
-  if (!data && !refreshing) {
-    return <LoadingComponent />;
-  }
+  // if (!data && !refreshing) {
+  //   return <LoadingComponent />;
+  // }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => {
-                setRefreshing(true);
-              }}
-            />
-          }
-        >
-          <View style={{ flex: 1, justifyContent: 'center' }}>
-            <PartialChartProvider data={data} />
-          </View>
-        </ScrollView>
-      </View>
+      <PartialChart launcherId={launcherId} orientation={orientation} />
     </SafeAreaView>
   );
 };

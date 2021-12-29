@@ -32,10 +32,18 @@ const Bar = ({ color, path, itemKey, points, pressed, selectedPoints }) => {
   //   },
   // });
 
+  // const panResponder = React.useRef(
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderGrant: () => {
+      // console.log(selectedPoints.value);
+      // selectedPoints.value = {
+      //   failed: 0,
+      //   passed: 43,
+      //   time: { end: 1640746800, start: 1640739600 },
+      // };
       selectedPoints.value = points;
+      // console.log(itemKey, points);
       pressed.value = itemKey;
     },
     onPanResponderRelease: () => {
@@ -43,6 +51,7 @@ const Bar = ({ color, path, itemKey, points, pressed, selectedPoints }) => {
       pressed.value = -1;
     },
   });
+  // ).current;
 
   return (
     // <LongPressGestureHandler
@@ -59,6 +68,7 @@ const Bar = ({ color, path, itemKey, points, pressed, selectedPoints }) => {
 
 const TestStackedBarChart = ({ data, height, width, keys, colors, selectedPoints }) => {
   const pressed = useSharedValue(false);
+  console.log('called');
   return (
     <View height={height}>
       <Svg width={width} height={height}>
