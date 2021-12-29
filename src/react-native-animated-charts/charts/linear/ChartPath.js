@@ -611,7 +611,9 @@ function ChartPath({
     const pathValue = path.value.replace('M', 'L');
     const gradientD =
       pathValue.length > 0
-        ? `M 0,${height + 100} C 0,0 0,0 0,0 ${pathValue} L ${width},${height + 100}`
+        ? `M 0,${layoutSize.value.height + 100} C 0,0 0,0 0,0 ${pathValue} L ${
+            layoutSize.value.width
+          },${layoutSize.value.height + 100}`
         : '';
     const props = {
       d: gradientD,
@@ -659,6 +661,7 @@ export function SvgComponent() {
     gestureEnabled,
     longPressGestureHandlerProps,
   } = useContext(InternalContext);
+
   return (
     <LongPressGestureHandler
       enabled={gestureEnabled}
@@ -670,11 +673,15 @@ export function SvgComponent() {
     >
       <Animated.View>
         <Svg
-          height={height + 100} // temporary fix for clipped chart
-          viewBox={`0 0 ${width} ${height + 80}`}
+          height={height + 60} // temporary fix for clipped chart
+          viewBox={`0 0 ${width} ${height + 40}`}
           width={width + 1}
         >
-          <AnimatedPath animatedProps={gradientAnimatedProps} fill={props.backgroundColor} />
+          <AnimatedPath
+            animatedProps={gradientAnimatedProps}
+            {...props}
+            fill={props.backgroundColor}
+          />
           <Defs>
             <LinearGradient id="prefix__paint0_linear" x1="100%" y1="0%" x2="100%" y2="120%">
               <Stop stopColor={props.stroke} />

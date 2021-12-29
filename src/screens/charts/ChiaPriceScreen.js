@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { RefreshControl, SafeAreaView, ScrollView } from 'react-native';
+import React from 'react';
+import { SafeAreaView } from 'react-native';
 import ChiaPriceChart from '../../charts/ChiaPriceChart';
+import useOrientation from '../../hooks/useOrientation';
 
 const ChiaPriceScreen = ({ route, navigation }) => {
-  const [refreshing, setRefreshing] = useState(false);
   const { chiaPrice } = route.params;
+  const orientation = useOrientation();
 
   return (
     <SafeAreaView
@@ -12,20 +13,7 @@ const ChiaPriceScreen = ({ route, navigation }) => {
         flex: 1,
       }}
     >
-      <ScrollView
-        style={{ flex: 1 }}
-        contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => {
-              setRefreshing(true);
-            }}
-          />
-        }
-      >
-        <ChiaPriceChart chiaPrice={chiaPrice} />
-      </ScrollView>
+      <ChiaPriceChart chiaPrice={chiaPrice} orientation={orientation} />
     </SafeAreaView>
   );
 };

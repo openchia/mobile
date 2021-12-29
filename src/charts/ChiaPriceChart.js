@@ -26,12 +26,44 @@ import LoadingComponent from '../components/LoadingComponent';
 import { currencyFormat } from '../utils/Formatting';
 import { getCurrencyFromKey } from '../screens/CurrencySelectionScreen';
 
-export const { width } = Dimensions.get('window');
-
-const SELECTION_WIDTH = width - 32;
-const BUTTON_WIDTH = (width - 32) / NetspaceChartIntervals.length;
-const units = ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const ITEMS = [
+  {
+    label: '1h',
+    value: 1,
+    interval: 1,
+  },
+  {
+    label: '24h',
+    value: 1,
+    interval: 1,
+  },
+  {
+    label: '7d',
+    value: 7,
+    interval: 1,
+  },
+  {
+    label: '30d',
+    value: 30,
+    interval: 1,
+  },
+  {
+    label: '90d',
+    value: 90,
+    interval: 1,
+  },
+  {
+    label: '1y',
+    value: 365,
+    interval: 1,
+  },
+  {
+    label: 'all',
+    value: 'max',
+    interval: 1,
+  },
+];
 
 export const formatY = (value, extraVal) => {
   'worklet';
@@ -94,11 +126,10 @@ const formatDatetime = (value) => {
 };
 
 const query = selectorFamily({
-  key: 'farmer',
+  key: 'chiaPrice',
   get:
     (element) =>
     async ({ get }) => {
-      // get(farmerRefreshState());
       const currency = await get(currencyState);
       const response = await getMarketChart(currency, element.value, element.interval);
       if (response.data) {
@@ -122,41 +153,12 @@ const query = selectorFamily({
           includeExtremes: true,
           range: 100,
         });
-        // if (element.label === '90d' || element.label === '30d') {
-        //   return simplifyData(
-        //     response.data.prices.map((item) => ({
-        //       x: item[0],
-        //       y: item[1],
-        //     })),
-        //     10,
-        //     true
-        //   );
-        // }
-        // if (element.label === '1h') {
-        //   let now = Date.now();
-        //   now = subHours(now, 1);
-        //   const data = response.data.prices
-        //     .filter((item) => isAfter(new Date(item[0]), now))
-        //     .map((item) => ({
-        //       x: item[0],
-        //       y: item[1],
-        //     }));
-        //   return data;
-        // }
-        // return simplifyData(
-        //   response.data.prices.map((item) => ({
-        //     x: item[0],
-        //     y: item[1],
-        //   })),
-        //   4,
-        //   true
-        // );
       }
       return response.statusText;
     },
 });
 
-const Chart = ({ chiaPrice, element, bottomContent }) => {
+const Chart = ({ chiaPrice, element, bottomContent, width, height }) => {
   const loadableData = useRecoilValueLoadable(query(element));
   const currency = useRecoilValue(currencyState);
   const theme = useTheme();
@@ -170,27 +172,14 @@ const Chart = ({ chiaPrice, element, bottomContent }) => {
   }, [loadableData]);
 
   return (
-    <>
+    <View style={{ flex: 1, justifyContent: 'center' }}>
       <ChartPathProvider
         data={{
           points,
           smoothingStrategy: 'bezier',
         }}
       >
-        <View style={{ marginTop: 16, marginLeft: 16, alignSelf: 'auto' }}>
-          <ChartXLabel
-            format={formatDatetime}
-            defaultValue={t('chiaPrice')}
-            style={{ color: theme.colors.text, padding: 0, fontSize: 16 }}
-          />
-          <ChartYLabel
-            format={formatY}
-            extraVal={`${getCurrencyFromKey(currency)}`}
-            defaultValue={`${currencyFormat(chiaPrice)} ${getCurrencyFromKey(currency)}`}
-            style={{ color: theme.colors.text, padding: 0, fontSize: 24 }}
-          />
-        </View>
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+        <View style={{ justifyContent: 'center' }}>
           <View>
             {points.length === 0 && (
               <ActivityIndicator
@@ -211,9 +200,8 @@ const Chart = ({ chiaPrice, element, bottomContent }) => {
               hitSlop={30}
               smoothingWhileTransitioningEnabled={false}
               fill="none"
-              height={width / 2}
+              height={height / 2.5}
               stroke={theme.colors.primaryLight}
-              // backgroundColor="url(#prefix__paint0_linear)"
               selectedStrokeWidth="1.8"
               strokeWidth="2"
               width={width}
@@ -223,63 +211,52 @@ const Chart = ({ chiaPrice, element, bottomContent }) => {
                 backgroundColor: theme.colors.accentColor,
               }}
             />
-            {bottomContent}
           </View>
         </View>
+        <View
+          style={{
+            margin: 6,
+            padding: 8,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            backgroundColor: theme.colors.background,
+            borderRadius: 4,
+          }}
+        >
+          <ChartXLabel
+            format={formatDatetime}
+            defaultValue={t('chiaPrice')}
+            style={{ color: theme.colors.text, padding: 0, fontSize: 16 }}
+          />
+          <ChartYLabel
+            format={formatY}
+            extraVal={`${getCurrencyFromKey(currency)}`}
+            defaultValue={`${currencyFormat(chiaPrice)} ${getCurrencyFromKey(currency)}`}
+            style={{ color: theme.colors.text, padding: 0, fontSize: 24 }}
+          />
+        </View>
       </ChartPathProvider>
-    </>
+      <View>{bottomContent}</View>
+    </View>
   );
 };
-
-const ITEMS = [
-  {
-    label: '1h',
-    value: 1,
-    interval: 1,
-  },
-  {
-    label: '24h',
-    value: 1,
-    interval: 1,
-  },
-  {
-    label: '7d',
-    value: 7,
-    interval: 1,
-  },
-  {
-    label: '30d',
-    value: 30,
-    interval: 1,
-  },
-  {
-    label: '90d',
-    value: 90,
-    interval: 1,
-  },
-  {
-    label: '1y',
-    value: 365,
-    interval: 1,
-  },
-  {
-    label: 'all',
-    value: 'max',
-    interval: 1,
-  },
-];
 
 const ChiaPriceChart = ({ chiaPrice }) => {
   const [settings, setSettings] = useRecoilState(settingsState);
   const [element, setElement] = useState(ITEMS[settings.priceDefault ? settings.priceDefault : 0]);
+  const { width, height } = Dimensions.get('window');
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Chart
+        height={height}
+        width={width}
         element={element}
         chiaPrice={chiaPrice}
         bottomContent={
           <JellySelector
+            width={width}
             defaultVal={settings.priceDefault}
             items={ITEMS}
             onPress={(item, index) => {
