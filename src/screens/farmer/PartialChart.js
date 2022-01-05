@@ -4,14 +4,20 @@ import { useTranslation } from 'react-i18next';
 import { Dimensions, View, SafeAreaView } from 'react-native';
 import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import { useSharedValue } from 'react-native-reanimated';
-import { useSetRecoilState, selectorFamily, useRecoilState, useRecoilValueLoadable } from 'recoil';
+import {
+  useSetRecoilState,
+  selectorFamily,
+  useRecoilState,
+  useRecoilValueLoadable,
+  useRecoilValue,
+} from 'recoil';
 import { addMinutes, fromUnixTime, getUnixTime, max } from 'date-fns';
 import TestStackedBarChart from '../../charts/TestStackedBarChart';
 import TestLabel from '../../components/TextTest';
 import { getPartialsFromIDTest } from '../../Api';
 
 import JellySelector from '../../components/JellySelector';
-import { settingsState } from '../../Atoms';
+import { selectedPartialBarState, settingsState } from '../../Atoms';
 
 export const { width } = Dimensions.get('window');
 const keys = ['failed', 'passed'];
@@ -233,15 +239,17 @@ const Chart = ({ launcherId, element, bottomContent, orientation, width, height 
     }
   }, [loadableData]);
 
+  // console.log(selectedPartialBar)
+
   return (
     <View style={{ alignContent: 'center', flex: 1 }}>
-      {/* {stats && orientation === 'PORTRAIT' && (
+      {stats && orientation === 'PORTRAIT' && (
         <View style={{ padding: 16 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TestLabel
               interval={1}
               defaultValue={`${element.label} ${t('overView')}`}
-              //   format={formatDatetime}
+              format={formatDatetime}
               style={{ color: theme.colors.text, fontSize: 16, fontWeight: 'bold' }}
               selectedPoints={selectedPoints}
               type="time"
@@ -270,8 +278,7 @@ const Chart = ({ launcherId, element, bottomContent, orientation, width, height 
             />
           </View>
         </View>
-      )} */}
-
+      )}
       <View style={{ flex: 1, justifyContent: 'center' }}>
         {points.length === 0 ? (
           <ActivityIndicator
