@@ -4,7 +4,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RecoilRoot } from 'recoil';
 import { Notifications } from 'react-native-notifications';
 import messaging from '@react-native-firebase/messaging';
-import * as Sentry from '@sentry/react-native';
 import ApplicationNavigator from './src/ApplicationNavigator';
 import LoadingComponent from './src/components/LoadingComponent';
 // import './src/constants/IMLocalize';

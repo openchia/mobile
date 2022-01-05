@@ -166,3 +166,9 @@ export const partialRefreshState = atomFamily({
   key: 'partialRefreshState',
   default: 0,
 });
+
+
+export const selectedPartialBarState = atom({
+  key: 'selectedPartialBarState',
+  default: null,
+});
