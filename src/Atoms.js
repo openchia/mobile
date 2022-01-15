@@ -45,10 +45,30 @@ const localEffect =
     });
   };
 
+// const localGroupsEffect =
+//   (key) =>
+//   ({ setSelf, onSet }) => {
+//     setSelf(
+//       getObject(key).then(
+//         (savedValue) => (savedValue != null ? JSON.parse(savedValue) : new DefaultValue()) // Abort initialization if no value was stored
+//       )
+//     );
+
+//     onSet((newValue) => {
+//       saveObject(key, JSON.stringify(newValue));
+//     });
+//   };
+
 export const launcherIDsState = atom({
   key: 'atomLauncherIDs',
   default: new Map(),
   effects_UNSTABLE: [localForageEffect('launcherIDs')],
+});
+
+export const groupState = atom({
+  key: 'groupState',
+  default: [],
+  effects_UNSTABLE: [localEffect('group')],
 });
 
 export const tokensState = atom({
@@ -68,9 +88,11 @@ export const settingsState = atom({
   default: {
     isThemeDark: false,
     blockNotifications: false,
+    showOnlyActiveFarmers: true,
     poolspaceDefault: 4,
     partialDefault: 4,
     priceDefault: 3,
+    groupName: 'Group',
   },
   effects_UNSTABLE: [localEffect('settings')],
 });
@@ -167,8 +189,12 @@ export const partialRefreshState = atomFamily({
   default: 0,
 });
 
+export const farmerSearchBarTextState = atom({
+  key: 'farmerSearchBarTextState',
+  default: '',
+});
 
-export const selectedPartialBarState = atom({
-  key: 'selectedPartialBarState',
-  default: null,
+export const farmerSearchBarPressedState = atom({
+  key: 'farmerSearchBarPressedState',
+  default: false,
 });

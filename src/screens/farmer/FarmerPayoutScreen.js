@@ -1,11 +1,11 @@
 import { useNetInfo } from '@react-native-community/netinfo';
-import { format } from 'date-fns';
+import { format, getUnixTime, isAfter } from 'date-fns';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
-import { getPayoutsFromAddress } from '../../Api';
+import { getPayoutsFromAddress, getPayoutsFromAddresses } from '../../Api';
 import { farmerPayoutsRefreshState } from '../../Atoms';
 import LoadingComponent from '../../components/LoadingComponent';
 import PressableCard from '../../components/PressableCard';
@@ -19,10 +19,11 @@ const useRefresh = () => {
 const query = selectorFamily({
   key: 'farmerPayouts',
   get:
-    (launcherId) =>
+    (launcherIds) =>
     async ({ get }) => {
       get(farmerPayoutsRefreshState());
-      const response = await getPayoutsFromAddress(launcherId);
+      const response = await getPayoutsFromAddresses(launcherIds);
+      // console.log(response);
       if (response.error) {
         throw response.error;
       }
@@ -52,9 +53,9 @@ const Item = ({ item, theme, t }) => (
   </PressableCard>
 );
 
-const Content = ({ launcherId }) => {
+const Content = ({ launcherIds }) => {
   const refresh = useRefresh();
-  const payoutsLoadable = useRecoilValueLoadable(query(launcherId));
+  const payoutsLoadable = useRecoilValueLoadable(query(launcherIds));
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState([]);
   const { t } = useTranslation();
@@ -63,7 +64,12 @@ const Content = ({ launcherId }) => {
 
   useEffect(() => {
     if (payoutsLoadable.state === 'hasValue') {
-      setData(payoutsLoadable.contents.results);
+      const intersection = (arr) => arr.reduce((a, e) => [...a, ...e], []);
+      setData(
+        intersection(payoutsLoadable.contents.map((item) => item.results)).sort(
+          (a, b) => new Date(b.payout.datetime) - new Date(a.payout.datetime)
+        )
+      );
       setRefreshing(false);
     }
   }, [payoutsLoadable.state]);
@@ -145,9 +151,9 @@ const Content = ({ launcherId }) => {
   );
 };
 
-const FarmerPayoutScreen = ({ navigation, launcherId }) => (
+const FarmerPayoutScreen = ({ navigation, launcherIds }) => (
   <Suspense fallback={<LoadingComponent />}>
-    <Content launcherId={launcherId} />
+    <Content launcherIds={launcherIds} />
   </Suspense>
 );
 

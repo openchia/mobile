@@ -20,8 +20,6 @@ const Bar = ({ color, path, itemKey, pressed, selectedPoints, points, test }) =>
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderGrant: () => {
-      console.log(points);
-      console.log(test);
       selectedPoints.value = points;
       pressed.value = itemKey;
     },
@@ -47,8 +45,7 @@ const TestStackedBarChart = ({ data, height, width, keys, colors, selectedPoints
               key={key}
               itemKey={keyIndex}
               color={bar.color}
-              // For some reason it didnt like the object I created intially
-              test={bar.points}
+              // test={bar.points}
               points={{
                 failed: bar.points.failed,
                 passed: bar.points.passed,

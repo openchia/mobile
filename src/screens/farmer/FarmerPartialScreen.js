@@ -15,7 +15,7 @@ import PartialChart from './PartialChart';
 
 export const { width } = Dimensions.get('window');
 
-const FarmerPartialScreen = ({ launcherId }) => {
+const FarmerPartialScreen = ({ launcherIds }) => {
   const orientation = useOrientation();
   // const selectedPoints = useSharedValue(selectedPartialBar);
   // const partialsLoadable = useRecoilValueLoadable(query(launcherId));
@@ -70,7 +70,7 @@ const FarmerPartialScreen = ({ launcherId }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <PartialChart launcherId={launcherId} orientation={orientation} />
+      <PartialChart launcherIds={launcherIds} orientation={orientation} />
     </SafeAreaView>
   );
 };

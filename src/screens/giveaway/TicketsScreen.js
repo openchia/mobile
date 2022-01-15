@@ -18,7 +18,7 @@ import { ticketsRefreshState } from '../../Atoms';
 import LoadingComponent from '../../components/LoadingComponent';
 import PressableCard from '../../components/PressableCard';
 import { convertMojoToChia } from '../../utils/Formatting';
-import { getRound, getTickets } from '../../Api';
+import { getRound, getTickets, getTicketsFromLauncherIds } from '../../Api';
 import CustomCard from '../../components/CustomCard';
 
 const HEIGHT = 40;
@@ -31,18 +31,28 @@ const useRefresh = () => {
 const query = selectorFamily({
   key: 'farmerTickets',
   get:
-    (launcherId) =>
+    (launcherIds) =>
     async ({ get }) => {
       get(ticketsRefreshState());
-      const roundResponse = await getRound();
-      if (roundResponse.error) {
-        throw roundResponse.error;
-      }
-      const response = await getTickets(launcherId, roundResponse.results.length);
+      // const roundResponse = await getRound();
+      // if (roundResponse.error) {
+      //   throw roundResponse.error;
+      // }
+      // console.log(launcherIds, roundResponse.results.length);
+      const response = await getTicketsFromLauncherIds(launcherIds);
+      // console.log(response);
+      let allTickets = [];
+      response.forEach((element) => {
+        // console.log(element);
+        element.results.forEach((item) => {
+          // console.log(item);
+          allTickets = allTickets.concat(item.tickets);
+        });
+      });
       if (response.error) {
         throw response.error;
       }
-      return response;
+      return allTickets.sort((a, b) => a - b);
     },
 });
 
@@ -100,8 +110,8 @@ const Content = ({ navigation, dataProvider, theme, t, width, ticketCount }) => 
   );
 };
 
-const TicketsScreen = ({ navigation, launcherId }) => {
-  const ticketsLoadable = useRecoilValueLoadable(query(launcherId));
+const TicketsScreen = ({ navigation, launcherIds }) => {
+  const ticketsLoadable = useRecoilValueLoadable(query(launcherIds));
   const netInfo = useNetInfo();
   const refresh = useRefresh();
   const [refreshing, setRefreshing] = useState(false);
@@ -131,7 +141,7 @@ const TicketsScreen = ({ navigation, launcherId }) => {
     return <LoadingComponent />;
   }
 
-  if (ticketsLoadable.contents.results.length === 0) {
+  if (ticketsLoadable.contents.length === 0) {
     return (
       <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
         <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
@@ -149,17 +159,22 @@ const TicketsScreen = ({ navigation, launcherId }) => {
     );
   }
 
-  let allTickets = [];
+  // let allTickets = [];
 
-  ticketsLoadable.contents.results.forEach((element) => {
-    allTickets = allTickets.concat(element.tickets);
-  });
+  // ticketsLoadable.contents.forEach((element) => {
+  //   element.forEach((results) => {
+  //     console.log(results);
+  //     allTickets = allTickets.concat(results.element.tickets);
+  //   });
+  // });
 
-  const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(allTickets);
+  const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
+    ticketsLoadable.contents
+  );
 
   return (
     <Content
-      ticketCount={allTickets.length}
+      ticketCount={ticketsLoadable.contents.length}
       navigation={navigation}
       dataProvider={dataProvider}
       t={t}

@@ -6,7 +6,7 @@ import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
-import { getBlocksFromFarmer } from '../../Api';
+import { getBlocksFromFarmer, getBlocksFromFarmers } from '../../Api';
 import { farmerBlockRefreshState } from '../../Atoms';
 import LoadingComponent from '../../components/LoadingComponent';
 import PressableCard from '../../components/PressableCard';
@@ -20,10 +20,10 @@ const useRefresh = () => {
 const query = selectorFamily({
   key: 'farmerBlocks',
   get:
-    (launcherId) =>
+    (launcherIds) =>
     async ({ get }) => {
       get(farmerBlockRefreshState());
-      const response = await getBlocksFromFarmer(launcherId);
+      const response = await getBlocksFromFarmers(launcherIds);
       if (response.error) {
         throw response.error;
       }
@@ -81,9 +81,9 @@ const Item = ({ item, color, t }) => (
   </PressableCard>
 );
 
-const Content = ({ launcherId }) => {
+const Content = ({ launcherIds }) => {
   const refresh = useRefresh();
-  const blocksLoadable = useRecoilValueLoadable(query(launcherId));
+  const blocksLoadable = useRecoilValueLoadable(query(launcherIds));
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const { t } = useTranslation();
@@ -92,7 +92,14 @@ const Content = ({ launcherId }) => {
 
   useEffect(() => {
     if (blocksLoadable.state === 'hasValue') {
-      setData(blocksLoadable.contents.results);
+      const intersection = (arr) => arr.reduce((a, e) => [...a, ...e], []);
+      setData(
+        intersection(blocksLoadable.contents.map((item) => item.results)).sort(
+          (a, b) => b.timestamp - a.timestamp
+        )
+      );
+      // setRefreshing(false);
+      // setData(blocksLoadable.contents.results);
       setRefreshing(false);
     }
   }, [blocksLoadable.state]);
@@ -164,9 +171,9 @@ const Content = ({ launcherId }) => {
   );
 };
 
-const FarmerBlockScreen = ({ launcherId }) => (
+const FarmerBlockScreen = ({ launcherIds }) => (
   <Suspense fallback={<LoadingComponent />}>
-    <Content launcherId={launcherId} />
+    <Content launcherIds={launcherIds} />
   </Suspense>
 );
 

@@ -14,7 +14,7 @@ import {
 import { addMinutes, fromUnixTime, getUnixTime, max } from 'date-fns';
 import TestStackedBarChart from '../../charts/TestStackedBarChart';
 import TestLabel from '../../components/TextTest';
-import { getPartialsFromIDTest } from '../../Api';
+import { getPartialsFromIDsChart, getPartialsFromIDTest } from '../../Api';
 
 import JellySelector from '../../components/JellySelector';
 import { selectedPartialBarState, settingsState } from '../../Atoms';
@@ -167,13 +167,19 @@ const query = selectorFamily({
       // get(partialRefreshState());
       let timestamp = new Date().getTime();
       timestamp = Math.floor(timestamp / 1000) - 60 * 60 * item.element.value;
-      const response = await getPartialsFromIDTest(item.launcherId, timestamp);
+      const response = await getPartialsFromIDsChart(item.launcherIds, timestamp);
       if (response.error) {
         throw response.error;
       }
-      const maxDate = max(response.results.map((item) => fromUnixTime(item.timestamp)));
+      const intersection = (arr) => arr.reduce((a, e) => [...a, ...e], []);
+
+      const maxDate = max(
+        intersection(
+          response.map((farm) => farm.results.map((item) => fromUnixTime(item.timestamp)))
+        )
+      );
       const data = getTotalChartData(
-        response.results,
+        intersection(response.map((farm) => farm.results)),
         maxDate,
         item.element.value,
         item.maxColumns
@@ -182,11 +188,13 @@ const query = selectorFamily({
     },
 });
 
-const getTotalChartData = (data, maxDate, numHours, numBars, label) => {
+const getTotalChartData = (response, maxDate, numHours, numBars, label) => {
   const results = [];
   const minuteGap = (numHours * 60) / numBars;
   let totalPassed = 0;
   let totalFailed = 0;
+  // farms.forEach((item) => {
+  const data = response;
   let x = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
   while (x <= maxDate) x = addMinutes(x, minuteGap);
   let periodStart = addMinutes(x, -minuteGap * numBars);
@@ -217,13 +225,14 @@ const getTotalChartData = (data, maxDate, numHours, numBars, label) => {
     totalFailed += numFailed;
     periodStart = periodEnd;
   }
+  // });
   return { results, stats: { passed: totalPassed, failed: totalFailed, label } };
 };
 
-const Chart = ({ launcherId, element, bottomContent, orientation, width, height }) => {
+const Chart = ({ launcherIds, element, bottomContent, orientation, width, height }) => {
   const selectedPoints = useSharedValue(null);
   const maxColumns = orientation === 'PORTRAIT' ? 12 : 24;
-  const loadableData = useRecoilValueLoadable(query({ launcherId, element, maxColumns }));
+  const loadableData = useRecoilValueLoadable(query({ launcherIds, element, maxColumns }));
   const theme = useTheme();
   const colors = [theme.colors.accent, theme.colors.primary];
   const { t } = useTranslation();
@@ -280,7 +289,7 @@ const Chart = ({ launcherId, element, bottomContent, orientation, width, height 
         </View>
       )}
       <View style={{ flex: 1, justifyContent: 'center' }}>
-        {points.length === 0 ? (
+        {loadableData.state === 'loading' ? (
           <ActivityIndicator
             style={{
               left: 0,
@@ -310,7 +319,7 @@ const Chart = ({ launcherId, element, bottomContent, orientation, width, height 
   );
 };
 
-const PartialChart = ({ launcherId, orientation }) => {
+const PartialChart = ({ launcherIds, orientation }) => {
   const [settings, setSettings] = useRecoilState(settingsState);
   const { width, height } = Dimensions.get('window');
   const [element, setElement] = useState(
@@ -323,7 +332,7 @@ const PartialChart = ({ launcherId, orientation }) => {
         height={height}
         width={width}
         element={element}
-        launcherId={launcherId}
+        launcherIds={launcherIds}
         orientation={orientation}
         bottomContent={
           <JellySelector

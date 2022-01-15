@@ -2,13 +2,15 @@ import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Button, Text, useTheme } from 'react-native-paper';
-import { BaseItemAnimator, DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { getFontScale } from 'react-native-device-info';
+import { Button, Text, useTheme } from 'react-native-paper';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { getFarmers } from '../Api';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 import { formatBytes } from '../utils/Formatting';
+import { farmerSearchBarPressedState, farmerSearchBarTextState, settingsState } from '../Atoms';
 
 const HEIGHT = 140;
 
@@ -101,6 +103,7 @@ const Content = ({
   isQuerying,
   refresh,
   isRefreshing,
+  isSearching,
   fontScale,
 }) => {
   // const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(data);
@@ -122,14 +125,17 @@ const Content = ({
       item={data}
       onPress={() => {
         navigation.navigate({
-          name: 'Farmer Details',
-          params: { launcherId: data.launcher_id, name: data.name },
+          name: 'Farmer',
+          // name: 'Farmer Details',
+          params: { data: { launcherId: data.launcher_id, name: data.name }, isGroup: false },
+          // params: { launcherId: data.launcher_id, name: data.name },
         });
       }}
     />
   );
 
   const loadMore = () => {
+    // if (hasMore && !isSearching) {
     if (hasMore) {
       setOffset((offset) => offset + LIMIT);
       queryMoreData();
@@ -147,17 +153,15 @@ const Content = ({
             }}
           />
         }
-        contentContainerStyle={{ marginTop: 8 }}
+        contentContainerStyle={{ marginTop: 8, paddingBottom: 16 }}
         dataProvider={dataProvider}
         layoutProvider={layoutProvider}
         rowRenderer={rowRenderer}
         onEndReached={loadMore}
-        // itemAnimator={new BaseItemAnimator()}
         onEndReachedThreshold={0.5}
-        // canChangeSize
-        // forceNonDeterministicRendering
         renderFooter={() =>
-          isQuerying && (
+          isQuerying &&
+          !isSearching && (
             <Text style={{ padding: 10, fontWeight: 'bold', textAlign: 'center' }}>Loading</Text>
           )
         }
@@ -168,6 +172,9 @@ const Content = ({
 
 const FarmersScreen = ({ navigation }) => {
   const [loadState, setLoadState] = useState({ loading: true, refreshing: false, querying: false });
+  const [settings, setSettings] = useRecoilState(settingsState);
+  const [searchText, setSearchText] = useRecoilState(farmerSearchBarTextState);
+  const [searchPressed, setSearchPressed] = useRecoilState(farmerSearchBarPressedState);
   const [loading, setLoading] = useState(true);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -184,7 +191,17 @@ const FarmersScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (searchPressed) {
+      setLoadState((prevState) => ({ ...prevState, refreshing: true }));
+      setLoading(true);
+      setData([]);
+      setOffset(0);
+      setHasMore(true);
+    }
+  }, [searchPressed]);
+
+  useEffect(() => {
+    if (data.length > 0 || searchPressed) {
       setDataProvider(new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(data));
     }
   }, [data]);
@@ -204,26 +221,49 @@ const FarmersScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (hasMore && (loadState.loading || loadState.refreshing || loadState.querying)) {
-      getFarmers(offset, LIMIT)
+      getFarmers(offset, LIMIT, searchText, settings.showOnlyActiveFarmers)
         .then((farmers) => {
-          setHasMore(farmers.results.length === LIMIT);
-          setData([...data, ...farmers.results]);
-          setLoadState({ loading: false, refreshing: false, querying: false });
-          setLoading(false);
+          if (searchPressed) {
+            if (farmers.results.length === 1) {
+              setHasMore(farmers.results.length === LIMIT);
+              setData([...data, ...farmers.results]);
+              setLoading(false);
+              setLoadState({ loading: false, refreshing: false, querying: false });
+            } else if (farmers.results.length === 0) {
+              setHasMore(false);
+              setData([]);
+              setOffset(0);
+              setLoadState({ loading: false, refreshing: false, querying: false });
+              setLoading(false);
+            } else {
+              setHasMore(farmers.results.length === LIMIT);
+              setData([...data, ...farmers.results]);
+              setLoadState({ loading: false, refreshing: false, querying: false });
+              setLoading(false);
+            }
+          } else {
+            setHasMore(farmers.results.length === LIMIT);
+            setData([...data, ...farmers.results]);
+            setLoadState({ loading: false, refreshing: false, querying: false });
+            setLoading(false);
+          }
+          setSearchPressed(false);
         })
         .catch((error) => {
+          console.log(error);
           setLoading(false);
           setLoadState({ loading: false, refreshing: false, querying: false });
           setError(true);
+          setSearchPressed(false);
         });
     }
-  }, [loading]);
+  }, [loading, settings]);
 
   if (loadState.loading || !fontScale) return <LoadingComponent />;
   if (error) {
     return (
       <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
+        <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 16 }}>
           Cant Connect to Network
         </Text>
         <Button
@@ -252,6 +292,7 @@ const FarmersScreen = ({ navigation }) => {
       queryMoreData={queryMoreData}
       isQuerying={loadState.querying}
       isRefreshing={loadState.refreshing}
+      isSearching={searchPressed}
       fontScale={fontScale}
     />
   );
