@@ -181,20 +181,23 @@ const Chart = ({ chiaPrice, element, bottomContent, width, height }) => {
       >
         <View style={{ justifyContent: 'center' }}>
           <View>
-            {points.length === 0 && (
-              <ActivityIndicator
-                style={{
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  margin: 'auto',
-                  position: 'absolute',
-                }}
-                size={60}
-                color="#119400"
-              />
-            )}
+            {/* {loadableData.state === 'loading' ? (
+              <View style={{ height: height / 2.5 + 60 }}>
+                <ActivityIndicator
+                  style={{
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    margin: 'auto',
+                    position: 'absolute',
+                  }}
+                  size={60}
+                  color="#119400"
+                />
+              </View>
+            ) : (
+              <> */}
             <ChartPath
               hapticsEnabled={false}
               hitSlop={30}
@@ -211,6 +214,8 @@ const Chart = ({ chiaPrice, element, bottomContent, width, height }) => {
                 backgroundColor: theme.colors.accentColor,
               }}
             />
+            {/* </>
+            )} */}
           </View>
         </View>
         <View

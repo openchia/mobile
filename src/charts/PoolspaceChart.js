@@ -147,6 +147,8 @@ const Chart = ({ poolSpace, element, bottomContent, width, height }) => {
     }
   }, [loadableData]);
 
+  // {loadableData.state === 'loading' ? (
+
   return (
     <View style={{ flex: 1, justifyContent: 'center' }}>
       <ChartPathProvider data={{ points, smoothingStrategy: 'bezier' }}>

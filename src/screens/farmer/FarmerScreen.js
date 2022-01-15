@@ -87,10 +87,6 @@ const FarmerScreen = ({ route, navigation }) => {
     name = initialRoute.launcherName;
   }
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({ headerTitle: getHeaderTitle(route, t, name) });
-  }, [navigation, route]);
-
   const dataLoadable = useRecoilValueLoadable(query(mLauncherId));
 
   useLayoutEffect(() => {

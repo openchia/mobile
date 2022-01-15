@@ -25,6 +25,10 @@ const SettingsScreen = ({ navigation }) => {
     setSettings((prev) => ({ ...prev, isThemeDark: !prev.isThemeDark }));
   };
 
+  const toggleActiveFarmers = () => {
+    setSettings((prev) => ({ ...prev, showOnlyActiveFarmers: !prev.showOnlyActiveFarmers }));
+  };
+
   const toggleNotifications = () => {
     setSettings((prev) => ({ ...prev, blockNotifications: !prev.blockNotifications }));
     if (!settings.blockNotifications) {
@@ -172,6 +176,60 @@ const SettingsScreen = ({ navigation }) => {
           {/* <Text style={styles.desc}>
             {LANGUAGES.filter((item) => item.code === selectedLanguageCode)[0].label}
           </Text> */}
+        </View>
+      </PressableCard>
+      <PressableCard
+        style={{ marginVertical: 4, marginHorizontal: 8 }}
+        onPress={toggleActiveFarmers}
+      >
+        <View style={styles.content}>
+          <Ionicons
+            name={settings.showOnlyActiveFarmers ? 'ios-people' : 'ios-people-outline'}
+            size={30}
+            color={theme.colors.textGrey}
+            style={{ marginEnd: 16 }}
+          />
+          {/* <MaterialCommunityIcons
+            name="theme-light-dark"
+            size={30}
+            color={theme.colors.textGrey}
+            style={{ marginEnd: 16 }}
+          /> */}
+          <View style={styles.mainContent}>
+            <Text style={styles.title}>{t('activeFarms')}</Text>
+            <Text numberOfLines={1} style={styles.subtitle}>
+              {t('activeFarmsDesc')}
+            </Text>
+          </View>
+          <View pointerEvents="none">
+            <Switch value={settings.showOnlyActiveFarmers} />
+          </View>
+        </View>
+      </PressableCard>
+      <PressableCard
+        style={{ marginVertical: 2, marginHorizontal: 8 }}
+        onPress={() => navigation.navigate('Create Group')}
+      >
+        <View style={styles.content}>
+          <Ionicons
+            name="folder-open-outline"
+            size={30}
+            color={theme.colors.textGrey}
+            style={{ marginEnd: 16 }}
+          />
+          <View style={styles.mainContent}>
+            <Text style={styles.title}>{t('groupName')}</Text>
+            <Text numberOfLines={1} style={styles.subtitle}>
+              {settings.groupName ? settings.groupName : 'Group'}
+            </Text>
+          </View>
+          <MaterialIcons
+            name="keyboard-arrow-right"
+            size={30}
+            color={theme.colors.textGrey}
+            // style={{ marginEnd: 16 }}
+          />
+          {/* <Text style={styles.desc}>{currency.toUpperCase()}</Text> */}
         </View>
       </PressableCard>
     </SafeAreaView>
