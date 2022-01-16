@@ -113,5 +113,6 @@ export default {
     farmerOfflineNotification: 'В течение 1 часа частицы не передавались',
     farmerBlockNotification: 'Блок, выигранный фермером',
     farmerNotifications: 'Уведомления о ферме',
+    groupName: 'Group Title',
   },
 };

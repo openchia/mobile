@@ -114,5 +114,6 @@ export default {
     farmerNotifications: 'Farm Notifications',
     activeFarms: 'Farmers',
     activeFarmsDesc: 'Show Only Active Farmers',
+    groupName: 'Group Title',
   },
 };

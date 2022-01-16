@@ -113,5 +113,6 @@ export default {
     farmerOfflineNotification: 'Geen Partials gevonden voor meer dan 1 uur',
     farmerBlockNotification: 'Blok gewonnen door Farmer',
     farmerNotifications: 'Kennisgevingen van Farm',
+    groupName: 'Group Title',
   },
 };

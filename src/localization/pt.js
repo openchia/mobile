@@ -114,5 +114,6 @@ export default {
     farmerOfflineNotification: 'Sem Parciais Aprovados por 1h',
     farmerBlockNotification: 'Bloco Ganho pelo Agricultor',
     farmerNotifications: 'Notificações agrícolas',
+    groupName: 'Group Title',
   },
 };

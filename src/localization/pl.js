@@ -112,5 +112,6 @@ export default {
     farmerOfflineNotification: 'Nie przepuszczono żadnych cząstek przez 1h',
     farmerBlockNotification: 'Blok wygrany przez rolnika',
     farmerNotifications: 'Powiadomienia z farmy',
+    groupName: 'Group Title',
   },
 };
