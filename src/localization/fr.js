@@ -111,5 +111,6 @@ export default {
     farmerOfflineNotification: `Aucun partiel n'est passé depuis 1h`,
     farmerBlockNotification: 'Bloc gagné par un agriculteur',
     farmerNotifications: `Notifications de l'exploitation`,
+    groupName: 'Group Title',
   },
 };

@@ -113,5 +113,6 @@ export default {
     farmerOfflineNotification: 'Nincs részleges átadott 1 órán át',
     farmerBlockNotification: 'Gazdálkodó által megnyert blokk',
     farmerNotifications: 'Mezőgazdasági értesítések',
+    groupName: 'Group Title',
   },
 };
