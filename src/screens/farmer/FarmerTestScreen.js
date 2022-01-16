@@ -137,7 +137,6 @@ const FarmerTestScreen = ({ route, navigation }) => {
   const data = getData(route, initialRoute);
 
   React.useLayoutEffect(() => {
-    console.log('Called');
     navigation.setOptions({
       headerTitle: getHeaderTitle(
         route,
