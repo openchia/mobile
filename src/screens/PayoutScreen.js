@@ -11,6 +11,7 @@ import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 import { convertMojoToChia } from '../utils/Formatting';
 import CustomCard from '../components/CustomCard';
+import ListItem from '../components/ListItem';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(payoutsRequestIDState());
@@ -33,10 +34,27 @@ const query = selectorFamily({
 
 const Item = ({ item, theme, t }) => (
   <CustomCard
-    style={{ padding: 8, display: 'flex', marginHorizontal: 8, marginVertical: 2 }}
+    style={{ marginBottom: 2, paddingTop: 6, paddingBottom: 6, borderRadius: 0 }}
     onTap={() => {}}
   >
-    <View style={{ display: 'flex', flexDirection: 'row' }}>
+    <View style={{ marginHorizontal: 12 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text numberOfLines={1} style={styles}>
+          {item.id}
+        </Text>
+        <View>
+          <Text
+            numberOfLines={1}
+            style={[styles.val, { fontWeight: 'bold' }]}
+          >{`${convertMojoToChia(item.amount)} XCH`}</Text>
+          <Text numberOfLines={1} style={styles.val}>
+            {format(new Date(item.datetime), 'PPpp')}
+          </Text>
+        </View>
+      </View>
+    </View>
+
+    {/* <View style={{ display: 'flex', flexDirection: 'row' }}>
       <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
         {t('amount')}
       </Text>
@@ -59,7 +77,7 @@ const Item = ({ item, theme, t }) => (
       <Text numberOfLines={1} style={styles.val}>
         {format(new Date(item.datetime), 'PPpp')}
       </Text>
-    </View>
+    </View> */}
   </CustomCard>
 );
 
@@ -79,7 +97,16 @@ const PayoutScreen = () => {
     }
   }, [payoutsLoadable]);
 
-  const renderItem = ({ item, index }) => <Item item={item} rank={index} theme={theme} t={t} />;
+  const renderItem = ({ item, index }) => (
+    <ListItem
+      header={item.id}
+      subtitle1={`${convertMojoToChia(item.amount)} XCH`}
+      subtitle2={format(new Date(item.datetime), 'PPpp')}
+      // rank={index}
+      // theme={theme}
+      // t={t}
+    />
+  );
 
   if (payoutsLoadable.state === 'loading' && !refreshing) {
     return <LoadingComponent />;
@@ -107,7 +134,7 @@ const PayoutScreen = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
-        ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
+        ListHeaderComponent={<View style={{}} />}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

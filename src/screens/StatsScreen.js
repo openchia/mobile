@@ -10,6 +10,8 @@ import { selectorFamily, useRecoilState, useRecoilValueLoadable, useSetRecoilSta
 import { getStats } from '../Api';
 import { currencyState, initialRouteState, statsRequestIDState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
+import DropShadow from 'react-native-drop-shadow';
+
 import PressableCard from '../components/PressableCard';
 import {
   convertMojoToChia,
@@ -20,35 +22,50 @@ import {
 import { getCurrencyFromKey } from './CurrencySelectionScreen';
 
 const Item = ({ title, value, color, loadable, format, onPress, icon }) => (
-  <PressableCard style={{ flex: 1, marginVertical: 4 }} onPress={onPress}>
-    <View style={styles.item}>
-      <Text style={{ color, fontSize: 16, textAlign: 'center', fontWeight: 'bold' }}>{title}</Text>
-      <Text
-        style={{
-          textAlign: 'center',
-          // marginTop: 10,
-          marginBottom: 10,
-          fontSize: 18,
-          fontWeight: 'bold',
-        }}
-      >
-        {loadable.state === 'hasValue'
-          ? format(loadable.contents.stats)
-          : loadable.state === 'loading'
-          ? '...'
-          : 'Error occured'}
-      </Text>
-      <View
-        style={{
-          position: 'absolute',
-          right: 8,
-          bottom: 8,
-        }}
-      >
-        {icon}
+  <DropShadow
+    style={{
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
+      shadowOpacity: 0.05,
+      // shadowOpacity: 1,
+      shadowRadius: 3,
+      flex: 1,
+      marginVertical: 8,
+    }}
+  >
+    <PressableCard style={{ borderRadius: 24 }} onPress={onPress}>
+      <View style={styles.item}>
+        <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
+        <Text
+          style={{
+            textAlign: 'center',
+            // marginTop: 10,
+            marginBottom: 10,
+            fontSize: 18,
+            fontWeight: 'bold',
+          }}
+        >
+          {loadable.state === 'hasValue'
+            ? format(loadable.contents.stats)
+            : loadable.state === 'loading'
+            ? '...'
+            : 'Error occured'}
+        </Text>
+        <View
+          style={{
+            position: 'absolute',
+            right: 8,
+            bottom: 8,
+          }}
+        >
+          {icon}
+        </View>
       </View>
-    </View>
-  </PressableCard>
+    </PressableCard>
+  </DropShadow>
 );
 
 const useRefreshStats = () => {
@@ -153,9 +170,9 @@ const StatsScreen = ({ navigation }) => {
             icon={
               <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
             }
-            title={t('chiaPrice').toUpperCase()}
+            title={t('chiaPrice')}
           />
-          <View style={{ width: 8 }} />
+          <View style={{ width: 16 }} />
           <Item
             onPress={() => {
               navigation.navigate({
@@ -168,7 +185,7 @@ const StatsScreen = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => formatBytes(item.pool_space)}
             color="#4DB33E"
-            title={t('poolSpace').toUpperCase()}
+            title={t('poolSpace')}
             icon={
               <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
             }
@@ -181,7 +198,7 @@ const StatsScreen = ({ navigation }) => {
             color="#3DD292"
             title={t('etw').toUpperCase()}
           />
-          <View style={{ width: 8 }} />
+          <View style={{ width: 16 }} />
           <Item
             onPress={() => {
               navigation.navigate('Root', { screen: 'Blocks Found', intial: false });
@@ -190,12 +207,12 @@ const StatsScreen = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => item.rewards_blocks}
             color="#FB6D4C"
-            title={t('blocks').toUpperCase()}
+            title={t('blocks')}
             icon={<Ionicons name="layers-outline" size={16} color={theme.colors.textGrey} />}
           />
         </View>
         <View style={styles.container}>
-          <Item
+          {/* <Item
             onPress={() => {
               navigation.navigate('Root', { screen: 'Farmers', intial: false });
               setIntialRoute({ name: 'Farmers' });
@@ -203,15 +220,26 @@ const StatsScreen = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => item.farmers}
             color="#34D4F1"
-            title={t('farmers').toUpperCase()}
+            title={t('farmers')}
+            icon={<Ionicons name="people-outline" size={16} color={theme.colors.textGrey} />}
+          /> */}
+          <Item
+            onPress={() => {
+              navigation.navigate('Root', { screen: 'Farmers', intial: false });
+              setIntialRoute({ name: 'Farmers' });
+            }}
+            loadable={statsLoadable}
+            format={(item) => item.farmers_active}
+            color="#34D4F1"
+            title={t('farmers')}
             icon={<Ionicons name="people-outline" size={16} color={theme.colors.textGrey} />}
           />
-          <View style={{ width: 8 }} />
+          <View style={{ width: 16 }} />
           <Item
             loadable={statsLoadable}
             format={(item) => formatBytes(item.blockchain_space)}
             color="#34D4F1"
-            title={t('netspace').toUpperCase()}
+            title={t('netspace')}
           />
         </View>
         <View style={styles.container}>
@@ -221,15 +249,15 @@ const StatsScreen = ({ navigation }) => {
               `${((item.time_since_last_win / (item.estimate_win * 60)) * 100).toFixed(0)}%`
             }
             color="#4DB33E"
-            title={t('currentEffort').toUpperCase()}
+            title={t('currentEffort')}
           />
-          <View style={{ width: 8 }} />
+          <View style={{ width: 16 }} />
           <Item
             loadable={statsLoadable}
             // value="average_effort"
             format={(item) => `${item.average_effort.toFixed(0)}%`}
             color="#4DB33E"
-            title={t('effort').toUpperCase()}
+            title={t('effort')}
           />
         </View>
         <View style={styles.container}>
@@ -237,9 +265,9 @@ const StatsScreen = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => convertSecondsToHourMin(item.time_since_last_win)}
             color="#4DB33E"
-            title={t('sinceLastWin').toUpperCase()}
+            title={t('sinceLastWin')}
           />
-          <View style={{ width: 8 }} />
+          <View style={{ width: 16 }} />
           <Item
             onPress={() => {
               navigation.navigate('Root', { screen: 'Payouts', intial: false });
@@ -248,7 +276,7 @@ const StatsScreen = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => `${convertMojoToChia(item.rewards_amount)} XCH`}
             color="#4DB33E"
-            title={t('rewards').toUpperCase()}
+            title={t('rewards')}
             icon={<Ionicons name="ios-card-outline" size={16} color={theme.colors.textGrey} />}
           />
         </View>
@@ -257,7 +285,7 @@ const StatsScreen = ({ navigation }) => {
             loadable={statsLoadable}
             format={(item) => `${item.xch_tb_month.toFixed(8)} XCH/TiB/day`}
             color="#4DB33E"
-            title={t('profitability').toUpperCase()}
+            title={t('profitability')}
           />
         </View>
       </ScrollView>
@@ -269,7 +297,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flex: 1,
-    marginHorizontal: 8,
+    marginHorizontal: 16,
   },
   item: {
     height: '100%',

@@ -3,18 +3,84 @@ import {
   DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
 import merge from 'deepmerge';
-import { DarkTheme as PaperDarkTheme, DefaultTheme as PaperDefaultTheme } from 'react-native-paper';
+import {
+  configureFonts,
+  DarkTheme as PaperDarkTheme,
+  DefaultTheme as PaperDefaultTheme,
+} from 'react-native-paper';
 
 const CombinedDefaultTheme = merge(PaperDefaultTheme, NavigationDefaultTheme);
 const CombinedDarkTheme = merge(PaperDarkTheme, NavigationDarkTheme);
 
+const fontConfig = {
+  web: {
+    regular: {
+      fontFamily: 'Poppins-Regular',
+      fontWeight: 'normal',
+    },
+    medium: {
+      fontFamily: 'Poppins-Medium',
+      fontWeight: 'normal',
+    },
+    light: {
+      fontFamily: 'Poppins-Light',
+      fontWeight: 'normal',
+    },
+    thin: {
+      fontFamily: 'Poppins-Thin',
+      fontWeight: 'normal',
+    },
+  },
+  ios: {
+    regular: {
+      fontFamily: 'Poppins-Regular',
+      fontWeight: 'normal',
+    },
+    medium: {
+      fontFamily: 'Poppins-Medium',
+      fontWeight: 'normal',
+    },
+    light: {
+      fontFamily: 'Poppins-Light',
+      fontWeight: 'normal',
+    },
+    thin: {
+      fontFamily: 'Poppins-Thin',
+      fontWeight: 'normal',
+    },
+  },
+  android: {
+    regular: {
+      fontFamily: 'Poppins-SemiBold',
+      fontWeight: 'normal',
+    },
+    bold: {
+      fontFamily: 'Poppins-Bold',
+      fontWeight: 'normal',
+    },
+    medium: {
+      fontFamily: 'Poppins-Medium',
+      fontWeight: 'normal',
+    },
+    light: {
+      fontFamily: 'Poppins-Light',
+      fontWeight: 'normal',
+    },
+    thin: {
+      fontFamily: 'Poppins-Thin',
+      fontWeight: 'normal',
+    },
+  },
+};
+
 export const LightTheme = {
   ...CombinedDefaultTheme,
+  fonts: configureFonts(fontConfig),
   roundness: 2,
   colors: {
     ...CombinedDefaultTheme.colors,
     // background: '#ebebeb',
-    background: '#fff',
+    background: '#f8f8f8',
     border: '#436B34',
     accent: '#c57e49',
     surface: '#f5f5f5',
@@ -41,9 +107,13 @@ export const LightTheme = {
     notification: '#436B34',
     leaves: 'rgba(41, 50, 57, 0.05)',
     // borderColor: 'rgba(0,0,0,0.08)',
-    borderColor: '#e0e0e0',
+    // borderColor: '#e0e0e0',
+    borderColor: '#f0f0f0',
+    dividerColor: '#f0f0f0',
     tabNavigator: '#436B34',
     tabNavigatorText: '#f5f5f5',
+    tabNavigatorBackground: '#fff',
+    tabNavigatorTopBorderColor: '#e8e8e8',
     jellyBarText: '#424242',
     drawerSelected: '#436B34',
   },
@@ -51,6 +121,7 @@ export const LightTheme = {
 
 export const DarkTheme = {
   ...CombinedDarkTheme,
+  fonts: configureFonts(fontConfig),
   roundness: 2,
   colors: {
     ...CombinedDarkTheme.colors,
@@ -81,6 +152,8 @@ export const DarkTheme = {
     borderColor: 'rgba(0,0,0,0.05)',
     tabNavigator: '#436B34',
     tabNavigatorText: '#f5f5f5',
+    tabNavigatorBackground: '#f7f7f7',
+    tabNavigatorTopBorderColor: '#e8e8e8',
     jellyBarText: '#f5f5f5',
     drawerSelected: '#61914e',
   },

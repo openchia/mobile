@@ -24,6 +24,16 @@ const TouchableRipple = ({ style, onPress, children }) => {
 
   const tapGestureEvent = useAnimatedGestureHandler({
     onStart: (tapEvent) => {
+      // const layout = measure(aRef);
+      // width.value = layout.width;
+      // height.value = layout.height;
+      // centerX.value = tapEvent.x;
+      // centerY.value = tapEvent.y;
+      // rippleOpacity.value = 1;
+      // scale.value = 0;
+      // scale.value = withTiming(1, { duration: 500 });
+    },
+    onActive: (tapEvent) => {
       const layout = measure(aRef);
       width.value = layout.width;
       height.value = layout.height;
@@ -34,9 +44,7 @@ const TouchableRipple = ({ style, onPress, children }) => {
       rippleOpacity.value = 1;
       scale.value = 0;
       scale.value = withTiming(1, { duration: 500 });
-    },
-    onActive: () => {
-      if (onPress) runOnJS(onPress)();
+      // if (onPress) runOnJS(onPress)();
     },
     onFinish: () => {
       rippleOpacity.value = withTiming(0);
@@ -70,7 +78,13 @@ const TouchableRipple = ({ style, onPress, children }) => {
 
   return (
     <View ref={aRef} style={[style, { overflow: 'hidden' }]}>
-      <TapGestureHandler onGestureEvent={tapGestureEvent}>
+      <TapGestureHandler
+        shouldCancelWhenOutside
+        onGestureEvent={tapGestureEvent}
+        maxDistance={2}
+        // maxDeltaX={2}
+        // maxDeltaY={2}
+      >
         <Animated.View>
           <View>{children}</View>
           <Animated.View style={rStyle} />

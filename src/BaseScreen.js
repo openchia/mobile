@@ -15,7 +15,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { LogBox, StatusBar, View } from 'react-native';
+import { LogBox, StatusBar, TouchableOpacity, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -33,8 +33,8 @@ import MoreScreen from './v2/screens/More';
 import PoolScreen from './v2/screens/Pool';
 import NewsScreen from './screens/NewsScreen';
 
-// const Tab = createBottomTabNavigator();
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
+// const Tab = createMaterialBottomTabNavigator();
 
 // LogBox.ignoreLogs(['Reanimated 2']);
 LogBox.ignoreLogs(['timer']);
@@ -84,19 +84,56 @@ const BaseScreen = () => {
                   //   flex: 1,
                   // },
                   headerShown: false,
+                  tabBarButton: (props) => <TouchableOpacity {...props} />,
+                  tabBarItemStyle: {
+                    padding: 6,
+                  },
+                  // tabBarActiveBackgroundColor: 'blue',
+                  tabBarStyle: {
+                    height: 56,
+                    // padding: 16,
+                    // display: 'flex',
+                    // justifyContent: 'center',
+                    // alignItems: 'center',
+                    // paddingHorizontal: 5,
+                    // paddingTop: 0,
+                    // justifyContent: 'center',
+                    // alignItems: 'center',
+                    backgroundColor: theme.colors.tabNavigatorBackground,
+                    // position: 'absolute',
+                    borderTopColor: theme.colors.tabNavigatorTopBorderColor,
+                    // borderTopWidth: 0,
+                    // padding: 16,
+                  },
+                  tabBarIconStyle: {
+                    // backgroundColor: 'blue',
+                    // display: 'none',
+                    // flex: 1,
+                    // paddingTop: -8,
+                    // background: 'blue',
+                    // color: 'blue',
+                  },
+                  tabBarLabelStyle: {
+                    fontFamily: theme.fonts.regular.fontFamily,
+                    // flex: 1,
+                    // backgroundColor: 'red',
+                    fontSize: 12,
+                    // paddingBottom: 8,
+                    // backgroundColor: 'red',
+                    // position: 'absolute',
+                    // textAlignVertical: 'center',
+                    // paddingBottom: 8,
+                  },
                 }}
               >
                 <Tab.Screen
                   name="Pool"
                   component={PoolScreen}
                   options={{
-                    style: {
-                      backgroundColor: 'red',
-                      height: 45,
-                    },
-                    headerTitle: (props) => <CustomToolbar {...props} />,
-                    tabBarIcon: ({ color, focused }) => (
-                      <MaterialCommunityIcons name="pool" size={24} color={color} />
+                    // headerTitleStyle: { alignSelf: 'center' },
+                    // headerTitle: (props) => <CustomToolbar {...props} />,
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons name="pool" size={size} color={color} />
                     ),
                   }}
                 />
@@ -104,14 +141,10 @@ const BaseScreen = () => {
                   name="News"
                   component={NewsScreen}
                   options={{
-                    style: {
-                      backgroundColor: 'red',
-                      height: 45,
-                    },
-                    tabBarIcon: ({ color, focused }) => (
+                    tabBarIcon: ({ color, size, focused }) => (
                       <Ionicons
                         name={focused ? 'ios-newspaper' : 'ios-newspaper-outline'}
-                        size={24}
+                        size={size}
                         color={color}
                       />
                     ),
@@ -121,14 +154,10 @@ const BaseScreen = () => {
                   name="Dashboard"
                   component={DashboardScreen}
                   options={{
-                    style: {
-                      backgroundColor: 'red',
-                      height: 45,
-                    },
-                    tabBarIcon: ({ color, focused }) => (
+                    tabBarIcon: ({ color, size, focused }) => (
                       <MaterialCommunityIcons
                         name={focused ? 'view-dashboard' : 'view-dashboard-outline'}
-                        size={24}
+                        size={size}
                         color={color}
                       />
                     ),
@@ -138,12 +167,12 @@ const BaseScreen = () => {
                   name="Giveaway"
                   component={GiveawayScreen}
                   options={{
-                    style: {
-                      backgroundColor: 'red',
-                      height: 45,
-                    },
-                    tabBarIcon: ({ color, focused }) => (
-                      <Ionicons name={focused ? 'gift' : 'gift-outline'} size={24} color={color} />
+                    tabBarIcon: ({ color, size, focused }) => (
+                      <Ionicons
+                        name={focused ? 'gift' : 'gift-outline'}
+                        size={size}
+                        color={color}
+                      />
                     ),
                   }}
                 />
@@ -151,12 +180,8 @@ const BaseScreen = () => {
                   name="More"
                   component={MoreScreen}
                   options={{
-                    style: {
-                      backgroundColor: 'red',
-                      height: 45,
-                    },
-                    tabBarIcon: ({ color, focused }) => (
-                      <MaterialIcons name="read-more" size={24} color={color} />
+                    tabBarIcon: ({ color, size, focused }) => (
+                      <MaterialIcons name="read-more" size={size} color={color} />
                     ),
                   }}
                 />

@@ -46,44 +46,68 @@ const getLuck = (luck) => {
 };
 
 const Item = ({ item, theme, t }) => (
-  <PressableCard
-    style={{ padding: 8, display: 'flex', marginHorizontal: 8, marginVertical: 2 }}
-    onTap={() => {}}
-  >
-    <View style={{ display: 'flex', flexDirection: 'row' }}>
-      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-        {t('effort')}
-      </Text>
-      <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>{`${
-        item.luck
-      }% ( ${getLuck(item.luck)} )`}</Text>
-    </View>
-    <View style={{ flexDirection: 'row', marginTop: 8 }}>
-      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-        {t('index')}
-      </Text>
-      <Text numberOfLines={1} style={styles.val}>
-        {item.confirmed_block_index}
-      </Text>
-    </View>
-    <View style={{ flexDirection: 'row', marginTop: 8 }}>
-      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-        {t('farmer')}
-      </Text>
-      <Text numberOfLines={1} style={[styles.val, { color: theme.colors.textLight }]}>
-        {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
-      </Text>
-    </View>
-    <View style={{ flexDirection: 'row', marginTop: 8 }}>
-      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-        {t('date')}
-      </Text>
-      <Text numberOfLines={1} style={styles.val}>
-        {format(fromUnixTime(item.timestamp), 'PPpp')}
-      </Text>
+  <PressableCard style={{ marginBottom: 2, paddingTop: 6, paddingBottom: 6 }} onTap={() => {}}>
+    <View style={{ marginHorizontal: 12 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text numberOfLines={1} style={{ color: theme.colors.textLight, fontSize: 13, flex: 1 }}>
+          {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
+        </Text>
+        <View>
+          <Text
+            numberOfLines={1}
+            style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey }}
+          >{`${item.luck}% ( ${getLuck(item.luck)} )`}</Text>
+          <Text
+            numberOfLines={1}
+            style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey }}
+          >
+            {format(fromUnixTime(item.timestamp), 'PPpp')}
+          </Text>
+        </View>
+      </View>
     </View>
   </PressableCard>
 );
+
+// const Item = ({ item, theme, t }) => (
+//   <PressableCard
+//     style={{ padding: 8, display: 'flex', marginHorizontal: 8, marginVertical: 2 }}
+//     onTap={() => {}}
+//   >
+//     <View style={{ display: 'flex', flexDirection: 'row' }}>
+//       <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+//         {t('effort')}
+//       </Text>
+//       <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>{`${
+//         item.luck
+//       }% ( ${getLuck(item.luck)} )`}</Text>
+//     </View>
+//     <View style={{ flexDirection: 'row', marginTop: 8 }}>
+//       <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+//         {t('index')}
+//       </Text>
+//       <Text numberOfLines={1} style={styles.val}>
+//         {item.confirmed_block_index}
+//       </Text>
+//     </View>
+//     <View style={{ flexDirection: 'row', marginTop: 8 }}>
+//       <Text numberOfLines={1} style={[{ color: theme.colors.textLight, fontSize: 14, flex: 1 }]}>
+//         {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
+//       </Text>
+//       <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+//         {t('farmer')}
+//       </Text>
+//     </View>
+//     <View style={{ flexDirection: 'row', marginTop: 8 }}>
+//       <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+//         {t('date')}
+//       </Text>
+//       <Text numberOfLines={1} style={styles.val}>
+//         {format(fromUnixTime(item.timestamp), 'PPpp')}
+//       </Text>
+//     </View>
+//   </PressableCard>
+// );
 
 const BlocksFoundScreen = () => {
   const refresh = useRefresh();
@@ -131,7 +155,7 @@ const BlocksFoundScreen = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
-        ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
+        ListHeaderComponent={<View style={{}} />}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

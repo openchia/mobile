@@ -1,11 +1,11 @@
 import React from 'react';
 import { Path, G, Svg } from 'react-native-svg';
 
-const OpenChiaIcon = ({ style }) => (
-  <Svg viewBox="0 0 119.129921 116.6813431" style={style}>
+const OpenChiaIcon = ({ style, color, size }) => (
+  <Svg viewBox="0 0 119.129921 116.6813431" style={[style, { height: size, width: size }]}>
     <G>
       <Path
-        fill="#243f1e"
+        fill={color}
         d="M119.129921,59.573307c0,26.9329872-17.865387,49.678318-42.4006119,57.0405312l-5.0826645-20.8709183
 			h3.1409531c1.029808,0,1.8740997-0.8442917,1.8740997-1.8744049v-3.2758636c0-1.030014-0.8442917-1.8743057-1.8740997-1.8743057
 			H63.5751495c-0.0676117-8.9832993,0.8442917-19.1148224,4.3904953-26.0886993h-0.0169067l6.6867371-14.1840706

@@ -2,13 +2,7 @@ import React from 'react';
 import { G, Path, Svg } from 'react-native-svg';
 
 const OpenChiaIcon = ({ style, color }) => (
-  <Svg
-    viewBox="0 0 299.5556946 98.056282"
-    x="0px"
-    y="0px"
-    preserveAspectRatio="xMinYMin meet"
-    style={style}
-  >
+  <Svg viewBox="0 0 299.5556946 98.056282" preserveAspectRatio="xMinYMin meet" style={style}>
     <G>
       <G>
         <Path

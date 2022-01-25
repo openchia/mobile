@@ -13,7 +13,7 @@ const PressableCard = ({ style, onPress, children, enabled }) => {
           backgroundColor: theme.colors.onSurface,
           borderColor: theme.colors.borderColor,
           // borderColor: 'grey',
-          // borderRadius: 8,
+          borderRadius: 8,
           // borderWidth: 2,
           // shadowColor: '#000',
           // shadowRadius: 10,
