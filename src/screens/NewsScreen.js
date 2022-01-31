@@ -1,6 +1,6 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -10,6 +10,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import DropShadow from 'react-native-drop-shadow';
 // import { FlatList } from 'react-native-gesture-handler';
 import { Button, Text, useTheme } from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
@@ -38,43 +39,62 @@ const query = selectorFamily({
     },
 });
 
-const Item = ({ item, width, onPress, tagsStyles }) => (
-  <PressableCard onPress={onPress} style={{ marginHorizontal: 8, marginVertical: 4 }}>
-    <View
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        paddingTop: 12,
-        paddingBottom: 12,
-        paddingStart: 12,
-        paddingEnd: 12,
-      }}
+const Item = ({ item, width, onPress, tagsStyles, theme }) => (
+  <DropShadow
+    style={{
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
+      shadowOpacity: 0.05,
+      // shadowOpacity: 1,
+      shadowRadius: 3,
+      flex: 1,
+      marginVertical: 4,
+      marginHorizontal: 8,
+    }}
+  >
+    <PressableCard
+      onPress={onPress}
+      style={{ borderRadius: 8, backgroundColor: theme.colors.onSurfaceLight }}
     >
-      <Image
-        style={{ height: 200, width: '100%', borderRadius: 6 }}
-        source={{
-          uri: item.jetpack_featured_media_url,
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          paddingTop: 12,
+          paddingBottom: 12,
+          paddingStart: 12,
+          paddingEnd: 12,
         }}
-      />
-      <View style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingTop: 12 }}>
-        <RenderHtml
-          tagsStyles={tagsStyles}
-          contentWidth={width}
-          // customHTMLElementModels={customHTMLElementModels}
-          source={{ html: `<h2><strong>${item.title.rendered}</strong></h2>` }}
+      >
+        <Image
+          style={{ height: 200, width: '100%', borderRadius: 6 }}
+          source={{
+            uri: item.jetpack_featured_media_url,
+          }}
         />
-        <View style={{ flex: 1 }}>
+        <View style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingTop: 12 }}>
           <RenderHtml
-            enableCSSInlineProcessing
             tagsStyles={tagsStyles}
             contentWidth={width}
-            source={{ html: item.excerpt.rendered }}
+            // customHTMLElementModels={customHTMLElementModels}
+            source={{ html: `<h2><strong>${item.title.rendered}</strong></h2>` }}
           />
+          <View style={{ flex: 1 }}>
+            <RenderHtml
+              enableCSSInlineProcessing
+              tagsStyles={tagsStyles}
+              contentWidth={width}
+              source={{ html: item.excerpt.rendered }}
+            />
+          </View>
+          <Text style={styles.date}>{format(new Date(item.modified), 'PP')}</Text>
         </View>
-        <Text style={styles.date}>{format(new Date(item.modified), 'PP')}</Text>
       </View>
-    </View>
-  </PressableCard>
+    </PressableCard>
+  </DropShadow>
 );
 const NewsScreen = ({ navigation }) => {
   const { width } = useWindowDimensions();
@@ -104,16 +124,20 @@ const NewsScreen = ({ navigation }) => {
     }
   }, [postsLoadable.state]);
 
-  const renderItem = ({ item, index }) => (
-    <Item
-      item={item}
-      rank={index}
-      width={width}
-      tagsStyles={tagsStyles}
-      onPress={() => {
-        navigation.navigate('Post', { post: item });
-      }}
-    />
+  const renderItem = useCallback(
+    ({ item, index }) => (
+      <Item
+        item={item}
+        rank={index}
+        theme={theme}
+        width={width}
+        tagsStyles={tagsStyles}
+        onPress={() => {
+          navigation.navigate('Post', { post: item });
+        }}
+      />
+    ),
+    []
   );
 
   if (postsLoadable.state === 'hasError') {

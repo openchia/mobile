@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
@@ -20,10 +20,10 @@ export const LANGUAGES = [
 ];
 
 const Item = ({ item, onPress }) => (
-  <PressableCard style={{ marginVertical: 2, marginHorizontal: 8 }} onPress={onPress}>
+  <PressableCard style={{ marginBottom: 1, paddingTop: 12, paddingBottom: 12 }} onPress={onPress}>
     <View
       style={{
-        padding: 14,
+        marginHorizontal: 12,
         display: 'flex',
         flexDirection: 'row',
         flex: 1,
@@ -42,25 +42,28 @@ const LanguageSelectorScreen = () => {
 
   const setLanguage = (code) => i18n.changeLanguage(code);
 
-  const renderItem = ({ item, index }) => (
-    <Item
-      item={item}
-      theme={theme}
-      onPress={() => {
-        if (item.code !== selectedLanguageCode) {
-          setLanguage(item.code);
-          navigation.goBack();
-        }
-      }}
-    />
+  const renderItem = useCallback(
+    ({ item, index }) => (
+      <Item
+        item={item}
+        theme={theme}
+        onPress={() => {
+          if (item.code !== selectedLanguageCode) {
+            setLanguage(item.code);
+            navigation.goBack();
+          }
+        }}
+      />
+    ),
+    []
   );
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.divider }}>
       <FlatList
         initialNumToRender={LANGUAGES.length - 1}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
-        ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
+        contentContainerStyle={{ flexGrow: 1 }}
+        ListHeaderComponent={<View style={{}} />}
         data={LANGUAGES.sort((a, b) => a.label.localeCompare(b.label)).filter(
           (item) => selectedLanguageCode !== item.code
         )}

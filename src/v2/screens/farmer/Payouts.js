@@ -1,34 +1,25 @@
-/* eslint-disable arrow-body-style */
-import { format, fromUnixTime } from 'date-fns';
+import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dimensions, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { getFontScale } from 'react-native-device-info';
 import { Text, useTheme } from 'react-native-paper';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-import { getBlocks } from '../Api';
-import { settingsState } from '../Atoms';
-import LoadingComponent from '../components/LoadingComponent';
-import PressableCard from '../components/PressableCard';
+import { getPayoutsFromAddress, getPayoutsFromAddresses } from '../../../Api';
+import {
+  farmErrorState,
+  farmLoadingState,
+  farmState,
+  launcherIDsState,
+  settingsState,
+} from '../../../Atoms';
+import PressableCard from '../../../components/PressableCard';
+import LoadingComponent from './../../../components/LoadingComponent';
+import { convertMojoToChia } from './../../../utils/Formatting';
 
 const LIMIT = 20;
 const HEIGHT = 50;
-
-const getLuck = (luck) => {
-  if (luck <= 30) {
-    return 'Very Lucky';
-  }
-  if (luck <= 80) {
-    return 'Lucky';
-  }
-  if (luck <= 120) {
-    return 'Average';
-  }
-  if (luck <= 200) {
-    return 'Unlucky';
-  }
-  return 'Very Unlucky';
-};
 
 const Item = ({ item, theme, t }) => (
   <PressableCard
@@ -42,39 +33,33 @@ const Item = ({ item, theme, t }) => (
   >
     <View style={{ marginHorizontal: 12 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text numberOfLines={1} style={{ color: theme.colors.textLight, fontSize: 13, flex: 1 }}>
-          {item.farmed_by.name ? item.farmed_by.name : item.farmed_by.launcher_id}
+        {/* <Text
+            numberOfLines={1}
+            style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey }}
+          >{`${convertMojoToChia(item.amount)} XCH`}</Text>
+          <View style={{ flexDirection: 'row', marginTop: 8 }}>
+              <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('id')}</Text>
+              <Text style={styles.val}>{item.transaction.confirmed_block_index}</Text>
+            </View> */}
+        <Text
+          numberOfLines={1}
+          style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey }}
+        >
+          {`${convertMojoToChia(item.amount)} XCH`}
         </Text>
-        <View>
-          <Text
-            numberOfLines={1}
-            style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey }}
-          >{`${item.luck}% ( ${getLuck(item.luck)} )`}</Text>
-          <Text
-            numberOfLines={1}
-            style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey }}
-          >
-            {format(fromUnixTime(item.timestamp), 'PPpp')}
-          </Text>
-        </View>
+        <Text
+          numberOfLines={1}
+          style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey, flex: 1 }}
+        >
+          {format(new Date(item.payout.datetime), 'PPpp')}
+        </Text>
       </View>
     </View>
   </PressableCard>
 );
 
 const Content = ({ dataState, refresh, state, setState, theme, layoutProvider }) => {
-  const rowRenderer = (type, data, index) => (
-    <Item
-      item={data}
-      theme={theme}
-      onPress={() => {
-        // navigation.navigate({
-        //   name: 'Farmer',
-        //   params: { data: { launcherId: data.launcher_id, name: data.name } },
-        // });
-      }}
-    />
-  );
+  const rowRenderer = (type, data, index) => <Item item={data} theme={theme} onPress={() => {}} />;
 
   const loadMore = () => {
     if (state.hasMore && !state.refreshing) {
@@ -107,11 +92,12 @@ const Content = ({ dataState, refresh, state, setState, theme, layoutProvider })
   );
 };
 
-const BlocksFoundScreen = () => {
+const FarmerPayoutScreen = () => {
+  const farms = useRecoilValue(launcherIDsState);
   const theme = useTheme();
   const { width } = Dimensions.get('window');
-  const [layoutProvider, setLayoutProvider] = useState();
   const settings = useRecoilValue(settingsState);
+  const [layoutProvider, setLayoutProvider] = useState();
 
   const [state, setState] = useState({
     loading: true,
@@ -122,9 +108,7 @@ const BlocksFoundScreen = () => {
   });
 
   const [dataState, setDataState] = useState({
-    dataProvider: new DataProvider((r1, r2) => {
-      return r1 !== r2;
-    }),
+    dataProvider: new DataProvider((r1, r2) => r1 !== r2),
     data: [],
   });
 
@@ -144,21 +128,23 @@ const BlocksFoundScreen = () => {
 
   useEffect(() => {
     if (state.loading || state.querying || state.refreshing) {
-      getBlocks(state.offset, LIMIT).then((response) => {
-        setDataState((prev) => ({
-          dataProvider: new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
-            prev.data.concat(response.results)
-          ),
-          data: prev.data.concat(response.results),
-        }));
-        setState((prev) => ({
-          ...prev,
-          loading: false,
-          querying: false,
-          refreshing: false,
-          hasMore: response.results.length === LIMIT,
-        }));
-      });
+      getPayoutsFromAddress(farms.map((item) => item.launcherId)[0], state.offset, LIMIT).then(
+        (response) => {
+          setDataState((prev) => ({
+            dataProvider: new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
+              prev.data.concat(response.results)
+            ),
+            data: prev.data.concat(response.results),
+          }));
+          setState((prev) => ({
+            ...prev,
+            loading: false,
+            querying: false,
+            refreshing: false,
+            hasMore: response.results.length === LIMIT,
+          }));
+        }
+      );
     }
   }, [state.loading, state.querying, state.refreshing]);
 
@@ -187,4 +173,16 @@ const BlocksFoundScreen = () => {
   );
 };
 
-export default BlocksFoundScreen;
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 14,
+    marginEnd: 8,
+  },
+  val: {
+    fontSize: 14,
+    flex: 1,
+    textAlign: 'right',
+  },
+});
+
+export default FarmerPayoutScreen;

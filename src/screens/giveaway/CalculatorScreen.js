@@ -78,7 +78,9 @@ const CalculatorScreen = ({ navigation }) => {
       >
         {t('giveawayEveryday')}
       </Text>
-      <CustomCard style={{ marginTop: 16 }}>
+      <CustomCard
+        style={{ marginTop: 16, backgroundColor: theme.colors.onSurfaceLight, borderRadius: 24 }}
+      >
         <View style={{ padding: 12 }}>
           <View
             style={{
@@ -108,7 +110,9 @@ const CalculatorScreen = ({ navigation }) => {
           <TierItem tier="1000+ TiB" tickets="20 TiB" />
         </View>
       </CustomCard>
-      <CustomCard style={{ marginTop: 16 }}>
+      <CustomCard
+        style={{ marginTop: 16, backgroundColor: theme.colors.onSurfaceLight, borderRadius: 24 }}
+      >
         <View style={{ flexDirection: 'row' }}>
           <View style={{ flexDirection: 'column', flex: 1, padding: 12 }}>
             <Text style={{ color: theme.colors.drawerSelected, fontWeight: 'bold' }}>
@@ -139,7 +143,7 @@ const CalculatorScreen = ({ navigation }) => {
           </View>
         </View>
         <Button
-          style={{ margin: 10 }}
+          style={{ margin: 10, borderRadius: 24 }}
           mode="contained"
           onPress={() => {
             if (!isNaN(number)) {

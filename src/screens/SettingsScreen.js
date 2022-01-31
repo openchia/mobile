@@ -8,6 +8,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currencyState, settingsState } from '../Atoms';
+import CustomCard from '../components/CustomCard';
+import IconButton from '../components/IconButton';
 import PressableCard from '../components/PressableCard';
 import { getCurrencyTitle } from './CurrencySelectionScreen';
 import { LANGUAGES } from './LanguageSelectorScreen';
@@ -63,28 +65,22 @@ const SettingsScreen = ({ navigation }) => {
   return (
     <SafeAreaView
       style={{
-        marginTop: 8,
         flex: 1,
+        backgroundColor: theme.colors.onSurface,
       }}
     >
-      {/* <Text style={{ fontSize: 20, padding: 10 }}>{t('general')}</Text> */}
-      <PressableCard
-        style={{ marginVertical: 2, marginHorizontal: 8 }}
-        onPress={() => navigation.navigate('Currency')}
-      >
+      <PressableCard onPress={() => navigation.navigate('Currency')}>
         <View style={styles.content}>
-          <MaterialCommunityIcons
-            name="currency-usd-circle-outline"
-            size={30}
-            color={theme.colors.textGrey}
-            style={{ marginEnd: 16 }}
-          />
           <View style={styles.mainContent}>
             <Text style={styles.title}>{t('currency')}</Text>
-            <Text numberOfLines={1} style={styles.subtitle}>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.subtitle,
+                { fontFamily: theme.fonts.medium.fontFamily, color: theme.colors.textGrey },
+              ]}
+            >
               {getCurrencyTitle(currency)}
-              {/* {t('currencyDesc')} */}
-              {/* Set preferred currency. */}
             </Text>
           </View>
           <MaterialIcons
@@ -96,20 +92,17 @@ const SettingsScreen = ({ navigation }) => {
           {/* <Text style={styles.desc}>{currency.toUpperCase()}</Text> */}
         </View>
       </PressableCard>
-      <PressableCard
-        style={{ marginVertical: 4, marginHorizontal: 8 }}
-        onPress={() => navigation.navigate('Language')}
-      >
+      <PressableCard onPress={() => navigation.navigate('Language')}>
         <View style={styles.content}>
-          <Ionicons
-            name="language"
-            size={30}
-            color={theme.colors.textGrey}
-            style={{ marginEnd: 16 }}
-          />
           <View style={styles.mainContent}>
             <Text style={styles.title}>{t('language')}</Text>
-            <Text numberOfLines={1} style={styles.subtitle}>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.subtitle,
+                { fontFamily: theme.fonts.medium.fontFamily, color: theme.colors.textGrey },
+              ]}
+            >
               {LANGUAGES.filter((item) => item.code === selectedLanguageCode)[0].label}
               {/* {t('languageDesc')} */}
             </Text>
@@ -125,20 +118,17 @@ const SettingsScreen = ({ navigation }) => {
           />
         </View>
       </PressableCard>
-      <PressableCard
-        style={{ marginVertical: 4, marginHorizontal: 8 }}
-        onPress={toggleNotifications}
-      >
+      <PressableCard onPress={toggleNotifications}>
         <View style={styles.content}>
-          <Ionicons
-            name={settings.blockNotifications ? 'ios-notifications' : 'ios-notifications-outline'}
-            size={30}
-            color={theme.colors.textGrey}
-            style={{ marginEnd: 16 }}
-          />
           <View style={styles.mainContent}>
             <Text style={styles.title}>{t('notification')}</Text>
-            <Text numberOfLines={1} style={styles.subtitle}>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.subtitle,
+                { fontFamily: theme.fonts.medium.fontFamily, color: theme.colors.textGrey },
+              ]}
+            >
               {t('notificationDesc')}
             </Text>
           </View>
@@ -150,14 +140,8 @@ const SettingsScreen = ({ navigation }) => {
           </Text> */}
         </View>
       </PressableCard>
-      <PressableCard style={{ marginVertical: 4, marginHorizontal: 8 }} onPress={toggleTheme}>
+      <CustomCard>
         <View style={styles.content}>
-          <Ionicons
-            name={settings.isThemeDark ? 'ios-moon-outline' : 'ios-sunny-outline'}
-            size={30}
-            color={theme.colors.textGrey}
-            style={{ marginEnd: 16 }}
-          />
           {/* <MaterialCommunityIcons
             name="theme-light-dark"
             size={30}
@@ -166,70 +150,79 @@ const SettingsScreen = ({ navigation }) => {
           /> */}
           <View style={styles.mainContent}>
             <Text style={styles.title}>{t('appearance')}</Text>
-            <Text numberOfLines={1} style={styles.subtitle}>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.subtitle,
+                { fontFamily: theme.fonts.medium.fontFamily, color: theme.colors.textGrey },
+              ]}
+            >
               {t('appearanceDesc')}
             </Text>
           </View>
-          <View pointerEvents="none">
-            <Switch value={settings.isThemeDark} />
+          <View style={{ flexDirection: 'row' }}>
+            <IconButton
+              icon={
+                <Ionicons
+                  name={settings.isThemeDark ? 'ios-sunny-outline' : 'ios-sunny'}
+                  size={30}
+                  color={theme.colors.textGrey}
+                  onPress={() => {
+                    setSettings((prev) => ({ ...prev, isThemeDark: false }));
+                  }}
+                  // style={{ marginEnd: 16 }}
+                />
+              }
+            />
+            <View
+              style={{
+                width: 1,
+                backgroundColor: theme.colors.textGrey,
+                marginLeft: 10,
+                marginRight: 10,
+                marginTop: 10,
+                marginBottom: 10,
+              }}
+            />
+            <IconButton
+              icon={
+                <Ionicons
+                  style={{ alignSelf: 'center' }}
+                  name={settings.isThemeDark ? 'ios-moon' : 'ios-moon-outline'}
+                  size={24}
+                  color={theme.colors.textGrey}
+                  onPress={() => {
+                    setSettings((prev) => ({ ...prev, isThemeDark: true }));
+                  }}
+                />
+              }
+            />
+            {/* <Ionicons
+              style={{ alignSelf: 'center' }}
+              name={settings.isThemeDark ? 'ios-moon-outline' : 'ios-moon-outline'}
+              size={24}
+              color={theme.colors.textGrey}
+            /> */}
           </View>
-          {/* <Text style={styles.desc}>
-            {LANGUAGES.filter((item) => item.code === selectedLanguageCode)[0].label}
-          </Text> */}
         </View>
-      </PressableCard>
-      <PressableCard
-        style={{ marginVertical: 4, marginHorizontal: 8 }}
-        onPress={toggleActiveFarmers}
-      >
+      </CustomCard>
+      <PressableCard onPress={toggleActiveFarmers}>
         <View style={styles.content}>
-          <Ionicons
-            name={settings.showOnlyActiveFarmers ? 'ios-people' : 'ios-people-outline'}
-            size={30}
-            color={theme.colors.textGrey}
-            style={{ marginEnd: 16 }}
-          />
-          {/* <MaterialCommunityIcons
-            name="theme-light-dark"
-            size={30}
-            color={theme.colors.textGrey}
-            style={{ marginEnd: 16 }}
-          /> */}
           <View style={styles.mainContent}>
             <Text style={styles.title}>{t('activeFarms')}</Text>
-            <Text numberOfLines={1} style={styles.subtitle}>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.subtitle,
+                { fontFamily: theme.fonts.medium.fontFamily, color: theme.colors.textGrey },
+              ]}
+            >
               {t('activeFarmsDesc')}
             </Text>
           </View>
           <View pointerEvents="none">
             <Switch value={settings.showOnlyActiveFarmers} />
           </View>
-        </View>
-      </PressableCard>
-      <PressableCard
-        style={{ marginVertical: 2, marginHorizontal: 8 }}
-        onPress={() => navigation.navigate('Create Group')}
-      >
-        <View style={styles.content}>
-          <Ionicons
-            name="folder-open-outline"
-            size={30}
-            color={theme.colors.textGrey}
-            style={{ marginEnd: 16 }}
-          />
-          <View style={styles.mainContent}>
-            <Text style={styles.title}>{t('groupName')}</Text>
-            <Text numberOfLines={1} style={styles.subtitle}>
-              {settings.groupName ? settings.groupName : 'Group'}
-            </Text>
-          </View>
-          <MaterialIcons
-            name="keyboard-arrow-right"
-            size={30}
-            color={theme.colors.textGrey}
-            // style={{ marginEnd: 16 }}
-          />
-          {/* <Text style={styles.desc}>{currency.toUpperCase()}</Text> */}
         </View>
       </PressableCard>
     </SafeAreaView>
@@ -241,7 +234,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    paddingTop: 16,
+    marginHorizontal: 16,
   },
   mainContent: {
     display: 'flex',
@@ -250,14 +244,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    paddingBottom: 6,
+    // paddingBottom: 2,
   },
   subtitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  desc: {
-    fontSize: 12,
+    fontSize: 14,
   },
 });
 

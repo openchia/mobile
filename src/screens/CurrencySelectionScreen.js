@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { useRecoilState } from 'recoil';
 import { currencyState } from '../Atoms';
 import PressableCard from '../components/PressableCard';
@@ -38,10 +38,11 @@ export const getCurrencyTitle = (key) =>
 // Object.values(currencies.find((currency) => currency.key === key))[1];
 
 const Item = ({ item, onPress }) => (
-  <PressableCard style={{ marginVertical: 2, marginHorizontal: 8 }} onPress={onPress}>
+  <PressableCard style={{ marginBottom: 1, paddingTop: 12, paddingBottom: 12 }} onPress={onPress}>
     <View
       style={{
-        padding: 14,
+        // padding: 14,
+        marginHorizontal: 12,
         display: 'flex',
         flexDirection: 'row',
         flex: 1,
@@ -57,25 +58,29 @@ const Item = ({ item, onPress }) => (
 
 const CurrencySelectionScreen = ({ navigation }) => {
   const [currency, setCurrency] = useRecoilState(currencyState);
+  const theme = useTheme();
 
-  const renderItem = ({ item }) => (
-    <Item
-      item={item}
-      onPress={() => {
-        if (currency !== item.key) {
-          setCurrency(item.key);
-          navigation.goBack();
-        }
-      }}
-    />
+  const renderItem = useCallback(
+    ({ item }) => (
+      <Item
+        item={item}
+        onPress={() => {
+          if (currency !== item.key) {
+            setCurrency(item.key);
+            navigation.goBack();
+          }
+        }}
+      />
+    ),
+    []
   );
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.divider }}>
       <FlatList
         initialNumToRender={currencies.length - 1}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
-        ListHeaderComponent={<View style={{ paddingTop: 6 }} />}
+        contentContainerStyle={{ flexGrow: 1 }}
+        ListHeaderComponent={<View style={{}} />}
         data={currencies.filter((item) => currency !== item.key)}
         renderItem={renderItem}
         keyExtractor={(item) => item.key.toString()}

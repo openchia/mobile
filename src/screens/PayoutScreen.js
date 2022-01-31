@@ -1,167 +1,162 @@
-import { useNetInfo } from '@react-native-community/netinfo';
+/* eslint-disable arrow-body-style */
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Button, Text, useTheme } from 'react-native-paper';
-import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
-import { getPayouts } from '../Api';
-import { payoutsRequestIDState } from '../Atoms';
+import { Dimensions, RefreshControl, SafeAreaView, View } from 'react-native';
+import { getFontScale } from 'react-native-device-info';
+import { Text, useTheme } from 'react-native-paper';
+import { useRecoilValue } from 'recoil';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
+import { getBlocks, getPayouts } from '../Api';
+import { settingsState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
-import { convertMojoToChia } from '../utils/Formatting';
-import CustomCard from '../components/CustomCard';
-import ListItem from '../components/ListItem';
+import { convertMojoToChia } from './../utils/Formatting';
 
-const useRefresh = () => {
-  const setRequestId = useSetRecoilState(payoutsRequestIDState());
-  return () => setRequestId((id) => id + 1);
-};
-
-const query = selectorFamily({
-  key: 'payouts',
-  get:
-    () =>
-    async ({ get }) => {
-      get(payoutsRequestIDState());
-      const response = await getPayouts();
-      if (response.error) {
-        throw response.error;
-      }
-      return response;
-    },
-});
+const LIMIT = 20;
+const HEIGHT = 50;
 
 const Item = ({ item, theme, t }) => (
-  <CustomCard
-    style={{ marginBottom: 2, paddingTop: 6, paddingBottom: 6, borderRadius: 0 }}
+  <PressableCard
+    style={{
+      marginBottom: 1,
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor: theme.colors.itemColor,
+    }}
     onTap={() => {}}
   >
     <View style={{ marginHorizontal: 12 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text numberOfLines={1} style={styles}>
+        <Text numberOfLines={1} style={{ color: theme.colors.textLight, fontSize: 13, flex: 1 }}>
           {item.id}
         </Text>
         <View>
           <Text
             numberOfLines={1}
-            style={[styles.val, { fontWeight: 'bold' }]}
+            style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey }}
           >{`${convertMojoToChia(item.amount)} XCH`}</Text>
-          <Text numberOfLines={1} style={styles.val}>
+          <Text
+            numberOfLines={1}
+            style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey }}
+          >
             {format(new Date(item.datetime), 'PPpp')}
           </Text>
         </View>
       </View>
     </View>
-
-    {/* <View style={{ display: 'flex', flexDirection: 'row' }}>
-      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-        {t('amount')}
-      </Text>
-      <Text numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>{`${convertMojoToChia(
-        item.amount
-      )} XCH`}</Text>
-    </View>
-    <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-        {t('id')}
-      </Text>
-      <Text numberOfLines={1} style={styles.val}>
-        {item.id}
-      </Text>
-    </View>
-    <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-        {t('date')}
-      </Text>
-      <Text numberOfLines={1} style={styles.val}>
-        {format(new Date(item.datetime), 'PPpp')}
-      </Text>
-    </View> */}
-  </CustomCard>
+  </PressableCard>
 );
 
-const PayoutScreen = () => {
-  const refresh = useRefresh();
-  const payoutsLoadable = useRecoilValueLoadable(query());
-  const [data, setData] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const netInfo = useNetInfo();
-  const { t } = useTranslation();
-  const theme = useTheme();
+const Content = ({ dataState, refresh, state, setState, theme, layoutProvider }) => {
+  const rowRenderer = (type, data, index) => <Item item={data} theme={theme} onPress={() => {}} />;
 
-  useEffect(() => {
-    if (payoutsLoadable.state === 'hasValue') {
-      setData(payoutsLoadable.contents.results);
-      setRefreshing(false);
+  const loadMore = () => {
+    if (state.hasMore && !state.refreshing) {
+      setState((prev) => ({ ...prev, offset: prev.offset + LIMIT, querying: true }));
     }
-  }, [payoutsLoadable]);
+  };
 
-  const renderItem = ({ item, index }) => (
-    <ListItem
-      header={item.id}
-      subtitle1={`${convertMojoToChia(item.amount)} XCH`}
-      subtitle2={format(new Date(item.datetime), 'PPpp')}
-      // rank={index}
-      // theme={theme}
-      // t={t}
+  return (
+    <RecyclerListView
+      refreshControl={
+        <RefreshControl
+          refreshing={state.refreshing}
+          onRefresh={() => {
+            refresh();
+          }}
+        />
+      }
+      // contentContainerStyle={{ paddingBottom: 16, paddingTop: 2 }}
+      dataProvider={dataState.dataProvider}
+      layoutProvider={layoutProvider}
+      rowRenderer={rowRenderer}
+      onEndReached={loadMore}
+      onEndReachedThreshold={0.5}
+      renderFooter={() =>
+        state.querying && (
+          <Text style={{ padding: 10, fontWeight: 'bold', textAlign: 'center' }}>Loading</Text>
+        )
+      }
     />
   );
+};
 
-  if (payoutsLoadable.state === 'loading' && !refreshing) {
+const PayoutScreen = () => {
+  const theme = useTheme();
+  const { width } = Dimensions.get('window');
+  const [layoutProvider, setLayoutProvider] = useState();
+  const settings = useRecoilValue(settingsState);
+
+  const [state, setState] = useState({
+    loading: true,
+    refreshing: false,
+    querying: false,
+    hasMore: true,
+    offset: 0,
+  });
+
+  const [dataState, setDataState] = useState({
+    dataProvider: new DataProvider((r1, r2) => r1 !== r2),
+    data: [],
+  });
+
+  useEffect(() => {
+    getFontScale().then((fontScale) => {
+      setLayoutProvider(
+        new LayoutProvider(
+          () => 1,
+          (type, dim) => {
+            dim.width = width;
+            dim.height = HEIGHT * fontScale;
+          }
+        )
+      );
+    });
+  }, [settings.isThemeDark]);
+
+  useEffect(() => {
+    if (state.loading || state.querying || state.refreshing) {
+      getPayouts(state.offset, LIMIT).then((response) => {
+        setDataState((prev) => ({
+          dataProvider: new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
+            prev.data.concat(response.results)
+          ),
+          data: prev.data.concat(response.results),
+        }));
+        setState((prev) => ({
+          ...prev,
+          loading: false,
+          querying: false,
+          refreshing: false,
+          hasMore: response.results.length === LIMIT,
+        }));
+      });
+    }
+  }, [state.loading, state.querying, state.refreshing]);
+
+  if (state.loading) {
     return <LoadingComponent />;
   }
 
-  if (payoutsLoadable.state === 'hasError') {
-    return (
-      <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
-          Cant Connect to Network
-        </Text>
-        <Button
-          mode="contained"
-          onPress={() => {
-            if (netInfo.isConnected) refresh();
-          }}
-        >
-          Retry
-        </Button>
-      </SafeAreaView>
-    );
-  }
-
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <FlatList
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
-        ListHeaderComponent={<View style={{}} />}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => {
-              setRefreshing(true);
-              refresh();
-            }}
-          />
-        }
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.divider }}>
+      <Content
+        theme={theme}
+        dataState={dataState}
+        width={width}
+        refresh={() => {
+          setState((prev) => ({ ...prev, refreshing: true, offset: 0 }));
+          setDataState((prev) => ({
+            ...prev,
+            data: [],
+          }));
+        }}
+        state={state}
+        setState={setState}
+        layoutProvider={layoutProvider}
       />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 14,
-    marginEnd: 8,
-  },
-  val: {
-    fontSize: 14,
-    flex: 1,
-    textAlign: 'right',
-  },
-});
 
 export default PayoutScreen;

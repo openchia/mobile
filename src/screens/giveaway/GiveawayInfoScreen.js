@@ -105,7 +105,9 @@ const GiveawayInfoSceen = ({ navigation }) => {
         {t('giveawayEveryone')}
       </Text>
       <View style={styles.container}>
-        <CustomCard style={{ flex: 1 }}>
+        <CustomCard
+          style={{ flex: 1, backgroundColor: theme.colors.onSurfaceLight, borderRadius: 24 }}
+        >
           <View
             style={{
               justifyContent: 'center',
@@ -117,7 +119,7 @@ const GiveawayInfoSceen = ({ navigation }) => {
               numberOfLines={1}
               style={[styles.title, { color: theme.colors.drawerSelected, fontWeight: 'bold' }]}
             >
-              {t('drawDate').toUpperCase()}
+              {t('drawDate')}
             </Text>
             <Text numberOfLines={1} style={styles.val}>
               {format(new Date(data[0].draw_datetime), 'PPpp')}
@@ -125,7 +127,9 @@ const GiveawayInfoSceen = ({ navigation }) => {
           </View>
         </CustomCard>
         <View style={{ width: 8 }} />
-        <CustomCard style={{ flex: 1 }}>
+        <CustomCard
+          style={{ flex: 1, backgroundColor: theme.colors.onSurfaceLight, borderRadius: 24 }}
+        >
           <View
             style={{
               justifyContent: 'center',
@@ -137,7 +141,7 @@ const GiveawayInfoSceen = ({ navigation }) => {
               numberOfLines={1}
               style={[styles.title, { color: theme.colors.drawerSelected, fontWeight: 'bold' }]}
             >
-              {t('giveaway').toUpperCase()}
+              {t('giveaway')}
             </Text>
             <Text numberOfLines={1} style={styles.val}>
               {convertMojoToChia(data[0].prize_amount)} XCH
@@ -147,7 +151,9 @@ const GiveawayInfoSceen = ({ navigation }) => {
       </View>
       <View style={{ height: 8 }} />
       <View style={styles.container}>
-        <CustomCard style={{ flex: 1 }}>
+        <CustomCard
+          style={{ flex: 1, backgroundColor: theme.colors.onSurfaceLight, borderRadius: 24 }}
+        >
           <View
             style={{
               justifyContent: 'center',
@@ -159,7 +165,7 @@ const GiveawayInfoSceen = ({ navigation }) => {
               numberOfLines={1}
               style={[styles.title, { color: theme.colors.drawerSelected, fontWeight: 'bold' }]}
             >
-              {t('ticketIssuance').toUpperCase()}
+              {t('ticketIssuance')}
             </Text>
             <Text numberOfLines={1} style={styles.val}>
               DAILY - 00:00 UTC
@@ -167,7 +173,9 @@ const GiveawayInfoSceen = ({ navigation }) => {
           </View>
         </CustomCard>
         <View style={{ width: 8 }} />
-        <CustomCard style={{ flex: 1 }}>
+        <CustomCard
+          style={{ flex: 1, backgroundColor: theme.colors.onSurfaceLight, borderRadius: 24 }}
+        >
           <View
             style={{
               justifyContent: 'center',
@@ -179,7 +187,7 @@ const GiveawayInfoSceen = ({ navigation }) => {
               numberOfLines={1}
               style={[styles.title, { color: theme.colors.drawerSelected, fontWeight: 'bold' }]}
             >
-              {t('ticketsIssued').toUpperCase()}
+              {t('ticketsIssued')}
             </Text>
             <Text numberOfLines={1} style={styles.val}>
               {data[0].issued_tickets || 0}

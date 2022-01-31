@@ -1,11 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, StyleSheet, Text, useWindowDimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { useRecoilState } from 'recoil';
-import { getLauncherIDFromToken, updateFCMToken } from '../Api';
+import { getLauncherIDFromToken, getPayoutAddress, updateFCMToken } from '../Api';
 import { launcherIDsState, settingsState, tokensState } from '../Atoms';
+import { encode_puzzle_hash } from '../utils/bech32';
 import { getObject } from '../utils/Utils';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -14,7 +15,8 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const ScanScreen = ({ navigation }) => {
   const [tokens, setTokens] = useRecoilState(tokensState);
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
-  const [settings, setSettings] = useRecoilState(settingsState);
+  // const [launcherIDs, setLauncherIDs] = useState([]);
+  // const [settings, setSettings] = useRecoilState(settingsState);
   const scanner = useRef(null);
   const { width, height } = useWindowDimensions();
   const theme = useTheme();
@@ -25,23 +27,25 @@ const ScanScreen = ({ navigation }) => {
     setTokens((prev) => new Set(prev.add(token)));
     getLauncherIDFromToken(token).then((data) => {
       if (data) {
-        setLauncherIDs((prev) => new Map(prev.set(data.launcher_id, { name: data.name, token })));
-        // if (settings.blockNotifications) {
-        getObject('fcm').then((FCMToken) => {
-          updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
-            navigation.pop();
-            navigation.navigate({
-              name: 'Farmer Details',
-              params: { launcherId: data.launcher_id, name: data.name },
+        getPayoutAddress(data.launcher_id).then((response) => {
+          const address = encode_puzzle_hash(response.results[0].puzzle_hash, 'xch');
+          if (!launcherIDs.map((item) => item.launcherId).includes(data.launcher_id)) {
+            setLauncherIDs((prev) => [
+              ...prev,
+              {
+                launcherId: data.launcher_id,
+                name: data.name,
+                token,
+                address,
+              },
+            ]);
+          }
+          getObject('fcm').then((FCMToken) => {
+            updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
+              navigation.pop();
             });
           });
         });
-        // } else {
-        //   navigation.navigate({
-        //     name: 'Farmer Details',
-        //     params: { launcherId: data.launcher_id, name: data.name },
-        //   });
-        // }
       } else {
         console.log('Error');
       }

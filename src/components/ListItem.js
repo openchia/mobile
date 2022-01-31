@@ -12,7 +12,15 @@ import PressableCard from './PressableCard';
 const ListItem = ({ header, subtitle1, subtitle2, headerItem, subtitleItem1, subtitleItem2 }) => {
   const theme = useTheme();
   return (
-    <PressableCard style={{ marginBottom: 2, paddingTop: 6, paddingBottom: 6 }} onTap={() => {}}>
+    <PressableCard
+      style={{
+        marginBottom: 2,
+        paddingTop: 6,
+        paddingBottom: 6,
+        backgroundColor: theme.colors.itemColor,
+      }}
+      onTap={() => {}}
+    >
       <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 12 }}>
         {headerItem ? (
           { headerItem }

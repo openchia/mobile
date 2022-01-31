@@ -31,7 +31,6 @@ const query = selectorFamily({
 });
 
 const Item = ({ item, theme, t }) => {
-  console.log(item);
   return (
     <CustomCard
       style={{ padding: 8, display: 'flex', marginVertical: 4, marginHorizontal: 8 }}
@@ -130,7 +129,7 @@ const WinnersScreen = () => {
             }}
           />
         }
-        data={data}
+        data={data.filter((item) => item.winner)}
         renderItem={renderItem}
         keyExtractor={(item) => item.draw_datetime.toString()}
       />

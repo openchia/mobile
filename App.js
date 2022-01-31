@@ -3,7 +3,6 @@ import React, { Suspense, useEffect } from 'react';
 import { Platform } from 'react-native';
 import { Notifications } from 'react-native-notifications';
 import { RecoilRoot } from 'recoil';
-import ApplicationNavigator from './src/ApplicationNavigator';
 import BaseScreen from './src/BaseScreen';
 import LoadingComponent from './src/components/LoadingComponent';
 // import './src/constants/IMLocalize';

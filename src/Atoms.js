@@ -6,13 +6,12 @@ const localForageEffect =
   ({ setSelf, onSet }) => {
     setSelf(
       getObject(key).then(
-        (savedValue) =>
-          savedValue != null ? new Map(Object.entries(savedValue)) : new DefaultValue() // Abort initialization if no value was stored
+        (savedValue) => (savedValue != null ? Object.entries(savedValue) : new DefaultValue()) // Abort initialization if no value was stored
       )
     );
 
     onSet((newValue) => {
-      saveObject(key, Object.fromEntries(newValue));
+      saveObject(key, newValue);
     });
   };
 
@@ -60,9 +59,9 @@ const localEffect =
 //   };
 
 export const launcherIDsState = atom({
-  key: 'atomLauncherIDs',
-  default: new Map(),
-  effects_UNSTABLE: [localForageEffect('launcherIDs')],
+  key: 'atomFarms',
+  default: [],
+  effects_UNSTABLE: [localEffect('farms')],
 });
 
 export const groupState = atom({
@@ -95,6 +94,21 @@ export const settingsState = atom({
     groupName: 'Group',
   },
   effects_UNSTABLE: [localEffect('settings')],
+});
+
+export const farmState = atom({
+  key: 'atomFarm',
+  default: {},
+});
+
+export const farmLoadingState = atom({
+  key: 'atomLoadingFarm',
+  default: { address: true, stats: true, partials: true, payouts: true },
+});
+
+export const farmErrorState = atom({
+  key: 'atomErrorFarm',
+  default: { address: false, stats: false, partials: false, payouts: false },
 });
 
 export const currencyState = atom({

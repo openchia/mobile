@@ -4,6 +4,36 @@ const REST_API = 'https://openchia.io/api/v1.0/';
 const CHIA_PLOT_REST_API = 'https://thechiaplot.net/wp-json/wp/v2/';
 const COINGECKO_API = 'https://api.coingecko.com/api/v3/';
 
+const openChiaApi = axios.create({
+  baseURL: 'https://openchia.io/api/v1.0/',
+  timeout: 1000,
+});
+
+const spaceScanApi = axios.create({
+  baseURL: 'https://api2.spacescan.io/1/',
+  timeout: 1000,
+});
+
+export const getAddressBalance = async (address) => {
+  const url = `/xch/balance/${address}`;
+  return spaceScanApi
+    .get(url)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.log('getAddressBalance axios Error', err);
+    });
+};
+
+export const getPayoutAddress = async (launcherId) => {
+  const url = `/payoutaddress/?launcher=${launcherId}&limit=1`;
+  return openChiaApi
+    .get(url)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.log('getAddressBalance axios Error', err);
+    });
+};
+
 export const getSpace = (days) =>
   fetch(`${REST_API}space?days=${days}`)
     .then((response) => {
@@ -58,6 +88,11 @@ export const getFarmersFromLauncherIDAndStats = (launcherIDs) => {
   return Promise.all(promises);
 };
 
+export const getBalanceFromAddresses = (addresses) => {
+  const promises = addresses.map((addresses) => getAddressBalance(addresses));
+  return Promise.all(promises);
+};
+
 export const getFarmer = (launcherID) =>
   fetch(`${REST_API}launcher/${launcherID}/`)
     .then((response) => {
@@ -68,8 +103,8 @@ export const getFarmer = (launcherID) =>
     })
     .then((json) => json);
 
-export const getBlocks = () =>
-  fetch(`${REST_API}block`)
+export const getBlocks = (offset, limit) =>
+  fetch(`${REST_API}block/?limit=${limit}&offset=${offset}&`)
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -78,8 +113,8 @@ export const getBlocks = () =>
     })
     .then((json) => json);
 
-export const getBlocksFromFarmer = (launcherId) =>
-  fetch(`${REST_API}block/?farmed_by=${launcherId}`)
+export const getBlocksFromFarmer = (launcherId, offset, limit) =>
+  fetch(`${REST_API}block/?farmed_by=${launcherId}&limit=${limit}&offset=${offset}`)
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -93,8 +128,27 @@ export const getBlocksFromFarmers = (launcherIDs) => {
   return Promise.all(promises);
 };
 
-export const getPayouts = () =>
-  fetch(`${REST_API}payout`)
+export const getPayouts = (offset, limit) =>
+  fetch(`${REST_API}payout/?limit=${limit}&offset=${offset}`)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw Error(response.statusText);
+    })
+    .then((json) => json);
+// export const getPayouts = () =>
+//   fetch(`${REST_API}payout`)
+//     .then((response) => {
+//       if (response.ok) {
+//         return response.json();
+//       }
+//       throw Error(response.statusText);
+//     })
+//     .then((json) => json);
+
+export const getPayoutsFromAddress = (launcherId, offset, limit) =>
+  fetch(`${REST_API}payoutaddress/?launcher=${launcherId}&limit=${limit}&offset=${offset}`)
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -103,27 +157,12 @@ export const getPayouts = () =>
     })
     .then((json) => json);
 
-export const getPayoutsFromAddress = (launcherId) =>
-  fetch(`${REST_API}payoutaddress/?launcher=${launcherId}`)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw Error(response.statusText);
-    })
-    .then((json) => json);
-
-export const getPayoutsFromAddresses = (launcherIDs) => {
-  const promises = launcherIDs.map((launcherId) => getPayoutsFromAddress(launcherId));
+export const getPayoutsFromAddresses = (launcherIDs, offset, limit) => {
+  const promises = launcherIDs.map((launcherId) =>
+    getPayoutsFromAddress(launcherId, offset, limit)
+  );
   return Promise.all(promises);
 };
-
-const api = axios.create();
-
-const openChiaApi = axios.create({
-  baseURL: 'https://openchia.io/api/v1.0/',
-  timeout: 1000,
-});
 
 export async function getPartialsFromID(launcherID, timestamp) {
   const url = `partial/?ordering=-timestamp&min_timestamp=${timestamp.toString()}&launcher=${launcherID}&limit=900`;

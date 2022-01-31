@@ -11,13 +11,14 @@
 
 // import { TransitionPresets, createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-
 import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
-import { LogBox, StatusBar, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Platform } from 'react-native';
+import { LogBox, StatusBar, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider as PaperProvider, useTheme } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import { ToastProvider } from 'react-native-toast-notifications';
@@ -26,14 +27,32 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useRecoilValue } from 'recoil';
 import { initialRouteState, launcherIDsState, settingsState } from './Atoms';
+import OpenChiaIcon from './images/OpenChiaIcon';
+import ChiaPriceScreen from './screens/charts/ChiaPriceScreen';
+import PoolspaceScreen from './screens/charts/PoolspaceScreen';
+import CurrencySelectionScreen from './screens/CurrencySelectionScreen';
+import FarmerNameScreen from './screens/farmer/FarmerNameScreen';
+import FarmerNotificationScreen from './screens/farmer/FarmerNotificationScreen';
+import FarmerSettingsScreen from './screens/farmer/FarmerSettingsScreen';
+import FarmerTestScreen, { getHeaderTitle } from './screens/farmer/FarmerTestScreen';
+import CreateGroupScreen from './screens/groups/CreateGroupScreen';
+import LanguageSelectorScreen from './screens/LanguageSelectorScreen';
+import NewsPostScreen from './screens/NewsPostScreen';
+import NewsScreen from './screens/NewsScreen';
+import ScanScreen from './screens/ScanScreen';
+import SettingsScreen from './screens/SettingsScreen';
 import { DarkTheme, LightTheme } from './Theme';
 import DashboardScreen from './v2/screens/Dashboard';
-import GiveawayScreen from './v2/screens/Giveaway';
 import MoreScreen from './v2/screens/More';
 import PoolScreen from './v2/screens/Pool';
-import NewsScreen from './screens/NewsScreen';
+import GiveawaySceen from './screens/giveaway/GiveawayScreen';
+// import { enableFreeze } from 'react-native-screens';
+
+// enableFreeze(true);
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+// const Stack = createStackNavigator();
 // const Tab = createMaterialBottomTabNavigator();
 
 // LogBox.ignoreLogs(['Reanimated 2']);
@@ -41,6 +60,98 @@ LogBox.ignoreLogs(['timer']);
 LogBox.ignoreLogs(['keyboardDidShow: ...']); // Ignore log notification by message
 LogBox.ignoreLogs(['keyboardDidHide: ...']); // Ignore log notification by message
 LogBox.ignoreLogs(['cycle']);
+
+const Root = () => {
+  const theme = useTheme();
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        headerStyle: { backgroundColor: theme.colors.tabNavigatorBackground },
+        tabBarButton: (props) => <TouchableOpacity {...props} />,
+        tabBarItemStyle: {
+          padding: 2,
+        },
+        tabBarIconStyle: {
+          marginBottom: -4,
+        },
+        tabBarStyle: {
+          height: 56,
+          backgroundColor: theme.colors.tabNavigatorBackground,
+          borderTopColor: theme.colors.tabNavigatorTopBorderColor,
+        },
+        tabBarInactiveTintColor: theme.colors.textGreyLight,
+        tabBarLabelStyle: {
+          fontFamily: theme.fonts.regular.fontFamily,
+          fontSize: 12,
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Pool"
+        component={PoolScreen}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
+            // <OpenChiaIcon size={size} color={color} />
+            // <MaterialCommunityIcons name="pool" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Dashboard"
+        component={DashboardScreen}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'view-dashboard' : 'view-dashboard-outline'}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="News"
+        component={NewsScreen}
+        options={{
+          headerShown: true,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? 'ios-newspaper' : 'ios-newspaper-outline'}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+      {/* <Tab.Screen
+      name="Giveaway"
+      component={GiveawayScreen}
+      options={{
+        tabBarIcon: ({ color, size, focused }) => (
+          <Ionicons
+            name={focused ? 'gift' : 'gift-outline'}
+            size={size}/
+            color={color}
+          />
+        ),
+      }}
+    /> */}
+      <Tab.Screen
+        name="More"
+        component={MoreScreen}
+        options={{
+          headerShown: true,
+
+          tabBarIcon: ({ color, size, focused }) => (
+            <MaterialIcons name="read-more" size={size} color={color} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 const BaseScreen = () => {
   const settings = useRecoilValue(settingsState);
@@ -51,12 +162,11 @@ const BaseScreen = () => {
     SplashScreen.hide();
   }, []);
 
-  const launcherIDsArray = Array.from(launcherIDs, ([name, value]) => ({ name, value }));
-  const theme = settings.isThemeDark ? DarkTheme : LightTheme;
+  // const launcherIDsArray = Array.from(launcherIDs, ([name, value]) => ({ name, value }));
+  // const launcherIDsArray =launcherIDs;
 
-  const CustomToolbar = () => {
-    return <View style={{ backgroundColor: 'red', flex: 1 }}></View>;
-  };
+  const theme = settings.isThemeDark ? DarkTheme : LightTheme;
+  const { t } = useTranslation();
 
   return (
     <ToastProvider>
@@ -66,126 +176,135 @@ const BaseScreen = () => {
             <NavigationContainer theme={theme}>
               <StatusBar
                 backgroundColor={theme.colors.statusBarColor}
-                barStyle="light-content"
-                // barStyle={
-                //   Platform.OS === 'ios' ? (isThemeDark ? 'light-content' : 'dark-content') : 'light-content'
-                // }
+                // barStyle="light-content"
+                barStyle={
+                  // Platform.OS === 'ios'
+                  settings.isThemeDark ? 'light-content' : 'dark-content'
+                  // : 'light-content'
+                }
               />
               {/* <View style={{ height: 54, backgroundColor: 'red' }}></View> */}
-              <Tab.Navigator
+              <Stack.Navigator
                 screenOptions={{
-                  // headerStyle: {
-                  //   elevation: 0, // remove shadow on Android
-                  //   shadowOpacity: 0, // remove shadow on iOS
-                  // },
-                  // headerLeft: null,
-                  // headerTitleContainerStyle: {
-                  //   display: 'flex',
-                  //   flex: 1,
-                  // },
-                  headerShown: false,
-                  tabBarButton: (props) => <TouchableOpacity {...props} />,
-                  tabBarItemStyle: {
-                    padding: 6,
-                  },
-                  // tabBarActiveBackgroundColor: 'blue',
-                  tabBarStyle: {
-                    height: 56,
-                    // padding: 16,
-                    // display: 'flex',
-                    // justifyContent: 'center',
-                    // alignItems: 'center',
-                    // paddingHorizontal: 5,
-                    // paddingTop: 0,
-                    // justifyContent: 'center',
-                    // alignItems: 'center',
-                    backgroundColor: theme.colors.tabNavigatorBackground,
-                    // position: 'absolute',
-                    borderTopColor: theme.colors.tabNavigatorTopBorderColor,
-                    // borderTopWidth: 0,
-                    // padding: 16,
-                  },
-                  tabBarIconStyle: {
-                    // backgroundColor: 'blue',
-                    // display: 'none',
-                    // flex: 1,
-                    // paddingTop: -8,
-                    // background: 'blue',
-                    // color: 'blue',
-                  },
-                  tabBarLabelStyle: {
-                    fontFamily: theme.fonts.regular.fontFamily,
-                    // flex: 1,
-                    // backgroundColor: 'red',
-                    fontSize: 12,
-                    // paddingBottom: 8,
-                    // backgroundColor: 'red',
-                    // position: 'absolute',
-                    // textAlignVertical: 'center',
-                    // paddingBottom: 8,
-                  },
+                  // headerShown: true,
+                  // headerStyle: { backgroundColor: theme.colors.primary },
+                  headerStyle: { backgroundColor: theme.colors.tabNavigatorBackground },
+                  // headerTintColor: theme.colors.textGreyLight,
+                  // drawerStyle: { backgroundColor: theme.colors.primary },
+                  headerBackTitleVisible: false,
+                  gestureEnabled: true, // If you want to swipe back like iOS on Android
+                  animation: 'slide_from_right',
+                  // ...TransitionPresets.SlideFromRightIOS,
                 }}
               >
-                <Tab.Screen
-                  name="Pool"
-                  component={PoolScreen}
-                  options={{
-                    // headerTitleStyle: { alignSelf: 'center' },
-                    // headerTitle: (props) => <CustomToolbar {...props} />,
-                    tabBarIcon: ({ color, size }) => (
-                      <MaterialCommunityIcons name="pool" size={size} color={color} />
-                    ),
-                  }}
+                <Stack.Screen name="Root" options={{ headerShown: false }}>
+                  {() => (
+                    <Root
+                      theme={theme}
+                      // toggleTheme={toggleTheme}
+                      // launcherIDs={launcherIDs}
+                      // initialRoute={initialRoute}
+                      // t={t}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen
+                  name="Farmer"
+                  component={FarmerTestScreen}
+                  options={({ route }) => ({
+                    // title: getHeaderTitle(route, t),
+                    title: getHeaderTitle(route, t),
+                    // headerRight: () => (
+                    //   <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
+                    // ),
+                  })}
+                  // options={({ route, navigation }) => ({})}
                 />
-                <Tab.Screen
-                  name="News"
-                  component={NewsScreen}
-                  options={{
-                    tabBarIcon: ({ color, size, focused }) => (
-                      <Ionicons
-                        name={focused ? 'ios-newspaper' : 'ios-newspaper-outline'}
-                        size={size}
-                        color={color}
-                      />
-                    ),
-                  }}
+                <Stack.Screen
+                  name="Post"
+                  component={NewsPostScreen}
+                  options={() => ({
+                    title: t('post'),
+                  })}
                 />
-                <Tab.Screen
-                  name="Dashboard"
-                  component={DashboardScreen}
-                  options={{
-                    tabBarIcon: ({ color, size, focused }) => (
-                      <MaterialCommunityIcons
-                        name={focused ? 'view-dashboard' : 'view-dashboard-outline'}
-                        size={size}
-                        color={color}
-                      />
-                    ),
-                  }}
+                <Stack.Screen
+                  name="Farmer Settings"
+                  component={FarmerSettingsScreen}
+                  options={() => ({
+                    title: t('farmerSettings'),
+                  })}
                 />
-                <Tab.Screen
+                <Stack.Screen
+                  name="Language"
+                  component={LanguageSelectorScreen}
+                  options={() => ({
+                    title: t('language'),
+                  })}
+                />
+                <Stack.Screen
+                  name="Currency"
+                  component={CurrencySelectionScreen}
+                  options={() => ({
+                    title: t('currency'),
+                  })}
+                />
+                <Stack.Screen
+                  name="Poolspace"
+                  component={PoolspaceScreen}
+                  options={() => ({
+                    title: t('poolSpace'),
+                  })}
+                />
+                <Stack.Screen
+                  name="Chia Price Chart"
+                  component={ChiaPriceScreen}
+                  options={() => ({
+                    title: t('chiaPriceChart'),
+                  })}
+                />
+                <Stack.Screen
+                  name="Farmer Name"
+                  component={FarmerNameScreen}
+                  options={() => ({
+                    title: t('farmName'),
+                  })}
+                />
+                <Stack.Screen
+                  name="Verify Farm"
+                  component={ScanScreen}
+                  options={() => ({
+                    title: t('verifyFarm'),
+                  })}
+                />
+                <Stack.Screen
+                  name="Settings"
+                  component={SettingsScreen}
+                  options={() => ({
+                    title: t('settings'),
+                  })}
+                />
+                <Stack.Screen
+                  name="Farmer Notifications"
+                  component={FarmerNotificationScreen}
+                  options={() => ({
+                    title: t('farmerNotifications'),
+                  })}
+                />
+                <Stack.Screen
+                  name="Create Group"
+                  component={CreateGroupScreen}
+                  options={() => ({
+                    title: t('createGroup'),
+                  })}
+                />
+                <Stack.Screen
                   name="Giveaway"
-                  component={GiveawayScreen}
-                  options={{
-                    tabBarIcon: ({ color, size, focused }) => (
-                      <Ionicons
-                        name={focused ? 'gift' : 'gift-outline'}
-                        size={size}
-                        color={color}
-                      />
-                    ),
-                  }}
+                  component={GiveawaySceen}
+                  options={() => ({
+                    title: t('giveaway'),
+                  })}
                 />
-                <Tab.Screen
-                  name="More"
-                  component={MoreScreen}
-                  options={{
-                    tabBarIcon: ({ color, size, focused }) => (
-                      <MaterialIcons name="read-more" size={size} color={color} />
-                    ),
-                  }}
-                />
-              </Tab.Navigator>
+              </Stack.Navigator>
             </NavigationContainer>
           </PaperProvider>
         </GestureHandlerRootView>

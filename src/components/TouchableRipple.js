@@ -44,7 +44,7 @@ const TouchableRipple = ({ style, onPress, children }) => {
       rippleOpacity.value = 1;
       scale.value = 0;
       scale.value = withTiming(1, { duration: 500 });
-      // if (onPress) runOnJS(onPress)();
+      if (onPress) runOnJS(onPress)();
     },
     onFinish: () => {
       rippleOpacity.value = withTiming(0);

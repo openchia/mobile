@@ -54,7 +54,7 @@
     "react-native-render-html": "^6.3.0",
     "react-native-ripple-button-reanimated": "^0.0.6",
     "react-native-safe-area-context": "^3.3.2",
-    "react-native-screens": "^3.8.0",
+    "react-native-screens": "^3.10.2",
     "react-native-shadow-2": "^6.0.1",
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.1",

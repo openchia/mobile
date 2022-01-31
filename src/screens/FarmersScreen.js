@@ -1,17 +1,17 @@
 import { useNetInfo } from '@react-native-community/netinfo';
+import { isAfter } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { getFontScale } from 'react-native-device-info';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { getFarmers } from '../Api';
+import { farmerSearchBarPressedState, farmerSearchBarTextState, settingsState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 import { formatBytes } from '../utils/Formatting';
-import { farmerSearchBarPressedState, farmerSearchBarTextState, settingsState } from '../Atoms';
-import { isAfter } from 'date-fns';
 
 const HEIGHT = 50;
 
@@ -98,10 +98,10 @@ const CustomRank = ({ item, color, children, style, rank, previousTime }) => {
         {
           backgroundColor: theme.colors.dividerColor,
           // padding: 2,
-          width: 24,
-          hieght: 36,
+          width: 29,
+          height: 29,
           display: 'flex',
-          borderRadius: 8,
+          borderRadius: 6,
           justifyContent: 'center',
           alignItems: 'center',
         },
@@ -130,35 +130,21 @@ const CustomText = ({ text, color, children, style }) => {
 };
 
 const Item = ({ item, rank, onPress, previousTime }) => {
-  const { t } = useTranslation();
   const theme = useTheme();
-  const { width } = Dimensions.get('window');
-
   return (
     <>
       <PressableCard
         style={{
-          // display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          // marginVertical: 2,
-          // flexDirection: 'row',
-          borderRadius: 0,
-          // padding: 16,
-          // marginHorizontal: 8,
-          // width: '100%',
-          marginBottom: 2,
+          backgroundColor: theme.colors.itemColor,
+          marginBottom: 1,
           flex: 1,
-          // justifyContent: 'center',
-          // flex: 1,
-          // alignItems: 'center',
-          // height: HEIGHT,
         }}
         onPress={onPress}
       >
         <View style={{ marginHorizontal: 12 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            {/* <CustomText>Launcher ID</CustomText> */}
             <CustomRank
               previousTime={previousTime}
               rank={rank}
@@ -168,17 +154,10 @@ const Item = ({ item, rank, onPress, previousTime }) => {
               {rank}
             </CustomRank>
             <View style={{ flexDirection: 'column', flex: 1 }}>
-              {/* <CustomText style={{ fontSize: 14, width: width / 2 }}>
-                {item.name ? item.name : item.launcher_id}
-              </CustomText> */}
               <CustomText style={{ fontSize: 13, paddingEnd: 16, color: theme.colors.textLight }}>
                 {item.name ? item.name : item.launcher_id}
               </CustomText>
             </View>
-            {/* <CustomText style={{ textAlign: 'right', flex: 0.6, paddingEnd: 2 }}>
-              {item.difficulty}
-            </CustomText> */}
-            {/* <View style={{ flex: 1, backgroundColor: 'blue' }}></View> */}
             <View style={{ flexDirection: 'column' }}>
               <CustomText style={{ textAlign: 'right' }}>
                 {formatBytes(item.estimated_size)}
@@ -188,57 +167,13 @@ const Item = ({ item, rank, onPress, previousTime }) => {
               )}%`}</CustomText>
             </View>
           </View>
-          {/* <View style={{ flexDirection: 'row' }}>
-            <CustomText numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-              {t('rank')}
-            </CustomText>
-            <CustomRank>{rank}</CustomRank>
-            <CustomText numberOfLines={1} style={[styles.val, { fontWeight: 'bold' }]}>
-              {rank}
-            </CustomText>
-          </View> */}
-          {/* <View style={{ flexDirection: 'row' }}>
-            <CustomText numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-              {t('points')}
-            </CustomText>
-            <CustomText numberOfLines={1} style={styles.val}>
-              {item.points}
-            </CustomText>
-          </View> */}
-          {/* <View style={{ flexDirection: 'row' }}>
-            <CustomText numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-              {t('difficulty')}
-            </CustomText>
-            <CustomText numberOfLines={1} style={styles.val}>
-              {item.difficulty}
-            </CustomText>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <CustomText numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-              {t('utilizationSpace')}
-            </CustomText>
-            <CustomText numberOfLines={1} style={styles.val}>{`${item.points_of_total.toFixed(
-              5
-            )}%`}</CustomText>
-          </View> */}
-          {/* <View style={{ flexDirection: 'row' }}>
-            <CustomText numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-              {t('estimatedSize')}
-            </CustomText>
-            <CustomText numberOfLines={1} style={styles.val}>
-              {formatBytes(item.estimated_size)}
-            </CustomText>
-          </View> */}
         </View>
-        {/* <View
-          style={{ height: 1, backgroundColor: theme.colors.dividerColor, marginHorizontal: 8 }}
-        ></View> */}
       </PressableCard>
     </>
   );
 };
 
-const LIMIT = 50;
+const LIMIT = 30;
 
 const Content = ({
   navigation,
@@ -256,6 +191,7 @@ const Content = ({
   const { width } = Dimensions.get('window');
   const millis = Date.now() - 3600 * 1000 * 24;
   const previousTime = new Date(millis);
+  const theme = useTheme();
 
   const [layoutProvider] = React.useState(
     new LayoutProvider(
@@ -292,7 +228,7 @@ const Content = ({
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.divider }}>
       <RecyclerListView
         refreshControl={
           <RefreshControl
@@ -302,7 +238,7 @@ const Content = ({
             }}
           />
         }
-        contentContainerStyle={{ paddingBottom: 16, paddingTop: 0 }}
+        contentContainerStyle={{ paddingBottom: 16, paddingTop: 2 }}
         dataProvider={dataProvider}
         layoutProvider={layoutProvider}
         rowRenderer={rowRenderer}
