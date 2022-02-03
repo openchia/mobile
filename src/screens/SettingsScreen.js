@@ -9,7 +9,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currencyState, settingsState } from '../Atoms';
 import CustomCard from '../components/CustomCard';
-import IconButton from '../components/IconButton';
+import CustomIconButton from '../components/CustomIconButton';
 import PressableCard from '../components/PressableCard';
 import { getCurrencyTitle } from './CurrencySelectionScreen';
 import { LANGUAGES } from './LanguageSelectorScreen';
@@ -161,7 +161,7 @@ const SettingsScreen = ({ navigation }) => {
             </Text>
           </View>
           <View style={{ flexDirection: 'row' }}>
-            <IconButton
+            <CustomIconButton
               icon={
                 <Ionicons
                   name={settings.isThemeDark ? 'ios-sunny-outline' : 'ios-sunny'}
@@ -184,7 +184,7 @@ const SettingsScreen = ({ navigation }) => {
                 marginBottom: 10,
               }}
             />
-            <IconButton
+            <CustomIconButton
               icon={
                 <Ionicons
                   style={{ alignSelf: 'center' }}

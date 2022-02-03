@@ -1,15 +1,8 @@
 import * as React from 'react';
-import {
-  View,
-  ViewStyle,
-  StyleSheet,
-  StyleProp,
-  GestureResponderEvent,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TouchableRipple, withTheme } from 'react-native-paper';
 
-const IconButton = ({
+const CustomIconButton = ({
   icon,
   color: customColor,
   size = 24,
@@ -68,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTheme(IconButton);
+export default withTheme(CustomIconButton);

@@ -33,14 +33,6 @@ const Item = ({ item, theme, t }) => (
   >
     <View style={{ marginHorizontal: 12 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {/* <Text
-            numberOfLines={1}
-            style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey }}
-          >{`${convertMojoToChia(item.amount)} XCH`}</Text>
-          <View style={{ flexDirection: 'row', marginTop: 8 }}>
-              <Text style={[styles.title, { color: theme.colors.textGrey }]}>{t('id')}</Text>
-              <Text style={styles.val}>{item.transaction.confirmed_block_index}</Text>
-            </View> */}
         <Text
           numberOfLines={1}
           style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey }}
@@ -92,8 +84,8 @@ const Content = ({ dataState, refresh, state, setState, theme, layoutProvider })
   );
 };
 
-const FarmerPayoutScreen = () => {
-  const farms = useRecoilValue(launcherIDsState);
+const FarmerPayoutScreen = ({ launcherId }) => {
+  // const farms = useRecoilValue(launcherIDsState);
   const theme = useTheme();
   const { width } = Dimensions.get('window');
   const settings = useRecoilValue(settingsState);
@@ -127,24 +119,30 @@ const FarmerPayoutScreen = () => {
   }, [settings.isThemeDark]);
 
   useEffect(() => {
+    setState((prev) => ({ ...prev, loading: true, offset: 0 }));
+    setDataState((prev) => ({
+      ...prev,
+      data: [],
+    }));
+  }, [launcherId]);
+
+  useEffect(() => {
     if (state.loading || state.querying || state.refreshing) {
-      getPayoutsFromAddress(farms.map((item) => item.launcherId)[0], state.offset, LIMIT).then(
-        (response) => {
-          setDataState((prev) => ({
-            dataProvider: new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
-              prev.data.concat(response.results)
-            ),
-            data: prev.data.concat(response.results),
-          }));
-          setState((prev) => ({
-            ...prev,
-            loading: false,
-            querying: false,
-            refreshing: false,
-            hasMore: response.results.length === LIMIT,
-          }));
-        }
-      );
+      getPayoutsFromAddress(launcherId, state.offset, LIMIT).then((response) => {
+        setDataState((prev) => ({
+          dataProvider: new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
+            prev.data.concat(response.results)
+          ),
+          data: prev.data.concat(response.results),
+        }));
+        setState((prev) => ({
+          ...prev,
+          loading: false,
+          querying: false,
+          refreshing: false,
+          hasMore: response.results.length === LIMIT,
+        }));
+      });
     }
   }, [state.loading, state.querying, state.refreshing]);
 
@@ -172,17 +170,5 @@ const FarmerPayoutScreen = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 14,
-    marginEnd: 8,
-  },
-  val: {
-    fontSize: 14,
-    flex: 1,
-    textAlign: 'right',
-  },
-});
 
 export default FarmerPayoutScreen;

@@ -6,7 +6,8 @@ import { Text, TextInput, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { farmerSearchBarPressedState, farmerSearchBarTextState } from '../../Atoms';
-import IconButton from '../../components/IconButton';
+import CustomIconButton from '../../components/CustomIconButton';
+import CustomStatusBar from '../../components/CustomStatusBar';
 import OpenChiaTextIconRight from '../../images/OpenChiaTextIconRight';
 import BlocksFoundScreen from '../../screens/BlocksFoundScreen';
 import FarmersScreen from '../../screens/FarmersScreen';
@@ -41,7 +42,7 @@ const StatsToolbar = ({ showSearch }) => {
     >
       {searching ? (
         <>
-          <IconButton
+          <CustomIconButton
             icon={<Ionicons name="arrow-back" size={24} color={theme.colors.textGreyLight} />}
             onPress={() => {
               setSearching(false);
@@ -69,7 +70,7 @@ const StatsToolbar = ({ showSearch }) => {
             }}
           />
           {text !== '' && (
-            <IconButton
+            <CustomIconButton
               icon={<Ionicons name="close" size={24} color={theme.colors.textGreyLight} />}
               onPress={() => {
                 setText('');
@@ -79,7 +80,7 @@ const StatsToolbar = ({ showSearch }) => {
               color="#fff"
             />
           )}
-          <IconButton
+          <CustomIconButton
             icon={
               <Ionicons
                 name="search"
@@ -101,7 +102,7 @@ const StatsToolbar = ({ showSearch }) => {
           />
           <View style={{ flex: 1 }} />
           {showSearch && (
-            <IconButton
+            <CustomIconButton
               icon={
                 <Ionicons
                   name="search"
@@ -132,9 +133,12 @@ const PoolScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* <View style={{ flex: 1, backgroundColor: theme.colors.primary }}></View> */}
+      <CustomStatusBar />
       <StatsToolbar showSearch={showSearch} />
       <Tab.Navigator
         screenOptions={{
+          lazy: true,
+          lazyPreloadDistance: 1,
           tabBarLabelStyle: {
             fontFamily: theme.fonts.regular.fontFamily,
           },

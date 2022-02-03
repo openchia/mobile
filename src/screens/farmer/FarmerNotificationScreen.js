@@ -4,7 +4,6 @@ import { Switch, Text, TextInput, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilState } from 'recoil';
 import { useTranslation } from 'react-i18next';
-import IconButton from '../../components/IconButton';
 import PressableCard from '../../components/PressableCard';
 import { launcherIDsState, settingsState } from '../../Atoms';
 import { updateFarmerBlockNotification, updateFarmerMissingPartialsNotification } from '../../Api';

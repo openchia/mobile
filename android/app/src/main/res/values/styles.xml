@@ -8,5 +8,7 @@
     <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">
         <item name="colorPrimaryDark">@color/status_bar_color</item>
     </style>
-
+    <style>
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
 </resources>

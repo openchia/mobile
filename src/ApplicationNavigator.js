@@ -50,7 +50,6 @@ import {
   settingsState,
 } from './Atoms';
 import CustomDrawerContent from './components/CustomDrawerContent';
-import IconButton from './components/IconButton';
 import BlocksFoundScreen from './screens/BlocksFoundScreen';
 import ChiaPriceScreen from './screens/charts/ChiaPriceScreen';
 import PoolspaceScreen from './screens/charts/PoolspaceScreen';
@@ -293,11 +292,11 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => {
                   {
                     backgroundColor: theme.colors.primary,
                     width: '100%',
-                  },
+                  },1
                 ]}
               >
                 <Animated.View style={[showStyle, { display: 'flex', flexDirection: 'row' }]}>
-                  <IconButton
+                  <CustomIconButton
                     icon={<Ionicons name="ios-search-sharp" size={24} color="white" />}
                     onPress={() => {
                       width.value = fullWidth;
@@ -308,7 +307,7 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => {
                   />
                 </Animated.View>
                 <Animated.View style={[animatedStyle, { flexDirection: 'row', display: 'none' }]}>
-                  <IconButton
+                  <CustomIconButton
                     icon={<Ionicons name="arrow-back" size={24} color="white" />}
                     onPress={() => {
                       width.value = 48;
@@ -340,7 +339,7 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => {
                     // entering={ZoomIn.duration(100)}
                     // exiting={ZoomOut.duration(100)}
                     >
-                      <IconButton
+                      <CustomIconButton
                         icon={<Ionicons name="close" size={24} color="white" />}
                         onPress={() => {
                           setText('');
@@ -352,7 +351,7 @@ const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => {
                       />
                     </Animated.View>
                   )}
-                  <IconButton
+                  <CustomIconButton
                     icon={<Ionicons name="ios-search-sharp" size={24} color="white" />}
                     onPress={() => {
                       input.current.blur();

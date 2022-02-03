@@ -171,7 +171,16 @@ const query = selectorFamily({
       if (response.error) {
         throw response.error;
       }
-      const intersection = (arr) => arr.reduce((a, e) => [...a, ...e], []);
+      const intersection = (arr) => arr.reduce((a, e) => a.concat(e), []);
+      const filter = (a, b) => a.concat(b);
+
+      // console.log(response.map((farm) => farm.results).filter(filter)[0].length);
+      // console.log(
+      //   response
+      //     .map((farm) => farm.results)
+      //     .filter(filter)
+      //     .reduce((a, b) => a.concat(b)).length
+      // );
 
       const maxDate = max(
         intersection(
@@ -179,7 +188,7 @@ const query = selectorFamily({
         )
       );
       const data = getTotalChartData(
-        intersection(response.map((farm) => farm.results)),
+        response.map((farm) => farm.results),
         maxDate,
         item.element.value,
         item.maxColumns
@@ -193,8 +202,7 @@ const getTotalChartData = (response, maxDate, numHours, numBars, label) => {
   const minuteGap = (numHours * 60) / numBars;
   let totalPassed = 0;
   let totalFailed = 0;
-  // farms.forEach((item) => {
-  const data = response;
+  const data = response.reduce((a, b) => a.concat(b)).sort((a, b) => b.timestamp - a.timestamp);
   let x = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
   while (x <= maxDate) x = addMinutes(x, minuteGap);
   let periodStart = addMinutes(x, -minuteGap * numBars);

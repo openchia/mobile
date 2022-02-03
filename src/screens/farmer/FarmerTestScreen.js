@@ -26,7 +26,6 @@ import {
   launcherIDsState,
   settingsState,
 } from '../../Atoms';
-import IconButton from '../../components/IconButton';
 import FarmerStatsScreen from './FarmerStatsScreen';
 import FarmerStatsScreenTest from './FarmerStatsScreenTest';
 import FarmerPartialScreen from './FarmerPartialScreen';
@@ -34,6 +33,7 @@ import FarmerPayoutScreen from './FarmerPayoutScreen';
 import FarmerBlockScreen from './FarmerBlocksScreen';
 import TicketIcon from './../../images/TicketIcon';
 import TicketsScreen from './../giveaway/TicketsScreen';
+import CustomIconButton from '../../components/CustomIconButton';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -204,7 +204,7 @@ const FarmerTestScreen = ({ route, navigation }) => {
         >
           {route.name === 'Farmer' || route.name === 'Farmer Drawer' ? (
             <>
-              <IconButton
+              <CustomIconButton
                 icon={
                   <MaterialCommunityIcons
                     name={
@@ -221,7 +221,7 @@ const FarmerTestScreen = ({ route, navigation }) => {
                   />
                 }
               />
-              <IconButton
+              <CustomIconButton
                 icon={
                   <Ionicons
                     name={

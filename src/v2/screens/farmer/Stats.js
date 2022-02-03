@@ -10,7 +10,7 @@ import { farmErrorState, farmLoadingState, farmState } from '../../../Atoms';
 import CustomCard from '../../../components/CustomCard';
 import { convertMojoToChia } from '../../../utils/Formatting';
 
-const Item = ({ title, color, value, format }) => {
+const Item = ({ title, color, loading, value, format }) => {
   const theme = useTheme();
   return (
     <DropShadow
@@ -24,7 +24,7 @@ const Item = ({ title, color, value, format }) => {
         // shadowOpacity: 1,
         shadowRadius: 3,
         flex: 1,
-        // marginVertical: 16,
+        marginVertical: 8,
       }}
     >
       <CustomCard
@@ -50,7 +50,7 @@ const Item = ({ title, color, value, format }) => {
             fontWeight: 'bold',
           }}
         >
-          {value ? format(value) : '...'}
+          {!loading && value ? format(value) : '...'}
         </Text>
         {/* </View> */}
       </CustomCard>
@@ -61,35 +61,45 @@ const Item = ({ title, color, value, format }) => {
 const partialPerfomance = (partialCount, failedPartialCount) =>
   ((partialCount - failedPartialCount) * 100) / partialCount;
 
-const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
+const FarmerStatsScreen = ({ data, loading, error, selected = -1 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
-
-  const [data, setData] = useRecoilState(farmState);
-  const [loading, setLoading] = useRecoilState(farmLoadingState);
-  const [error, setError] = useRecoilState(farmErrorState);
   const [partialStats, setPartialStats] = useState(null);
-  const [payouts, setPayouts] = useState();
 
   useEffect(() => {
-    if (data.partials) {
+    if (!loading.partials && data.partials) {
       const harvesters = new Set();
       const failedPartials = [];
       const successfulPartials = [];
       let partialCount = 0;
       let points = 0;
-      data.partials.forEach((farm) => {
-        farm.results.forEach((item) => {
-          harvesters.add(item.harvester_id);
-          if (item.error !== null) {
-            failedPartials.push(item);
-          } else {
-            successfulPartials.push(item);
-            points += item.difficulty;
-          }
-          partialCount += 1;
+      if (selected === -1) {
+        data.partials.forEach((farm) => {
+          farm.data.forEach((item) => {
+            harvesters.add(item.harvester_id);
+            if (item.error !== null) {
+              failedPartials.push(item);
+            } else {
+              successfulPartials.push(item);
+              points += item.difficulty;
+            }
+            partialCount += 1;
+          });
         });
-      });
+      } else {
+        data.partials
+          .find((item) => item.launcherId === selected)
+          .data.forEach((item) => {
+            harvesters.add(item.harvester_id);
+            if (item.error !== null) {
+              failedPartials.push(item);
+            } else {
+              successfulPartials.push(item);
+              points += item.difficulty;
+            }
+            partialCount += 1;
+          });
+      }
       setPartialStats({
         harvesters,
         failedPartials,
@@ -99,25 +109,7 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
         partialPerfomance: partialPerfomance(partialCount, failedPartials.length),
       });
     }
-    if (data.payouts) {
-      console.log(data.payouts[0].results.map((item) => item.amount).length);
-      // console.log(
-      //   convertMojoToChia(
-      //     data.payouts
-      //       .map((item) =>
-      //         item.results.map((item) => item.amount).reduce((prev, next) => prev + next)
-      //       )
-
-      //       .reduce((prev, next) => prev + next)
-      //   )
-      // );
-
-      // .map((item) => item.amount)
-      // .reduce((prev, next) => prev + next)
-
-      // setPayouts(data.payouts.map((item) => item.amount).reduce((prev, next) => prev + next));
-    }
-  }, [data]);
+  }, [loading, selected]);
 
   return (
     <ScrollView
@@ -135,48 +127,52 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
       {/* <View style={{ height: 8 }} /> */}
       <View style={styles.container}>
         <Item
-          // partialStats={partialStats}
+          loading={loading.partials}
           value={partialStats}
           format={(item) => item.partialCount}
           color={theme.colors.green}
           title={`${t('partials')}\n(${t('24Hours').toUpperCase()})`}
           // title={`PARTIALS\n(24 HOURS)`}
         />
-        <View style={{ width: 8 }} />
+        <View style={{ width: 16 }} />
         <Item
-          // partialStats={partialStats}
+          loading={loading.partials}
           value={partialStats}
           format={(item) => item.points}
           color={theme.colors.blue}
           title={`${t('points')}\n(${t('24Hours').toUpperCase()})`}
         />
       </View>
-      <View style={{ height: 8 }} />
+      <View style={{ width: 16 }} />
       <View style={styles.container}>
         <Item
+          loading={loading.partials}
           value={partialStats}
           format={(item) => item.successfulPartials.length}
           color={theme.colors.indigo}
           title={`${t('successfulPartials')}`}
         />
-        <View style={{ width: 8 }} />
+        <View style={{ width: 16 }} />
         <Item
+          loading={loading.partials}
           value={partialStats}
           format={(item) => item.failedPartials.length}
           color={theme.colors.orange}
           title={`${t('failedPartials')}`}
         />
       </View>
-      <View style={{ height: 8 }} />
+      <View style={{ width: 16 }} />
       <View style={styles.container}>
         <Item
+          loading={loading.partials}
           value={partialStats}
           format={(item) => `${item.partialPerfomance.toFixed(1)}%`}
           color={theme.colors.pink}
           title={t('partialPerfomance')}
         />
-        <View style={{ width: 8 }} />
+        <View style={{ width: 16 }} />
         <Item
+          loading={loading.partials}
           value={partialStats}
           format={(item) => item.harvesters.size}
           color={theme.colors.purple}
@@ -207,7 +203,6 @@ const FarmerStatsScreen = ({ launcherId, dataLoadable, route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginVertical: 4,
     flex: 1,
   },
   item: {

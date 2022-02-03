@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, SafeAreaView, View } from 'react-native';
+import { Alert, FlatList, Linking, SafeAreaView, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import PressableCard from '../../components/PressableCard';
@@ -41,7 +41,8 @@ const MoreScreen = ({ navigation }) => {
     },
     {
       name: 'Join our Community',
-      navigateTo: 'Settings',
+      // navigateTo: 'Settings',
+      url: 'https://discord.com/invite/2URS9H7RZn',
       icon: <MaterialCommunityIcons name="discord" size={24} color={theme.colors.textGreyLight} />,
     },
   ];
@@ -53,7 +54,15 @@ const MoreScreen = ({ navigation }) => {
       theme={theme}
       t={t}
       onPress={() => {
-        navigation.navigate(item.navigateTo);
+        if (item.url) {
+          Linking.canOpenURL(item.url).then((supported) => {
+            if (supported) {
+              Linking.openURL(item.url);
+            } else {
+              Alert.alert(`Don't know how to open this URL: ${item.url}`);
+            }
+          });
+        } else navigation.navigate(item.navigateTo);
       }}
     />
   );

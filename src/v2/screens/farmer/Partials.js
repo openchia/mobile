@@ -8,14 +8,11 @@ import PartialChart from '../../../screens/farmer/PartialChart';
 
 export const { width } = Dimensions.get('window');
 
-const FarmerPartialScreen = () => {
-  const farms = useRecoilValue(launcherIDsState);
-
+const FarmerPartialScreen = ({ launcherIds }) => {
   const orientation = useOrientation();
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <PartialChart launcherIds={farms.map((item) => item.launcherId)} orientation={orientation} />
+      <PartialChart launcherIds={launcherIds} orientation={orientation} />
     </SafeAreaView>
   );
 };

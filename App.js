@@ -1,12 +1,17 @@
 import messaging from '@react-native-firebase/messaging';
-import React, { Suspense, useEffect } from 'react';
-import { Platform } from 'react-native';
+import React, { Suspense, useCallback, useEffect, useMemo, useRef } from 'react';
+import { Button, Platform, StatusBar, Text, View } from 'react-native';
 import { Notifications } from 'react-native-notifications';
 import { RecoilRoot } from 'recoil';
 import BaseScreen from './src/BaseScreen';
 import LoadingComponent from './src/components/LoadingComponent';
 // import './src/constants/IMLocalize';
 import './src/localization/i18n';
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetBackdrop,
+} from '@gorhom/bottom-sheet';
 
 // Sentry.init({
 //   dsn: 'https://7426074fea104d898f7fcaba3e94d45d@o1071760.ingest.sentry.io/6069453',
@@ -65,7 +70,57 @@ const App = () => {
     return unsubscribe;
   }, []);
 
+  // ref
+  const bottomSheetModalRef = useRef(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  // callbacks
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        // style={{ position: 'absolute', top: -40, left: 0, right: 0, bottom: 49 }}
+        {...props}
+      />
+    ),
+    []
+  );
+
   return (
+    // <BottomSheetModalProvider>
+    //   <View style={{ flex: 1 }}>
+    //     <StatusBar
+    //       // backgroundColor={theme.colors.statusBarColor}
+    //       backgroundColor="transparent"
+    //       // barStyle="light-content"
+    //       // barStyle={
+    //       //   // Platform.OS === 'ios'
+    //       //   settings.isThemeDark ? 'light-content' : 'dark-content'
+    //       //   // : 'light-content'
+    //       // }
+    //     />
+    //     <Button title="Hello" onPress={handlePresentModalPress}></Button>
+    //     <BottomSheetModal
+    //       ref={bottomSheetModalRef}
+    //       index={1}
+    //       snapPoints={snapPoints}
+    //       // onChange={handleSheetChanges}
+    //       backdropComponent={renderBackdrop}
+    //     >
+    //       <View style={{ flex: 1, padding: 24 }}>
+    //         <Text>Awesome 🎉</Text>
+    //       </View>
+    //     </BottomSheetModal>
+    //   </View>
+    // </BottomSheetModalProvider>
+
     <RecoilRoot>
       <Suspense fallback={<LoadingComponent />}>
         <BaseScreen />

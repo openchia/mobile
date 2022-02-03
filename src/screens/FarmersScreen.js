@@ -210,10 +210,8 @@ const Content = ({
       previousTime={previousTime}
       onPress={() => {
         navigation.navigate({
-          name: 'Farmer',
-          // name: 'Farmer Details',
-          params: { data: { launcherId: data.launcher_id, name: data.name }, isGroup: false },
-          // params: { launcherId: data.launcher_id, name: data.name },
+          name: 'FarmerScreen',
+          params: { launcherId: data.launcher_id, name: data.name },
         });
       }}
     />

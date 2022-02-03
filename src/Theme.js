@@ -152,7 +152,7 @@ export const DarkTheme = {
     primary: '#69A951',
     primaryLight: '#588746',
     primaryDark: '#243F1E',
-    statusBarColor: '#121b22',
+    statusBarColor: '#1f2c34',
     leaves: 'rgba(245, 245, 245, 0.07)',
     divider: 'rgba(255, 255, 255, 0.02)',
     selected: 'rgba(255, 255, 255, 0.2)',

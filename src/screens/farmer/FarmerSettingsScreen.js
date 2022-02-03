@@ -11,7 +11,7 @@ import {
   updateFCMToken,
 } from '../../Api';
 import { initialRouteState, launcherIDsState, settingsState } from '../../Atoms';
-import IconButton from '../../components/IconButton';
+import CustomIconButton from '../../components/CustomIconButton';
 import PressableCard from '../../components/PressableCard';
 
 const FarmerSettingsScreen = ({ route, navigation }) => {
@@ -37,7 +37,7 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
             alignItems: 'center',
           }}
         >
-          <IconButton
+          <CustomIconButton
             icon={<Ionicons name="ios-trash-bin-outline" size={24} color="white" />}
             style={{ marginEnd: 20 }}
             color="#fff"

@@ -14,11 +14,11 @@ const spaceScanApi = axios.create({
   timeout: 1000,
 });
 
-export const getAddressBalance = async (address) => {
+export const getAddressBalance = async (address, launcherId) => {
   const url = `/xch/balance/${address}`;
   return spaceScanApi
     .get(url)
-    .then((res) => res.data)
+    .then((res) => ({ value: res.data.data.unspentBalance, launcherId }))
     .catch((err) => {
       console.log('getAddressBalance axios Error', err);
     });
@@ -83,13 +83,20 @@ export const getFarmersFromLauncherID = (launcherIDs) => {
   return Promise.all(promises);
 };
 
+export const getFarmerStats = (launcherId) => {
+  const promises = [getFarmer(launcherId), getStats()];
+  return Promise.all(promises);
+};
+
 export const getFarmersFromLauncherIDAndStats = (launcherIDs) => {
   const promises = [getFarmersFromLauncherID(launcherIDs), getStats()];
   return Promise.all(promises);
 };
 
-export const getBalanceFromAddresses = (addresses) => {
-  const promises = addresses.map((addresses) => getAddressBalance(addresses));
+export const getBalanceFromAddresses = (addresses, launcherIds) => {
+  const promises = addresses.map((addresses, index) =>
+    getAddressBalance(addresses, launcherIds[index])
+  );
   return Promise.all(promises);
 };
 
@@ -164,11 +171,11 @@ export const getPayoutsFromAddresses = (launcherIDs, offset, limit) => {
   return Promise.all(promises);
 };
 
-export async function getPartialsFromID(launcherID, timestamp) {
-  const url = `partial/?ordering=-timestamp&min_timestamp=${timestamp.toString()}&launcher=${launcherID}&limit=900`;
+export async function getPartialsFromID(launcherId, timestamp) {
+  const url = `partial/?ordering=-timestamp&min_timestamp=${timestamp.toString()}&launcher=${launcherId}&limit=2000`;
   return openChiaApi
     .get(url)
-    .then((res) => res.data)
+    .then((res) => ({ launcherId, data: res.data.results }))
     .catch((err) => {
       console.log('getPartialsFromID axios Error', err);
     });

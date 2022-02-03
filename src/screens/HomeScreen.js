@@ -6,6 +6,7 @@ import Svg, { G, Path, Rect } from 'react-native-svg';
 import { useRecoilValue } from 'recoil';
 import { settingsState } from '../Atoms';
 import CustomCard from '../components/CustomCard';
+import CustomIconButton from '../components/CustomIconButton';
 
 const Item = ({ title, value, color }) => (
   <CustomCard style={styles.item}>
@@ -77,7 +78,7 @@ const URLImageButton = ({ url, icon }) => {
   }, [url]);
 
   return (
-    <IconButton
+    <CustomIconButton
       icon={icon}
       style={{ marginRight: 2 }}
       color="#fff"

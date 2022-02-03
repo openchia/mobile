@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilState } from 'recoil';
 import { updateFarmerName } from '../../Api';
 import { launcherIDsState } from '../../Atoms';
-import IconButton from '../../components/IconButton';
+import CustomIconButton from '../../components/CustomIconButton';
 
 const FarmerNameScreen = ({ route, navigation }) => {
   const [farmerName, setFarmerName] = useState(null);
@@ -26,7 +26,7 @@ const FarmerNameScreen = ({ route, navigation }) => {
             alignItems: 'center',
           }}
         >
-          <IconButton
+          <CustomIconButton
             icon={<Ionicons name="ios-save-outline" size={24} color="white" />}
             style={{ marginEnd: 20 }}
             color="#fff"

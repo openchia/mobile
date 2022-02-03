@@ -15,11 +15,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import { LogBox, StatusBar, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider as PaperProvider, useTheme } from 'react-native-paper';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import { ToastProvider } from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -46,6 +46,8 @@ import DashboardScreen from './v2/screens/Dashboard';
 import MoreScreen from './v2/screens/More';
 import PoolScreen from './v2/screens/Pool';
 import GiveawaySceen from './screens/giveaway/GiveawayScreen';
+import FarmerScreen from './v2/screens/farmer/Farmer';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 // import { enableFreeze } from 'react-native-screens';
 
 // enableFreeze(true);
@@ -66,6 +68,7 @@ const Root = () => {
   return (
     <Tab.Navigator
       screenOptions={{
+        // safeAreaInsets: { top: 0 },
         headerShown: false,
         headerStyle: { backgroundColor: theme.colors.tabNavigatorBackground },
         tabBarButton: (props) => <TouchableOpacity {...props} />,
@@ -153,6 +156,11 @@ const Root = () => {
   );
 };
 
+const CustomStatusBar = ({ backgroundColor }) => {
+  const { top: safeAreaTop } = useSafeArea();
+  return <View style={{ height: safeAreaTop, width: '100%', backgroundColor }}></View>;
+};
+
 const BaseScreen = () => {
   const settings = useRecoilValue(settingsState);
   const launcherIDs = useRecoilValue(launcherIDsState);
@@ -174,137 +182,146 @@ const BaseScreen = () => {
         <GestureHandlerRootView style={{ flex: 1 }}>
           <PaperProvider theme={theme}>
             <NavigationContainer theme={theme}>
-              <StatusBar
-                backgroundColor={theme.colors.statusBarColor}
-                // barStyle="light-content"
-                barStyle={
-                  // Platform.OS === 'ios'
-                  settings.isThemeDark ? 'light-content' : 'dark-content'
-                  // : 'light-content'
-                }
-              />
-              {/* <View style={{ height: 54, backgroundColor: 'red' }}></View> */}
-              <Stack.Navigator
-                screenOptions={{
-                  // headerShown: true,
-                  // headerStyle: { backgroundColor: theme.colors.primary },
-                  headerStyle: { backgroundColor: theme.colors.tabNavigatorBackground },
-                  // headerTintColor: theme.colors.textGreyLight,
-                  // drawerStyle: { backgroundColor: theme.colors.primary },
-                  headerBackTitleVisible: false,
-                  gestureEnabled: true, // If you want to swipe back like iOS on Android
-                  animation: 'slide_from_right',
-                  // ...TransitionPresets.SlideFromRightIOS,
-                }}
-              >
-                <Stack.Screen name="Root" options={{ headerShown: false }}>
-                  {() => (
-                    <Root
-                      theme={theme}
-                      // toggleTheme={toggleTheme}
-                      // launcherIDs={launcherIDs}
-                      // initialRoute={initialRoute}
-                      // t={t}
-                    />
-                  )}
-                </Stack.Screen>
-                <Stack.Screen
-                  name="Farmer"
-                  component={FarmerTestScreen}
-                  options={({ route }) => ({
-                    // title: getHeaderTitle(route, t),
-                    title: getHeaderTitle(route, t),
-                    // headerRight: () => (
-                    //   <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
-                    // ),
-                  })}
-                  // options={({ route, navigation }) => ({})}
+              <BottomSheetModalProvider>
+                <StatusBar
+                  backgroundColor="transparent"
+                  // backgroundColor={theme.colors.statusBarColor}
+                  // backgroundColor="#rgba(255, 255, 255, 0.9)"
+                  // barStyle="light-content"
+                  translucent
+                  barStyle={
+                    // Platform.OS === 'ios'
+                    settings.isThemeDark ? 'light-content' : 'dark-content'
+                    // : 'light-content'
+                  }
                 />
-                <Stack.Screen
-                  name="Post"
-                  component={NewsPostScreen}
-                  options={() => ({
-                    title: t('post'),
-                  })}
-                />
-                <Stack.Screen
-                  name="Farmer Settings"
-                  component={FarmerSettingsScreen}
-                  options={() => ({
-                    title: t('farmerSettings'),
-                  })}
-                />
-                <Stack.Screen
-                  name="Language"
-                  component={LanguageSelectorScreen}
-                  options={() => ({
-                    title: t('language'),
-                  })}
-                />
-                <Stack.Screen
-                  name="Currency"
-                  component={CurrencySelectionScreen}
-                  options={() => ({
-                    title: t('currency'),
-                  })}
-                />
-                <Stack.Screen
-                  name="Poolspace"
-                  component={PoolspaceScreen}
-                  options={() => ({
-                    title: t('poolSpace'),
-                  })}
-                />
-                <Stack.Screen
-                  name="Chia Price Chart"
-                  component={ChiaPriceScreen}
-                  options={() => ({
-                    title: t('chiaPriceChart'),
-                  })}
-                />
-                <Stack.Screen
-                  name="Farmer Name"
-                  component={FarmerNameScreen}
-                  options={() => ({
-                    title: t('farmName'),
-                  })}
-                />
-                <Stack.Screen
-                  name="Verify Farm"
-                  component={ScanScreen}
-                  options={() => ({
-                    title: t('verifyFarm'),
-                  })}
-                />
-                <Stack.Screen
-                  name="Settings"
-                  component={SettingsScreen}
-                  options={() => ({
-                    title: t('settings'),
-                  })}
-                />
-                <Stack.Screen
-                  name="Farmer Notifications"
-                  component={FarmerNotificationScreen}
-                  options={() => ({
-                    title: t('farmerNotifications'),
-                  })}
-                />
-                <Stack.Screen
-                  name="Create Group"
-                  component={CreateGroupScreen}
-                  options={() => ({
-                    title: t('createGroup'),
-                  })}
-                />
-                <Stack.Screen
-                  name="Giveaway"
-                  component={GiveawaySceen}
-                  options={() => ({
-                    title: t('giveaway'),
-                  })}
-                />
-              </Stack.Navigator>
+                {/* <CustomStatusBar backgroundColor={theme.colors.statusBarColor}></CustomStatusBar> */}
+                {/* <View style={{ height: 54, backgroundColor: 'red' }}></View> */}
+                <Stack.Navigator
+                  screenOptions={{
+                    paddingTop: 24,
+                    // safeAreaInsets: { top: 0 },
+                    // headerShown: true,
+                    // headerStyle: { backgroundColor: theme.colors.primary },
+                    headerStyle: { backgroundColor: theme.colors.tabNavigatorBackground },
+                    // headerTintColor: theme.colors.textGreyLight,
+                    // drawerStyle: { backgroundColor: theme.colors.primary },
+                    headerBackTitleVisible: false,
+                    gestureEnabled: true, // If you want to swipe back like iOS on Android
+                    animation: 'slide_from_right',
+                    // ...TransitionPresets.SlideFromRightIOS,
+                  }}
+                >
+                  <Stack.Screen name="Root" options={{ headerShown: false }}>
+                    {() => (
+                      <Root
+                        theme={theme}
+                        // toggleTheme={toggleTheme}
+                        // launcherIDs={launcherIDs}
+                        // initialRoute={initialRoute}
+                        // t={t}
+                      />
+                    )}
+                  </Stack.Screen>
+                  <Stack.Screen
+                    name="FarmerScreen"
+                    component={FarmerScreen}
+                    options={({ route }) => ({
+                      headerShown: false,
+                      // title: getHeaderTitle(route, t),
+                      // title: getHeaderTitle(route, t),
+                      // headerRight: () => (
+                      //   <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
+                      // ),
+                    })}
+                    // options={({ route, navigation }) => ({})}
+                  />
+                  <Stack.Screen
+                    name="Post"
+                    component={NewsPostScreen}
+                    options={() => ({
+                      title: t('post'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Farmer Settings"
+                    component={FarmerSettingsScreen}
+                    options={() => ({
+                      title: t('farmerSettings'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Language"
+                    component={LanguageSelectorScreen}
+                    options={() => ({
+                      title: t('language'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Currency"
+                    component={CurrencySelectionScreen}
+                    options={() => ({
+                      title: t('currency'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Poolspace"
+                    component={PoolspaceScreen}
+                    options={() => ({
+                      title: t('poolSpace'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Chia Price Chart"
+                    component={ChiaPriceScreen}
+                    options={() => ({
+                      title: t('chiaPriceChart'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Farmer Name"
+                    component={FarmerNameScreen}
+                    options={() => ({
+                      title: t('farmName'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Verify Farm"
+                    component={ScanScreen}
+                    options={() => ({
+                      title: t('verifyFarm'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Settings"
+                    component={SettingsScreen}
+                    options={() => ({
+                      title: t('settings'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Farmer Notifications"
+                    component={FarmerNotificationScreen}
+                    options={() => ({
+                      title: t('farmerNotifications'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Create Group"
+                    component={CreateGroupScreen}
+                    options={() => ({
+                      title: t('createGroup'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Giveaway"
+                    component={GiveawaySceen}
+                    options={() => ({
+                      title: t('giveaway'),
+                    })}
+                  />
+                </Stack.Navigator>
+              </BottomSheetModalProvider>
             </NavigationContainer>
           </PaperProvider>
         </GestureHandlerRootView>

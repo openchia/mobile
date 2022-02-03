@@ -5,7 +5,7 @@ import { Text, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilState } from 'recoil';
 import { groupState, settingsState } from '../../Atoms';
-import IconButton from '../../components/IconButton';
+import CustomIconButton from '../../components/CustomIconButton';
 
 const CreateGroupScreen = ({ route, navigation }) => {
   const [groups, setGroups] = useRecoilState(groupState);
@@ -30,7 +30,7 @@ const CreateGroupScreen = ({ route, navigation }) => {
             alignItems: 'center',
           }}
         >
-          <IconButton
+          <CustomIconButton
             icon={<Ionicons name="ios-save-outline" size={24} color="white" />}
             style={{ marginEnd: 20 }}
             color="#fff"
