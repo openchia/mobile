@@ -1,10 +1,11 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
+import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, Pressable, SafeAreaView, StyleSheet, View } from 'react-native';
-import { Divider, IconButton, Menu, Text, useTheme } from 'react-native-paper';
+import { Platform, Pressable, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { IconButton, Menu, Text, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
@@ -18,30 +19,25 @@ import {
   farmErrorState,
   farmLoadingState,
   launcherIDsState,
+  settingsState,
 } from '../../Atoms';
 import CustomIconButton from '../../components/CustomIconButton';
+import FocusAwareStatusBar from '../../components/FocusAwareStatusBar';
+import PressableCard from '../../components/PressableCard';
 import { getCurrencyFromKey } from '../../screens/CurrencySelectionScreen';
-import FarmersScreen from '../../screens/FarmersScreen';
 import { formatBytes, formatPrice } from '../../utils/Formatting';
 import FarmerBlockScreen from './farmer/Blocks';
 import FarmerPartialScreen from './farmer/Partials';
 import FarmerPayoutScreen from './farmer/Payouts';
 import FarmerStatsScreen from './farmer/Stats';
-import FarmsScreen from './Farms';
-import { BottomSheetModal, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
-import CustomStatusBar from './../../components/CustomStatusBar';
-import CustomSheetBackground from '../../components/CustomSheetBackground';
 
 const Tab = createMaterialTopTabNavigator();
 
 const sumValue = (data, type) => data.map((item) => item[type]).reduce((a, b) => a + b);
-const filter = (data, x) => data.filter((item, index) => index === x);
 
 const DashboardScreen = ({ navigation }) => {
-  const farms = useRecoilValue(launcherIDsState);
-  // const [farms, setFarms] = useState(farmsData);
+  const [farms, setFarms] = useRecoilState(launcherIDsState);
   const [data, setData] = useRecoilState(dashboardState);
-  const [dataToShow, setDataToShow] = useState();
   const [loading, setLoading] = useRecoilState(farmLoadingState);
   const [error, setError] = useRecoilState(farmErrorState);
   const currency = useRecoilValue(currencyState);
@@ -49,6 +45,7 @@ const DashboardScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
   const [measurements, setMeasurements] = useState();
   const [selected, setSelected] = useState(-1);
+  const settings = useRecoilValue(settingsState);
 
   const openMenu = () => setVisible(true);
 
@@ -63,6 +60,19 @@ const DashboardScreen = ({ navigation }) => {
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
+
+  const canEditFarmName = () => {
+    if (farms.length === 1) {
+      // console.log(!!farms[0].token);
+      return !!farms[0].token;
+    }
+    if (farms.length > 0) {
+      const farm = farms.find((item) => item.launcherId === selected);
+      // console.log(!!farm.token);
+      return !!farm.token;
+    }
+    return false;
+  };
 
   // callbacks
   const renderBackdrop = useCallback(
@@ -108,16 +118,25 @@ const DashboardScreen = ({ navigation }) => {
           launcherIds.push(item.launcherId);
         }
       });
-      getBalanceFromAddresses(Array.from(addressesToScan), launcherIds)
-        .then((response) => {
-          setData((prev) => ({
-            ...prev,
-            balance: response,
-          }));
-        })
-        .finally(() => {
-          setLoading((prev) => ({ ...prev, address: false }));
-        });
+      if (launcherIds.length > 0) {
+        // console.log(launcherIds.length);
+        getBalanceFromAddresses(Array.from(addressesToScan), launcherIds)
+          .then((response) => {
+            setData((prev) => ({
+              ...prev,
+              balance: response,
+            }));
+          })
+          .finally(() => {
+            setLoading((prev) => ({ ...prev, address: false }));
+          });
+      } else {
+        // console.log('Calle');
+        setData((prev) => ({
+          ...prev,
+          balance: null,
+        }));
+      }
 
       getFarmersFromLauncherIDAndStats(farms.map((item) => item.launcherId))
         .then(([farmers, stats]) => {
@@ -154,13 +173,20 @@ const DashboardScreen = ({ navigation }) => {
       const item = farms.find((item) => item.launcherId === selected);
       return item.name || item.launcherId;
     }
+    if (farms.length === 0) {
+      return 'None';
+    }
     return 'Farms Grouped';
   };
 
   const theme = useTheme();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.onSurface }}>
-      <CustomStatusBar />
+      {/* <CustomStatusBar /> */}
+      <FocusAwareStatusBar
+        backgroundColor={theme.colors.statusBarColor}
+        barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
+      />
       <View
         style={{
           backgroundColor: theme.colors.onSurfaceLight,
@@ -178,19 +204,21 @@ const DashboardScreen = ({ navigation }) => {
             top: 0,
           }}
         >
-          <CustomIconButton
-            style={{ marginTop: 10, marginRight: 10 }}
-            icon={
-              <Ionicons
-                name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
-                size={24}
-                color={theme.colors.text}
-              />
-            }
-            color="#fff"
-            // size={24}
-            onPress={handlePresentModalPress}
-          />
+          {farms.length > 0 && (
+            <CustomIconButton
+              style={{ marginTop: 10, marginRight: 10 }}
+              icon={
+                <Ionicons
+                  name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
+                  size={24}
+                  color={theme.colors.text}
+                />
+              }
+              color="#fff"
+              // size={24}
+              onPress={handlePresentModalPress}
+            />
+          )}
         </View>
         {farms.length > 1 ? (
           <Pressable
@@ -220,6 +248,8 @@ const DashboardScreen = ({ navigation }) => {
                 paddingTop: 2,
                 fontSize: 13,
                 paddingLeft: 16,
+                // maxWidth: '70%',
+                textAlign: 'center',
               }}
             >
               {name()}
@@ -229,7 +259,7 @@ const DashboardScreen = ({ navigation }) => {
               <Menu
                 visible={visible}
                 onDismiss={closeMenu}
-                anchor={{ x: measurements.x, y: measurements.y + measurements.height + 24 }}
+                anchor={{ x: measurements.x, y: measurements.y + measurements.height }}
               >
                 {selected !== -1 && (
                   <Menu.Item
@@ -265,7 +295,8 @@ const DashboardScreen = ({ navigation }) => {
               style={{
                 paddingTop: 16,
                 fontSize: 15,
-                paddingLeft: 16,
+                // width: '70%',
+                // paddingLeft: 16,
                 // color: theme.colors.textGrey,
               }}
             >
@@ -278,12 +309,14 @@ const DashboardScreen = ({ navigation }) => {
         <Text style={{ paddingTop: 16, fontSize: 24 }}>
           {loading.address
             ? '0 XCH'
-            : selected === -1
-            ? `${data.balance
-                .map((item) => item.value)
-                .reduce((a, b) => a + b)
-                .toFixed(2)} XCH`
-            : `${data.balance.find((item) => item.launcherId === selected).value.toFixed(2)} XCH`}
+            : data.balance
+            ? selected === -1
+              ? `${data.balance
+                  .map((item) => item.value)
+                  .reduce((a, b) => a + b)
+                  .toFixed(2)} XCH`
+              : `${data.balance.find((item) => item.launcherId === selected).value.toFixed(2)} XCH`
+            : null}
         </Text>
         <View
           style={{
@@ -470,67 +503,144 @@ const DashboardScreen = ({ navigation }) => {
         // style={{ backgroundColor: theme.colors.background }}
         // onChange={handleSheetChanges}
         // handleStyle={{ backgroundColor: 'red' }}
-        backgroundStyle={{ backgroundColor: theme.colors.tabNavigatorBackground }}
+
+        backgroundStyle={{
+          backgroundColor: theme.colors.tabNavigatorBackground,
+        }}
         handleIndicatorStyle={{ backgroundColor: theme.colors.textGrey }}
         // backgroundComponent={() => (
         //   <View style={[styles.contentContainer, { backgroundColor: theme.colors.background }]} />
         // )}
         backdropComponent={renderBackdrop}
       >
-        <View style={{ flex: 1, padding: 24 }}>
+        <View style={{ flex: 1 }}>
           {selected === -1 && farms.length > 1 ? (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <CustomIconButton
-                icon={<Ionicons name="scan" size={24} color={theme.colors.textGrey} />}
-                onPress={() => {
-                  navigation.navigate('Verify Farm');
-                }}
-                title="Info"
-                color="#fff"
-              />
-
-              <Text style={{ fontSize: 16 }}>Add Or Verfiy Farm</Text>
-            </View>
-          ) : (
-            <View style={{ flexDirection: 'column' }}>
+            <PressableCard
+              style={{
+                justifyContent: 'center',
+                padding: 4,
+                backgroundColor: theme.colors.tabNavigatorBackground,
+              }}
+              onPress={() => {
+                bottomSheetModalRef.current?.dismiss();
+                setTimeout(() => navigation.navigate('Verify Farm'), 200);
+              }}
+            >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <CustomIconButton
                   icon={<Ionicons name="scan" size={24} color={theme.colors.textGrey} />}
-                  onPress={() => {
-                    navigation.navigate('Verify Farm');
-                  }}
                   title="Info"
                   color="#fff"
                 />
-
                 <Text style={{ fontSize: 16 }}>Add Or Verfiy Farm</Text>
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <CustomIconButton
-                  icon={<Ionicons name="pencil-sharp" size={24} color={theme.colors.textGrey} />}
-                  onPress={() => {
-                    navigation.navigate('Verify Farm');
-                  }}
-                  title="Info"
-                  color="#fff"
-                />
-
-                <Text style={{ fontSize: 16 }}>Farm Name</Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <CustomIconButton
-                  icon={
-                    <Ionicons name="trash-bin-outline" size={24} color={theme.colors.textGrey} />
+            </PressableCard>
+          ) : (
+            <View style={{ flexDirection: 'column' }}>
+              <PressableCard
+                style={{
+                  justifyContent: 'center',
+                  padding: 4,
+                  backgroundColor: theme.colors.tabNavigatorBackground,
+                }}
+                onPress={() => {
+                  bottomSheetModalRef.current?.dismiss();
+                  setTimeout(() => navigation.navigate('Verify Farm'), 200);
+                  // navigation.navigate('Verify Farm');
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <CustomIconButton
+                    icon={<Ionicons name="scan" size={24} color={theme.colors.textGrey} />}
+                    title="Info"
+                    color="#fff"
+                  />
+                  <Text style={{ fontSize: 16 }}>Add Or Verfiy Farm</Text>
+                </View>
+              </PressableCard>
+              {/* {canEditFarmName() && ( */}
+              <PressableCard
+                style={{
+                  justifyContent: 'center',
+                  padding: 4,
+                  backgroundColor: theme.colors.tabNavigatorBackground,
+                }}
+                onPress={() => {
+                  bottomSheetModalRef.current?.dismiss();
+                  if (farms.length === 1) {
+                    setTimeout(
+                      () =>
+                        navigation.navigate({
+                          name: 'Farmer Name',
+                          params: {
+                            launcherId: farms[0].launcherId,
+                            token: farms[0].token,
+                            name: farms[0].name,
+                          },
+                        }),
+                      200
+                    );
+                  } else {
+                    const farm = farms.find((item) => item.launcherId === selected);
+                    setTimeout(
+                      () =>
+                        navigation.navigate({
+                          name: 'Farmer Name',
+                          params: {
+                            launcherId: farm.launcherId,
+                            token: farm.token,
+                            name: farm.name,
+                          },
+                        }),
+                      200
+                    );
                   }
-                  onPress={() => {
-                    navigation.navigate('Verify Farm');
-                  }}
-                  title="Info"
-                  color="#fff"
-                />
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <CustomIconButton
+                    icon={<Ionicons name="pencil-sharp" size={24} color={theme.colors.textGrey} />}
+                    title="Info"
+                    color="#fff"
+                  />
 
-                <Text style={{ fontSize: 16 }}>Remove Farm</Text>
-              </View>
+                  <Text style={{ fontSize: 16 }}>Farm Name</Text>
+                </View>
+              </PressableCard>
+              {/* )} */}
+              <PressableCard
+                style={{
+                  justifyContent: 'center',
+                  padding: 4,
+                  backgroundColor: theme.colors.tabNavigatorBackground,
+                }}
+                onPress={() => {
+                  bottomSheetModalRef.current?.dismiss();
+                  setSelected(-1);
+                  if (farms.length === 1) {
+                    setLoading({ stats: true, partials: true, address: true });
+                    setFarms([]);
+                    setData({});
+                  } else {
+                    setLoading({ stats: true, partials: true, address: true });
+                    setData({});
+                    const newData = farms.filter((item) => item.launcherId !== selected);
+                    setFarms(newData);
+                  }
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <CustomIconButton
+                    icon={
+                      <Ionicons name="trash-bin-outline" size={24} color={theme.colors.textGrey} />
+                    }
+                    title="Info"
+                    color="#fff"
+                  />
+
+                  <Text style={{ fontSize: 16 }}>Remove Farm</Text>
+                </View>
+              </PressableCard>
             </View>
           )}
           {/* <CustomIconButton

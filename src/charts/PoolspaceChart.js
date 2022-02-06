@@ -125,6 +125,8 @@ const query = selectorFamily({
           y: item.size,
         }));
 
+        console.log(convertedData);
+
         return monotoneCubicInterpolation({
           data: convertedData,
           includeExtremes: true,
@@ -232,11 +234,11 @@ const PoolspaceChart = ({ poolSpace }) => {
         bottomContent={
           <JellySelector
             width={width}
-            defaultVal={settings.priceDefault}
+            defaultVal={settings.poolspaceDefault}
             items={ITEMS}
             onPress={(item, index) => {
               setElement(item);
-              setSettings((prev) => ({ ...prev, priceDefault: index }));
+              setSettings((prev) => ({ ...prev, poolspaceDefault: index }));
             }}
           />
         }

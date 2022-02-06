@@ -256,6 +256,17 @@ const StatsScreen = ({ navigation }) => {
           />
           <View style={{ width: 16 }} />
           <Item
+            onPress={() => {
+              navigation.navigate({
+                name: 'Netspace',
+                params: {
+                  netspace: formatBytes(data.blockchain_space),
+                },
+              });
+            }}
+            icon={
+              <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
+            }
             loadable={loading}
             data={data}
             format={(item) => formatBytes(item.blockchain_space)}

@@ -1,3 +1,5 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable no-undef */
 import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView, TextInput, View } from 'react-native';
@@ -10,7 +12,7 @@ import CustomIconButton from '../../components/CustomIconButton';
 
 const FarmerNameScreen = ({ route, navigation }) => {
   const [farmerName, setFarmerName] = useState(null);
-  const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
+  const [farms, setLauncherIDs] = useRecoilState(launcherIDsState);
   const { t } = useTranslation();
   const { launcherId, token, name } = route.params;
   const theme = useTheme();
@@ -27,22 +29,22 @@ const FarmerNameScreen = ({ route, navigation }) => {
           }}
         >
           <CustomIconButton
-            icon={<Ionicons name="ios-save-outline" size={24} color="white" />}
+            icon={<Ionicons name="ios-save-outline" size={24} color={theme.colors.textGrey} />}
             style={{ marginEnd: 20 }}
             color="#fff"
             size={24}
             onPress={() => {
+              const updatedList = farms.map((item) => {
+                return item.launcherId === launcherId ? { ...item, name: farmerName } : item;
+              });
+              console.log(launcherId, token, farmerName);
               updateFarmerName(launcherId, token, farmerName)
                 .then(() => {
-                  setLauncherIDs(
-                    (prev) =>
-                      new Map(
-                        prev.set(launcherId, {
-                          name: farmerName,
-                          token,
-                        })
-                      )
-                  );
+                  // const farm = farms.find((item) => item.launcherId === selected);
+                  // setLauncherIDs(updatedList);
+                })
+                .catch((ex) => {
+                  console.log(ex);
                 })
                 .finally(() => {
                   navigation.goBack();

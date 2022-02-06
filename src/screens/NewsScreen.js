@@ -11,12 +11,14 @@ import {
   View,
 } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
+import FastImage from 'react-native-fast-image';
 // import { FlatList } from 'react-native-gesture-handler';
 import { Button, Text, useTheme } from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
-import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import { selectorFamily, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { getChiaPlotPosts } from '../Api';
-import { newsRefreshState } from '../Atoms';
+import { newsRefreshState, settingsState } from '../Atoms';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 
@@ -51,31 +53,43 @@ const Item = ({ item, width, onPress, tagsStyles, theme }) => (
       // shadowOpacity: 1,
       shadowRadius: 3,
       flex: 1,
-      marginVertical: 4,
-      marginHorizontal: 8,
+      marginVertical: 8,
+      marginHorizontal: 16,
     }}
   >
     <PressableCard
       onPress={onPress}
-      style={{ borderRadius: 8, backgroundColor: theme.colors.onSurfaceLight }}
+      style={{ borderRadius: 24, backgroundColor: theme.colors.onSurfaceLight }}
     >
       <View
         style={{
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: 12,
           paddingBottom: 12,
-          paddingStart: 12,
-          paddingEnd: 12,
+          // paddingTop: 12,
+          // paddingStart: 12,
+          // paddingEnd: 12,
         }}
       >
-        <Image
-          style={{ height: 200, width: '100%', borderRadius: 6 }}
+        <FastImage
+          style={{ width: '100%', height: 200 }}
           source={{
             uri: item.jetpack_featured_media_url,
+            headers: { Authorization: 'someAuthToken' },
+            priority: FastImage.priority.normal,
           }}
+          resizeMode={FastImage.resizeMode.stretch}
         />
-        <View style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingTop: 12 }}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            paddingTop: 12,
+            paddingStart: 12,
+            paddingEnd: 12,
+          }}
+        >
           <RenderHtml
             tagsStyles={tagsStyles}
             contentWidth={width}
@@ -104,6 +118,7 @@ const NewsScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const theme = useTheme();
   const netInfo = useNetInfo();
+  const settings = useRecoilValue(settingsState);
 
   const tagsStyles = {
     body: {
@@ -137,12 +152,16 @@ const NewsScreen = ({ navigation }) => {
         }}
       />
     ),
-    []
+    [settings.isThemeDark]
   );
 
   if (postsLoadable.state === 'hasError') {
     return (
       <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <FocusAwareStatusBar
+          backgroundColor={theme.colors.statusBarColor}
+          barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
+        />
         <Text style={{ fontSize: 20, textAlign: 'center', paddingBottom: 16 }}>
           Cant Connect to Network
         </Text>
@@ -164,6 +183,10 @@ const NewsScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <FocusAwareStatusBar
+        backgroundColor={theme.colors.statusBarColor}
+        barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
+      />
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 6 }}
         ListHeaderComponent={<View style={{ paddingTop: 6 }} />}

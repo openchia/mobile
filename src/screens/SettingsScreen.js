@@ -46,20 +46,6 @@ const SettingsScreen = ({ navigation }) => {
           console.log('Unsubscribed from block notifications');
         });
     }
-    // if (launcherIDsArray.length > 0) {
-    //   getObject('fcm').then((FCMToken) => {
-    //     launcherIDsArray.forEach((element) => {
-    //       // console.log(element);
-    //       updateFCMToken(
-    //         element.name,
-    //         element.value.token,
-    //         !settings.blockNotifications ? FCMToken : null
-    //       ).then((data) => {
-    //         console.log(`Successfully set notifications to: ${!settings.blockNotifications}\n`, data);
-    //       });
-    //     });
-    //   });
-    // }
   };
 
   return (

@@ -11,6 +11,7 @@ import {
   farmLoadingState,
   currencyState,
   farmStateFarmer,
+  launcherIDsState,
 } from '../../../Atoms';
 import { getCurrencyFromKey } from '../../../screens/CurrencySelectionScreen';
 import { formatBytes, formatPrice } from '../../../utils/Formatting';
@@ -22,6 +23,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { getFarmersFromLauncherIDAndStats } from './../../../Api';
 import { useTranslation } from 'react-i18next';
 import CustomIconButton from '../../../components/CustomIconButton';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Tab = createMaterialTopTabNavigator();
 const sumValue = (data, type) => data.map((item) => item[type]).reduce((a, b) => a + b);
@@ -44,6 +46,9 @@ const FarmerScreen = ({ route, navigation }) => {
   const [launcherId, setLauncherId] = useState(route.params.launcherId);
   const [name, setName] = useState(route.params.name);
   const { t } = useTranslation();
+  const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
+
+  const farm = launcherIDs.find((item) => item.launcherId === launcherId);
 
   useEffect(() => {
     setLoading((prev) => ({ ...prev, stats: true, partials: true, address: true }));
@@ -109,6 +114,77 @@ const FarmerScreen = ({ route, navigation }) => {
             }}
           />
         </View>
+        {/* {farm ? (
+          farm.token === null ? (
+            <View
+              style={{
+                backgroundColor: theme.colors.onSurfaceLight,
+                alignItems: 'center',
+                flexDirection: 'row',
+                position: 'absolute',
+                right: 0,
+                top: 0,
+              }}
+            >
+              <CustomIconButton
+                icon={<AntDesign name="staro" size={24} color={theme.colors.text} />}
+                style={{ marginEnd: 8 }}
+                color="#fff"
+                size={24}
+                onPress={() => {
+                  if (!launcherIDs.map((item) => item.launcherId).includes(launcherId)) {
+                    setLauncherIDs((prev) => [
+                      ...prev,
+                      {
+                        launcherId,
+                        name,
+                        token: null,
+                        address: null,
+                      },
+                    ]);
+                  } else {
+                    const newData = launcherIDs.filter((item) => item.launcherId !== launcherId);
+                    setLauncherIDs(newData);
+                  }
+                }}
+              />
+            </View>
+          ) : null
+        ) : (
+          <View
+            style={{
+              backgroundColor: theme.colors.onSurfaceLight,
+              alignItems: 'center',
+              flexDirection: 'row',
+              position: 'absolute',
+              right: 0,
+              top: 0,
+            }}
+          >
+            <CustomIconButton
+              icon={<AntDesign name="staro" size={24} color={theme.colors.text} />}
+              style={{ marginEnd: 8 }}
+              color="#fff"
+              size={24}
+              onPress={() => {
+                if (!launcherIDs.map((item) => item.launcherId).includes(launcherId)) {
+                  setLauncherIDs((prev) => [
+                    ...prev,
+                    {
+                      launcherId,
+                      name,
+                      token: null,
+                      address: null,
+                    },
+                  ]);
+                } else {
+                  const newData = launcherIDs.filter((item) => item.launcherId !== launcherId);
+                  setLauncherIDs(newData);
+                }
+              }}
+            />
+          </View>
+        )} */}
 
         <Text
           numberOfLines={1}
@@ -117,8 +193,8 @@ const FarmerScreen = ({ route, navigation }) => {
             fontSize: 20,
             // color: theme.colors.textGrey,
             // padding: 2,
-            paddingLeft: 48,
-            paddingRight: 48,
+            marginLeft: 48,
+            marginRight: 48,
           }}
         >
           {name || launcherId}

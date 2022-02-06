@@ -12,6 +12,7 @@ import {
   BottomSheetModalProvider,
   BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 // Sentry.init({
 //   dsn: 'https://7426074fea104d898f7fcaba3e94d45d@o1071760.ingest.sentry.io/6069453',
@@ -25,6 +26,8 @@ if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/en-IN'); // load the required locale details
 }
+
+// SystemNavigationBar.navigationShow();
 
 // const updateLocalization = () => {
 //   Crowdin.initWithHashString('fcaf0dd82870a8dfbcc5f9876j9', DEFAULT_LANGUAGE, (message) => {});

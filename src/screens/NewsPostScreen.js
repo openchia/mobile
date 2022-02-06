@@ -21,14 +21,14 @@ const NewsPostScreen = ({ navigation, route }) => {
     },
   };
   return (
-    <ScrollView contentContainerStyle={{ margin: 8 }}>
+    <ScrollView contentContainerStyle={{}}>
       <Image
-        style={{ height: 200, width: '100%', borderRadius: 6 }}
+        style={{ height: 200, width: '100%' }}
         source={{
           uri: post.jetpack_featured_media_url,
         }}
       />
-      <View style={{ alignItems: 'center' }}>
+      <View style={{ alignItems: 'center', marginHorizontal: 8 }}>
         <RenderHtml
           contentWidth={width}
           tagsStyles={tagsStyles}

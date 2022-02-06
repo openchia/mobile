@@ -30,7 +30,7 @@ const getLuck = (luck) => {
   return 'Very Unlucky';
 };
 
-const Item = ({ item, theme, t }) => (
+const Item = ({ item, theme, t, onPress }) => (
   <PressableCard
     style={{
       marginBottom: 1,
@@ -38,7 +38,7 @@ const Item = ({ item, theme, t }) => (
       justifyContent: 'center',
       backgroundColor: theme.colors.itemColor,
     }}
-    onTap={() => {}}
+    onPress={onPress}
   >
     <View style={{ marginHorizontal: 12 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -62,16 +62,16 @@ const Item = ({ item, theme, t }) => (
   </PressableCard>
 );
 
-const Content = ({ dataState, refresh, state, setState, theme, layoutProvider }) => {
+const Content = ({ navigation, dataState, refresh, state, setState, theme, layoutProvider }) => {
   const rowRenderer = (type, data, index) => (
     <Item
       item={data}
       theme={theme}
       onPress={() => {
-        // navigation.navigate({
-        //   name: 'Farmer',
-        //   params: { data: { launcherId: data.launcher_id, name: data.name } },
-        // });
+        navigation.navigate({
+          name: 'FarmerScreen',
+          params: { launcherId: data.farmed_by.launcher_id, name: data.farmed_by.name },
+        });
       }}
     />
   );
@@ -107,7 +107,7 @@ const Content = ({ dataState, refresh, state, setState, theme, layoutProvider })
   );
 };
 
-const BlocksFoundScreen = () => {
+const BlocksFoundScreen = ({ navigation }) => {
   const theme = useTheme();
   const { width } = Dimensions.get('window');
   const [layoutProvider, setLayoutProvider] = useState();
@@ -169,6 +169,7 @@ const BlocksFoundScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.divider }}>
       <Content
+        navigation={navigation}
         theme={theme}
         dataState={dataState}
         width={width}

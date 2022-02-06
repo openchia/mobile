@@ -13,7 +13,7 @@ import LoadingComponent from './../../../components/LoadingComponent';
 const LIMIT = 20;
 const HEIGHT = 50;
 
-const Item = ({ item, theme, t }) => (
+const Item = ({ item, theme, t, onPress }) => (
   <PressableCard
     style={{
       marginBottom: 1,
@@ -21,7 +21,7 @@ const Item = ({ item, theme, t }) => (
       justifyContent: 'center',
       backgroundColor: theme.colors.itemColor,
     }}
-    onTap={() => {}}
+    onPress={onPress}
   >
     <View style={{ marginHorizontal: 12 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -42,8 +42,8 @@ const Item = ({ item, theme, t }) => (
   </PressableCard>
 );
 
-const Content = ({ dataState, refresh, state, setState, theme, layoutProvider }) => {
-  const rowRenderer = (type, data, index) => <Item item={data} theme={theme} onPress={() => {}} />;
+const Content = ({ navigation, dataState, refresh, state, setState, theme, layoutProvider }) => {
+  const rowRenderer = (type, data, index) => <Item item={data} theme={theme} />;
 
   const loadMore = () => {
     if (state.hasMore && !state.refreshing) {
@@ -76,7 +76,7 @@ const Content = ({ dataState, refresh, state, setState, theme, layoutProvider })
   );
 };
 
-const FarmerBlockScreen = ({ launcherId }) => {
+const FarmerBlockScreen = ({ navigation, launcherId }) => {
   const theme = useTheme();
   const { width } = Dimensions.get('window');
   const settings = useRecoilValue(settingsState);
@@ -144,6 +144,7 @@ const FarmerBlockScreen = ({ launcherId }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.divider }}>
       <Content
+        navigation={navigation}
         theme={theme}
         dataState={dataState}
         width={width}

@@ -246,6 +246,7 @@ const Chart = ({ launcherIds, element, bottomContent, orientation, width, height
   const { t } = useTranslation();
   const [points, setPoints] = useState([]);
   const [stats, setStats] = useState(null);
+  const [graphDimensions, setGraphDimensions] = useState();
 
   // console.log(loadableData);
 
@@ -261,68 +262,84 @@ const Chart = ({ launcherIds, element, bottomContent, orientation, width, height
   return (
     <View style={{ alignContent: 'center', flex: 1 }}>
       {stats && orientation === 'PORTRAIT' && (
-        <View style={{ padding: 16 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <TestLabel
-              interval={1}
-              defaultValue={`${element.label} ${t('overView')}`}
-              format={formatDatetime}
-              style={{ color: theme.colors.text, fontSize: 16, fontWeight: 'bold' }}
-              selectedPoints={selectedPoints}
-              type="time"
-            />
+        <>
+          <View style={{ padding: 16 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TestLabel
+                interval={1}
+                defaultValue={`${element.label} ${t('overView')}`}
+                format={formatDatetime}
+                style={{ color: theme.colors.text, fontSize: 16, fontWeight: 'bold' }}
+                selectedPoints={selectedPoints}
+                type="time"
+              />
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ marginEnd: 16, color: theme.colors.textLight }}>
+                {t('successfulPartials')}
+              </Text>
+              <TestLabel
+                interval={1}
+                defaultValue={`${stats.passed}`}
+                style={{ color: theme.colors.text, fontSize: 16 }}
+                selectedPoints={selectedPoints}
+                type="passed"
+              />
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ marginEnd: 16, color: theme.colors.accent }}>
+                {t('failedPartials')}
+              </Text>
+              <TestLabel
+                interval={1}
+                defaultValue={`${stats.failed}`}
+                style={{ color: theme.colors.text, fontSize: 16 }}
+                selectedPoints={selectedPoints}
+                type="failed"
+              />
+            </View>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginEnd: 16, color: theme.colors.textLight }}>
-              {t('successfulPartials')}
-            </Text>
-            <TestLabel
-              interval={1}
-              defaultValue={`${stats.passed}`}
-              style={{ color: theme.colors.text, fontSize: 16 }}
-              selectedPoints={selectedPoints}
-              type="passed"
-            />
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginEnd: 16, color: theme.colors.accent }}>{t('failedPartials')}</Text>
-            <TestLabel
-              interval={1}
-              defaultValue={`${stats.failed}`}
-              style={{ color: theme.colors.text, fontSize: 16 }}
-              selectedPoints={selectedPoints}
-              type="failed"
-            />
-          </View>
-        </View>
-      )}
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        {loadableData.state === 'loading' ? (
-          <ActivityIndicator
-            style={{
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-              margin: 'auto',
-              position: 'absolute',
+          <View
+            style={{ flex: 1, justifyContent: 'center' }}
+            onLayout={(event) => {
+              const { x, y, height, width } = event.nativeEvent.layout;
+              setGraphDimensions({ height, width });
             }}
-            size={60}
-            color="#119400"
-          />
-        ) : (
-          <TestStackedBarChart
-            key={orientation + element.value}
-            data={points}
-            width={width}
-            height={height / 2.5}
-            keys={keys}
-            colors={colors}
-            selectedPoints={selectedPoints}
-          />
-        )}
-      </View>
-      <View>{bottomContent}</View>
+          >
+            {graphDimensions && (
+              <>
+                <View height={graphDimensions.height / 1.5}>
+                  {loadableData.state === 'loading' ? (
+                    <ActivityIndicator
+                      style={{
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        margin: 'auto',
+                        position: 'absolute',
+                      }}
+                      size={60}
+                      color="#119400"
+                    />
+                  ) : (
+                    <TestStackedBarChart
+                      key={orientation + element.value}
+                      data={points}
+                      width={width}
+                      height={graphDimensions.height / 1.5}
+                      keys={keys}
+                      colors={colors}
+                      selectedPoints={selectedPoints}
+                    />
+                  )}
+                </View>
+                <View style={{}}>{bottomContent}</View>
+              </>
+            )}
+          </View>
+        </>
+      )}
     </View>
   );
 };
@@ -337,7 +354,7 @@ const PartialChart = ({ launcherIds, orientation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Chart
-        height={height}
+        height={height + 200}
         width={width}
         element={element}
         launcherIds={launcherIds}

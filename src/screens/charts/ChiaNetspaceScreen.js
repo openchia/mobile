@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native';
+import NetspaceChart from '../../charts/ChiaNetspaceChart';
 import PoolspaceChart from '../../charts/PoolspaceChart';
 import useOrientation from '../../hooks/useOrientation';
 
-const PoolSpaceScreen = ({ route, navigation }) => {
-  const { poolSpace } = route.params;
+const NetspaceScreen = ({ route, navigation }) => {
+  const { netspace } = route.params;
   const orientation = useOrientation();
 
   return (
@@ -13,9 +14,9 @@ const PoolSpaceScreen = ({ route, navigation }) => {
         flex: 1,
       }}
     >
-      <PoolspaceChart poolSpace={poolSpace} orientation={orientation} />
+      <NetspaceChart netspace={netspace} orientation={orientation} />
     </SafeAreaView>
   );
 };
 
-export default PoolSpaceScreen;
+export default NetspaceScreen;

@@ -42,6 +42,7 @@
     "react-native-camera": "^4.2.1",
     "react-native-device-info": "^8.4.8",
     "react-native-drop-shadow": "^0.0.4",
+    "react-native-fast-image": "^8.5.11",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-haptic-feedback": "^1.10.0",
     "react-native-localize": "^2.1.5",

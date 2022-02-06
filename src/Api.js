@@ -34,6 +34,16 @@ export const getPayoutAddress = async (launcherId) => {
     });
 };
 
+export const getNetspace = (days) => {
+  const url = `/xch/netspace/${days}`;
+  return spaceScanApi
+    .get(url)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.log('getAddressBalance axios Error', err);
+    });
+};
+
 export const getSpace = (days) =>
   fetch(`${REST_API}space?days=${days}`)
     .then((response) => {
@@ -349,10 +359,10 @@ export const updateFarmerName = (launcherID, token, name) =>
       }
       throw Error(response.statusText);
     })
-    .then((json) => json)
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((json) => json);
+// .catch((error) => {
+//   console.log(error);
+// });
 
 export const updateFarmerBlockNotification = (launcherID, token, enabled) =>
   fetch(`${REST_API}launcher/${launcherID}/`, {

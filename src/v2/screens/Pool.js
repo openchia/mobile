@@ -4,10 +4,11 @@ import React, { useLayoutEffect, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { Text, TextInput, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { farmerSearchBarPressedState, farmerSearchBarTextState } from '../../Atoms';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { farmerSearchBarPressedState, farmerSearchBarTextState, settingsState } from '../../Atoms';
 import CustomIconButton from '../../components/CustomIconButton';
 import CustomStatusBar from '../../components/CustomStatusBar';
+import FocusAwareStatusBar from '../../components/FocusAwareStatusBar';
 import OpenChiaTextIconRight from '../../images/OpenChiaTextIconRight';
 import BlocksFoundScreen from '../../screens/BlocksFoundScreen';
 import FarmersScreen from '../../screens/FarmersScreen';
@@ -124,6 +125,7 @@ const StatsToolbar = ({ showSearch }) => {
 const PoolScreen = ({ navigation, route }) => {
   const theme = useTheme();
   const [showSearch, setShowSearch] = useState(false);
+  const settings = useRecoilValue(settingsState);
 
   // useLayoutEffect(() => {
   //   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Stats';
@@ -133,7 +135,11 @@ const PoolScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* <View style={{ flex: 1, backgroundColor: theme.colors.primary }}></View> */}
-      <CustomStatusBar />
+      {/* <CustomStatusBar /> */}
+      <FocusAwareStatusBar
+        backgroundColor={theme.colors.statusBarColor}
+        barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
+      />
       <StatsToolbar showSearch={showSearch} />
       <Tab.Navigator
         screenOptions={{

@@ -48,6 +48,8 @@ import PoolScreen from './v2/screens/Pool';
 import GiveawaySceen from './screens/giveaway/GiveawayScreen';
 import FarmerScreen from './v2/screens/farmer/Farmer';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import NetspaceScreen from './screens/charts/ChiaNetspaceScreen';
+import LaunchOptionScreen from './v2/screens/LaunchScreenOption';
 // import { enableFreeze } from 'react-native-screens';
 
 // enableFreeze(true);
@@ -63,21 +65,23 @@ LogBox.ignoreLogs(['keyboardDidShow: ...']); // Ignore log notification by messa
 LogBox.ignoreLogs(['keyboardDidHide: ...']); // Ignore log notification by message
 LogBox.ignoreLogs(['cycle']);
 
-const Root = () => {
+const Root = ({ settings }) => {
   const theme = useTheme();
   return (
     <Tab.Navigator
+      initialRouteName={settings.intialRoute}
       screenOptions={{
         // safeAreaInsets: { top: 0 },
         headerShown: false,
         headerStyle: { backgroundColor: theme.colors.tabNavigatorBackground },
         tabBarButton: (props) => <TouchableOpacity {...props} />,
-        tabBarItemStyle: {
-          padding: 2,
-        },
-        tabBarIconStyle: {
-          marginBottom: -4,
-        },
+        tabBarShowLabel: false,
+        // tabBarItemStyle: {
+        //   padding: 2,
+        // },
+        // tabBarIconStyle: {
+        //   marginBottom: -4,
+        // },
         tabBarStyle: {
           height: 56,
           backgroundColor: theme.colors.tabNavigatorBackground,
@@ -91,13 +95,11 @@ const Root = () => {
       }}
     >
       <Tab.Screen
-        name="Pool"
+        name="Home"
         component={PoolScreen}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
-            // <OpenChiaIcon size={size} color={color} />
-            // <MaterialCommunityIcons name="pool" size={size} color={color} />
           ),
         }}
       />
@@ -128,37 +130,19 @@ const Root = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
-      name="Giveaway"
-      component={GiveawayScreen}
-      options={{
-        tabBarIcon: ({ color, size, focused }) => (
-          <Ionicons
-            name={focused ? 'gift' : 'gift-outline'}
-            size={size}/
-            color={color}
-          />
-        ),
-      }}
-    /> */}
       <Tab.Screen
         name="More"
         component={MoreScreen}
         options={{
-          headerShown: true,
+          headerShown: false,
 
           tabBarIcon: ({ color, size, focused }) => (
-            <MaterialIcons name="read-more" size={size} color={color} />
+            <Ionicons name="ellipsis-horizontal" size={size} color={color} />
           ),
         }}
       />
     </Tab.Navigator>
   );
-};
-
-const CustomStatusBar = ({ backgroundColor }) => {
-  const { top: safeAreaTop } = useSafeArea();
-  return <View style={{ height: safeAreaTop, width: '100%', backgroundColor }}></View>;
 };
 
 const BaseScreen = () => {
@@ -184,22 +168,14 @@ const BaseScreen = () => {
             <NavigationContainer theme={theme}>
               <BottomSheetModalProvider>
                 <StatusBar
-                  backgroundColor="transparent"
-                  // backgroundColor={theme.colors.statusBarColor}
-                  // backgroundColor="#rgba(255, 255, 255, 0.9)"
-                  // barStyle="light-content"
-                  translucent
-                  barStyle={
-                    // Platform.OS === 'ios'
-                    settings.isThemeDark ? 'light-content' : 'dark-content'
-                    // : 'light-content'
-                  }
+                  backgroundColor={theme.colors.statusBarColor}
+                  barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
                 />
                 {/* <CustomStatusBar backgroundColor={theme.colors.statusBarColor}></CustomStatusBar> */}
                 {/* <View style={{ height: 54, backgroundColor: 'red' }}></View> */}
                 <Stack.Navigator
                   screenOptions={{
-                    paddingTop: 24,
+                    // marginTop: 24,
                     // safeAreaInsets: { top: 0 },
                     // headerShown: true,
                     // headerStyle: { backgroundColor: theme.colors.primary },
@@ -216,6 +192,7 @@ const BaseScreen = () => {
                     {() => (
                       <Root
                         theme={theme}
+                        settings={settings}
                         // toggleTheme={toggleTheme}
                         // launcherIDs={launcherIDs}
                         // initialRoute={initialRoute}
@@ -272,6 +249,13 @@ const BaseScreen = () => {
                     })}
                   />
                   <Stack.Screen
+                    name="Netspace"
+                    component={NetspaceScreen}
+                    options={() => ({
+                      title: t('netspace'),
+                    })}
+                  />
+                  <Stack.Screen
                     name="Chia Price Chart"
                     component={ChiaPriceScreen}
                     options={() => ({
@@ -318,6 +302,13 @@ const BaseScreen = () => {
                     component={GiveawaySceen}
                     options={() => ({
                       title: t('giveaway'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="LaunchOptionScreen"
+                    component={LaunchOptionScreen}
+                    options={() => ({
+                      title: t('launchScreen'),
                     })}
                   />
                 </Stack.Navigator>

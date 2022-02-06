@@ -60,14 +60,7 @@ const localEffect =
 
 export const launcherIDsState = atom({
   key: 'atomFarms',
-  default: [
-    {
-      address: 'xch1p57gqnj65ugr0aeycukqgny8387vk97zvkl6r362gz7j78mlr68q5mrhgj',
-      launcherId: '706f8595e63017a3ed61810f543f9388e0d9be68d0040f073c9a85259d623ef6',
-      name: '🐟 Happy Fish 🐟',
-      token: 'd950d662579c124cc75cd6ba2e88ca04f397447e4722db0ffeeba16c7e248afc',
-    },
-  ],
+  default: [],
   // default: [],
   effects_UNSTABLE: [localEffect('farms')],
 });
@@ -99,7 +92,8 @@ export const settingsState = atom({
     poolspaceDefault: 4,
     partialDefault: 4,
     priceDefault: 3,
-    groupName: 'Group',
+    netspaceDefault: 3,
+    intialRoute: 'Home',
   },
   effects_UNSTABLE: [localEffect('settings')],
 });

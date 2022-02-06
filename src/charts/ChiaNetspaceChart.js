@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Dimensions, SafeAreaView, View } from 'react-native';
 import { ActivityIndicator, useTheme } from 'react-native-paper';
 import { selectorFamily, useRecoilState, useRecoilValueLoadable } from 'recoil';
-import { getSpace } from '../Api';
+import { getNetspace, getSpace } from '../Api';
 import { settingsState } from '../Atoms';
 import JellySelector from '../components/JellySelector';
 import {
@@ -22,27 +22,27 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 const ITEMS = [
   {
     label: '24h',
-    value: 1,
+    value: '24hr',
   },
-  {
-    label: '3d',
-    value: 3,
-  },
+  // {
+  //   label: '3d',
+  //   value: '3d',
+  // },
   {
     label: '7d',
-    value: 7,
+    value: '1w',
   },
   {
     label: '30d',
-    value: 30,
+    value: '1m',
   },
-  {
-    label: '90d',
-    value: 90,
-  },
+  // {
+  //   label: '90d',
+  //   value: 90,
+  // },
   {
     label: '1y',
-    value: 365,
+    value: '1y',
   },
 ];
 
@@ -52,15 +52,15 @@ export const formatY = (value) => {
   if (value === '') {
     return '';
   }
-  let bytes = Number(value);
-  const thresh = 1024;
-  if (bytes < thresh) return `${bytes} B`;
-  let u = -1;
-  do {
-    bytes /= thresh;
-    ++u;
-  } while (bytes >= thresh);
-  return `${bytes.toFixed(2)} ${units[u]}`;
+  const number = Number(value);
+  // const thresh = 1024;
+  // if (bytes < thresh) return `${bytes} B`;
+  // let u = -1;
+  // do {
+  //   bytes /= thresh;
+  //   ++u;
+  // } while (bytes >= thresh);
+  return `${number.toFixed(2)} EiB`;
 };
 
 const formatDatetime = (value) => {
@@ -114,16 +114,20 @@ const formatDatetime = (value) => {
 };
 
 const query = selectorFamily({
-  key: 'poolSpace',
+  key: 'netspace',
   get:
     (element) =>
     async ({ get }) => {
-      const response = await getSpace(element.value);
+      console.log(element.value);
+      const response = await getNetspace(element.value);
       if (response) {
-        const convertedData = response.map((item) => ({
-          x: getUnixTime(new Date(item.date)),
-          y: item.size,
-        }));
+        const convertedData = [];
+
+        response.netspace.forEach((item, index) => {
+          convertedData.push({ x: response.timestamp[index] / 1000, y: item });
+        });
+
+        console.log(convertedData);
 
         return monotoneCubicInterpolation({
           data: convertedData,
@@ -135,7 +139,7 @@ const query = selectorFamily({
     },
 });
 
-const Chart = ({ poolSpace, element, bottomContent, width, height }) => {
+const Chart = ({ netspace, element, bottomContent, width, height }) => {
   const loadableData = useRecoilValueLoadable(query(element));
   const [points, setPoints] = useState([]);
   const theme = useTheme();
@@ -198,12 +202,12 @@ const Chart = ({ poolSpace, element, bottomContent, width, height }) => {
         >
           <ChartXLabel
             format={formatDatetime}
-            defaultValue={t('poolSpace')}
+            defaultValue={t('netspace')}
             style={{ color: theme.colors.text, padding: 0, fontSize: 16 }}
           />
           <ChartYLabel
             format={formatY}
-            defaultValue={poolSpace}
+            defaultValue={netspace}
             style={{ color: theme.colors.text, padding: 0, fontSize: 24 }}
           />
         </View>
@@ -213,10 +217,10 @@ const Chart = ({ poolSpace, element, bottomContent, width, height }) => {
   );
 };
 
-const PoolspaceChart = ({ poolSpace }) => {
+const NetspaceChart = ({ netspace }) => {
   const [settings, setSettings] = useRecoilState(settingsState);
   const [element, setElement] = useState(
-    ITEMS[settings.poolspaceDefault ? settings.poolspaceDefault : 4]
+    ITEMS[settings.netspaceDefault ? settings.netspaceDefault : 2]
   );
   const { width, height } = Dimensions.get('window');
 
@@ -226,15 +230,15 @@ const PoolspaceChart = ({ poolSpace }) => {
         height={height}
         width={width}
         element={element}
-        poolSpace={poolSpace}
+        netspace={netspace}
         bottomContent={
           <JellySelector
             width={width}
-            defaultVal={settings.priceDefault}
+            defaultVal={settings.netspaceDefault}
             items={ITEMS}
             onPress={(item, index) => {
               setElement(item);
-              setSettings((prev) => ({ ...prev, priceDefault: index }));
+              setSettings((prev) => ({ ...prev, netspaceDefault: index }));
             }}
           />
         }
@@ -243,4 +247,4 @@ const PoolspaceChart = ({ poolSpace }) => {
   );
 };
 
-export default PoolspaceChart;
+export default NetspaceChart;
