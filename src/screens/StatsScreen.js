@@ -2,7 +2,7 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import DropShadow from 'react-native-drop-shadow';
+import { Shadow } from 'react-native-shadow-2';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -24,49 +24,44 @@ import { getCurrencyFromKey } from './CurrencySelectionScreen';
 const Item = ({ title, value, color, loadable, data, format, onPress, icon }) => {
   const theme = useTheme();
   return (
-    <DropShadow
-      style={{
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 0,
-        },
-        shadowOpacity: 0.05,
-        // shadowOpacity: 1,
-        shadowRadius: 3,
-        flex: 1,
-        marginVertical: 8,
-      }}
-    >
-      <PressableCard
-        style={{ borderRadius: 24, backgroundColor: theme.colors.onSurfaceLight }}
-        onPress={onPress}
+    <View style={{ flex: 1, margin: 8 }}>
+      <Shadow
+        distance={6}
+        startColor="rgba(0, 0, 0, 0.02)"
+        finalColor="rgba(0, 0, 0, 0.0)"
+        radius={24}
+        viewStyle={{ height: '100%', width: '100%' }}
       >
-        <View style={styles.item}>
-          <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
-          <Text
-            style={{
-              textAlign: 'center',
-              // marginTop: 10,
-              marginBottom: 10,
-              fontSize: 18,
-              fontWeight: 'bold',
-            }}
-          >
-            {!loadable ? format(data) : '...'}
-          </Text>
-          <View
-            style={{
-              position: 'absolute',
-              right: 12,
-              bottom: 12,
-            }}
-          >
-            {icon}
+        <PressableCard
+          style={{ borderRadius: 24, backgroundColor: theme.colors.onSurfaceLight }}
+          onPress={onPress}
+        >
+          <View style={styles.item}>
+            <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                // marginTop: 10,
+                marginBottom: 10,
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}
+            >
+              {!loadable ? format(data) : '...'}
+            </Text>
+            <View
+              style={{
+                position: 'absolute',
+                right: 12,
+                bottom: 12,
+              }}
+            >
+              {icon}
+            </View>
           </View>
-        </View>
-      </PressableCard>
-    </DropShadow>
+        </PressableCard>
+      </Shadow>
+    </View>
   );
 };
 const useRefreshStats = () => {
@@ -187,7 +182,6 @@ const StatsScreen = ({ navigation }) => {
             }
             title={t('chiaPrice')}
           />
-          <View style={{ width: 16 }} />
           <Item
             onPress={() => {
               navigation.navigate({
@@ -215,7 +209,6 @@ const StatsScreen = ({ navigation }) => {
             color={theme.colors.indigo}
             title={t('etw').toUpperCase()}
           />
-          <View style={{ width: 16 }} />
           <Item
             onPress={() => {
               // navigation.navigate('Root', { screen: 'Blocks Found', intial: false });
@@ -254,7 +247,6 @@ const StatsScreen = ({ navigation }) => {
             title={t('farmers')}
             icon={<Ionicons name="people-outline" size={16} color={theme.colors.textGrey} />}
           />
-          <View style={{ width: 16 }} />
           <Item
             onPress={() => {
               navigation.navigate({
@@ -284,7 +276,6 @@ const StatsScreen = ({ navigation }) => {
             color={theme.colors.purple}
             title={t('currentEffort')}
           />
-          <View style={{ width: 16 }} />
           <Item
             loadable={loading}
             data={data}
@@ -302,7 +293,6 @@ const StatsScreen = ({ navigation }) => {
             color="#4DB33E"
             title={t('sinceLastWin')}
           />
-          <View style={{ width: 16 }} />
           <Item
             onPress={() => {
               // navigation.navigate('Root', { screen: 'Payouts', intial: false });
@@ -335,7 +325,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flex: 1,
-    marginHorizontal: 16,
+    marginHorizontal: 6,
   },
   item: {
     height: '100%',

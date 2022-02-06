@@ -118,7 +118,6 @@ const query = selectorFamily({
   get:
     (element) =>
     async ({ get }) => {
-      console.log(element.value);
       const response = await getNetspace(element.value);
       if (response) {
         const convertedData = [];
@@ -126,8 +125,6 @@ const query = selectorFamily({
         response.netspace.forEach((item, index) => {
           convertedData.push({ x: response.timestamp[index] / 1000, y: item });
         });
-
-        console.log(convertedData);
 
         return monotoneCubicInterpolation({
           data: convertedData,

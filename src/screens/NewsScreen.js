@@ -10,8 +10,8 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import DropShadow from 'react-native-drop-shadow';
 import FastImage from 'react-native-fast-image';
+import { Shadow } from 'react-native-shadow-2';
 // import { FlatList } from 'react-native-gesture-handler';
 import { Button, Text, useTheme } from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
@@ -42,73 +42,68 @@ const query = selectorFamily({
 });
 
 const Item = ({ item, width, onPress, tagsStyles, theme }) => (
-  <DropShadow
-    style={{
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 0,
-      },
-      shadowOpacity: 0.05,
-      // shadowOpacity: 1,
-      shadowRadius: 3,
-      flex: 1,
-      marginVertical: 8,
-      marginHorizontal: 16,
-    }}
-  >
-    <PressableCard
-      onPress={onPress}
-      style={{ borderRadius: 24, backgroundColor: theme.colors.onSurfaceLight }}
+  <View style={{ alignSelf: 'stretch', marginVertical: 10, marginHorizontal: 16 }}>
+    <Shadow
+      distance={2}
+      startColor="rgba(0, 0, 0, 0.02)"
+      // finalColor="rgba(0, 0, 0, 0.01)"
+      // containerViewStyle={{ marginVertical: 16 }}
+      radius={16}
+      viewStyle={{ alignSelf: 'stretch' }}
     >
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          paddingBottom: 12,
-          // paddingTop: 12,
-          // paddingStart: 12,
-          // paddingEnd: 12,
-        }}
+      <PressableCard
+        onPress={onPress}
+        style={{ borderRadius: 24, backgroundColor: theme.colors.onSurfaceLight }}
       >
-        <FastImage
-          style={{ width: '100%', height: 200 }}
-          source={{
-            uri: item.jetpack_featured_media_url,
-            headers: { Authorization: 'someAuthToken' },
-            priority: FastImage.priority.normal,
-          }}
-          resizeMode={FastImage.resizeMode.stretch}
-        />
         <View
           style={{
             display: 'flex',
             flexDirection: 'column',
-            flex: 1,
-            paddingTop: 12,
-            paddingStart: 12,
-            paddingEnd: 12,
+            paddingBottom: 12,
+            // paddingTop: 12,
+            // paddingStart: 12,
+            // paddingEnd: 12,
           }}
         >
-          <RenderHtml
-            tagsStyles={tagsStyles}
-            contentWidth={width}
-            // customHTMLElementModels={customHTMLElementModels}
-            source={{ html: `<h2><strong>${item.title.rendered}</strong></h2>` }}
+          <FastImage
+            style={{ width: '100%', height: 200 }}
+            source={{
+              uri: item.jetpack_featured_media_url,
+              headers: { Authorization: 'someAuthToken' },
+              priority: FastImage.priority.normal,
+            }}
+            resizeMode={FastImage.resizeMode.stretch}
           />
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              paddingTop: 12,
+              paddingStart: 12,
+              paddingEnd: 12,
+            }}
+          >
             <RenderHtml
-              enableCSSInlineProcessing
               tagsStyles={tagsStyles}
               contentWidth={width}
-              source={{ html: item.excerpt.rendered }}
+              // customHTMLElementModels={customHTMLElementModels}
+              source={{ html: `<h2><strong>${item.title.rendered}</strong></h2>` }}
             />
+            <View style={{ flex: 1 }}>
+              <RenderHtml
+                enableCSSInlineProcessing
+                tagsStyles={tagsStyles}
+                contentWidth={width}
+                source={{ html: item.excerpt.rendered }}
+              />
+            </View>
+            <Text style={styles.date}>{format(new Date(item.modified), 'PP')}</Text>
           </View>
-          <Text style={styles.date}>{format(new Date(item.modified), 'PP')}</Text>
         </View>
-      </View>
-    </PressableCard>
-  </DropShadow>
+      </PressableCard>
+    </Shadow>
+  </View>
 );
 const NewsScreen = ({ navigation }) => {
   const { width } = useWindowDimensions();

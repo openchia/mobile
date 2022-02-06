@@ -1,22 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Linking, SafeAreaView, useWindowDimensions, View } from 'react-native';
-import DropShadow from 'react-native-drop-shadow';
-import messaging from '@react-native-firebase/messaging';
-import { RadioButton, Switch, Text, useTheme } from 'react-native-paper';
+import { SafeAreaView, useWindowDimensions, View } from 'react-native';
+import { RadioButton, Text, useTheme } from 'react-native-paper';
+import { Shadow } from 'react-native-shadow-2';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currencyState, settingsState } from '../../Atoms';
-import CustomIconButton from '../../components/CustomIconButton';
-import FocusAwareStatusBar from '../../components/FocusAwareStatusBar';
 import PressableCard from '../../components/PressableCard';
-import DiscordIcon from '../../images/DiscordIcon';
-import OpenChiaTextIconRight from '../../images/OpenChiaTextIconRight';
-import CustomCard from './../../components/CustomCard';
-import { getCurrencyFromKey, getCurrencyTitle } from '../../screens/CurrencySelectionScreen';
-import { LANGUAGES } from '../../screens/LanguageSelectorScreen';
-import { ScrollView } from 'react-native-gesture-handler';
+import CustomCard from '../../components/CustomCard';
 
 const Item = ({ item, color, t, onPress, theme }) => (
   <PressableCard
@@ -55,119 +47,116 @@ const LaunchOptionScreen = ({ navigation }) => {
         backgroundColor: theme.colors.background,
       }}
     >
-      <DropShadow
-        style={{
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 0,
-          },
-          shadowOpacity: 0.06,
-          shadowRadius: 10,
-          marginVertical: 24,
-          marginHorizontal: 16,
-        }}
-      >
-        <CustomCard style={{ borderRadius: 16, backgroundColor: theme.colors.onSurfaceLight }}>
-          <PressableCard
-            style={{
-              paddingTop: 16,
-              paddingBottom: 16,
-              borderTopLeftRadius: 16,
-              borderTopRightRadius: 16,
-              backgroundColor: theme.colors.onSurfaceLight,
-            }}
-            onPress={() => {
-              setSettings((prev) => ({ ...prev, intialRoute: 'Home' }));
-            }}
-          >
-            <View
+      <View style={{ padding: 16, marginTop: 16 }}>
+        <Shadow
+          distance={2}
+          startColor="rgba(0, 0, 0, 0.02)"
+          // finalColor="rgba(0, 0, 0, 0.01)"
+          // containerViewStyle={{ marginVertical: 16 }}
+          radius={16}
+          viewStyle={{ alignSelf: 'stretch' }}
+        >
+          <CustomCard style={{ borderRadius: 16, backgroundColor: theme.colors.background }}>
+            <PressableCard
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
+                paddingTop: 10,
+                paddingBottom: 10,
+                borderTopLeftRadius: 16,
+                borderTopRightRadius: 16,
+                backgroundColor: theme.colors.onSurfaceLight,
+                marginBottom: 1,
+              }}
+              onPress={() => {
+                setSettings((prev) => ({ ...prev, intialRoute: 'Home' }));
               }}
             >
-              <Ionicons
-                style={{ paddingLeft: 16 }}
-                name="home"
-                size={24}
-                color={theme.colors.textGrey}
-              />
-              <Text style={{ paddingLeft: 16, flex: 1 }}>{t('home')}</Text>
-              <View style={{ paddingRight: 16 }}>
-                <RadioButton
-                  style={{ paddingRight: 16 }}
-                  value="Home"
-                  status={settings.intialRoute === 'Home' ? 'checked' : 'unchecked'}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <Ionicons
+                  style={{ paddingLeft: 16 }}
+                  name="home"
+                  size={24}
+                  color={theme.colors.textGrey}
                 />
+                <Text style={{ paddingLeft: 16, flex: 1 }}>{t('home')}</Text>
+                <View style={{ paddingRight: 16 }}>
+                  <RadioButton
+                    style={{ paddingRight: 16 }}
+                    value="Home"
+                    status={settings.intialRoute === 'Home' ? 'checked' : 'unchecked'}
+                  />
+                </View>
               </View>
-            </View>
-          </PressableCard>
-          <View style={{ height: 0.8, backgroundColor: theme.colors.background }} />
-          <PressableCard
-            style={{
-              paddingTop: 16,
-              paddingBottom: 16,
-              backgroundColor: theme.colors.onSurfaceLight,
-            }}
-            onPress={() => setSettings((prev) => ({ ...prev, intialRoute: 'Dashboard' }))}
-          >
-            <View
+            </PressableCard>
+            <PressableCard
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
+                paddingTop: 10,
+                paddingBottom: 10,
+                backgroundColor: theme.colors.onSurfaceLight,
+                marginBottom: 1,
               }}
+              onPress={() => setSettings((prev) => ({ ...prev, intialRoute: 'Dashboard' }))}
             >
-              <MaterialCommunityIcons
-                style={{ paddingLeft: 16 }}
-                name="view-dashboard"
-                size={24}
-                color={theme.colors.textGrey}
-              />
-              <Text style={{ paddingLeft: 16, flex: 1 }}>{t('dashboard')}</Text>
-              <View style={{ paddingRight: 16 }}>
-                <RadioButton
-                  style={{ paddingRight: 16 }}
-                  value="Dashboard"
-                  status={settings.intialRoute === 'Dashboard' ? 'checked' : 'unchecked'}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <MaterialCommunityIcons
+                  style={{ paddingLeft: 16 }}
+                  name="view-dashboard"
+                  size={24}
+                  color={theme.colors.textGrey}
                 />
+                <Text style={{ paddingLeft: 16, flex: 1 }}>{t('dashboard')}</Text>
+                <View style={{ paddingRight: 16 }}>
+                  <RadioButton
+                    style={{ paddingRight: 16 }}
+                    value="Dashboard"
+                    status={settings.intialRoute === 'Dashboard' ? 'checked' : 'unchecked'}
+                  />
+                </View>
               </View>
-            </View>
-          </PressableCard>
-          <View style={{ height: 0.8, backgroundColor: theme.colors.background }} />
-          <PressableCard
-            style={{
-              paddingTop: 16,
-              paddingBottom: 16,
-              borderBottomLeftRadius: 16,
-              borderBottomRightRadius: 16,
-              backgroundColor: theme.colors.onSurfaceLight,
-            }}
-            onPress={() => setSettings((prev) => ({ ...prev, intialRoute: 'News' }))}
-          >
-            <View
+            </PressableCard>
+            <PressableCard
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
+                paddingTop: 10,
+                paddingBottom: 10,
+                borderBottomLeftRadius: 16,
+                borderBottomRightRadius: 16,
+                backgroundColor: theme.colors.onSurfaceLight,
               }}
+              onPress={() => setSettings((prev) => ({ ...prev, intialRoute: 'News' }))}
             >
-              <Ionicons
-                style={{ paddingLeft: 16 }}
-                name="ios-newspaper"
-                size={24}
-                color={theme.colors.textGrey}
-              />
-              <Text style={{ paddingLeft: 16, flex: 1 }}>{t('news')}</Text>
-              <View style={{ paddingRight: 16 }}>
-                <RadioButton
-                  value="News"
-                  status={settings.intialRoute === 'News' ? 'checked' : 'unchecked'}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <Ionicons
+                  style={{ paddingLeft: 16 }}
+                  name="ios-newspaper"
+                  size={24}
+                  color={theme.colors.textGrey}
                 />
+                <Text style={{ paddingLeft: 16, flex: 1 }}>{t('news')}</Text>
+                <View style={{ paddingRight: 16 }}>
+                  <RadioButton
+                    value="News"
+                    status={settings.intialRoute === 'News' ? 'checked' : 'unchecked'}
+                  />
+                </View>
               </View>
-            </View>
-          </PressableCard>
-        </CustomCard>
-      </DropShadow>
+            </PressableCard>
+          </CustomCard>
+        </Shadow>
+      </View>
     </SafeAreaView>
   );
 };

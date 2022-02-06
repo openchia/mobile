@@ -125,8 +125,6 @@ const query = selectorFamily({
           y: item.size,
         }));
 
-        console.log(convertedData);
-
         return monotoneCubicInterpolation({
           data: convertedData,
           includeExtremes: true,

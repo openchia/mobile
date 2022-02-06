@@ -1,10 +1,11 @@
 /* eslint-disable no-nested-ternary */
+import messaging from '@react-native-firebase/messaging';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Linking, SafeAreaView, useWindowDimensions, View } from 'react-native';
-import DropShadow from 'react-native-drop-shadow';
-import messaging from '@react-native-firebase/messaging';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Switch, Text, useTheme } from 'react-native-paper';
+import { Shadow } from 'react-native-shadow-2';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -14,10 +15,7 @@ import FocusAwareStatusBar from '../../components/FocusAwareStatusBar';
 import PressableCard from '../../components/PressableCard';
 import DiscordIcon from '../../images/DiscordIcon';
 import OpenChiaTextIconRight from '../../images/OpenChiaTextIconRight';
-import CustomCard from './../../components/CustomCard';
-import { getCurrencyFromKey, getCurrencyTitle } from '../../screens/CurrencySelectionScreen';
 import { LANGUAGES } from '../../screens/LanguageSelectorScreen';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const Item = ({ item, color, t, onPress, theme }) => (
   <PressableCard
@@ -119,298 +117,282 @@ const MoreScreen = ({ navigation }) => {
           color={theme.colors.primary}
         />
       </View>
-      {/* <ScrollView style={{ flexGrow: 1 }}> */}
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          paddingBottom: 36,
-        }}
-      >
-        <DropShadow
+      <ScrollView style={{ flexGrow: 1 }}>
+        <View
           style={{
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 0,
-            },
-            shadowOpacity: 0.06,
-            shadowRadius: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            paddingBottom: 36,
           }}
         >
-          <CustomIconButton
-            icon={<Ionicons name="logo-github" size={24} color={theme.colors.text} />}
-            onPress={() => {
-              Linking.canOpenURL('https://github.com/openchia').then((supported) => {
-                if (supported) {
-                  Linking.openURL('https://github.com/openchia');
+          <View style={{ marginEnd: 16 }}>
+            <Shadow distance={2} startColor="rgba(0, 0, 0, 0.02)" radius={24}>
+              <CustomIconButton
+                icon={<Ionicons name="logo-github" size={24} color={theme.colors.text} />}
+                onPress={() => {
+                  Linking.canOpenURL('https://github.com/openchia').then((supported) => {
+                    if (supported) {
+                      Linking.openURL('https://github.com/openchia');
+                    }
+                  });
+                }}
+                style={{ backgroundColor: theme.colors.onSurfaceLight, margin: 0, padding: 0 }}
+                title="Info"
+                color="#fff"
+              />
+            </Shadow>
+          </View>
+          <View style={{ marginEnd: 16 }}>
+            <Shadow distance={2} startColor="rgba(0, 0, 0, 0.02)" radius={24}>
+              <CustomIconButton
+                icon={<DiscordIcon style={{ height: 24, width: 24 }} color={theme.colors.text} />}
+                onPress={() => {
+                  Linking.canOpenURL('https://discord.com/invite/2URS9H7RZn').then((supported) => {
+                    if (supported) {
+                      Linking.openURL('https://discord.com/invite/2URS9H7RZn');
+                    }
+                  });
+                }}
+                style={{ backgroundColor: theme.colors.onSurfaceLight, margin: 0, padding: 0 }}
+                title="Info"
+                color="#fff"
+              />
+            </Shadow>
+          </View>
+          <View style={{ marginEnd: 16 }}>
+            <Shadow distance={2} startColor="rgba(0, 0, 0, 0.02)" radius={24}>
+              <CustomIconButton
+                icon={
+                  <Ionicons
+                    name="md-logo-twitter"
+                    size={24}
+                    color={theme.colors.text}
+                    style={{ margin: 0, padding: 0 }}
+                  />
                 }
-              });
-            }}
-            style={{ backgroundColor: theme.colors.onSurfaceLight }}
-            title="Info"
-            color="#fff"
-          />
-        </DropShadow>
-        <DropShadow
-          style={{
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 0,
-            },
-            shadowOpacity: 0.06,
-            shadowRadius: 10,
-          }}
-        >
-          <CustomIconButton
-            icon={<DiscordIcon style={{ height: 24, width: 24 }} color={theme.colors.text} />}
-            onPress={() => {
-              Linking.canOpenURL('https://discord.com/invite/2URS9H7RZn').then((supported) => {
-                if (supported) {
-                  Linking.openURL('https://discord.com/invite/2URS9H7RZn');
-                }
-              });
-            }}
-            style={{ backgroundColor: theme.colors.onSurfaceLight, marginLeft: 12 }}
-            title="Info"
-            color="#fff"
-          />
-        </DropShadow>
-        <DropShadow
-          style={{
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 0,
-            },
-            shadowOpacity: 0.06,
-            shadowRadius: 10,
-          }}
-        >
-          <CustomIconButton
-            icon={<Ionicons name="md-logo-twitter" size={24} color={theme.colors.text} />}
-            onPress={() => {
-              Linking.canOpenURL('https://twitter.com/openchia').then((supported) => {
-                if (supported) {
-                  Linking.openURL('https://twitter.com/openchia');
-                }
-              });
-            }}
-            style={{ backgroundColor: theme.colors.onSurfaceLight, marginLeft: 12 }}
-            title="Info"
-            color="#fff"
-          />
-        </DropShadow>
-        <DropShadow
-          style={{
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 0,
-            },
-            shadowOpacity: 0.06,
-            shadowRadius: 10,
-          }}
-        >
-          <CustomIconButton
-            icon={<Ionicons name="ios-logo-youtube" size={24} color={theme.colors.text} />}
-            onPress={() => {
-              Linking.canOpenURL('https://www.youtube.com/channel/UCL70j_KiPd49rfp_UEqxiyQ').then(
-                (supported) => {
-                  if (supported) {
-                    Linking.openURL('https://www.youtube.com/channel/UCL70j_KiPd49rfp_UEqxiyQ');
+                onPress={() => {
+                  Linking.canOpenURL('https://twitter.com/openchia').then((supported) => {
+                    if (supported) {
+                      Linking.openURL('https://twitter.com/openchia');
+                    }
+                  });
+                }}
+                style={{ backgroundColor: theme.colors.onSurfaceLight, margin: 0, padding: 0 }}
+                title="Info"
+                color="#fff"
+              />
+            </Shadow>
+          </View>
+          <Shadow distance={2} startColor="rgba(0, 0, 0, 0.02)" radius={24}>
+            <CustomIconButton
+              icon={<Ionicons name="ios-logo-youtube" size={24} color={theme.colors.text} />}
+              onPress={() => {
+                Linking.canOpenURL('https://www.youtube.com/channel/UCL70j_KiPd49rfp_UEqxiyQ').then(
+                  (supported) => {
+                    if (supported) {
+                      Linking.openURL('https://www.youtube.com/channel/UCL70j_KiPd49rfp_UEqxiyQ');
+                    }
                   }
-                }
-              );
-            }}
-            style={{ backgroundColor: theme.colors.onSurfaceLight, marginLeft: 12 }}
-            title="Info"
-            color="#fff"
-          />
-        </DropShadow>
-      </View>
-      <DropShadow
-        style={{
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 0,
-          },
-          shadowOpacity: 0.06,
-          shadowRadius: 10,
-          marginVertical: 8,
-          marginHorizontal: 16,
-        }}
-      >
-        <CustomCard style={{ borderRadius: 16, backgroundColor: theme.colors.onSurfaceLight }}>
-          <PressableCard
-            style={{
-              paddingTop: 16,
-              paddingBottom: 16,
-              borderTopLeftRadius: 16,
-              borderTopRightRadius: 16,
-              backgroundColor: theme.colors.onSurfaceLight,
-            }}
-            onPress={() => {
-              navigation.navigate('Currency');
-            }}
+                );
+              }}
+              style={{ backgroundColor: theme.colors.onSurfaceLight, margin: 0, padding: 0 }}
+              title="Info"
+              color="#fff"
+            />
+          </Shadow>
+        </View>
+        <View style={{ alignSelf: 'stretch', margin: 16 }}>
+          <Shadow
+            distance={2}
+            startColor="rgba(0, 0, 0, 0.02)"
+            // finalColor="rgba(0, 0, 0, 0.01)"
+            // containerViewStyle={{ marginVertical: 16 }}
+            radius={16}
+            viewStyle={{ alignSelf: 'stretch' }}
           >
             <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
+              style={[
+                {
+                  marginVertical: 0,
+                  // padding: 16,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: 16,
+                },
+              ]}
             >
-              <Text style={{ paddingLeft: 16, flex: 1 }}>{t('currency')}</Text>
-              <Text
+              <PressableCard
                 style={{
-                  paddingLeft: 16,
-                  paddingRight: 16,
-                  color: theme.colors.textGrey,
-                  fontFamily: theme.fonts.medium.fontFamily,
+                  paddingTop: 16,
+                  paddingBottom: 16,
+                  borderTopLeftRadius: 16,
+                  borderTopRightRadius: 16,
+                  backgroundColor: theme.colors.onSurfaceLight,
+                  marginBottom: 1,
+                }}
+                onPress={() => {
+                  navigation.navigate('Currency');
                 }}
               >
-                {currency.toUpperCase()}
-              </Text>
-              <Ionicons
-                style={{ paddingRight: 16 }}
-                name="chevron-forward-outline"
-                size={24}
-                color={theme.colors.text}
-              />
-            </View>
-            {/* </View> */}
-          </PressableCard>
-          {/* <View style={{ height: 0.8, backgroundColor: theme.colors.background }} /> */}
-          <PressableCard
-            style={{
-              paddingTop: 16,
-              paddingBottom: 16,
-              backgroundColor: theme.colors.onSurfaceLight,
-            }}
-            onPress={() => navigation.navigate('Language')}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <Text style={{ paddingLeft: 16, flex: 1 }}>{t('language')}</Text>
-              <Text
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ paddingLeft: 16, flex: 1 }}>{t('currency')}</Text>
+                  <Text
+                    style={{
+                      paddingLeft: 16,
+                      paddingRight: 16,
+                      color: theme.colors.textGrey,
+                      fontFamily: theme.fonts.medium.fontFamily,
+                    }}
+                  >
+                    {currency.toUpperCase()}
+                  </Text>
+                  <Ionicons
+                    style={{ paddingRight: 16 }}
+                    name="chevron-forward-outline"
+                    size={24}
+                    color={theme.colors.text}
+                  />
+                </View>
+              </PressableCard>
+              <PressableCard
                 style={{
-                  paddingLeft: 16,
-                  paddingRight: 16,
-                  color: theme.colors.textGrey,
-                  fontFamily: theme.fonts.medium.fontFamily,
+                  paddingTop: 16,
+                  paddingBottom: 16,
+                  backgroundColor: theme.colors.onSurfaceLight,
+                  marginBottom: 1,
+                }}
+                onPress={() => navigation.navigate('Language')}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ paddingLeft: 16, flex: 1 }}>{t('language')}</Text>
+                  <Text
+                    style={{
+                      paddingLeft: 16,
+                      paddingRight: 16,
+                      color: theme.colors.textGrey,
+                      fontFamily: theme.fonts.medium.fontFamily,
+                    }}
+                  >
+                    {LANGUAGES.filter((item) => item.code === selectedLanguageCode)[0].label}
+                  </Text>
+                  <Ionicons
+                    style={{ paddingRight: 16 }}
+                    name="chevron-forward-outline"
+                    size={24}
+                    color={theme.colors.text}
+                  />
+                </View>
+              </PressableCard>
+              <PressableCard
+                style={{
+                  paddingTop: 16,
+                  paddingBottom: 16,
+                  backgroundColor: theme.colors.onSurfaceLight,
+                  marginBottom: 1,
+                }}
+                onPress={() => navigation.navigate('LaunchOptionScreen')}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ paddingLeft: 16, flex: 1 }}>{t('launchScreen')}</Text>
+                  <Text
+                    style={{
+                      paddingLeft: 16,
+                      paddingRight: 16,
+                      color: theme.colors.textGrey,
+                      fontFamily: theme.fonts.medium.fontFamily,
+                    }}
+                  >
+                    {settings.intialRoute === 'Home'
+                      ? t('home')
+                      : settings.intialRoute === 'Dashboard'
+                      ? t('dashboard')
+                      : t('news')}
+                  </Text>
+                  <Ionicons
+                    style={{ paddingRight: 16 }}
+                    name="chevron-forward-outline"
+                    size={24}
+                    color={theme.colors.text}
+                  />
+                </View>
+              </PressableCard>
+              <PressableCard
+                style={{
+                  paddingTop: 16,
+                  paddingBottom: 16,
+                  backgroundColor: theme.colors.onSurfaceLight,
+                  marginBottom: 1,
+                }}
+                onPress={toggleNotifications}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ paddingLeft: 16, flex: 1 }}>
+                    {settings.blockNotifications
+                      ? t('blockOffNotification')
+                      : t('blockOnNotification')}
+                  </Text>
+                  <View pointerEvents="none" style={{ paddingRight: 16 }}>
+                    <Switch value={settings.blockNotifications} />
+                  </View>
+                </View>
+              </PressableCard>
+              <PressableCard
+                style={{
+                  paddingTop: 16,
+                  paddingBottom: 16,
+                  borderBottomLeftRadius: 16,
+                  borderBottomRightRadius: 16,
+                  backgroundColor: theme.colors.onSurfaceLight,
+                }}
+                onPress={() => {
+                  setSettings((prev) => ({ ...prev, isThemeDark: !prev.isThemeDark }));
                 }}
               >
-                {LANGUAGES.filter((item) => item.code === selectedLanguageCode)[0].label}
-              </Text>
-              <Ionicons
-                style={{ paddingRight: 16 }}
-                name="chevron-forward-outline"
-                size={24}
-                color={theme.colors.text}
-              />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ paddingLeft: 16, flex: 1 }}>
+                    {settings.isThemeDark ? t('lightMode') : t('darkMode')}
+                  </Text>
+                  <Ionicons
+                    style={{ paddingRight: 20 }}
+                    name={settings.isThemeDark ? 'ios-moon' : 'ios-sunny'}
+                    size={24}
+                    color={theme.colors.textGrey}
+                  />
+                </View>
+              </PressableCard>
+              {/* <View>
+              <Text>React Native cross-platform box shadow</Text>
             </View>
-          </PressableCard>
-          {/* <View style={{ height: 0.8, backgroundColor: theme.colors.background }} /> */}
-          <PressableCard
-            style={{
-              paddingTop: 16,
-              paddingBottom: 16,
-              backgroundColor: theme.colors.onSurfaceLight,
-            }}
-            onPress={() => navigation.navigate('LaunchOptionScreen')}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <Text style={{ paddingLeft: 16, flex: 1 }}>{t('launchScreen')}</Text>
-              <Text
-                style={{
-                  paddingLeft: 16,
-                  paddingRight: 16,
-                  color: theme.colors.textGrey,
-                  fontFamily: theme.fonts.medium.fontFamily,
-                }}
-              >
-                {settings.intialRoute === 'Home'
-                  ? t('home')
-                  : settings.intialRoute === 'Dashboard'
-                  ? t('dashboard')
-                  : t('news')}
-              </Text>
-              <Ionicons
-                style={{ paddingRight: 16 }}
-                name="chevron-forward-outline"
-                size={24}
-                color={theme.colors.text}
-              />
+            <Text>Using the Platform API to conditionally render box shadow</Text> */}
             </View>
-          </PressableCard>
-          {/* <View style={{ height: 0.8, backgroundColor: theme.colors.background }} /> */}
-          <PressableCard
-            style={{
-              paddingTop: 16,
-              paddingBottom: 16,
-              backgroundColor: theme.colors.onSurfaceLight,
-            }}
-            onPress={toggleNotifications}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <Text style={{ paddingLeft: 16, flex: 1 }}>
-                {settings.blockNotifications ? t('blockOffNotification') : t('blockOnNotification')}
-              </Text>
-              <View pointerEvents="none" style={{ paddingRight: 16 }}>
-                <Switch value={settings.blockNotifications} />
-              </View>
-            </View>
-          </PressableCard>
-          {/* <View style={{ height: 0.8, backgroundColor: theme.colors.background }} /> */}
-          <PressableCard
-            style={{
-              paddingTop: 16,
-              paddingBottom: 16,
-              borderBottomLeftRadius: 16,
-              borderBottomRightRadius: 16,
-              backgroundColor: theme.colors.onSurfaceLight,
-            }}
-            onPress={() => {
-              setSettings((prev) => ({ ...prev, isThemeDark: !prev.isThemeDark }));
-            }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <Text style={{ paddingLeft: 16, flex: 1 }}>
-                {settings.isThemeDark ? t('lightMode') : t('darkMode')}
-              </Text>
-              <Ionicons
-                style={{ paddingRight: 20 }}
-                name={settings.isThemeDark ? 'ios-moon' : 'ios-sunny'}
-                size={24}
-                color={theme.colors.textGrey}
-              />
-            </View>
-          </PressableCard>
-        </CustomCard>
-      </DropShadow>
-      {/* </ScrollView> */}
+          </Shadow>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
