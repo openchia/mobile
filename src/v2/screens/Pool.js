@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState, useEffect } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { Text, TextInput, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -17,13 +17,21 @@ import StatsScreen from '../../screens/StatsScreen';
 
 const Tab = createMaterialTopTabNavigator();
 
-const StatsToolbar = ({ showSearch }) => {
+const StatsToolbar = ({ route, showSearch }) => {
   const [searching, setSearching] = useState(false);
   const [text, setText] = useRecoilState(farmerSearchBarTextState);
   const setPressedSearch = useSetRecoilState(farmerSearchBarPressedState);
-  // const routeName = getFocusedRouteNameFromRoute(route) ?? 'Stats';
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Stats';
 
-  // console.log(routeName);
+  useEffect(() => {
+    if (routeName !== 'Farmers') {
+      if (searching) {
+        setSearching(false);
+        setText('');
+      }
+    }
+  }, [routeName]);
+
   const theme = useTheme();
   return (
     <View
@@ -57,7 +65,7 @@ const StatsToolbar = ({ showSearch }) => {
           <TextInput
             style={{
               // width: '100%',
-              backgroundColor: theme.colors.onSurface,
+              backgroundColor: theme.colors.tabNavigatorBackground,
               flex: 1,
               color: '#ffffff',
             }}
@@ -102,7 +110,7 @@ const StatsToolbar = ({ showSearch }) => {
             color={theme.colors.primary}
           />
           <View style={{ flex: 1 }} />
-          {showSearch && (
+          {routeName === 'Farmers' && (
             <CustomIconButton
               icon={
                 <Ionicons
@@ -140,7 +148,7 @@ const PoolScreen = ({ navigation, route }) => {
         backgroundColor={theme.colors.statusBarColor}
         barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
       />
-      <StatsToolbar showSearch={showSearch} />
+      <StatsToolbar route={route} showSearch={showSearch} />
       <Tab.Navigator
         screenOptions={{
           lazy: true,
