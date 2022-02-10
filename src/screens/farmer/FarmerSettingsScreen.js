@@ -147,18 +147,6 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
                 setLauncherIDs((prev) => {
                   const newState = new Map(prev);
                   const launcherData = prev.get(launcherId);
-                  // if (launcherData.farmOfflineNotification === 1) {
-                  //   updateFarmerMissingPartialsNotification(launcherId, token, null).then(
-                  //     (response) => {
-                  //       console.log('Successfully removed device from notifications: ', response);
-                  //     }
-                  //   );
-                  // }
-                  // if (launcherData.farmBlockNotifications) {
-                  //   updateFarmerBlockNotification(launcherId, token, false).then((response) => {
-                  //     console.log(response);
-                  //   });
-                  // }
                   if (launcherData.token) {
                     updateFCMToken(launcherId, launcherData.token, null).then((response) => {
                       console.log(
@@ -173,12 +161,6 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
                 hideDialog();
                 setIntialRoute({ name: 'Home' });
                 navigation.goBack();
-                // navigation.pop();
-                // navigation.pop();
-                // navigation.reset({
-                //   index: 0,
-                //   routes: [{ name: t('navigate:farmers') }],
-                // });
               }}
             >
               Remove

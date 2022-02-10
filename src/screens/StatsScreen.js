@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { selectorFamily, useRecoilValueLoadable, useSetRecoilState, useRecoilState } from 'recoil';
+import { selectorFamily, useRecoilState, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { getStats } from '../Api';
-import { currencyState, statsRequestIDState, initialRouteState } from '../Atoms';
+import { currencyState, initialRouteState, statsRequestIDState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 import {
@@ -156,7 +157,14 @@ const StatsScreen = ({ navigation }) => {
           />
           <View style={{ width: 8 }} />
           <Item
-            onPress={() => navigation.navigate('Poolspace')}
+            onPress={() => {
+              navigation.navigate({
+                name: 'Poolspace',
+                params: {
+                  poolSpace: formatBytes(statsLoadable.contents.stats.pool_space),
+                },
+              });
+            }}
             loadable={statsLoadable}
             format={(item) => formatBytes(item.pool_space)}
             color="#4DB33E"
@@ -183,6 +191,7 @@ const StatsScreen = ({ navigation }) => {
             format={(item) => item.rewards_blocks}
             color="#FB6D4C"
             title={t('blocks').toUpperCase()}
+            icon={<Ionicons name="layers-outline" size={16} color={theme.colors.textGrey} />}
           />
         </View>
         <View style={styles.container}>
@@ -195,6 +204,7 @@ const StatsScreen = ({ navigation }) => {
             format={(item) => item.farmers}
             color="#34D4F1"
             title={t('farmers').toUpperCase()}
+            icon={<Ionicons name="people-outline" size={16} color={theme.colors.textGrey} />}
           />
           <View style={{ width: 8 }} />
           <Item
@@ -239,6 +249,7 @@ const StatsScreen = ({ navigation }) => {
             format={(item) => `${convertMojoToChia(item.rewards_amount)} XCH`}
             color="#4DB33E"
             title={t('rewards').toUpperCase()}
+            icon={<Ionicons name="ios-card-outline" size={16} color={theme.colors.textGrey} />}
           />
         </View>
         <View style={styles.container}>

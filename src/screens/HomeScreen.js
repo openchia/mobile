@@ -92,6 +92,7 @@ const HomeScreen = ({ navigation }) => {
   const theme = useTheme();
   const settings = useRecoilValue(settingsState);
   const fill = settings.isThemeDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+  console.log('Called HOme');
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

@@ -7,9 +7,7 @@ import { useTheme } from 'react-native-paper';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import CustomCard from './CustomCard';
 
-export const { width } = Dimensions.get('window');
-
-const JellySelector = ({ items, onPress, defaultVal }) => {
+const JellySelector = ({ items, onPress, defaultVal, width }) => {
   const SELECTION_WIDTH = width - 32;
   const BUTTON_WIDTH = (width - 32) / items.length;
   const transition = useSharedValue(0);
@@ -23,11 +21,11 @@ const JellySelector = ({ items, onPress, defaultVal }) => {
   }));
 
   return (
-    <CustomCard style={{ marginTop: 16, marginHorizontal: 8 }}>
+    <CustomCard style={{ marginVertical: 8, marginHorizontal: 8 }}>
       <View
         style={{
           display: 'flex',
-          flex: 1,
+          // flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'row',

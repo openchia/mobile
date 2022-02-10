@@ -113,5 +113,6 @@ export default {
     farmerOfflineNotification: 'Keine Partials bestanden für 1h',
     farmerBlockNotification: 'Vom Farmer gewonnener Block',
     farmerNotifications: 'Farm Benachrichtigungen',
+    groupName: 'Group Title',
   },
 };

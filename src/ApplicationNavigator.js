@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
 /**
@@ -8,73 +9,68 @@
  * @flow strict-local
  */
 
-import React, { Node, useCallback, useMemo, useState, Suspense, useEffect } from 'react';
-import { StatusBar, LogBox, SafeAreaView, Platform } from 'react-native';
-
-import Toast, { ToastProvider } from 'react-native-toast-notifications';
-import SplashScreen from 'react-native-splash-screen';
-
+// import { TransitionPresets, createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
-  IconButton,
-  Portal,
-  Dialog,
-  Checkbox,
+  DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationDefaultTheme,
+  NavigationContainer,
+} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import merge from 'deepmerge';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Dimensions, LogBox, StatusBar, TextInput, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {
   Button,
   DarkTheme as PaperDarkTheme,
   DefaultTheme as PaperDefaultTheme,
   Provider as PaperProvider,
-  Divider,
 } from 'react-native-paper';
-import merge from 'deepmerge';
-import {
-  NavigationContainer,
-  DarkTheme as NavigationDarkTheme,
-  DefaultTheme as NavigationDefaultTheme,
-} from '@react-navigation/native';
-
+import Animated, {
+  Easing,
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import {
-  atom,
-  RecoilRoot,
-  useRecoilState,
-  useRecoilStateLoadable,
-  useRecoilValue,
-  useRecoilValueLoadable,
-  useSetRecoilState,
-} from 'recoil';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import { TransitionPresets, createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator, useDrawerStatus } from '@react-navigation/drawer';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useTranslation } from 'react-i18next';
-import NetInfo from '@react-native-community/netinfo';
-import HomeScreen from './screens/HomeScreen';
-import StatsScreen from './screens/StatsScreen';
-import FarmersScreen from './screens/FarmersScreen';
-import BlocksFoundScreen from './screens/BlocksFoundScreen';
-import PayoutScreen from './screens/PayoutScreen';
-import ScanScreen from './screens/ScanScreen';
-import FarmerScreen, { getHeaderTitle } from './screens/farmer/FarmerScreen';
-import SettingsScreen from './screens/SettingsScreen';
+import SplashScreen from 'react-native-splash-screen';
+import { ToastProvider } from 'react-native-toast-notifications';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   currencyState,
+  farmerSearchBarPressedState,
+  farmerSearchBarTextState,
+  groupState,
   initialRouteState,
   launcherIDsState,
-  networkState,
   settingsState,
 } from './Atoms';
-import LanguageSelectorScreen from './screens/LanguageSelectorScreen';
-import CurrencySelectionScreen from './screens/CurrencySelectionScreen';
 import CustomDrawerContent from './components/CustomDrawerContent';
-import PoolspaceScreen from './screens/charts/PoolspaceScreen';
-import NewsScreen from './screens/NewsScreen';
-import NewsPostScreen from './screens/NewsPostScreen';
-import FarmerSettingsScreen from './screens/farmer/FarmerSettingsScreen';
-import FarmerNameScreen from './screens/farmer/FarmerNameScreen';
-import GiveawaySceen from './screens/giveaway/GiveawayScreen';
+import IconButton from './components/IconButton';
+import BlocksFoundScreen from './screens/BlocksFoundScreen';
 import ChiaPriceScreen from './screens/charts/ChiaPriceScreen';
+import PoolspaceScreen from './screens/charts/PoolspaceScreen';
+import CurrencySelectionScreen from './screens/CurrencySelectionScreen';
+import FarmerNameScreen from './screens/farmer/FarmerNameScreen';
 import FarmerNotificationScreen from './screens/farmer/FarmerNotificationScreen';
+import FarmerSettingsScreen from './screens/farmer/FarmerSettingsScreen';
+import FarmersScreen from './screens/FarmersScreen';
+import GiveawaySceen from './screens/giveaway/GiveawayScreen';
+import GroupScreen from './screens/groups/GroupScreen';
+import HomeScreen from './screens/HomeScreen';
+import LanguageSelectorScreen from './screens/LanguageSelectorScreen';
+import NewsPostScreen from './screens/NewsPostScreen';
+import NewsScreen from './screens/NewsScreen';
+import PayoutScreen from './screens/PayoutScreen';
+import ScanScreen from './screens/ScanScreen';
+import SettingsScreen from './screens/SettingsScreen';
+import StatsScreen from './screens/StatsScreen';
+import CreateGroupScreen from './screens/groups/CreateGroupScreen';
+import FarmerTestScreen, { getHeaderTitle } from './screens/farmer/FarmerTestScreen';
 
 // LogBox.ignoreLogs(['Reanimated 2']);
 LogBox.ignoreLogs(['timer']);
@@ -166,109 +162,267 @@ const DarkTheme = {
   },
 };
 
-const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => (
-  <Drawer.Navigator
-    drawerContent={(props) => (
-      <CustomDrawerContent
-        {...props}
-        launcherIDsArray={launcherIDsArray}
-        toggleTheme={toggleTheme}
-      />
-    )}
-    backBehavior="history"
-    initialRouteName={initialRoute.name}
-    // useLegacyImplementation
-    screenOptions={{
-      headerShown: true,
-      headerStyle: { backgroundColor: theme.colors.primary },
-      // drawerActiveTintColor: theme.colors.text,
-      drawerActiveTintColor: 'black',
-      headerTintColor: '#fff',
-      inactiveTintColor: 'black',
-      activeTintColor: 'red',
-      activeBackgroundColor: 'grey',
-      navigationOptions: {
-        headerBackTitle: 'Back',
-      },
-      // inactiveTintColor: 'blue',
-      inactiveBackgroundColor: 'white',
-      labelStyle: {
-        marginLeft: 5,
-      },
-      // drawerActiveBackgroundColor: { background: 'red' },
-      // drawerContentContainerStyle: { backgroundColor: 'red' },
-      // labelStyle: { color: 'black' }
-      drawerStyle: { backgroundColor: theme.colors.surface },
-    }}
-  >
-    <Drawer.Screen
-      name="Home"
-      component={HomeScreen}
-      // options={({ route }) => ({
-      //   title: 'Test',
-      // })}
-    />
-    <Drawer.Screen
-      name="News"
-      component={NewsScreen}
-      options={() => ({
-        title: t('news'),
-      })}
-    />
-    <Drawer.Screen
-      name="Stats"
-      component={StatsScreen}
-      options={() => ({
-        title: t('stats'),
-      })}
-    />
-    <Drawer.Screen
-      name="Farmers"
-      component={FarmersScreen}
-      options={() => ({
-        title: t('farmers'),
-      })}
-    />
-    <Drawer.Screen
-      name="Blocks Found"
-      component={BlocksFoundScreen}
-      options={() => ({
-        title: t('blocksFound'),
-      })}
-    />
-    <Drawer.Screen
-      name="Payouts"
-      component={PayoutScreen}
-      options={() => ({
-        title: t('payouts'),
-      })}
-    />
-    <Drawer.Screen
-      name="Giveaway"
-      component={GiveawaySceen}
-      options={() => ({
-        title: t('giveaway'),
-      })}
-    />
-    <Drawer.Screen
-      name="Farmer Details Drawer"
-      component={FarmerScreen}
-      options={({ route }) => ({
-        title: getHeaderTitle(route, t),
-        headerRight: () => (
-          <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
-        ),
-      })}
-    />
-    {launcherIDsArray.map((item) => (
+const Root = ({ theme, toggleTheme, launcherIDsArray, initialRoute, t }) => {
+  // const [searching, setSearching] = useState(false);
+  const [text, setText] = useRecoilState(farmerSearchBarTextState);
+  const setPressedSearch = useSetRecoilState(farmerSearchBarPressedState);
+  const width = useSharedValue(48);
+  const searching = useSharedValue(false);
+  const pressed = useSharedValue(false);
+  // const textShowing = useSharedValue(false);
+  const [textShowing, setTextShowing] = useState(false);
+  const focus = useSharedValue(false);
+  const input = useRef(null);
+  const [groups, setGroups] = useRecoilState(groupState);
+
+  const fullWidth = Dimensions.get('window').width;
+
+  const recordResult = (result) => {
+    input.current.focus();
+  };
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      display: pressed.value ? 'flex' : 'none',
+      width: withTiming(
+        width.value,
+        {
+          duration: 300,
+          easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+        },
+        (isFinished) => {
+          if (isFinished && width.value === fullWidth) {
+            searching.value = true;
+            runOnJS(recordResult)(searching.value);
+            // input.current.focus();
+          } else {
+            searching.value = false;
+            pressed.value = false;
+          }
+        }
+      ),
+    };
+  });
+
+  const showStyle = useAnimatedStyle(() => {
+    return {
+      display: pressed.value ? 'none' : 'flex',
+      // visible: searching.value,
+    };
+  });
+
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => (
+        <CustomDrawerContent
+          {...props}
+          launcherIDsArray={launcherIDsArray}
+          toggleTheme={toggleTheme}
+        />
+      )}
+      backBehavior="history"
+      initialRouteName={initialRoute.name}
+      // useLegacyImplementation
+      screenOptions={{
+        headerShown: true,
+        headerStyle: { backgroundColor: theme.colors.primary },
+        // drawerActiveTintColor: theme.colors.text,
+        drawerActiveTintColor: 'black',
+        headerTintColor: '#fff',
+        inactiveTintColor: 'black',
+        activeBackgroundColor: 'grey',
+        navigationOptions: {
+          headerBackTitle: 'Back',
+        },
+        // inactiveTintColor: 'blue',
+        inactiveBackgroundColor: 'white',
+        labelStyle: {
+          marginLeft: 5,
+        },
+        // drawerActiveBackgroundColor: { background: 'red' },
+        // drawerContentContainerStyle: { backgroundColor: 'red' },
+        // labelStyle: { color: 'black' }
+        drawerStyle: { backgroundColor: theme.colors.surface },
+      }}
+    >
       <Drawer.Screen
-        key={item.name}
-        name={item.name ? item.name : item.value.name}
-        component={FarmerScreen}
+        name="Home"
+        component={HomeScreen}
+        // options={({ route }) => ({
+        //   title: 'Test',
+        // })}
       />
-    ))}
-  </Drawer.Navigator>
-);
+      <Drawer.Screen
+        name="News"
+        component={NewsScreen}
+        options={() => ({
+          title: t('news'),
+        })}
+      />
+      <Drawer.Screen
+        name="Stats"
+        component={StatsScreen}
+        options={() => ({
+          title: t('stats'),
+        })}
+      />
+      <Drawer.Screen
+        name="Group"
+        component={GroupScreen}
+        options={() => ({
+          title: t('groups'),
+        })}
+      />
+      <Drawer.Screen
+        name="Farmers"
+        component={FarmersScreen}
+        options={() => ({
+          title: t('farmers'),
+          headerRightContainerStyle: {
+            position: searching.value ? 'absolute' : 'relative',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            zIndex: 1,
+          },
+          headerRight: () => (
+            <View style={{ backgroundColor: 'transparent' }}>
+              <Animated.View
+                style={[
+                  {
+                    backgroundColor: theme.colors.primary,
+                    width: '100%',
+                  },
+                ]}
+              >
+                <Animated.View style={[showStyle, { display: 'flex', flexDirection: 'row' }]}>
+                  <IconButton
+                    icon={<Ionicons name="ios-search-sharp" size={24} color="white" />}
+                    onPress={() => {
+                      width.value = fullWidth;
+                      pressed.value = true;
+                    }}
+                    title="Info"
+                    color="#fff"
+                  />
+                </Animated.View>
+                <Animated.View style={[animatedStyle, { flexDirection: 'row', display: 'none' }]}>
+                  <IconButton
+                    icon={<Ionicons name="arrow-back" size={24} color="white" />}
+                    onPress={() => {
+                      width.value = 48;
+                      setText('');
+                      input.current.blur();
+                    }}
+                    title="Info"
+                    color="#fff"
+                  />
+                  <TextInput
+                    // autoFocus
+                    ref={input}
+                    style={{
+                      backgroundColor: theme.colors.primary,
+                      flex: 1,
+                      color: '#ffffff',
+                    }}
+                    underlineColorAndroid="transparent"
+                    value={text}
+                    placeholder="Search..."
+                    placeholderTextColor="#bababa"
+                    onChangeText={(text) => {
+                      setTextShowing(text.length > 0);
+                      setText(text);
+                    }}
+                  />
+                  {textShowing && (
+                    <Animated.View
+                    // entering={ZoomIn.duration(100)}
+                    // exiting={ZoomOut.duration(100)}
+                    >
+                      <IconButton
+                        icon={<Ionicons name="close" size={24} color="white" />}
+                        onPress={() => {
+                          setText('');
+                          setTextShowing(false);
+                          setPressedSearch(true);
+                        }}
+                        title="Info"
+                        color="#fff"
+                      />
+                    </Animated.View>
+                  )}
+                  <IconButton
+                    icon={<Ionicons name="ios-search-sharp" size={24} color="white" />}
+                    onPress={() => {
+                      input.current.blur();
+                      setPressedSearch(true);
+                    }}
+                    title="Info"
+                    color="#fff"
+                  />
+                </Animated.View>
+              </Animated.View>
+            </View>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="Blocks Found"
+        component={BlocksFoundScreen}
+        options={() => ({
+          title: t('blocksFound'),
+        })}
+      />
+      <Drawer.Screen
+        name="Payouts"
+        component={PayoutScreen}
+        options={() => ({
+          title: t('payouts'),
+        })}
+      />
+      <Drawer.Screen
+        name="Giveaway"
+        component={GiveawaySceen}
+        options={() => ({
+          title: t('giveaway'),
+        })}
+      />
+      {/* <Drawer.Screen
+        name="Farmer Details Drawer"
+        component={FarmerTestScreen}
+        options={({ route }) => ({
+          title: getHeaderTitle(route, t),
+          headerRight: () => (
+            <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
+          ),
+        })}
+      /> */}
+      <Drawer.Screen
+        name="Farmer Group"
+        component={FarmerTestScreen}
+        options={() => ({
+          title: t('createGroup'),
+        })}
+      />
+      <Drawer.Screen
+        name="Farmer Drawer"
+        component={FarmerTestScreen}
+        options={({ route }) => ({
+          title: getHeaderTitle(route, t),
+          // title: t('createGroup'),
+        })}
+      />
+      {launcherIDsArray.map((item) => (
+        <Drawer.Screen
+          key={item.name}
+          name={item.name ? item.name : item.value.name}
+          component={FarmerTestScreen}
+        />
+      ))}
+    </Drawer.Navigator>
+  );
+};
 
 const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRoute }) => {
   const { t } = useTranslation();
@@ -305,13 +459,14 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRou
           )}
         </Stack.Screen>
         <Stack.Screen
-          name="Farmer Details"
-          component={FarmerScreen}
+          name="Farmer"
+          component={FarmerTestScreen}
           options={({ route }) => ({
             // title: getHeaderTitle(route, t),
-            headerRight: () => (
-              <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
-            ),
+            title: getHeaderTitle(route, t),
+            // headerRight: () => (
+            //   <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
+            // ),
           })}
           // options={({ route, navigation }) => ({})}
         />
@@ -385,6 +540,13 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRou
             title: t('farmerNotifications'),
           })}
         />
+        <Stack.Screen
+          name="Create Group"
+          component={CreateGroupScreen}
+          options={() => ({
+            title: t('createGroup'),
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -393,7 +555,6 @@ const ApplicationNavigator = () => {
   const settings = useRecoilValue(settingsState);
   const launcherIDs = useRecoilValue(launcherIDsState);
   const initialRoute = useRecoilValue(initialRouteState);
-  const currency = useRecoilValue(currencyState);
 
   useEffect(() => {
     SplashScreen.hide();

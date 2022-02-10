@@ -114,5 +114,6 @@ export default {
     farmerOfflineNotification: 'No hay parciales válidos en 1h',
     farmerBlockNotification: 'Bloque ganado por granjero',
     farmerNotifications: 'Notificaciones de granjero',
+    groupName: 'Group Title',
   },
 };

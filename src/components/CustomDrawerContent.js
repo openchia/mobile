@@ -9,7 +9,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { updateFCMToken } from '../Api';
-import { initialRouteState, settingsState } from '../Atoms';
+import { initialRouteState, settingsState, groupState } from '../Atoms';
 import OpenChiaIconWithText from '../images/OpenChiaIconWithText';
 import { getObject } from '../utils/Utils';
 import CustomDrawerSection from './CustomDrawerSection';
@@ -24,6 +24,7 @@ const CustomDrawerContent = (props) => {
 
   const [settings, setSettings] = useRecoilState(settingsState);
   const [initialRoute, setIntialRoute] = useRecoilState(initialRouteState);
+  const [groups, setGroups] = useRecoilState(groupState);
 
   const onPress = (location, saveroute) => {
     navigation.navigate('Root', { screen: location, intial: false });
@@ -183,7 +184,7 @@ const CustomDrawerContent = (props) => {
               <Icon
                 selected={initialRoute.name === 'Blocks Found'}
                 size={size}
-                iconName="layers-outline"
+                iconName="ios-layers-outline"
                 iconNameSelected="layers"
               />
             )}
@@ -229,6 +230,50 @@ const CustomDrawerContent = (props) => {
             )}
           />
         </CustomDrawerSection>
+        <CustomDrawerSection>
+          {groups.length > 0 && (
+            <DrawerItem
+              label={settings.groupName}
+              onPress={() => {
+                console.log({
+                  name: 'Farmer Group',
+                  data: groups,
+                });
+                navigation.reset({
+                  index: 0,
+                  routes: [
+                    {
+                      name: 'Farmer Group',
+                      params: { data: groups },
+                    },
+                  ],
+                });
+                setIntialRoute({
+                  name: 'Farmer Group',
+                  data: groups,
+                });
+                // setIntialRoute({
+                //   name: 'Farmer Details Drawer',
+                // });
+              }}
+              labelStyle={{
+                fontWeight: 'bold',
+                color:
+                  initialRoute.name === 'Farmer Group'
+                    ? theme.colors.drawerSelected
+                    : theme.colors.drawerText,
+              }}
+              icon={({ color, size }) => (
+                <Icon
+                  selected={initialRoute.name === 'Farmer Group'}
+                  size={size}
+                  iconName="folder-open-outline"
+                  iconNameSelected="folder-open"
+                />
+              )}
+            />
+          )}
+        </CustomDrawerSection>
         {launcherIDsArray.length > 0 && (
           <CustomDrawerSection title={t('farms')}>
             {launcherIDsArray.map((item) => (
@@ -241,13 +286,13 @@ const CustomDrawerContent = (props) => {
                     index: 0,
                     routes: [
                       {
-                        name: 'Farmer Details Drawer',
-                        params: { launcherId: item.name, name: item.value.name },
+                        name: 'Farmer Drawer',
+                        params: { data: { launcherId: item.name, name: item.value.name } },
                       },
                     ],
                   });
                   setIntialRoute({
-                    name: 'Farmer Details Drawer',
+                    name: 'Farmer Drawer',
                     launcherId: item.name,
                     launcherName: item.value.name,
                   });

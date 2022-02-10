@@ -1,10 +1,8 @@
-import React, { Node, useCallback, useMemo, useState, Suspense, useEffect } from 'react';
-import { Alert, Platform, View } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { RecoilRoot } from 'recoil';
-import { Notifications } from 'react-native-notifications';
 import messaging from '@react-native-firebase/messaging';
-import * as Sentry from '@sentry/react-native';
+import React, { Suspense, useEffect } from 'react';
+import { Platform } from 'react-native';
+import { Notifications } from 'react-native-notifications';
+import { RecoilRoot } from 'recoil';
 import ApplicationNavigator from './src/ApplicationNavigator';
 import LoadingComponent from './src/components/LoadingComponent';
 // import './src/constants/IMLocalize';
@@ -22,6 +20,22 @@ if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/en-IN'); // load the required locale details
 }
+
+// const updateLocalization = () => {
+//   Crowdin.initWithHashString('fcaf0dd82870a8dfbcc5f9876j9', DEFAULT_LANGUAGE, (message) => {});
+
+//   Crowdin.getResourcesByLocale('uk', (data) => {
+//     var response = JSON.parse(data);
+
+//     translations.setContent(
+//       Object.assign({}, translations.getContent(), {
+//         uk: response.strings,
+//       })
+//     );
+
+//     this.resetState();
+//   });
+// };
 
 const requestUserPermission = async () => {
   // const token = await messaging().getToken();
@@ -47,35 +61,9 @@ const App = () => {
   useEffect(() => {
     requestUserPermission();
 
-    // SystemNavigationBar.navigationHide();
-
-    // Notifications.registerRemoteNotifications();
-
-    // Notifications.events().registerNotificationReceivedForeground((notification, completion) => {
-    //   console.log(
-    //     `Notification received in foreground: ${notification.title} : ${notification.body}`
-    //   );
-    //   completion({ alert: false, sound: false, badge: false });
-    // });
-
-    // Notifications.events().registerNotificationOpened((notification, completion) => {
-    //   console.log(`Notification opened: ${notification.payload}`);
-    //   completion();
-    // });r
     const unsubscribe = messaging().onMessage(onMessageReceived);
-    // const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-    //   console.log(remoteMessage);
-    //   // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    // });
     return unsubscribe;
   }, []);
-  // useEffect(() => {
-  //   const unsubscribe = messaging()
-  //     .subscribeToTopic('blocks')
-  //     .then(() => console.log('Subscribed to topic blocks!'));
-
-  //   return unsubscribe;
-  // }, []);
 
   return (
     <RecoilRoot>

@@ -110,5 +110,6 @@ export default {
     farmerOfflineNotification: '1小时内没有通过的部分',
     farmerBlockNotification: '农民赢得的街区',
     farmerNotifications: '农场通知',
+    groupName: 'Group Title',
   },
 };

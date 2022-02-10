@@ -111,5 +111,6 @@ export default {
     farmerOfflineNotification: 'Žádné dílčí části neprošly po dobu 1h',
     farmerBlockNotification: 'Blok vyhraný farmářem',
     farmerNotifications: 'Oznámení farmy',
+    groupName: 'Group Title',
   },
 };

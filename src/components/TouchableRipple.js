@@ -11,7 +11,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-const TouchableRipple = ({ style, onPress, children, enabled }) => {
+const TouchableRipple = ({ style, onPress, children }) => {
   const centerX = useSharedValue(0);
   const centerY = useSharedValue(0);
   const scale = useSharedValue(0);
