@@ -128,7 +128,7 @@ PODS:
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - OpenSSL-Universal (1.1.180)
-  - Permission-Camera (3.1.0):
+  - Permission-Camera (3.2.0):
     - RNPermissions
   - PromisesObjC (2.0.0)
   - RCT-Folly (2021.06.28.00-v2):
@@ -337,9 +337,9 @@ PODS:
     - React-Core
   - react-native-camera/RN (4.2.1):
     - React-Core
-  - react-native-netinfo (7.1.5):
+  - react-native-netinfo (7.1.7):
     - React-Core
-  - react-native-notifications (4.1.2):
+  - react-native-notifications (4.1.3):
     - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
@@ -416,22 +416,22 @@ PODS:
     - React-Core
   - RNDeviceInfo (8.4.8):
     - React-Core
-  - RNFBApp (13.1.0):
+  - RNFBApp (13.1.1):
     - Firebase/CoreOnly (= 8.10.0)
     - React-Core
-  - RNFBMessaging (13.1.0):
+  - RNFBMessaging (13.1.1):
     - Firebase/Messaging (= 8.10.0)
     - React-Core
     - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNLocalize (2.1.5):
+  - RNLocalize (2.1.7):
     - React-Core
-  - RNPermissions (3.1.0):
+  - RNPermissions (3.2.0):
     - React-Core
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
-  - RNReanimated (2.2.4):
+  - RNReanimated (2.3.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -457,22 +457,15 @@ PODS:
     - React-RCTNetwork
     - React-RCTSettings
     - React-RCTText
-    - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
   - RNScreens (3.10.1):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.2.7):
-    - React-Core
-    - Sentry (= 7.5.4)
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (9.0.0):
     - React-Core
-  - Sentry (7.5.4):
-    - Sentry/Core (= 7.5.4)
-  - Sentry/Core (7.5.4)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -547,7 +540,6 @@ DEPENDENCIES:
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -576,7 +568,6 @@ SPEC REPOS:
     - nanopb
     - OpenSSL-Universal
     - PromisesObjC
-    - Sentry
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -672,8 +663,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  RNSentry:
-    :path: "../node_modules/@sentry/react-native"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
@@ -708,7 +697,7 @@ SPEC CHECKSUMS:
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
-  Permission-Camera: 1f383e3f9a38ba393c63ba9b09a4726f94eda769
+  Permission-Camera: 9eb618fd601ae4a674b072c3b0d37f109d7b91e5
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: 4bf86c70714490bca4bf2696148638284622644b
@@ -723,8 +712,8 @@ SPEC CHECKSUMS:
   React-jsinspector: d0374f7509d407d2264168b6d0fad0b54e300b85
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
   react-native-camera: 210a872c84d3aa0982a9223047ef9e743ed694fa
-  react-native-netinfo: 23196a5d025ae4cf870d3d9871e4748098113dd1
-  react-native-notifications: a28f0f8c99594c0de700d4717ce510f3a0a452a4
+  react-native-netinfo: 1792d13894f12e8050c6cd7207192c74025e90d1
+  react-native-notifications: c68bb052c68b6ee9aed237200aa06b9211e52eae
   react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
@@ -742,18 +731,16 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 4b6538222ce3f01f61011f512226ba3aaa0dc336
   RNCClipboard: f49f3de56b40d0f4104680dabadc7a1f063f4fd4
   RNDeviceInfo: 417b2ef4456c13a9d50ad8c57895eea837b735a8
-  RNFBApp: 1d553b3f201e9aaeba03d777b1dea51eaacc24cc
-  RNFBMessaging: 0815242e4c06e3200f79e6eea312d124be357a13
+  RNFBApp: 6e20f07b316346d96737191f377777f61f51a8d2
+  RNFBMessaging: eb8d1b08795c8718706007ed0743732d00e1acc4
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNLocalize: 13a971fd888f2933504a745983f781dc52feeab6
-  RNPermissions: b3588a19e12bff03fe21bc46911fd32343666dc0
+  RNLocalize: b8980509fc4db6895953aa95b90c8d81cb984603
+  RNPermissions: bf844d392fe0ecbfbd2e4ae2b88cc32f2f09b369
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
-  RNReanimated: 65583befd5706cc9c86ae9a081786181ced37b93
+  RNReanimated: 569c269480a76e39196aa17a5df08ef1561db5ff
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
-  RNSentry: bf1f0970fffd3519a5cf553217f281bbb5b10de4
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
-  Sentry: 5c5dd4005f3b7b9765d5a8871232cddbd0d888b7
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
