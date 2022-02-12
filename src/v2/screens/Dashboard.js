@@ -181,7 +181,7 @@ const DashboardScreen = ({ navigation }) => {
 
   const theme = useTheme();
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.onSurface }}>
+    <SafeAreaView style={{ flex: 1,  backgroundColor: theme.colors.statusBarColor}}>
       {/* <CustomStatusBar /> */}
       <FocusAwareStatusBar
         backgroundColor={theme.colors.statusBarColor}
@@ -476,8 +476,8 @@ const DashboardScreen = ({ navigation }) => {
         <View
           style={{
             flex: 1,
-            backgroundColor: theme.colors.divider,
-            justifyContent: 'center',
+            backgroundColor: theme.colors.background ,
+                        justifyContent: 'center',
             alignItems: 'center',
           }}
         >

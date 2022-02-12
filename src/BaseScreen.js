@@ -71,7 +71,7 @@ const Root = ({ settings }) => {
     <Tab.Navigator
       initialRouteName={settings.intialRoute}
       screenOptions={{
-        // safeAreaInsets: { top: 0 },
+        //safeAreaInsets: { top: 0 },
         headerShown: false,
         headerStyle: { backgroundColor: theme.colors.tabNavigatorBackground },
         tabBarButton: (props) => <TouchableOpacity {...props} />,
@@ -83,7 +83,7 @@ const Root = ({ settings }) => {
         //   marginBottom: -4,
         // },
         tabBarStyle: {
-          height: 56,
+      //    height: 56,
           backgroundColor: theme.colors.tabNavigatorBackground,
           borderTopColor: theme.colors.tabNavigatorTopBorderColor,
         },
@@ -162,13 +162,14 @@ const BaseScreen = () => {
 
   return (
     <ToastProvider>
-      <SafeAreaProvider style={{ backgroundColor: theme.colors.background }}>
+      <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <PaperProvider theme={theme}>
             <NavigationContainer theme={theme}>
               <BottomSheetModalProvider>
                 <StatusBar
                   backgroundColor={theme.colors.statusBarColor}
+                  translucent={false}
                   barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
                 />
                 {/* <CustomStatusBar backgroundColor={theme.colors.statusBarColor}></CustomStatusBar> */}
