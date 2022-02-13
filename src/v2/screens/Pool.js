@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React, { useLayoutEffect, useState, useEffect } from 'react';
-import {  View } from 'react-native';
+import { View } from 'react-native';
 import { Text, TextInput, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
@@ -15,7 +15,6 @@ import FarmersScreen from '../../screens/FarmersScreen';
 import PayoutScreen from '../../screens/PayoutScreen';
 import StatsScreen from '../../screens/StatsScreen';
 import SafeAreaView from 'react-native-safe-area-view';
-
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -143,12 +142,12 @@ const PoolScreen = ({ navigation, route }) => {
   // }, [navigation, route]);
 
   return (
-    <SafeAreaView  style={{ flex: 1, backgroundColor: theme.colors.statusBarColor}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.statusBarColor }}>
       {/* <View style={{ flex: 1, backgroundColor: theme.colors.primary }}></View> */}
       {/* <CustomStatusBar /> */}
+
       <FocusAwareStatusBar
-        backgroundColor='green'
-        zIndex={100}
+        backgroundColor={theme.colors.statusBarColor}
         barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
       />
       <StatsToolbar route={route} showSearch={showSearch} />

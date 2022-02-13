@@ -83,7 +83,7 @@ const Root = ({ settings }) => {
         //   marginBottom: -4,
         // },
         tabBarStyle: {
-      //    height: 56,
+          //    height: 56,
           backgroundColor: theme.colors.tabNavigatorBackground,
           borderTopColor: theme.colors.tabNavigatorTopBorderColor,
         },
@@ -169,7 +169,6 @@ const BaseScreen = () => {
               <BottomSheetModalProvider>
                 <StatusBar
                   backgroundColor={theme.colors.statusBarColor}
-                  translucent={false}
                   barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
                 />
                 {/* <CustomStatusBar backgroundColor={theme.colors.statusBarColor}></CustomStatusBar> */}

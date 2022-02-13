@@ -181,7 +181,7 @@ const DashboardScreen = ({ navigation }) => {
 
   const theme = useTheme();
   return (
-    <SafeAreaView style={{ flex: 1,  backgroundColor: theme.colors.statusBarColor}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.statusBarColor }}>
       {/* <CustomStatusBar /> */}
       <FocusAwareStatusBar
         backgroundColor={theme.colors.statusBarColor}
@@ -217,6 +217,68 @@ const DashboardScreen = ({ navigation }) => {
               color="#fff"
               // size={24}
               onPress={handlePresentModalPress}
+            />
+          )}
+        </View>
+        <View
+          style={{
+            backgroundColor: theme.colors.onSurfaceLight,
+            alignItems: 'center',
+            flexDirection: 'row',
+            position: 'absolute',
+            left: 0,
+            top: 0,
+          }}
+        >
+          {farms.length > 0 && (
+            <CustomIconButton
+              style={{ marginTop: 10, marginRight: 10 }}
+              icon={<Ionicons name="refresh" size={24} color={theme.colors.text} />}
+              color="#fff"
+              // size={24}
+              onPress={() => {
+                if (farms.length > 0) {
+                  // if (selected === -1) {
+                  setLoading((prev) => ({ ...prev, stats: true, address: true }));
+                  const addressesToScan = new Set();
+                  const launcherIds = [];
+                  farms.forEach((item) => {
+                    if (item.token !== null) {
+                      addressesToScan.add(item.address);
+                      launcherIds.push(item.launcherId);
+                    }
+                  });
+                  if (launcherIds.length > 0) {
+                    getBalanceFromAddresses(Array.from(addressesToScan), launcherIds)
+                      .then((response) => {
+                        setData((prev) => ({
+                          ...prev,
+                          balance: response,
+                        }));
+                      })
+                      .finally(() => {
+                        setLoading((prev) => ({ ...prev, address: false }));
+                      });
+                  } else {
+                    // console.log('Calle');
+                    setData((prev) => ({
+                      ...prev,
+                      balance: null,
+                    }));
+                  }
+
+                  getFarmersFromLauncherIDAndStats(farms.map((item) => item.launcherId))
+                    .then(([farmers, stats]) => {
+                      setData((prev) => ({ ...prev, farmers, stats }));
+                    })
+                    .catch((error) => {
+                      setError((prev) => ({ ...prev, stats: true }));
+                    })
+                    .finally(() => {
+                      setLoading((prev) => ({ ...prev, stats: false }));
+                    });
+                }
+              }}
             />
           )}
         </View>
@@ -308,7 +370,7 @@ const DashboardScreen = ({ navigation }) => {
 
         <Text style={{ paddingTop: 16, fontSize: 24 }}>
           {loading.address
-            ? '0 XCH'
+            ? '...'
             : data.balance
             ? selected === -1
               ? `${data.balance
@@ -429,6 +491,10 @@ const DashboardScreen = ({ navigation }) => {
                   loading={loading}
                   error={error}
                   selected={selected}
+                  farms={farms}
+                  setData={setData}
+                  setLoading={setLoading}
+                  setError={setError}
                 />
               )}
             </Tab.Screen>
@@ -476,8 +542,8 @@ const DashboardScreen = ({ navigation }) => {
         <View
           style={{
             flex: 1,
-            backgroundColor: theme.colors.background ,
-                        justifyContent: 'center',
+            backgroundColor: theme.colors.background,
+            justifyContent: 'center',
             alignItems: 'center',
           }}
         >

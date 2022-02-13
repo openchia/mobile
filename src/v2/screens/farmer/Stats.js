@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil';
 import { farmErrorState, farmLoadingState } from '../../../Atoms';
 import CustomCard from '../../../components/CustomCard';
 import { convertMojoToChia } from '../../../utils/Formatting';
+import { getFarmersFromLauncherIDAndStats, getPartialsFromIDs } from '../../../Api';
 
 const Item = ({ title, color, loading, value, format }) => {
   const theme = useTheme();
@@ -51,7 +52,16 @@ const Item = ({ title, color, loading, value, format }) => {
 const partialPerfomance = (partialCount, failedPartialCount) =>
   ((partialCount - failedPartialCount) * 100) / partialCount;
 
-const FarmerStatsScreen = ({ data, loading, error, selected = -1 }) => {
+const FarmerStatsScreen = ({
+  data,
+  loading,
+  error,
+  selected = -1,
+  farms,
+  setData,
+  setLoading,
+  setError,
+}) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const [partialStats, setPartialStats] = useState(null);
@@ -105,7 +115,29 @@ const FarmerStatsScreen = ({ data, loading, error, selected = -1 }) => {
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.colors.background }}
       contentContainerStyle={{ flexGrow: 1, marginVertical: 12, marginHorizontal: 12 }}
-      refreshControl={<RefreshControl refreshing={false} />}
+      refreshControl={
+        <RefreshControl
+          refreshing={false}
+          onRefresh={() => {
+            let timestamp = new Date().getTime();
+            timestamp = Math.floor(timestamp / 1000) - 60 * 60 * 24;
+            setLoading((prev) => ({ ...prev, partials: true }));
+            getPartialsFromIDs(
+              farms.map((item) => item.launcherId),
+              timestamp
+            )
+              .then((partials) => {
+                setData((prev) => ({ ...prev, partials }));
+              })
+              .catch((error) => {
+                setError((prev) => ({ ...prev, partials: true }));
+              })
+              .finally(() => {
+                setLoading((prev) => ({ ...prev, partials: false }));
+              });
+          }}
+        />
+      }
     >
       {/* <HeaderItem
         loadable={dataLoadable}
