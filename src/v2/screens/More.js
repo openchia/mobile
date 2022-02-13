@@ -208,7 +208,7 @@ const MoreScreen = ({ navigation }) => {
             startColor="rgba(0, 0, 0, 0.02)"
             // finalColor="rgba(0, 0, 0, 0.01)"
             // containerViewStyle={{ marginVertical: 16 }}
-            radius={16}
+            radius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
             viewStyle={{ alignSelf: 'stretch' }}
           >
             <View
@@ -217,7 +217,8 @@ const MoreScreen = ({ navigation }) => {
                   marginVertical: 0,
                   // padding: 16,
                   backgroundColor: theme.colors.background,
-                  borderRadius: 16,
+                  borderRadius: settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius,
+                  //   borderRadius: 16,
                 },
               ]}
             >
@@ -225,8 +226,12 @@ const MoreScreen = ({ navigation }) => {
                 style={{
                   paddingTop: 16,
                   paddingBottom: 16,
-                  borderTopLeftRadius: 16,
-                  borderTopRightRadius: 16,
+                  borderTopLeftRadius: settings.sharpEdges
+                    ? theme.tileModeRadius
+                    : theme.roundModeRadius,
+                  borderTopRightRadius: settings.sharpEdges
+                    ? theme.tileModeRadius
+                    : theme.roundModeRadius,
                   backgroundColor: theme.colors.onSurfaceLight,
                   marginBottom: 1,
                 }}
@@ -360,9 +365,8 @@ const MoreScreen = ({ navigation }) => {
                 style={{
                   paddingTop: 16,
                   paddingBottom: 16,
-                  borderBottomLeftRadius: 16,
-                  borderBottomRightRadius: 16,
                   backgroundColor: theme.colors.onSurfaceLight,
+                  marginBottom: 1,
                 }}
                 onPress={() => {
                   setSettings((prev) => ({ ...prev, isThemeDark: !prev.isThemeDark }));
@@ -383,6 +387,54 @@ const MoreScreen = ({ navigation }) => {
                     size={24}
                     color={theme.colors.textGrey}
                   />
+                </View>
+              </PressableCard>
+              <PressableCard
+                style={{
+                  paddingTop: 16,
+                  paddingBottom: 16,
+                  borderBottomLeftRadius: settings.sharpEdges
+                    ? theme.tileModeRadius
+                    : theme.roundModeRadius,
+                  borderBottomRightRadius: settings.sharpEdges
+                    ? theme.tileModeRadius
+                    : theme.roundModeRadius,
+                  backgroundColor: theme.colors.onSurfaceLight,
+                }}
+                onPress={() => {
+                  setSettings((prev) => ({ ...prev, sharpEdges: !prev.sharpEdges }));
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ paddingLeft: 16, flex: 1 }}>
+                    {settings.sharpEdges ? t('tileModeOff') : t('tileModeOn')}
+                  </Text>
+                  {settings.sharpEdges ? (
+                    <Ionicons
+                      style={{ paddingRight: 20 }}
+                      name="square-outline"
+                      size={24}
+                      color={theme.colors.textGrey}
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      style={{ paddingRight: 20 }}
+                      name="rounded-corner"
+                      size={24}
+                      color={theme.colors.textGrey}
+                    />
+                  )}
+                  {/* <Ionicons
+                    style={{ paddingRight: 20 }}
+                    name={settings.sharpEdges ? 'square-outline' : 'circle-outline'}
+                    size={24}
+                    color={theme.colors.textGrey}
+                  /> */}
                 </View>
               </PressableCard>
               {/* <View>

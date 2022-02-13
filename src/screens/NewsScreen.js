@@ -41,19 +41,22 @@ const query = selectorFamily({
     },
 });
 
-const Item = ({ item, width, onPress, tagsStyles, theme }) => (
+const Item = ({ item, width, onPress, tagsStyles, theme, settings }) => (
   <View style={{ alignSelf: 'stretch', marginVertical: 10, marginHorizontal: 16 }}>
     <Shadow
       distance={2}
       startColor="rgba(0, 0, 0, 0.02)"
       // finalColor="rgba(0, 0, 0, 0.01)"
       // containerViewStyle={{ marginVertical: 16 }}
-      radius={16}
+      radius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
       viewStyle={{ alignSelf: 'stretch' }}
     >
       <PressableCard
         onPress={onPress}
-        style={{ borderRadius: 24, backgroundColor: theme.colors.onSurfaceLight }}
+        style={{
+          borderRadius: settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius,
+          backgroundColor: theme.colors.onSurfaceLight,
+        }}
       >
         <View
           style={{
@@ -142,12 +145,13 @@ const NewsScreen = ({ navigation }) => {
         theme={theme}
         width={width}
         tagsStyles={tagsStyles}
+        settings={settings}
         onPress={() => {
           navigation.navigate('Post', { post: item });
         }}
       />
     ),
-    [settings.isThemeDark]
+    [settings.isThemeDark, settings.sharpEdges]
   );
 
   if (postsLoadable.state === 'hasError') {

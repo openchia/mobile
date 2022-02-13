@@ -351,6 +351,7 @@ const PartialChart = ({ launcherIds, orientation }) => {
     ITEMS[settings.partialDefault ? settings.partialDefault : 4]
   );
 
+  const theme = useTheme();
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Chart
@@ -368,6 +369,7 @@ const PartialChart = ({ launcherIds, orientation }) => {
               setElement(item);
               setSettings((prev) => ({ ...prev, partialDefault: index }));
             }}
+            borderRadius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
           />
         }
       />

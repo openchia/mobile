@@ -9,7 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { selectorFamily, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { getStats } from '../Api';
-import { currencyState, initialRouteState, statsRequestIDState } from '../Atoms';
+import { currencyState, initialRouteState, settingsState, statsRequestIDState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
 
 import PressableCard from '../components/PressableCard';
@@ -21,28 +21,34 @@ import {
 } from '../utils/Formatting';
 import { getCurrencyFromKey } from './CurrencySelectionScreen';
 
-const Item = ({ title, value, color, loadable, data, format, onPress, icon }) => {
+const Item = ({ title, value, color, loadable, data, format, onPress, icon, settings }) => {
   const theme = useTheme();
+
   return (
-    <View style={{ flex: 1, margin: 8 }}>
+    <View style={{ flex: 1, margin: 6 }}>
       <Shadow
         distance={6}
         startColor="rgba(0, 0, 0, 0.02)"
         finalColor="rgba(0, 0, 0, 0.0)"
-        radius={24}
+        radius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
         viewStyle={{ height: '100%', width: '100%' }}
       >
         <PressableCard
-          style={{ borderRadius: 24, backgroundColor: theme.colors.onSurfaceLight }}
+          style={{
+            borderRadius: settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius,
+            backgroundColor: theme.colors.onSurfaceLight,
+          }}
           onPress={onPress}
         >
           <View style={styles.item}>
-            <Text style={{ color, fontSize: 16, textAlign: 'center' }}>{title}</Text>
+            <Text style={{ color, fontSize: 14, textAlign: 'center', paddingTop: 14 }}>
+              {title}
+            </Text>
             <Text
               style={{
                 textAlign: 'center',
                 // marginTop: 10,
-                marginBottom: 10,
+                // marginBottom: 10,
                 fontSize: 18,
                 fontWeight: 'bold',
               }}
@@ -97,6 +103,7 @@ const StatsScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
   const currency = useRecoilValue(currencyState);
+  const settings = useRecoilValue(settingsState);
 
   useEffect(() => {
     getStats()
@@ -145,7 +152,7 @@ const StatsScreen = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, flexGrow: 1 }}
+        contentContainerStyle={{ marginVertical: 6, marginHorizontal: 6, flexGrow: 1 }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -181,6 +188,7 @@ const StatsScreen = ({ navigation }) => {
               <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
             }
             title={t('chiaPrice')}
+            settings={settings}
           />
           <Item
             onPress={() => {
@@ -199,6 +207,7 @@ const StatsScreen = ({ navigation }) => {
             icon={
               <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
             }
+            settings={settings}
           />
         </View>
         <View style={styles.container}>
@@ -208,6 +217,7 @@ const StatsScreen = ({ navigation }) => {
             format={(item) => `${convertSecondsToHourMin(item.estimate_win * 60)}`}
             color={theme.colors.indigo}
             title={t('etw').toUpperCase()}
+            settings={settings}
           />
           <Item
             onPress={() => {
@@ -221,6 +231,7 @@ const StatsScreen = ({ navigation }) => {
             color={theme.colors.orange}
             title={t('blocks')}
             icon={<Ionicons name="layers-outline" size={16} color={theme.colors.textGrey} />}
+            settings={settings}
           />
         </View>
         <View style={styles.container}>
@@ -246,6 +257,7 @@ const StatsScreen = ({ navigation }) => {
             color={theme.colors.pink}
             title={t('farmers')}
             icon={<Ionicons name="people-outline" size={16} color={theme.colors.textGrey} />}
+            settings={settings}
           />
           <Item
             onPress={() => {
@@ -264,6 +276,7 @@ const StatsScreen = ({ navigation }) => {
             format={(item) => formatBytes(item.blockchain_space)}
             color="#34D4F1"
             title={t('netspace')}
+            settings={settings}
           />
         </View>
         <View style={styles.container}>
@@ -275,6 +288,7 @@ const StatsScreen = ({ navigation }) => {
             }
             color={theme.colors.purple}
             title={t('currentEffort')}
+            settings={settings}
           />
           <Item
             loadable={loading}
@@ -283,6 +297,7 @@ const StatsScreen = ({ navigation }) => {
             format={(item) => `${item.average_effort.toFixed(0)}%`}
             color={theme.colors.red}
             title={t('effort')}
+            settings={settings}
           />
         </View>
         <View style={styles.container}>
@@ -292,6 +307,7 @@ const StatsScreen = ({ navigation }) => {
             format={(item) => convertSecondsToHourMin(item.time_since_last_win)}
             color="#4DB33E"
             title={t('sinceLastWin')}
+            settings={settings}
           />
           <Item
             onPress={() => {
@@ -305,6 +321,7 @@ const StatsScreen = ({ navigation }) => {
             color={theme.colors.teal}
             title={t('rewards')}
             icon={<Ionicons name="ios-card-outline" size={16} color={theme.colors.textGrey} />}
+            settings={settings}
           />
         </View>
         <View style={styles.container}>
@@ -314,6 +331,7 @@ const StatsScreen = ({ navigation }) => {
             format={(item) => `${item.xch_tb_month.toFixed(8)} XCH/TiB/day`}
             color={theme.colors.yellow}
             title={t('profitability')}
+            settings={settings}
           />
         </View>
       </ScrollView>
@@ -325,13 +343,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flex: 1,
-    marginHorizontal: 6,
   },
   item: {
     height: '100%',
     // minHeight: 100,
     // alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     // flexDirection: 'column',
     // display: 'flex',
     // backgroundColor: '#fff',

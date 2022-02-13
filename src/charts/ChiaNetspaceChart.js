@@ -220,6 +220,7 @@ const NetspaceChart = ({ netspace }) => {
     ITEMS[settings.netspaceDefault ? settings.netspaceDefault : 2]
   );
   const { width, height } = Dimensions.get('window');
+  const theme = useTheme()
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -237,6 +238,7 @@ const NetspaceChart = ({ netspace }) => {
               setElement(item);
               setSettings((prev) => ({ ...prev, netspaceDefault: index }));
             }}
+            borderRadius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
           />
         }
       />

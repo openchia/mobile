@@ -119,5 +119,7 @@ export default {
     darkMode: 'Switch to Dark Mode',
     dashboard: 'Dashboard',
     launchScreen: 'Launch Screen',
+    tileModeOn: 'Switch to Sharp Edges',
+    tileModeOff: 'Switch to Round Edges',
   },
 };

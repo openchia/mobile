@@ -87,6 +87,7 @@ export const settingsState = atom({
   key: 'atomTheme',
   default: {
     isThemeDark: false,
+    sharpEdges: true,
     blockNotifications: false,
     showOnlyActiveFarmers: true,
     poolspaceDefault: 4,

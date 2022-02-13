@@ -77,6 +77,8 @@ export const LightTheme = {
   ...CombinedDefaultTheme,
   fonts: configureFonts(fontConfig),
   roundness: 2,
+  tileModeRadius: 4,
+  roundModeRadius: 24,
   colors: {
     ...CombinedDefaultTheme.colors,
     // background: '#ebebeb',
@@ -134,6 +136,8 @@ export const DarkTheme = {
   ...CombinedDarkTheme,
   fonts: configureFonts(fontConfig),
   roundness: 2,
+  tileModeRadius: 4,
+  roundModeRadius: 24,
   colors: {
     ...CombinedDarkTheme.colors,
     background: '#121b22',

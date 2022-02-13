@@ -251,7 +251,7 @@ const ChiaPriceChart = ({ chiaPrice }) => {
   const [settings, setSettings] = useRecoilState(settingsState);
   const [element, setElement] = useState(ITEMS[settings.priceDefault ? settings.priceDefault : 0]);
   const { width, height } = Dimensions.get('window');
-
+  const theme = useTheme();
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Chart
@@ -268,6 +268,7 @@ const ChiaPriceChart = ({ chiaPrice }) => {
               setElement(item);
               setSettings((prev) => ({ ...prev, priceDefault: index }));
             }}
+            borderRadius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
           />
         }
       />

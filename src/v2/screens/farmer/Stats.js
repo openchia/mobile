@@ -5,26 +5,26 @@ import { useTranslation } from 'react-i18next';
 import { Shadow } from 'react-native-shadow-2';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import { useRecoilState } from 'recoil';
-import { farmErrorState, farmLoadingState } from '../../../Atoms';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { farmErrorState, farmLoadingState, settingsState } from '../../../Atoms';
 import CustomCard from '../../../components/CustomCard';
 import { convertMojoToChia } from '../../../utils/Formatting';
 import { getFarmersFromLauncherIDAndStats, getPartialsFromIDs } from '../../../Api';
 
-const Item = ({ title, color, loading, value, format }) => {
+const Item = ({ title, color, loading, value, format, settings }) => {
   const theme = useTheme();
   return (
-    <View style={{ flex: 1, margin: 8 }}>
+    <View style={{ flex: 1, margin: 6 }}>
       <Shadow
         distance={6}
         startColor="rgba(0, 0, 0, 0.02)"
         finalColor="rgba(0, 0, 0, 0.0)"
-        radius={24}
+        radius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
         viewStyle={{ height: '100%', width: '100%' }}
       >
         <CustomCard
           style={{
-            borderRadius: 24,
+            borderRadius: settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius,
             backgroundColor: theme.colors.onSurfaceLight,
             flex: 1,
             // alignItems: 'center',
@@ -65,6 +65,7 @@ const FarmerStatsScreen = ({
   const { t } = useTranslation();
   const theme = useTheme();
   const [partialStats, setPartialStats] = useState(null);
+  const settings = useRecoilValue(settingsState);
 
   useEffect(() => {
     if (!loading.partials && data.partials) {
@@ -114,7 +115,8 @@ const FarmerStatsScreen = ({
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.colors.background }}
-      contentContainerStyle={{ flexGrow: 1, marginVertical: 12, marginHorizontal: 12 }}
+      // contentContainerStyle={{ flexGrow: 1, marginVertical: 12, marginHorizontal: 12 }}
+      contentContainerStyle={{ marginVertical: 6, marginHorizontal: 6, flexGrow: 1 }}
       refreshControl={
         <RefreshControl
           refreshing={false}
@@ -154,6 +156,7 @@ const FarmerStatsScreen = ({
           format={(item) => item.partialCount}
           color={theme.colors.green}
           title={`${t('partials')}\n(${t('24Hours').toUpperCase()})`}
+          settings={settings}
           // title={`PARTIALS\n(24 HOURS)`}
         />
         {/* <View style={{ width: 16 }} /> */}
@@ -163,6 +166,7 @@ const FarmerStatsScreen = ({
           format={(item) => item.points}
           color={theme.colors.blue}
           title={`${t('points')}\n(${t('24Hours').toUpperCase()})`}
+          settings={settings}
         />
       </View>
       {/* <View style={{ width: 16 }} /> */}
@@ -173,6 +177,7 @@ const FarmerStatsScreen = ({
           format={(item) => item.successfulPartials.length}
           color={theme.colors.indigo}
           title={`${t('successfulPartials')}`}
+          settings={settings}
         />
         {/* <View style={{ width: 16 }} /> */}
         <Item
@@ -181,6 +186,7 @@ const FarmerStatsScreen = ({
           format={(item) => item.failedPartials.length}
           color={theme.colors.orange}
           title={`${t('failedPartials')}`}
+          settings={settings}
         />
       </View>
       {/* <View style={{ width: 16 }} /> */}
@@ -191,6 +197,7 @@ const FarmerStatsScreen = ({
           format={(item) => `${item.partialPerfomance.toFixed(1)}%`}
           color={theme.colors.pink}
           title={t('partialPerfomance')}
+          settings={settings}
         />
         {/* <View style={{ width: 16 }} /> */}
         <Item
@@ -199,6 +206,7 @@ const FarmerStatsScreen = ({
           format={(item) => item.harvesters.size}
           color={theme.colors.purple}
           title={t('harvesterCount')}
+          settings={settings}
         />
       </View>
       {/* <View style={{ height: 8 }} /> */}

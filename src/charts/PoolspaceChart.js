@@ -221,6 +221,7 @@ const PoolspaceChart = ({ poolSpace }) => {
     ITEMS[settings.poolspaceDefault ? settings.poolspaceDefault : 4]
   );
   const { width, height } = Dimensions.get('window');
+  const theme = useTheme();
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -238,6 +239,7 @@ const PoolspaceChart = ({ poolSpace }) => {
               setElement(item);
               setSettings((prev) => ({ ...prev, poolspaceDefault: index }));
             }}
+            borderRadius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
           />
         }
       />
