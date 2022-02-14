@@ -25,7 +25,7 @@ import CustomIconButton from '../../components/CustomIconButton';
 import FocusAwareStatusBar from '../../components/FocusAwareStatusBar';
 import PressableCard from '../../components/PressableCard';
 import { getCurrencyFromKey } from '../../screens/CurrencySelectionScreen';
-import { formatBytes, formatPrice } from '../../utils/Formatting';
+import { convertMojoToChia, formatBytes, formatPrice } from '../../utils/Formatting';
 import FarmerBlockScreen from './farmer/Blocks';
 import FarmerPartialScreen from './farmer/Partials';
 import FarmerPayoutScreen from './farmer/Payouts';
@@ -34,6 +34,8 @@ import FarmerStatsScreen from './farmer/Stats';
 const Tab = createMaterialTopTabNavigator();
 
 const sumValue = (data, type) => data.map((item) => item[type]).reduce((a, b) => a + b);
+const partialPerfomance = (partialCount, failedPartialCount) =>
+  ((partialCount - failedPartialCount) * 100) / partialCount;
 
 const DashboardScreen = ({ navigation }) => {
   const [farms, setFarms] = useRecoilState(launcherIDsState);
@@ -154,7 +156,49 @@ const DashboardScreen = ({ navigation }) => {
         timestamp
       )
         .then((partials) => {
-          setData((prev) => ({ ...prev, partials }));
+          const harvesters = new Set();
+          const failedPartials = [];
+          const successfulPartials = [];
+          let partialCount = 0;
+          let points = 0;
+          if (selected === -1) {
+            partials.forEach((farm) => {
+              farm.data.forEach((item) => {
+                harvesters.add(item.harvester_id);
+                if (item.error !== null) {
+                  failedPartials.push(item);
+                } else {
+                  successfulPartials.push(item);
+                  points += item.difficulty;
+                }
+                partialCount += 1;
+              });
+            });
+          } else {
+            partials
+              .find((item) => item.launcherId === selected)
+              .data.forEach((item) => {
+                harvesters.add(item.harvester_id);
+                if (item.error !== null) {
+                  failedPartials.push(item);
+                } else {
+                  successfulPartials.push(item);
+                  points += item.difficulty;
+                }
+                partialCount += 1;
+              });
+          }
+          setData((prev) => ({
+            ...prev,
+            partials: {
+              harvesters,
+              failedPartials,
+              successfulPartials,
+              points,
+              partialCount,
+              partialPerfomance: partialPerfomance(partialCount, failedPartials.length),
+            },
+          }));
         })
         .catch((error) => {
           setError((prev) => ({ ...prev, partials: true }));
@@ -376,10 +420,84 @@ const DashboardScreen = ({ navigation }) => {
               ? `${data.balance
                   .map((item) => item.value)
                   .reduce((a, b) => a + b)
-                  .toFixed(2)} XCH`
+                  .toFixed(3)} XCH`
               : `${data.balance.find((item) => item.launcherId === selected).value.toFixed(2)} XCH`
             : null}
         </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            margin: 'auto',
+            marginTop: 16,
+          }}
+        >
+          {/* <View style={{ flex: 1 }}>
+            <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>Transactions</Text>
+            <Text style={{ textAlign: 'center' }}>
+              {loading.stats
+                ? '...'
+                : selected === -1
+                ? sumValue(
+                    data.farmers.map((item) => item.payout),
+                    'total_transactions'
+                  )
+                : sumValue(
+                    data.farmers
+                      .map((item) => item.payout)
+                      .filter((item) => item.launcher_id === selected),
+                    'total_transactions'
+                  )}
+            </Text>
+          </View> */}
+          {/* <View style={{ flex: 1 }}> */}
+          <Text style={{ textAlign: 'center', color: theme.colors.textGrey, paddingEnd: 12 }}>
+            Paid
+          </Text>
+          <Text style={{ textAlign: 'center', paddingEnd: 36 }}>
+            {loading.stats
+              ? '...'
+              : selected === -1
+              ? `${convertMojoToChia(
+                  sumValue(
+                    data.farmers.map((item) => item.payout),
+                    'total_paid'
+                  )
+                ).toFixed(3)} XCH`
+              : `${convertMojoToChia(
+                  sumValue(
+                    data.farmers
+                      .map((item) => item.payout)
+                      .filter((item) => item.launcher_id === selected),
+                    'total_paid'
+                  )
+                ).toFixed(3)} XCH`}
+          </Text>
+          {/* </View> */}
+          {/* <View style={{ flex: 1 }}> */}
+          <Text style={{ textAlign: 'center', color: theme.colors.textGrey, paddingEnd: 12 }}>
+            Unpaid
+          </Text>
+          <Text style={{ textAlign: 'center' }}>
+            {loading.stats
+              ? '...'
+              : selected === -1
+              ? `${convertMojoToChia(
+                  sumValue(
+                    data.farmers.map((item) => item.payout),
+                    'total_unpaid'
+                  )
+                ).toFixed(3)} XCH`
+              : `${convertMojoToChia(
+                  sumValue(
+                    data.farmers
+                      .map((item) => item.payout)
+                      .filter((item) => item.launcher_id === selected),
+                    'total_unpaid'
+                  )
+                ).toFixed(3)} XCH`}
+          </Text>
+        </View>
+        {/* </View> */}
         <View
           style={{
             flexDirection: 'row',

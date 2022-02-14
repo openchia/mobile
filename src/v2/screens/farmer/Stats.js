@@ -67,50 +67,50 @@ const FarmerStatsScreen = ({
   const [partialStats, setPartialStats] = useState(null);
   const settings = useRecoilValue(settingsState);
 
-  useEffect(() => {
-    if (!loading.partials && data.partials) {
-      const harvesters = new Set();
-      const failedPartials = [];
-      const successfulPartials = [];
-      let partialCount = 0;
-      let points = 0;
-      if (selected === -1) {
-        data.partials.forEach((farm) => {
-          farm.data.forEach((item) => {
-            harvesters.add(item.harvester_id);
-            if (item.error !== null) {
-              failedPartials.push(item);
-            } else {
-              successfulPartials.push(item);
-              points += item.difficulty;
-            }
-            partialCount += 1;
-          });
-        });
-      } else {
-        data.partials
-          .find((item) => item.launcherId === selected)
-          .data.forEach((item) => {
-            harvesters.add(item.harvester_id);
-            if (item.error !== null) {
-              failedPartials.push(item);
-            } else {
-              successfulPartials.push(item);
-              points += item.difficulty;
-            }
-            partialCount += 1;
-          });
-      }
-      setPartialStats({
-        harvesters,
-        failedPartials,
-        successfulPartials,
-        points,
-        partialCount,
-        partialPerfomance: partialPerfomance(partialCount, failedPartials.length),
-      });
-    }
-  }, [loading, selected]);
+  // useEffect(() => {
+  //   if (!loading.partials && data.partials) {
+  //     const harvesters = new Set();
+  //     const failedPartials = [];
+  //     const successfulPartials = [];
+  //     let partialCount = 0;
+  //     let points = 0;
+  //     if (selected === -1) {
+  //       data.partials.forEach((farm) => {
+  //         farm.data.forEach((item) => {
+  //           harvesters.add(item.harvester_id);
+  //           if (item.error !== null) {
+  //             failedPartials.push(item);
+  //           } else {
+  //             successfulPartials.push(item);
+  //             points += item.difficulty;
+  //           }
+  //           partialCount += 1;
+  //         });
+  //       });
+  //     } else {
+  //       data.partials
+  //         .find((item) => item.launcherId === selected)
+  //         .data.forEach((item) => {
+  //           harvesters.add(item.harvester_id);
+  //           if (item.error !== null) {
+  //             failedPartials.push(item);
+  //           } else {
+  //             successfulPartials.push(item);
+  //             points += item.difficulty;
+  //           }
+  //           partialCount += 1;
+  //         });
+  //     }
+  //     setPartialStats({
+  //       harvesters,
+  //       failedPartials,
+  //       successfulPartials,
+  //       points,
+  //       partialCount,
+  //       partialPerfomance: partialPerfomance(partialCount, failedPartials.length),
+  //     });
+  //   }
+  // }, [loading, selected]);
 
   return (
     <ScrollView
@@ -123,13 +123,54 @@ const FarmerStatsScreen = ({
           onRefresh={() => {
             let timestamp = new Date().getTime();
             timestamp = Math.floor(timestamp / 1000) - 60 * 60 * 24;
-            setLoading((prev) => ({ ...prev, partials: true }));
             getPartialsFromIDs(
               farms.map((item) => item.launcherId),
               timestamp
             )
               .then((partials) => {
-                setData((prev) => ({ ...prev, partials }));
+                const harvesters = new Set();
+                const failedPartials = [];
+                const successfulPartials = [];
+                let partialCount = 0;
+                let points = 0;
+                if (selected === -1) {
+                  partials.forEach((farm) => {
+                    farm.data.forEach((item) => {
+                      harvesters.add(item.harvester_id);
+                      if (item.error !== null) {
+                        failedPartials.push(item);
+                      } else {
+                        successfulPartials.push(item);
+                        points += item.difficulty;
+                      }
+                      partialCount += 1;
+                    });
+                  });
+                } else {
+                  partials
+                    .find((item) => item.launcherId === selected)
+                    .data.forEach((item) => {
+                      harvesters.add(item.harvester_id);
+                      if (item.error !== null) {
+                        failedPartials.push(item);
+                      } else {
+                        successfulPartials.push(item);
+                        points += item.difficulty;
+                      }
+                      partialCount += 1;
+                    });
+                }
+                setData((prev) => ({
+                  ...prev,
+                  partials: {
+                    harvesters,
+                    failedPartials,
+                    successfulPartials,
+                    points,
+                    partialCount,
+                    partialPerfomance: partialPerfomance(partialCount, failedPartials.length),
+                  },
+                }));
               })
               .catch((error) => {
                 setError((prev) => ({ ...prev, partials: true }));
@@ -152,7 +193,7 @@ const FarmerStatsScreen = ({
       <View style={styles.container}>
         <Item
           loading={loading.partials}
-          value={partialStats}
+          value={data.partials}
           format={(item) => item.partialCount}
           color={theme.colors.green}
           title={`${t('partials')}\n(${t('24Hours').toUpperCase()})`}
@@ -162,47 +203,43 @@ const FarmerStatsScreen = ({
         {/* <View style={{ width: 16 }} /> */}
         <Item
           loading={loading.partials}
-          value={partialStats}
+          value={data.partials}
           format={(item) => item.points}
           color={theme.colors.blue}
           title={`${t('points')}\n(${t('24Hours').toUpperCase()})`}
           settings={settings}
         />
       </View>
-      {/* <View style={{ width: 16 }} /> */}
       <View style={styles.container}>
         <Item
           loading={loading.partials}
-          value={partialStats}
+          value={data.partials}
           format={(item) => item.successfulPartials.length}
           color={theme.colors.indigo}
           title={`${t('successfulPartials')}`}
           settings={settings}
         />
-        {/* <View style={{ width: 16 }} /> */}
         <Item
           loading={loading.partials}
-          value={partialStats}
+          value={data.partials}
           format={(item) => item.failedPartials.length}
           color={theme.colors.orange}
           title={`${t('failedPartials')}`}
           settings={settings}
         />
       </View>
-      {/* <View style={{ width: 16 }} /> */}
       <View style={styles.container}>
         <Item
           loading={loading.partials}
-          value={partialStats}
+          value={data.partials}
           format={(item) => `${item.partialPerfomance.toFixed(1)}%`}
           color={theme.colors.pink}
           title={t('partialPerfomance')}
           settings={settings}
         />
-        {/* <View style={{ width: 16 }} /> */}
         <Item
           loading={loading.partials}
-          value={partialStats}
+          value={data.partials}
           format={(item) => item.harvesters.size}
           color={theme.colors.purple}
           title={t('harvesterCount')}
@@ -219,7 +256,7 @@ const FarmerStatsScreen = ({
         />
         <View style={{ width: 8 }} />
         <Item
-          value={partialStats}
+          value={data.partials}
           format={(item) => item.harvesters.size}
           color={theme.colors.purple}
           title={t('harvesterCount')}

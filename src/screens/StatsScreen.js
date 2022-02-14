@@ -41,7 +41,10 @@ const Item = ({ title, value, color, loadable, data, format, onPress, icon, sett
           onPress={onPress}
         >
           <View style={styles.item}>
-            <Text style={{ color, fontSize: 14, textAlign: 'center', paddingTop: 14 }}>
+            <Text
+              numberOfLines={1}
+              style={{ color, fontSize: 14, textAlign: 'center', paddingTop: 14 }}
+            >
               {title}
             </Text>
             <Text

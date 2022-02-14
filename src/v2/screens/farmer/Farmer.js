@@ -24,9 +24,12 @@ import { getFarmersFromLauncherIDAndStats } from './../../../Api';
 import { useTranslation } from 'react-i18next';
 import CustomIconButton from '../../../components/CustomIconButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import useIsMounted from '../../../hooks/useIsMounted';
 
 const Tab = createMaterialTopTabNavigator();
 const sumValue = (data, type) => data.map((item) => item[type]).reduce((a, b) => a + b);
+const partialPerfomance = (partialCount, failedPartialCount) =>
+  ((partialCount - failedPartialCount) * 100) / partialCount;
 
 const FarmerScreen = ({ route, navigation }) => {
   const [data, setData] = useState({});
@@ -46,18 +49,17 @@ const FarmerScreen = ({ route, navigation }) => {
   const [launcherId, setLauncherId] = useState(route.params.launcherId);
   const [name, setName] = useState(route.params.name);
   const { t } = useTranslation();
-  const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
-
-  const farm = launcherIDs.find((item) => item.launcherId === launcherId);
+  const isMounted = useIsMounted();
 
   useEffect(() => {
-    setLoading((prev) => ({ ...prev, stats: true, partials: true, address: true }));
+    if (isMounted.current)
+      setLoading((prev) => ({ ...prev, stats: true, partials: true, address: true }));
     let timestamp = new Date().getTime();
     timestamp = Math.floor(timestamp / 1000) - 60 * 60 * 24;
 
     getFarmersFromLauncherIDAndStats([launcherId])
       .then(([farmers, stats]) => {
-        setData((prev) => ({ ...prev, farmers, stats }));
+        if (isMounted.current) setData((prev) => ({ ...prev, farmers, stats }));
       })
       .catch((error) => {
         setError((prev) => ({ ...prev, stats: true }));
@@ -68,13 +70,42 @@ const FarmerScreen = ({ route, navigation }) => {
 
     getPartialsFromIDs([launcherId], timestamp)
       .then((partials) => {
-        setData((prev) => ({ ...prev, partials }));
+        if (isMounted.current) {
+          const harvesters = new Set();
+          const failedPartials = [];
+          const successfulPartials = [];
+          let partialCount = 0;
+          let points = 0;
+
+          partials[0].data.forEach((item) => {
+            harvesters.add(item.harvester_id);
+            if (item.error !== null) {
+              failedPartials.push(item);
+            } else {
+              successfulPartials.push(item);
+              points += item.difficulty;
+            }
+            partialCount += 1;
+          });
+
+          setData((prev) => ({
+            ...prev,
+            partials: {
+              harvesters,
+              failedPartials,
+              successfulPartials,
+              points,
+              partialCount,
+              partialPerfomance: partialPerfomance(partialCount, failedPartials.length),
+            },
+          }));
+        }
       })
       .catch((error) => {
-        setError((prev) => ({ ...prev, partials: true }));
+        if (isMounted.current) setError((prev) => ({ ...prev, partials: true }));
       })
       .finally(() => {
-        setLoading((prev) => ({ ...prev, partials: false }));
+        if (isMounted.current) setLoading((prev) => ({ ...prev, partials: false }));
       });
   }, []);
 
