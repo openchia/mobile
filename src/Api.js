@@ -8,12 +8,10 @@ const COINGECKO_API = 'https://api.coingecko.com/api/v3/';
 
 const openChiaApi = axios.create({
   baseURL: 'https://openchia.io/api/v1.0/',
-  timeout: 1000,
 });
 
 const spaceScanApi = axios.create({
   baseURL: 'https://api2.spacescan.io/1/',
-  timeout: 1000,
 });
 
 export const apiGet = (path, controller) => {
