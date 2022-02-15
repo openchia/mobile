@@ -45,7 +45,6 @@ import {
   farmerSearchBarPressedState,
   farmerSearchBarTextState,
   groupState,
-  initialRouteState,
   launcherIDsState,
   settingsState,
 } from './Atoms';
@@ -553,7 +552,6 @@ const AppRoot = ({ theme, toggleTheme, launcherIDsArray, isThemeDark, initialRou
 const ApplicationNavigator = () => {
   const settings = useRecoilValue(settingsState);
   const launcherIDs = useRecoilValue(launcherIDsState);
-  const initialRoute = useRecoilValue(initialRouteState);
 
   useEffect(() => {
     SplashScreen.hide();

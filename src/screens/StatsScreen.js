@@ -9,7 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { selectorFamily, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { getStats } from '../Api';
-import { currencyState, initialRouteState, settingsState, statsRequestIDState } from '../Atoms';
+import { currencyState, settingsState, statsRequestIDState } from '../Atoms';
 import LoadingComponent from '../components/LoadingComponent';
 
 import PressableCard from '../components/PressableCard';
@@ -101,7 +101,6 @@ const StatsScreen = ({ navigation }) => {
   const theme = useTheme();
   const [failed, setFailed] = useState(false);
   const netInfo = useNetInfo();
-  const [initialRoute, setIntialRoute] = useRecoilState(initialRouteState);
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();

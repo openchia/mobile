@@ -25,8 +25,8 @@ import { ToastProvider } from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useRecoilValue } from 'recoil';
-import { initialRouteState, launcherIDsState, settingsState } from './Atoms';
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { currencyState, launcherIDsState, settingsState } from './Atoms';
 import OpenChiaIcon from './images/OpenChiaIcon';
 import ChiaPriceScreen from './screens/charts/ChiaPriceScreen';
 import PoolspaceScreen from './screens/charts/PoolspaceScreen';
@@ -146,19 +146,33 @@ const Root = ({ settings }) => {
 };
 
 const BaseScreen = () => {
-  const settings = useRecoilValue(settingsState);
-  const launcherIDs = useRecoilValue(launcherIDsState);
-  const initialRoute = useRecoilValue(initialRouteState);
+  const settingsLoadable = useRecoilValueLoadable(settingsState);
+  const farmsLoadable = useRecoilValueLoadable(launcherIDsState);
+  const currencyLoadable = useRecoilValueLoadable(currencyState);
+  const { t } = useTranslation();
 
   useEffect(() => {
-    SplashScreen.hide();
-  }, []);
+    if (
+      settingsLoadable.state === 'hasValue' &&
+      farmsLoadable.state === 'hasValue' &&
+      currencyLoadable.state === 'hasValue'
+    ) {
+      SplashScreen.hide();
+    }
+  }, [settingsLoadable, farmsLoadable, currencyLoadable]);
+
+  if (
+    settingsLoadable.state === 'loading' ||
+    farmsLoadable.state === 'loading' ||
+    currencyLoadable.state === 'loading'
+  ) {
+    return null;
+  }
 
   // const launcherIDsArray = Array.from(launcherIDs, ([name, value]) => ({ name, value }));
   // const launcherIDsArray =launcherIDs;
 
-  const theme = settings.isThemeDark ? DarkTheme : LightTheme;
-  const { t } = useTranslation();
+  const theme = settingsLoadable.contents.isThemeDark ? DarkTheme : LightTheme;
 
   return (
     <ToastProvider>
@@ -169,7 +183,9 @@ const BaseScreen = () => {
               <BottomSheetModalProvider>
                 <StatusBar
                   backgroundColor={theme.colors.statusBarColor}
-                  barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
+                  barStyle={
+                    settingsLoadable.contents.isThemeDark ? 'light-content' : 'dark-content'
+                  }
                 />
                 {/* <CustomStatusBar backgroundColor={theme.colors.statusBarColor}></CustomStatusBar> */}
                 {/* <View style={{ height: 54, backgroundColor: 'red' }}></View> */}
@@ -192,7 +208,7 @@ const BaseScreen = () => {
                     {() => (
                       <Root
                         theme={theme}
-                        settings={settings}
+                        settings={settingsLoadable.contents}
                         // toggleTheme={toggleTheme}
                         // launcherIDs={launcherIDs}
                         // initialRoute={initialRoute}

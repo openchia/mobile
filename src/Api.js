@@ -1,4 +1,6 @@
-import axios from 'axios';
+/* eslint-disable arrow-body-style */
+/* eslint-disable no-undef */
+import axios, { Axios } from 'axios';
 
 const REST_API = 'https://openchia.io/api/v1.0/';
 const CHIA_PLOT_REST_API = 'https://thechiaplot.net/wp-json/wp/v2/';
@@ -13,6 +15,75 @@ const spaceScanApi = axios.create({
   baseURL: 'https://api2.spacescan.io/1/',
   timeout: 1000,
 });
+
+export const apiGet = (path, controller) => {
+  return openChiaApi
+    .get(path, controller)
+    .then((response) => {
+      if (response) {
+        // throw new Error('Test Error');
+        return response.data;
+      }
+      throw new Error(response.statusText);
+    })
+    .catch((err) => {
+      console.log('sing: ', err);
+      if (axios.isCancel(err)) {
+        console.log('Caught Cancel');
+      } else {
+        throw err;
+      }
+    });
+};
+
+export const apiMultiGet = (paths, controller) => {
+  // openChiaApi.all(paths.map((path) => apiGet(path, controller)));
+
+  // axios.all(paths.map((path) => apiGet(path, controller)));
+  // .then((response) => {
+  //   if (response) {
+  //     return response.data;
+  //   }
+  //   throw new Error(response.statusText);
+  // });
+  // .catch((err) => {
+  //   console.log('allError: ', err);
+  //   if (axios.isCancel(err)) {
+  //     console.log('Caught Cancel');
+  //   } else {
+  //     throw err;
+  //   }
+  // });
+
+  const promises = paths.map((path) => apiGet(path, controller));
+  return Promise.all(promises);
+  // .catch((err) => {
+  //   if (axios.isCancel(err)) {
+  //     console.log('Caught Cancel');
+  //   } else {
+  //     console.log(paths, err);
+  //     throw err;
+  //   }
+  // });
+};
+
+// export async function apiGet(path, data) {
+//   const url = `${API_URL}${path}`;
+//   const body = data ?? {};
+//   return api
+//     .get(url, body)
+//     .then((response) => {
+//       if (response) {
+//         if (response.data) {
+//           return response.data.data;
+//         }
+//       }
+//       return null;
+//     })
+//     .catch((err) => {
+//       console.log(url, err);
+//     });
+// }
 
 export const getAddressBalance = async (address, launcherId) => {
   const url = `/xch/balance/${address}`;

@@ -9,7 +9,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { updateFCMToken } from '../Api';
-import { initialRouteState, settingsState, groupState } from '../Atoms';
+import {  settingsState, groupState } from '../Atoms';
 import OpenChiaIconWithText from '../images/OpenChiaIconWithText';
 import { getObject } from '../utils/Utils';
 import CustomDrawerSection from './CustomDrawerSection';
@@ -23,13 +23,12 @@ const CustomDrawerContent = (props) => {
   const { t } = useTranslation();
 
   const [settings, setSettings] = useRecoilState(settingsState);
-  const [initialRoute, setIntialRoute] = useRecoilState(initialRouteState);
   const [groups, setGroups] = useRecoilState(groupState);
 
   const onPress = (location, saveroute) => {
     navigation.navigate('Root', { screen: location, intial: false });
     if (saveroute) {
-      setIntialRoute({ name: location });
+    // setIntialRoute({ name: location });
     }
   };
 

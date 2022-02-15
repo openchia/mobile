@@ -77,12 +77,6 @@ export const tokensState = atom({
   effects_UNSTABLE: [localTokenEffect('tokens')],
 });
 
-export const initialRouteState = atom({
-  key: 'atomInitialRoute',
-  default: { name: 'Home' },
-  effects_UNSTABLE: [localEffect('initialRouteName')],
-});
-
 export const settingsState = atom({
   key: 'atomTheme',
   default: {

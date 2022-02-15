@@ -22,7 +22,6 @@ import {
   currencyState,
   farmerRefreshState,
   groupState,
-  initialRouteState,
   launcherIDsState,
   settingsState,
 } from '../../Atoms';
@@ -122,7 +121,6 @@ const FarmerTestScreen = ({ route, navigation }) => {
   const [launcherIds, setLauncherIDs] = useRecoilState(launcherIDsState);
   const [groups, setGroups] = useRecoilState(groupState);
   const [settings, setSettings] = useRecoilState(settingsState);
-  const initialRoute = useRecoilValue(initialRouteState);
   const theme = useTheme();
   const { t } = useTranslation();
   const [farmerDataAndStats, setFarmerDataAndStats] = useState([]);
@@ -134,7 +132,7 @@ const FarmerTestScreen = ({ route, navigation }) => {
 
   // const dataLoadable = useRecoilValueLoadable(query(getData(route, initialRoute)));
 
-  const data = getData(route, initialRoute);
+  const data = null;
 
   React.useLayoutEffect(() => {
     console.log('Called');

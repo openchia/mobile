@@ -151,61 +151,61 @@ const DashboardScreen = ({ navigation }) => {
           setLoading((prev) => ({ ...prev, stats: false }));
         });
 
-      getPartialsFromIDs(
-        farms.map((item) => item.launcherId),
-        timestamp
-      )
-        .then((partials) => {
-          const harvesters = new Set();
-          const failedPartials = [];
-          const successfulPartials = [];
-          let partialCount = 0;
-          let points = 0;
-          if (selected === -1) {
-            partials.forEach((farm) => {
-              farm.data.forEach((item) => {
-                harvesters.add(item.harvester_id);
-                if (item.error !== null) {
-                  failedPartials.push(item);
-                } else {
-                  successfulPartials.push(item);
-                  points += item.difficulty;
-                }
-                partialCount += 1;
-              });
-            });
-          } else {
-            partials
-              .find((item) => item.launcherId === selected)
-              .data.forEach((item) => {
-                harvesters.add(item.harvester_id);
-                if (item.error !== null) {
-                  failedPartials.push(item);
-                } else {
-                  successfulPartials.push(item);
-                  points += item.difficulty;
-                }
-                partialCount += 1;
-              });
-          }
-          setData((prev) => ({
-            ...prev,
-            partials: {
-              harvesters,
-              failedPartials,
-              successfulPartials,
-              points,
-              partialCount,
-              partialPerfomance: partialPerfomance(partialCount, failedPartials.length),
-            },
-          }));
-        })
-        .catch((error) => {
-          setError((prev) => ({ ...prev, partials: true }));
-        })
-        .finally(() => {
-          setLoading((prev) => ({ ...prev, partials: false }));
-        });
+      // getPartialsFromIDs(
+      //   farms.map((item) => item.launcherId),
+      //   timestamp
+      // )
+      //   .then((partials) => {
+      //     const harvesters = new Set();
+      //     const failedPartials = [];
+      //     const successfulPartials = [];
+      //     let partialCount = 0;
+      //     let points = 0;
+      //     if (selected === -1) {
+      //       partials.forEach((farm) => {
+      //         farm.data.forEach((item) => {
+      //           harvesters.add(item.harvester_id);
+      //           if (item.error !== null) {
+      //             failedPartials.push(item);
+      //           } else {
+      //             successfulPartials.push(item);
+      //             points += item.difficulty;
+      //           }
+      //           partialCount += 1;
+      //         });
+      //       });
+      //     } else {
+      //       partials
+      //         .find((item) => item.launcherId === selected)
+      //         .data.forEach((item) => {
+      //           harvesters.add(item.harvester_id);
+      //           if (item.error !== null) {
+      //             failedPartials.push(item);
+      //           } else {
+      //             successfulPartials.push(item);
+      //             points += item.difficulty;
+      //           }
+      //           partialCount += 1;
+      //         });
+      //     }
+      //     setData((prev) => ({
+      //       ...prev,
+      //       partials: {
+      //         harvesters,
+      //         failedPartials,
+      //         successfulPartials,
+      //         points,
+      //         partialCount,
+      //         partialPerfomance: partialPerfomance(partialCount, failedPartials.length),
+      //       },
+      //     }));
+      //   })
+      //   .catch((error) => {
+      //     setError((prev) => ({ ...prev, partials: true }));
+      //   })
+      //   .finally(() => {
+      //     setLoading((prev) => ({ ...prev, partials: false }));
+      //   });
     }
   }, [farms]);
 
@@ -576,14 +576,7 @@ const DashboardScreen = ({ navigation }) => {
             }}
           >
             <Tab.Screen name="FarmerStats" options={{ title: t('stats') }}>
-              {() => (
-                <FarmerStatsScreen
-                  data={data}
-                  loading={loading}
-                  error={error}
-                  selected={selected}
-                />
-              )}
+              {() => <FarmerStatsScreen launcherIds={farms.map((item) => item.launcherId)} />}
             </Tab.Screen>
             <Tab.Screen name="FarmerPartials" options={{ title: t('partials') }}>
               {() => <FarmerPartialScreen launcherIds={farms.map((item) => item.launcherId)} />}
@@ -603,18 +596,7 @@ const DashboardScreen = ({ navigation }) => {
             }}
           >
             <Tab.Screen name="FarmerStats" options={{ title: t('stats') }}>
-              {() => (
-                <FarmerStatsScreen
-                  data={data}
-                  loading={loading}
-                  error={error}
-                  selected={selected}
-                  farms={farms}
-                  setData={setData}
-                  setLoading={setLoading}
-                  setError={setError}
-                />
-              )}
+              {() => <FarmerStatsScreen launcherIds={farms.map((item) => item.launcherId)} />}
             </Tab.Screen>
             <Tab.Screen name="FarmerPartials" options={{ title: t('partials') }}>
               {() => (

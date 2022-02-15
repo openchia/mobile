@@ -13,7 +13,6 @@ import { getFarmer, getPartialsFromID, getStats } from '../../Api';
 import {
   currencyState,
   farmerRefreshState,
-  initialRouteState,
   launcherIDsState,
 } from '../../Atoms';
 import IconButton from '../../components/IconButton';
@@ -73,19 +72,18 @@ export const getHeaderTitle = (route, t, name) => {
 
 const FarmerScreen = ({ route, navigation }) => {
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
-  const initialRoute = useRecoilValue(initialRouteState);
   const theme = useTheme();
   const { t } = useTranslation();
   // const settings = useRecoilValue(settingsState);
   let mLauncherId;
   let name;
-  if (route.params) {
-    mLauncherId = route.params.launcherId;
-    name = route.params.name;
-  } else {
-    mLauncherId = initialRoute.launcherId;
-    name = initialRoute.launcherName;
-  }
+  // if (route.params) {
+  //   mLauncherId = route.params.launcherId;
+  //   name = route.params.name;
+  // } else {
+  //   mLauncherId = initialRoute.launcherId;
+  //   name = initialRoute.launcherName;
+  // }
 
   const dataLoadable = useRecoilValueLoadable(query(mLauncherId));
 

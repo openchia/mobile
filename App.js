@@ -121,9 +121,9 @@ const App = () => {
     // </BottomSheetModalProvider>
 
     <RecoilRoot>
-      <Suspense fallback={<LoadingComponent />}>
-        <BaseScreen />
-      </Suspense>
+      {/* <Suspense fallback={<LoadingComponent />}> */}
+      <BaseScreen />
+      {/* </Suspense> */}
     </RecoilRoot>
   );
 };

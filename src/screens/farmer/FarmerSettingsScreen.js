@@ -10,7 +10,7 @@ import {
   updateFarmerMissingPartialsNotification,
   updateFCMToken,
 } from '../../Api';
-import { initialRouteState, launcherIDsState, settingsState } from '../../Atoms';
+import { launcherIDsState, settingsState } from '../../Atoms';
 import CustomIconButton from '../../components/CustomIconButton';
 import PressableCard from '../../components/PressableCard';
 
@@ -20,7 +20,6 @@ const FarmerSettingsScreen = ({ route, navigation }) => {
   const [settings, setSettings] = useRecoilState(settingsState);
   const theme = useTheme();
   const [visible, setVisible] = React.useState(false);
-  const setIntialRoute = useSetRecoilState(initialRouteState);
   const { t } = useTranslation();
 
   const showDialog = () => setVisible(true);

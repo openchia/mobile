@@ -1,115 +1,73 @@
 /* eslint-disable no-nested-ternary */
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
+import { ErrorBoundary, useErrorHandler } from 'react-error-boundary';
+import { useTranslation } from 'react-i18next';
 import { Platform, SafeAreaView, View } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { Button, Text, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { getFarmerStats, getPartialsFromID, getPartialsFromIDs } from '../../../Api';
-import {
-  farmErrorState,
-  farmState,
-  farmLoadingState,
-  currencyState,
-  farmStateFarmer,
-  launcherIDsState,
-} from '../../../Atoms';
+import { useRecoilValue } from 'recoil';
+import { apiGet, apiMultiGet } from '../../../Api';
+import { currencyState } from '../../../Atoms';
+import CustomIconButton from '../../../components/CustomIconButton';
 import { getCurrencyFromKey } from '../../../screens/CurrencySelectionScreen';
 import { formatBytes, formatPrice } from '../../../utils/Formatting';
-import FarmerStatsScreen from './Stats';
+import FarmerBlockScreen from './Blocks';
 import FarmerPartialScreen from './Partials';
 import FarmerPayoutScreen from './Payouts';
-import FarmerBlockScreen from './Blocks';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { getFarmersFromLauncherIDAndStats } from './../../../Api';
-import { useTranslation } from 'react-i18next';
-import CustomIconButton from '../../../components/CustomIconButton';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import useIsMounted from '../../../hooks/useIsMounted';
+import FarmerStatsScreen from './Stats';
 
 const Tab = createMaterialTopTabNavigator();
-const sumValue = (data, type) => data.map((item) => item[type]).reduce((a, b) => a + b);
-const partialPerfomance = (partialCount, failedPartialCount) =>
-  ((partialCount - failedPartialCount) * 100) / partialCount;
 
-const FarmerScreen = ({ route, navigation }) => {
+const Content = ({ route, navigation }) => {
   const [data, setData] = useState({});
-  const [loading, setLoading] = useState({
-    address: true,
-    stats: true,
-    partials: true,
-    payouts: true,
-  });
-  const [error, setError] = useState({
-    address: false,
-    stats: false,
-    partials: false,
-    payouts: false,
-  });
+  const [loading, setLoading] = useState(true);
   const currency = useRecoilValue(currencyState);
-  const [launcherId, setLauncherId] = useState(route.params.launcherId);
-  const [name, setName] = useState(route.params.name);
+  const { launcherId, name } = route.params;
   const { t } = useTranslation();
-  const isMounted = useIsMounted();
+  const theme = useTheme();
+  const handleError = useErrorHandler();
 
   useEffect(() => {
-    if (isMounted.current)
-      setLoading((prev) => ({ ...prev, stats: true, partials: true, address: true }));
-    let timestamp = new Date().getTime();
-    timestamp = Math.floor(timestamp / 1000) - 60 * 60 * 24;
+    const controller = new AbortController();
 
-    getFarmersFromLauncherIDAndStats([launcherId])
-      .then(([farmers, stats]) => {
-        if (isMounted.current) setData((prev) => ({ ...prev, farmers, stats }));
-      })
-      .catch((error) => {
-        setError((prev) => ({ ...prev, stats: true }));
-      })
-      .finally(() => {
-        setLoading((prev) => ({ ...prev, stats: false }));
+    const fetchData = async () => {
+      const stats = await apiGet('stats', {
+        signal: controller.signal,
+      }).catch((err) => {
+        handleError(err);
       });
-
-    getPartialsFromIDs([launcherId], timestamp)
-      .then((partials) => {
-        if (isMounted.current) {
-          const harvesters = new Set();
-          const failedPartials = [];
-          const successfulPartials = [];
-          let partialCount = 0;
-          let points = 0;
-
-          partials[0].data.forEach((item) => {
-            harvesters.add(item.harvester_id);
-            if (item.error !== null) {
-              failedPartials.push(item);
-            } else {
-              successfulPartials.push(item);
-              points += item.difficulty;
-            }
-            partialCount += 1;
-          });
-
-          setData((prev) => ({
-            ...prev,
-            partials: {
-              harvesters,
-              failedPartials,
-              successfulPartials,
-              points,
-              partialCount,
-              partialPerfomance: partialPerfomance(partialCount, failedPartials.length),
-            },
-          }));
-        }
-      })
-      .catch((error) => {
-        if (isMounted.current) setError((prev) => ({ ...prev, partials: true }));
-      })
-      .finally(() => {
-        if (isMounted.current) setLoading((prev) => ({ ...prev, partials: false }));
+      const farmer = await apiGet(`launcher/${launcherId}/`, {
+        signal: controller.signal,
+      }).catch((err) => {
+        handleError(err);
       });
+      if (stats && farmer) {
+        setData({ stats, farmer });
+      }
+      setLoading(false);
+    };
+
+    // const fetchData = async () => {
+    //   const response = await apiMultiGet(['stats', `launcher/${launcherId}/`], {
+    //     signal: controller.signal,
+    //   }).catch((err) => {
+    //     handleError(err);
+    //   });
+    //   if (response) {
+    //     setData({ stats: response[0], farmer: response[1] });
+    //   }
+    //   setLoading(false);
+    // };
+
+    fetchData();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
-  const theme = useTheme();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.onSurface }}>
       <View
@@ -239,19 +197,17 @@ const FarmerScreen = ({ route, navigation }) => {
         >
           <View style={{ flex: 1 }}>
             <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>Difficulty</Text>
-            <Text style={{ textAlign: 'center' }}>
-              {loading.stats ? '...' : sumValue(data.farmers, 'difficulty')}
-            </Text>
+            <Text style={{ textAlign: 'center' }}>{loading ? '...' : data.farmer.difficulty}</Text>
           </View>
           <View style={{ flex: 1 }}>
             <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>
               Daily Earnings
             </Text>
             <Text style={{ textAlign: 'center' }}>
-              {loading.stats
+              {loading
                 ? '...'
                 : `${formatPrice(
-                    (sumValue(data.farmers, 'estimated_size') / 1099511627776) *
+                    (data.farmer.estimated_size / 1099511627776) *
                       data.stats.xch_tb_month *
                       data.stats.xch_current_price[currency],
                     currency
@@ -261,7 +217,7 @@ const FarmerScreen = ({ route, navigation }) => {
           <View style={{ flex: 1 }}>
             <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>Size</Text>
             <Text style={{ textAlign: 'center' }}>
-              {loading.stats ? '...' : formatBytes(sumValue(data.farmers, 'estimated_size'))}
+              {loading ? '...' : formatBytes(data.farmer.estimated_size)}
             </Text>
           </View>
         </View>
@@ -269,6 +225,8 @@ const FarmerScreen = ({ route, navigation }) => {
       <View style={{ height: 1 }} />
       <Tab.Navigator
         screenOptions={{
+          lazy: true,
+          lazyPreloadDistance: 1,
           tabBarLabelStyle: {
             fontFamily: theme.fonts.regular.fontFamily,
           },
@@ -278,7 +236,7 @@ const FarmerScreen = ({ route, navigation }) => {
         }}
       >
         <Tab.Screen name="FarmerStats" options={{ title: t('stats') }}>
-          {() => <FarmerStatsScreen data={data} loading={loading} error={error} />}
+          {() => <FarmerStatsScreen launcherIds={[launcherId]} />}
         </Tab.Screen>
         <Tab.Screen name="FarmerPartials" options={{ title: t('partials') }}>
           {() => <FarmerPartialScreen launcherIds={[launcherId]} />}
@@ -293,5 +251,56 @@ const FarmerScreen = ({ route, navigation }) => {
     </SafeAreaView>
   );
 };
+
+const ErrorFallback = ({ error, resetErrorBoundary }) => {
+  const navigation = useNavigation();
+  const theme = useTheme();
+  return (
+    <SafeAreaView
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        backgroundColor: theme.colors.onSurfaceLight,
+      }}
+    >
+      <View
+        style={{
+          // backgroundColor: theme.colors.onSurfaceLight,
+          alignItems: 'center',
+          flexDirection: 'row',
+          position: 'absolute',
+          left: 0,
+          top: 0,
+        }}
+      >
+        <CustomIconButton
+          icon={
+            Platform.OS === 'ios' ? (
+              <Ionicons name="ios-chevron-back-sharp" size={24} color={theme.colors.text} />
+            ) : (
+              <Ionicons name="arrow-back" size={24} color={theme.colors.text} />
+            )
+          }
+          style={{ marginEnd: 20 }}
+          size={24}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+      </View>
+      <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 16 }}>{error.message}</Text>
+      <Button mode="contained" onPress={resetErrorBoundary}>
+        Retry
+      </Button>
+    </SafeAreaView>
+  );
+};
+
+const FarmerScreen = ({ route, navigation }) => (
+  <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <Content route={route} navigation={navigation} />
+  </ErrorBoundary>
+);
 
 export default FarmerScreen;
