@@ -41,10 +41,7 @@ const Item = ({ title, value, color, loadable, data, format, onPress, icon, sett
           onPress={onPress}
         >
           <View style={styles.item}>
-            <Text
-              numberOfLines={1}
-              style={{ color, fontSize: 14, textAlign: 'center', paddingTop: 14 }}
-            >
+            <Text numberOfLines={1} style={{ color, fontSize: 14, textAlign: 'center' }}>
               {title}
             </Text>
             <Text
@@ -350,7 +347,8 @@ const styles = StyleSheet.create({
     height: '100%',
     // minHeight: 100,
     // alignItems: 'center',
-    // justifyContent: 'center',
+    justifyContent: 'center',
+    // paddingBottom: 20,
     // flexDirection: 'column',
     // display: 'flex',
     // backgroundColor: '#fff',
