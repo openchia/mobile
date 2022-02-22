@@ -32,6 +32,7 @@
     "no-shadow": "off",
     "no-unused-vars": "warn",
     "react-hooks/exhaustive-deps": "warn", // <--- THIS IS THE NEW RULE
+    "react/jsx-props-no-spreading": "off",
 
     // ignore errors for the react-navigation package
     "react/prop-types": ["warn", { "ignore": ["navigation", "navigation.navigate"] }]

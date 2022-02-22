@@ -5,10 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
-import { getRound } from '../../Api';
-import { giveawayWinnersState } from '../../Atoms';
 import CustomCard from '../../components/CustomCard';
 import LoadingComponent from '../../components/LoadingComponent';
+import { giveawayWinnersState } from '../../recoil/Atoms';
+import { getRound } from '../../services/Api';
 import { convertMojoToChia } from '../../utils/Formatting';
 
 const useRefresh = () => {
@@ -30,50 +30,48 @@ const query = selectorFamily({
     },
 });
 
-const Item = ({ item, theme, t }) => {
-  return (
-    <CustomCard
-      style={{ padding: 8, display: 'flex', marginVertical: 4, marginHorizontal: 8 }}
-      onTap={() => {}}
-    >
-      <View style={{ display: 'flex', flexDirection: 'row' }}>
-        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-          {t('winner')}
-        </Text>
-        <Text
-          numberOfLines={1}
-          style={[styles.val, { fontWeight: 'bold', color: theme.colors.drawerSelected }]}
-        >
-          {item.winner ? item.winner.name || item.winner.launcher_id : 'None'}
-        </Text>
-      </View>
-      <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-          {t('date')}
-        </Text>
-        <Text numberOfLines={1} style={styles.val}>
-          {format(new Date(item.draw_datetime), 'PPpp')}
-        </Text>
-      </View>
-      <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-          {t('prize')}
-        </Text>
-        <Text numberOfLines={1} style={styles.val}>
-          {`${convertMojoToChia(item.prize_amount)} XCH`}
-        </Text>
-      </View>
-      <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
-          {t('issuedTickets')}
-        </Text>
-        <Text numberOfLines={1} style={styles.val}>
-          {item.issued_tickets}
-        </Text>
-      </View>
-    </CustomCard>
-  );
-};
+const Item = ({ item, theme, t }) => (
+  <CustomCard
+    style={{ padding: 8, display: 'flex', marginVertical: 4, marginHorizontal: 8 }}
+    onTap={() => {}}
+  >
+    <View style={{ display: 'flex', flexDirection: 'row' }}>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('winner')}
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={[styles.val, { fontWeight: 'bold', color: theme.colors.drawerSelected }]}
+      >
+        {item.winner ? item.winner.name || item.winner.launcher_id : 'None'}
+      </Text>
+    </View>
+    <View style={{ flexDirection: 'row', paddingTop: 8 }}>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('date')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
+        {format(new Date(item.draw_datetime), 'PPpp')}
+      </Text>
+    </View>
+    <View style={{ flexDirection: 'row', paddingTop: 8 }}>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('prize')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
+        {`${convertMojoToChia(item.prize_amount)} XCH`}
+      </Text>
+    </View>
+    <View style={{ flexDirection: 'row', paddingTop: 8 }}>
+      <Text numberOfLines={1} style={[styles.title, { color: theme.colors.textGrey }]}>
+        {t('issuedTickets')}
+      </Text>
+      <Text numberOfLines={1} style={styles.val}>
+        {item.issued_tickets}
+      </Text>
+    </View>
+  </CustomCard>
+);
 
 const WinnersScreen = () => {
   const refresh = useRefresh();

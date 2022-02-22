@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, View, ScrollView } from 'react-native';
-import { Button, Text, TextInput, useTheme } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import { selectorFamily, useSetRecoilState, useRecoilValueLoadable } from 'recoil';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { format } from 'date-fns';
-import LoadingComponent from '../../components/LoadingComponent';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { Button, Text, useTheme } from 'react-native-paper';
+import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import PlantIcon from '../../assets/svgs/PlantIcon';
 import CustomCard from '../../components/CustomCard';
-import { giveawayRequestState } from '../../Atoms';
-import { getRound } from '../../Api';
+import LoadingComponent from '../../components/LoadingComponent';
+import { giveawayRequestState } from '../../recoil/Atoms';
+import { getRound } from '../../services/Api';
 import { convertMojoToChia } from '../../utils/Formatting';
-import PlantIcon from '../../images/PlantIcon';
 
 const useRefreshStats = () => {
   const setRequestId = useSetRecoilState(giveawayRequestState());
