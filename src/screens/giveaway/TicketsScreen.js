@@ -1,25 +1,17 @@
 import { useNetInfo } from '@react-native-community/netinfo';
-import { format } from 'date-fns';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Dimensions,
-  FlatList,
-  RefreshControl,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
+  Dimensions, SafeAreaView, StyleSheet,
+  View
 } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { selectorFamily, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-import { ticketsRefreshState } from '../../Atoms';
-import LoadingComponent from '../../components/LoadingComponent';
-import PressableCard from '../../components/PressableCard';
-import { convertMojoToChia } from '../../utils/Formatting';
-import { getRound, getTickets, getTicketsFromLauncherIds } from '../../Api';
 import CustomCard from '../../components/CustomCard';
+import LoadingComponent from '../../components/LoadingComponent';
+import { ticketsRefreshState } from '../../recoil/Atoms';
+import { getTicketsFromLauncherIds } from '../../services/Api';
 
 const HEIGHT = 40;
 

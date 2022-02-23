@@ -4,7 +4,6 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import CalculatorScreen from './CalculatorScreen';
 import GiveawayInfoSceen from './GiveawayInfoScreen';
 import WinnersScreen from './WinnersScreen';

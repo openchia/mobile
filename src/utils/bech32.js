@@ -92,6 +92,6 @@ function hexToBytes(hex) {
   return bytes;
 }
 
-export function encode_puzzle_hash(puzzle_hash, prefix) {
+export function encodePuzzleHash(puzzle_hash, prefix) {
   return bech32_encode(prefix, convertbits(hexToBytes(puzzle_hash), 8, 5));
 }

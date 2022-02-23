@@ -10,56 +10,41 @@
  */
 
 // import { TransitionPresets, createStackNavigator } from '@react-navigation/stack';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, View } from 'react-native';
 import { LogBox, StatusBar, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider as PaperProvider, useTheme } from 'react-native-paper';
-import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import { ToastProvider } from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
-import { currencyState, launcherIDsState, settingsState } from './Atoms';
-import OpenChiaIcon from './images/OpenChiaIcon';
-import ChiaPriceScreen from './screens/charts/ChiaPriceScreen';
-import PoolspaceScreen from './screens/charts/PoolspaceScreen';
-import CurrencySelectionScreen from './screens/CurrencySelectionScreen';
-import FarmerNameScreen from './screens/farmer/FarmerNameScreen';
-import FarmerNotificationScreen from './screens/farmer/FarmerNotificationScreen';
-import FarmerSettingsScreen from './screens/farmer/FarmerSettingsScreen';
-import FarmerTestScreen, { getHeaderTitle } from './screens/farmer/FarmerTestScreen';
-import CreateGroupScreen from './screens/groups/CreateGroupScreen';
-import LanguageSelectorScreen from './screens/LanguageSelectorScreen';
-import NewsPostScreen from './screens/NewsPostScreen';
-import NewsScreen from './screens/NewsScreen';
-import ScanScreen from './screens/ScanScreen';
-import SettingsScreen from './screens/SettingsScreen';
+import { useRecoilValueLoadable } from 'recoil';
+import { currencyState, launcherIDsState, settingsState } from './recoil/Atoms';
+import NetspaceScreen from './screens/charts/Netspace';
+import ChiaPriceScreen from './screens/charts/ChiaPrice';
+import PoolspaceScreen from './screens/charts/Poolspace';
+import CurrencySelectionScreen from './screens/more/Currency';
+import FarmerNameScreen from './screens/dashboard/FarmerName';
+import LanguageSelectorScreen from './screens/more/Language';
+import NewsPostScreen from './screens/news/Post';
+import NewsScreen from './screens/News';
+import ScanScreen from './screens/more/Scan';
 import { DarkTheme, LightTheme } from './Theme';
-import DashboardScreen from './v2/screens/Dashboard';
-import MoreScreen from './v2/screens/More';
-import PoolScreen from './v2/screens/Pool';
-import GiveawaySceen from './screens/giveaway/GiveawayScreen';
-import FarmerScreen from './v2/screens/farmer/Farmer';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import NetspaceScreen from './screens/charts/ChiaNetspaceScreen';
-import LaunchOptionScreen from './v2/screens/LaunchScreenOption';
-// import { enableFreeze } from 'react-native-screens';
-
-// enableFreeze(true);
+import DashboardScreen from './screens/Dashboard';
+import FarmerScreen from './screens/dashboard/Farmer';
+import LaunchOptionScreen from './screens/more/Launch';
+import MoreScreen from './screens/More';
+import PoolScreen from './screens/Pool';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-// const Stack = createStackNavigator();
-// const Tab = createMaterialBottomTabNavigator();
 
-// LogBox.ignoreLogs(['Reanimated 2']);
 LogBox.ignoreLogs(['timer']);
 LogBox.ignoreLogs(['keyboardDidShow: ...']); // Ignore log notification by message
 LogBox.ignoreLogs(['keyboardDidHide: ...']); // Ignore log notification by message
@@ -71,19 +56,11 @@ const Root = ({ settings }) => {
     <Tab.Navigator
       initialRouteName={settings.intialRoute}
       screenOptions={{
-        //safeAreaInsets: { top: 0 },
         headerShown: false,
         headerStyle: { backgroundColor: theme.colors.tabNavigatorBackground },
         tabBarButton: (props) => <TouchableOpacity {...props} />,
         tabBarShowLabel: false,
-        // tabBarItemStyle: {
-        //   padding: 2,
-        // },
-        // tabBarIconStyle: {
-        //   marginBottom: -4,
-        // },
         tabBarStyle: {
-          //    height: 56,
           backgroundColor: theme.colors.tabNavigatorBackground,
           borderTopColor: theme.colors.tabNavigatorTopBorderColor,
         },
@@ -169,9 +146,6 @@ const BaseScreen = () => {
     return null;
   }
 
-  // const launcherIDsArray = Array.from(launcherIDs, ([name, value]) => ({ name, value }));
-  // const launcherIDsArray =launcherIDs;
-
   const theme = settingsLoadable.contents.isThemeDark ? DarkTheme : LightTheme;
 
   return (
@@ -187,60 +161,29 @@ const BaseScreen = () => {
                     settingsLoadable.contents.isThemeDark ? 'light-content' : 'dark-content'
                   }
                 />
-                {/* <CustomStatusBar backgroundColor={theme.colors.statusBarColor}></CustomStatusBar> */}
-                {/* <View style={{ height: 54, backgroundColor: 'red' }}></View> */}
                 <Stack.Navigator
                   screenOptions={{
-                    // marginTop: 24,
-                    // safeAreaInsets: { top: 0 },
-                    // headerShown: true,
-                    // headerStyle: { backgroundColor: theme.colors.primary },
                     headerStyle: { backgroundColor: theme.colors.tabNavigatorBackground },
-                    // headerTintColor: theme.colors.textGreyLight,
-                    // drawerStyle: { backgroundColor: theme.colors.primary },
                     headerBackTitleVisible: false,
                     gestureEnabled: true, // If you want to swipe back like iOS on Android
                     animation: 'slide_from_right',
-                    // ...TransitionPresets.SlideFromRightIOS,
                   }}
                 >
                   <Stack.Screen name="Root" options={{ headerShown: false }}>
-                    {() => (
-                      <Root
-                        theme={theme}
-                        settings={settingsLoadable.contents}
-                        // toggleTheme={toggleTheme}
-                        // launcherIDs={launcherIDs}
-                        // initialRoute={initialRoute}
-                        // t={t}
-                      />
-                    )}
+                    {() => <Root theme={theme} settings={settingsLoadable.contents} />}
                   </Stack.Screen>
                   <Stack.Screen
                     name="FarmerScreen"
                     component={FarmerScreen}
                     options={({ route }) => ({
                       headerShown: false,
-                      // title: getHeaderTitle(route, t),
-                      // title: getHeaderTitle(route, t),
-                      // headerRight: () => (
-                      //   <Button onPress={() => alert('This is a button!')} title="Info" color="#fff" />
-                      // ),
                     })}
-                    // options={({ route, navigation }) => ({})}
                   />
                   <Stack.Screen
                     name="Post"
                     component={NewsPostScreen}
                     options={() => ({
                       title: t('post'),
-                    })}
-                  />
-                  <Stack.Screen
-                    name="Farmer Settings"
-                    component={FarmerSettingsScreen}
-                    options={() => ({
-                      title: t('farmerSettings'),
                     })}
                   />
                   <Stack.Screen
@@ -290,34 +233,6 @@ const BaseScreen = () => {
                     component={ScanScreen}
                     options={() => ({
                       title: t('verifyFarm'),
-                    })}
-                  />
-                  <Stack.Screen
-                    name="Settings"
-                    component={SettingsScreen}
-                    options={() => ({
-                      title: t('settings'),
-                    })}
-                  />
-                  <Stack.Screen
-                    name="Farmer Notifications"
-                    component={FarmerNotificationScreen}
-                    options={() => ({
-                      title: t('farmerNotifications'),
-                    })}
-                  />
-                  <Stack.Screen
-                    name="Create Group"
-                    component={CreateGroupScreen}
-                    options={() => ({
-                      title: t('createGroup'),
-                    })}
-                  />
-                  <Stack.Screen
-                    name="Giveaway"
-                    component={GiveawaySceen}
-                    options={() => ({
-                      title: t('giveaway'),
                     })}
                   />
                   <Stack.Screen

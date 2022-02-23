@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import * as React from 'react';
-import { View, ViewStyle, StyleSheet, StyleProp } from 'react-native';
-import { Divider, Text, withTheme, useTheme } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { Divider, Text, withTheme } from 'react-native-paper';
 
 const CustomDrawerSection = ({ children, title, theme, style, showDivider, ...rest }) => {
   const { colors, fonts } = theme;

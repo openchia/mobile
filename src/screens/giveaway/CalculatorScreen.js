@@ -1,16 +1,9 @@
 /* eslint-disable no-restricted-globals */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { Button, Text, TextInput, useTheme } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import { selectorFamily, useSetRecoilState, useRecoilValueLoadable } from 'recoil';
-import { useNetInfo } from '@react-native-community/netinfo';
-import { format } from 'date-fns';
-import LoadingComponent from '../../components/LoadingComponent';
 import CustomCard from '../../components/CustomCard';
-import { giveawayRequestState } from '../../Atoms';
-import { getRound } from '../../Api';
-import { convertMojoToChia } from '../../utils/Formatting';
 
 const TIERS = [
   { tickets: 1, size: 100 },
