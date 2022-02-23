@@ -482,8 +482,6 @@ const Content = ({ navigation }) => {
                 onPress={() => {
                   bottomSheetModalRef.current?.dismiss();
                   setShowDialog(true);
-
-                  setSelected(null);
                 }}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -526,6 +524,7 @@ const Content = ({ navigation }) => {
                 } else {
                   const newData = farms.filter((item) => item.launcherId !== selected.launcherId);
                   setFarms(newData);
+                  setSelected(null);
                 }
                 setShowDialog(false);
               }}
