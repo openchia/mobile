@@ -70,15 +70,7 @@ const localEffect =
 
 export const launcherIDsState = atom({
   key: 'atomFarms',
- // default: [],
-  default: [
-    {
-      address: 'xch13v9r3wkceh6h5juecgzcfyf5x6ll9p2ehh03m2z46qyrdutp258qy4zu42',
-      launcherId: '5f4e8bfa239609ac9198d69f03e81db9eb1c584114608f886d6db759184aa634',
-      name: '🐟 Happy Fish   🐟',
-      token: 'd950d662579c124cc75cd6ba2e88ca04f397447e4722db0ffeeba16c7e248afc',
-    },
-  ],
+  default: [],
   effects_UNSTABLE: [localEffect('farms')],
 });
 

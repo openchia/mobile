@@ -53,7 +53,8 @@ export default {
     farmerDetails: 'Farmer Details',
     payouts: 'Payouts',
     farmedBlocks: 'Farmed Blocks',
-    scanDesc: 'Scan QR code from pool login link to receive notifications.',
+    scanDesc:
+      'Scan the QR code found the web browser using the pool login link located in the chia full node.',
     currency: 'Currency',
     currencyDesc: 'Set preferred currency.',
     language: 'Language',

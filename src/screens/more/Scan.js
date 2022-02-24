@@ -1,3 +1,4 @@
+import messaging from '@react-native-firebase/messaging';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text } from 'react-native';
@@ -7,7 +8,6 @@ import { useRecoilState } from 'recoil';
 import { launcherIDsState } from '../../recoil/Atoms';
 import { getLauncherIDFromToken, getPayoutAddress, updateFCMToken } from '../../services/Api';
 import { encodePuzzleHash } from '../../utils/bech32';
-import { getObject } from '../../utils/Utils';
 
 const ScanScreen = ({ navigation }) => {
   const [launcherIDs, setLauncherIDs] = useRecoilState(launcherIDsState);
@@ -32,11 +32,13 @@ const ScanScreen = ({ navigation }) => {
               },
             ]);
           }
-          getObject('fcm').then((FCMToken) => {
-            updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
-              navigation.pop();
+          messaging()
+            .getToken()
+            .then((FCMToken) => {
+              updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
+                navigation.pop();
+              });
             });
-          });
         });
       } else {
         console.log('Error');
@@ -51,6 +53,10 @@ const ScanScreen = ({ navigation }) => {
       cameraProps={{ ratio: '1:1' }}
       showMarker
       topContent={
+        // <Text style={styles.centerText}>
+        //   Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on your computer and
+        //   scan the QR code.
+        // </Text>
         <Text style={[{ color: theme.colors.text }, styles.centerText]}>{t('scanDesc')}</Text>
       }
       markerStyle={{
@@ -63,8 +69,12 @@ const ScanScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   centerText: {
+    flex: 1,
     fontSize: 18,
-    padding: 32,
+    padding: 16,
+    // paddingBottom: 32,
+    // paddingTop: 20,
+    // padding: 32,
     textAlign: 'center',
   },
   textBold: {
