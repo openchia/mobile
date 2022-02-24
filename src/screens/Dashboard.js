@@ -7,7 +7,8 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { Platform, SafeAreaView, View } from 'react-native';
-import { Button, Dialog, IconButton, Portal, Switch, Text, useTheme } from 'react-native-paper';
+import { Button, IconButton, Portal, Switch, Text, useTheme } from 'react-native-paper';
+import Dialog from 'react-native-dialog';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   useRecoilRefresher_UNSTABLE as useRecoilRefresher,
@@ -500,7 +501,73 @@ const Content = ({ navigation }) => {
           </View>
         </View>
       </BottomSheetModal>
-      <Portal>
+      {Platform.OS === 'android' ? (
+        <Dialog.Container
+          contentStyle={{ backgroundColor: theme.colors.onSurfaceLight }}
+          visible={showDialog}
+          onBackdropPress={() => {
+            setShowDialog(false);
+          }}
+        >
+          <Dialog.Title style={{ color: theme.colors.text }}>Remove Farm</Dialog.Title>
+          <Dialog.Description>Do you want to remove the farm ?</Dialog.Description>
+          <Dialog.Button
+            bold
+            label="No"
+            color={theme.colors.primaryLight}
+            onPress={() => {
+              setShowDialog(false);
+            }}
+          />
+          <Dialog.Button
+            bold
+            label="Yes"
+            color={theme.colors.primaryLight}
+            onPress={() => {
+              if (farms.length === 1) {
+                setFarms([]);
+              } else {
+                const newData = farms.filter((item) => item.launcherId !== selected.launcherId);
+                setFarms(newData);
+                setSelected(null);
+              }
+              setShowDialog(false);
+            }}
+          />
+        </Dialog.Container>
+      ) : (
+        <Dialog.Container
+          visible={showDialog}
+          onBackdropPress={() => {
+            setShowDialog(false);
+          }}
+        >
+          <Dialog.Title>Remove Farm</Dialog.Title>
+          <Dialog.Description>Do you want to remove the farm ?</Dialog.Description>
+          <Dialog.Button
+            bold
+            label="No"
+            onPress={() => {
+              setShowDialog(false);
+            }}
+          />
+          <Dialog.Button
+            bold
+            label="Yes"
+            onPress={() => {
+              if (farms.length === 1) {
+                setFarms([]);
+              } else {
+                const newData = farms.filter((item) => item.launcherId !== selected.launcherId);
+                setFarms(newData);
+                setSelected(null);
+              }
+              setShowDialog(false);
+            }}
+          />
+        </Dialog.Container>
+      )}
+      {/* <Portal>
         <Dialog
           style={{
             borderRadius: settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius,
@@ -533,7 +600,7 @@ const Content = ({ navigation }) => {
             </Button>
           </Dialog.Actions>
         </Dialog>
-      </Portal>
+      </Portal> */}
     </SafeAreaView>
   );
 };

@@ -1,7 +1,8 @@
 import messaging from '@react-native-firebase/messaging';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text } from 'react-native';
+import { Platform, StyleSheet, Text } from 'react-native';
+import Dialog from 'react-native-dialog';
 import { useTheme } from 'react-native-paper';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { useRecoilState } from 'recoil';
@@ -14,6 +15,10 @@ const ScanScreen = ({ navigation }) => {
   const scanner = useRef(null);
   const theme = useTheme();
   const { t } = useTranslation();
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => setVisible(false);
 
   const onSuccess = (e) => {
     const token = e.data;
@@ -41,29 +46,85 @@ const ScanScreen = ({ navigation }) => {
             });
         });
       } else {
-        console.log('Error');
+        showDialog();
+        // setTimeout(() => {
+        //   scanner.current.reactivate();
+        // }, 1000);
+        // console.log('Error');
       }
     });
   };
 
   return (
-    <QRCodeScanner
-      ref={scanner}
-      onRead={onSuccess}
-      cameraProps={{ ratio: '1:1' }}
-      showMarker
-      topContent={
-        // <Text style={styles.centerText}>
-        //   Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on your computer and
-        //   scan the QR code.
-        // </Text>
-        <Text style={[{ color: theme.colors.text }, styles.centerText]}>{t('scanDesc')}</Text>
-      }
-      markerStyle={{
-        borderColor: 'white',
-        borderRadius: 20,
-      }}
-    />
+    <>
+      <QRCodeScanner
+        ref={scanner}
+        fadeIn
+        onRead={onSuccess}
+        cameraProps={{ ratio: '1:1' }}
+        showMarker
+        topContent={
+          // <Text style={styles.centerText}>
+          //   Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on your computer and
+          //   scan the QR code.
+          // </Text>
+          <Text style={[{ color: theme.colors.text }, styles.centerText]}>{t('scanDesc')}</Text>
+        }
+        markerStyle={{
+          borderColor: 'white',
+          borderRadius: 20,
+        }}
+      />
+      {Platform.OS === 'android' ? (
+        <Dialog.Container
+          contentStyle={{ backgroundColor: theme.colors.onSurfaceLight }}
+          visible={visible}
+          onBackdropPress={() => {
+            hideDialog();
+            scanner.current.reactivate();
+          }}
+        >
+          <Dialog.Title style={{ color: theme.colors.text }}>Invalid QR Code</Dialog.Title>
+          <Dialog.Description style={{ color: theme.colors.textGrey }}>
+            Please make sure you are scanning the qr code found on our website when opening the pool
+            login link. The pool login link can be found under the pools tab in your chia full node,
+            or by using chia cli.
+          </Dialog.Description>
+          <Dialog.Button
+            bold
+            color={theme.colors.primaryLight}
+            label="Ok"
+            onPress={() => {
+              hideDialog();
+              scanner.current.reactivate();
+            }}
+          />
+        </Dialog.Container>
+      ) : (
+        <Dialog.Container
+          visible={visible}
+          onBackdropPress={() => {
+            hideDialog();
+            scanner.current.reactivate();
+          }}
+        >
+          <Dialog.Title>Invalid QR Code</Dialog.Title>
+          <Dialog.Description>
+            Please make sure you are scanning the qr code found on our website when opening the pool
+            login link. The pool login link can be found under the pools tab in your chia full node,
+            or by using chia cli.
+          </Dialog.Description>
+          <Dialog.Button
+            bold
+            label="Ok"
+            onPress={() => {
+              hideDialog();
+              scanner.current.reactivate();
+            }}
+          />
+        </Dialog.Container>
+      )}
+    </>
   );
 };
 
