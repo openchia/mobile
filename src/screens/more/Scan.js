@@ -25,18 +25,27 @@ const ScanScreen = ({ navigation }) => {
     getLauncherIDFromToken(token).then((data) => {
       if (data) {
         getPayoutAddress(data.launcher_id).then((response) => {
-          const address = encodePuzzleHash(response.results[0].puzzle_hash, 'xch');
-          if (!launcherIDs.map((item) => item.launcherId).includes(data.launcher_id)) {
-            setLauncherIDs((prev) => [
-              ...prev,
-              {
-                launcherId: data.launcher_id,
-                name: data.name,
-                token,
-                address,
-              },
-            ]);
-          }
+          setLauncherIDs((prev) => [
+            ...prev,
+            {
+              launcherId: data.launcher_id,
+              name: data.name,
+              token,
+              address: null,
+            },
+          ]);
+          // const address = encodePuzzleHash(response.results[0].puzzle_hash, 'xch');
+          // if (!launcherIDs.map((item) => item.launcherId).includes(data.launcher_id)) {
+          //   setLauncherIDs((prev) => [
+          //     ...prev,
+          //     {
+          //       launcherId: data.launcher_id,
+          //       name: data.name,
+          //       token,
+          //       address,
+          //     },
+          //   ]);
+          // }
           messaging()
             .getToken()
             .then((FCMToken) => {

@@ -442,37 +442,39 @@ const Content = ({ navigation }) => {
                 </View>
               </PressableCard>
             )}
-            <PressableCard
-              style={{
-                justifyContent: 'center',
-                padding: 4,
-                backgroundColor: theme.colors.tabNavigatorBackground,
-                // backgroundColor: 'blue',
-              }}
-              onPress={() => {
-                // bottomSheetModalRef.current?.dismiss();
-                setSettings((prev) => ({ ...prev, showBalance: !prev.showBalance }));
-              }}
-            >
-              <View
+            {settings.showBalance && (
+              <PressableCard
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  paddingTop: 8,
-                  paddingBottom: 8,
+                  justifyContent: 'center',
+                  padding: 4,
+                  backgroundColor: theme.colors.tabNavigatorBackground,
+                  // backgroundColor: 'blue',
+                }}
+                onPress={() => {
+                  // bottomSheetModalRef.current?.dismiss();
+                  setSettings((prev) => ({ ...prev, showBalance: !prev.showBalance }));
                 }}
               >
-                <Text style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
-                  Show Payout Address Balance
-                </Text>
-                <View pointerEvents="none" style={{ paddingRight: 16 }}>
-                  <Switch
-                    value={settings.showBalance}
-                    trackColor={{ true: theme.colors.accentLight, false: 'rgba(0, 0, 0, 0.4)' }}
-                  />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingTop: 8,
+                    paddingBottom: 8,
+                  }}
+                >
+                  <Text style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
+                    Show Payout Address Balance
+                  </Text>
+                  <View pointerEvents="none" style={{ paddingRight: 16 }}>
+                    <Switch
+                      value={settings.showBalance}
+                      trackColor={{ true: theme.colors.accentLight, false: 'rgba(0, 0, 0, 0.4)' }}
+                    />
+                  </View>
                 </View>
-              </View>
-            </PressableCard>
+              </PressableCard>
+            )}
             {(selected || farms.length === 1) && (
               <PressableCard
                 style={{
