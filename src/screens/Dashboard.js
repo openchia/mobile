@@ -7,7 +7,8 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { Platform, SafeAreaView, View } from 'react-native';
-import { Button, Dialog, IconButton, Portal, Switch, Text, useTheme } from 'react-native-paper';
+import { Button, IconButton, Portal, Switch, Text, useTheme } from 'react-native-paper';
+import Dialog from 'react-native-dialog';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   useRecoilRefresher_UNSTABLE as useRecoilRefresher,
@@ -441,37 +442,39 @@ const Content = ({ navigation }) => {
                 </View>
               </PressableCard>
             )}
-            <PressableCard
-              style={{
-                justifyContent: 'center',
-                padding: 4,
-                backgroundColor: theme.colors.tabNavigatorBackground,
-                // backgroundColor: 'blue',
-              }}
-              onPress={() => {
-                // bottomSheetModalRef.current?.dismiss();
-                setSettings((prev) => ({ ...prev, showBalance: !prev.showBalance }));
-              }}
-            >
-              <View
+            {settings.showBalance && (
+              <PressableCard
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  paddingTop: 8,
-                  paddingBottom: 8,
+                  justifyContent: 'center',
+                  padding: 4,
+                  backgroundColor: theme.colors.tabNavigatorBackground,
+                  // backgroundColor: 'blue',
+                }}
+                onPress={() => {
+                  // bottomSheetModalRef.current?.dismiss();
+                  setSettings((prev) => ({ ...prev, showBalance: !prev.showBalance }));
                 }}
               >
-                <Text style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
-                  Show Payout Address Balance
-                </Text>
-                <View pointerEvents="none" style={{ paddingRight: 16 }}>
-                  <Switch
-                    value={settings.showBalance}
-                    trackColor={{ true: theme.colors.accentLight, false: 'rgba(0, 0, 0, 0.4)' }}
-                  />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingTop: 8,
+                    paddingBottom: 8,
+                  }}
+                >
+                  <Text style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
+                    Show Payout Address Balance
+                  </Text>
+                  <View pointerEvents="none" style={{ paddingRight: 16 }}>
+                    <Switch
+                      value={settings.showBalance}
+                      trackColor={{ true: theme.colors.accentLight, false: 'rgba(0, 0, 0, 0.4)' }}
+                    />
+                  </View>
                 </View>
-              </View>
-            </PressableCard>
+              </PressableCard>
+            )}
             {(selected || farms.length === 1) && (
               <PressableCard
                 style={{
@@ -500,7 +503,73 @@ const Content = ({ navigation }) => {
           </View>
         </View>
       </BottomSheetModal>
-      <Portal>
+      {Platform.OS === 'android' ? (
+        <Dialog.Container
+          contentStyle={{ backgroundColor: theme.colors.onSurfaceLight }}
+          visible={showDialog}
+          onBackdropPress={() => {
+            setShowDialog(false);
+          }}
+        >
+          <Dialog.Title style={{ color: theme.colors.text }}>Remove Farm</Dialog.Title>
+          <Dialog.Description>Do you want to remove the farm ?</Dialog.Description>
+          <Dialog.Button
+            bold
+            label="No"
+            color={theme.colors.primaryLight}
+            onPress={() => {
+              setShowDialog(false);
+            }}
+          />
+          <Dialog.Button
+            bold
+            label="Yes"
+            color={theme.colors.primaryLight}
+            onPress={() => {
+              if (farms.length === 1) {
+                setFarms([]);
+              } else {
+                const newData = farms.filter((item) => item.launcherId !== selected.launcherId);
+                setFarms(newData);
+                setSelected(null);
+              }
+              setShowDialog(false);
+            }}
+          />
+        </Dialog.Container>
+      ) : (
+        <Dialog.Container
+          visible={showDialog}
+          onBackdropPress={() => {
+            setShowDialog(false);
+          }}
+        >
+          <Dialog.Title>Remove Farm</Dialog.Title>
+          <Dialog.Description>Do you want to remove the farm ?</Dialog.Description>
+          <Dialog.Button
+            bold
+            label="No"
+            onPress={() => {
+              setShowDialog(false);
+            }}
+          />
+          <Dialog.Button
+            bold
+            label="Yes"
+            onPress={() => {
+              if (farms.length === 1) {
+                setFarms([]);
+              } else {
+                const newData = farms.filter((item) => item.launcherId !== selected.launcherId);
+                setFarms(newData);
+                setSelected(null);
+              }
+              setShowDialog(false);
+            }}
+          />
+        </Dialog.Container>
+      )}
+      {/* <Portal>
         <Dialog
           style={{
             borderRadius: settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius,
@@ -533,7 +602,7 @@ const Content = ({ navigation }) => {
             </Button>
           </Dialog.Actions>
         </Dialog>
-      </Portal>
+      </Portal> */}
     </SafeAreaView>
   );
 };
