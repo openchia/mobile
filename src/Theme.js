@@ -34,7 +34,7 @@ const fontConfig = {
   ios: {
     regular: {
       fontFamily: 'Poppins-SemiBold',
-  //    fontWeight: 'normal',
+      //    fontWeight: 'normal',
       fontWeight: '600',
     },
     bold: {
@@ -90,7 +90,8 @@ export const LightTheme = {
     background: '#f8f8f8',
     border: '#436B34',
     accent: '#c57e49',
-    accentLight: 'rgba(197, 126, 73, 0.4)',
+    accentLight: '#db9d6e',
+    // accentLight: 'rgba(197, 126, 73, 0.4)',
     surface: '#f5f5f5',
     onSurface: '#f8f8f8',
     onSurfaceLight: '#fff',
