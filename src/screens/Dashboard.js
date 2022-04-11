@@ -273,7 +273,8 @@ const Content = ({ navigation }) => {
             style={{ margin: 0, padding: 0 }}
             icon={
               <Ionicons
-                name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
+                name="ellipsis-vertical"
+                // name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
                 size={24}
                 color={theme.colors.text}
               />
@@ -481,7 +482,7 @@ const Content = ({ navigation }) => {
         handleIndicatorStyle={{ backgroundColor: theme.colors.textGrey }}
         backdropComponent={renderBackdrop}
       >
-        <View style={{flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row' }}>
           <View
             style={{
               flexDirection: 'column',

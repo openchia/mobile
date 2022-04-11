@@ -34,7 +34,6 @@ const SizeDropIntervalScreen = ({ route, navigation }) => {
         >
           <CustomIconButton
             icon={<Ionicons name="ios-save-outline" size={24} color={theme.colors.textGrey} />}
-            style={{ marginEnd: 20 }}
             color="#fff"
             size={24}
             onPress={() => {

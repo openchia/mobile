@@ -11,23 +11,6 @@ import PressableCard from '../../../components/PressableCard';
 import { currencyState, launcherIDsState, settingsState } from '../../../recoil/Atoms';
 import { api } from '../../../services/Api';
 
-const Item = ({ item, color, t, onPress, theme }) => (
-  <PressableCard
-    style={{
-      // marginBottom: 2,
-      paddingTop: 16,
-      paddingBottom: 16,
-    }}
-    onPress={onPress}
-  >
-    <View style={{ marginHorizontal: 12, flexDirection: 'row', alignItems: 'center' }}>
-      {item.icon}
-      <Text style={{ paddingLeft: 24 }}>{item.name}</Text>
-    </View>
-    {/* </View> */}
-  </PressableCard>
-);
-
 const DifficultyScreen = ({ navigation, route }) => {
   const [farms, setLauncherIDs] = useRecoilState(launcherIDsState);
   const [settings, setSettings] = useRecoilState(settingsState);
