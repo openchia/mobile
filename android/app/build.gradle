@@ -83,8 +83,6 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
-apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
-
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -136,8 +134,8 @@ android {
         applicationId "com.openchia"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
-        versionName "1.0.9"
+        versionCode 24
+        versionName "2.1.0"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
@@ -171,6 +169,23 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+
+    flavorDimensions "default"  // <-- !!! add this line !!!
+
+    productFlavors {
+        chia {
+//            applicationIdSuffix ".testnet"
+//            versionNameSuffix "-testnet"
+            resValue "string", "build_config_package", "com.openchia"
+            resValue "string", "app_name", "OpenChia"
+        }
+        otestnet {
+            applicationIdSuffix ".testnet"
+            versionNameSuffix "-testnet"
+            resValue "string", "build_config_package", "com.openchia"
+            resValue "string", "app_name", "OpenChia Testnet10"
         }
     }
 

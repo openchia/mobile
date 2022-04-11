@@ -6,9 +6,9 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 import { useTranslation } from 'react-i18next';
 import { useRecoilState } from 'recoil';
 import CustomCard from '../../components/CustomCard';
-import PartialChart from '../../screens/farmer/PartialChart';
 import { PartChartIntervals } from '../Constants';
-import { settingsState } from '../../Atoms';
+import { settingsState } from '../../recoil/Atoms';
+import PartialChart from '../../containers/charts/PartialChart';
 
 export const { width } = Dimensions.get('window');
 

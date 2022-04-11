@@ -1,12 +1,7 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import Animated, {
-  useAnimatedGestureHandler,
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedGestureHandler, useSharedValue } from 'react-native-reanimated';
 
 const CURSOR = 50;
 const styles = StyleSheet.create({

@@ -1,0 +1,109 @@
+diff --git a/node_modules/react-native-pager-view/ios/ReactNativePageView.h b/node_modules/react-native-pager-view/ios/ReactNativePageView.h
+index 9e34051..e31b290 100644
+--- a/node_modules/react-native-pager-view/ios/ReactNativePageView.h
++++ b/node_modules/react-native-pager-view/ios/ReactNativePageView.h
+@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
+ @property(nonatomic) BOOL overdrag;
+ @property(nonatomic) NSString* layoutDirection;
+ @property(nonatomic) CGRect previousBounds;
+-
++@property(nonatomic) NSInteger numberOfAction;
+ 
+ - (void)goTo:(NSInteger)index animated:(BOOL)animated;
+ - (void)shouldScroll:(BOOL)scrollEnabled;
+diff --git a/node_modules/react-native-pager-view/ios/ReactNativePageView.m b/node_modules/react-native-pager-view/ios/ReactNativePageView.m
+index bebfb39..4980b89 100644
+--- a/node_modules/react-native-pager-view/ios/ReactNativePageView.m
++++ b/node_modules/react-native-pager-view/ios/ReactNativePageView.m
+@@ -48,6 +48,7 @@
+         _overdrag = NO;
+         _layoutDirection = @"ltr";
+         _previousBounds = CGRectMake(0, 0, 0, 0);
++        _numberOfAction = 0;
+     }
+     return self;
+ }
+@@ -89,6 +90,11 @@
+         [self embed];
+         [self setupInitialController];
+     }
++    
++    if (self.numberOfAction > 0) {
++        self.numberOfAction = 0;
++        [self updateDataSource];
++    }
+ }
+ 
+ - (void)embed {
+@@ -189,12 +195,18 @@
+         strongSelf.currentIndex = index;
+         strongSelf.currentView = controller.view;
+         
+-        if (strongSelf.eventDispatcher) {
+-            if (strongSelf.lastReportedIndex != strongSelf.currentIndex) {
+-                if (shouldCallOnPageSelected) {
+-                    [strongSelf.eventDispatcher sendEvent:[[RCTOnPageSelected alloc] initWithReactTag:strongSelf.reactTag position:@(index) coalescingKey:coalescingKey]];
++        if (finished == YES) {
++            if (self.numberOfAction > 0) {
++                self.numberOfAction -= 1;
++            }
++                        
++            if (strongSelf.eventDispatcher) {
++                if (strongSelf.lastReportedIndex != strongSelf.currentIndex) {
++                    if (shouldCallOnPageSelected) {
++                        [strongSelf.eventDispatcher sendEvent:[[RCTOnPageSelected alloc] initWithReactTag:strongSelf.reactTag position:@(index) coalescingKey:coalescingKey]];
++                    }
++                    strongSelf.lastReportedIndex = strongSelf.currentIndex;
+                 }
+-                strongSelf.lastReportedIndex = strongSelf.currentIndex;
+             }
+         }
+     }];
+@@ -233,11 +245,9 @@
+ 
+ - (void)goTo:(NSInteger)index animated:(BOOL)animated {
+     NSInteger numberOfPages = self.reactSubviews.count;
+-    
+-    if (numberOfPages == 0 || index < 0 || index > numberOfPages - 1) {
++    if (numberOfPages == 0 || index < 0 || index > numberOfPages - 1 || self.numberOfAction > 0) {
+         return;
+     }
+-    
+     BOOL isForward = (index > self.currentIndex && [self isLtrLayout]) || (index < self.currentIndex && ![self isLtrLayout]);
+     UIPageViewControllerNavigationDirection direction = isForward ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
+     
+@@ -245,21 +255,23 @@
+     self.reactPageIndicatorView.currentPage = index;
+     long diff = labs(index - _currentIndex);
+     
+-    if (isForward && diff > 0) {
++    if (index > _currentIndex) {
+         for (NSInteger i=_currentIndex; i<=index; i++) {
+             if (i == _currentIndex) {
+                 continue;
+             }
++            _numberOfAction += 1;
+             [self goToViewController:i direction:direction animated:animated shouldCallOnPageSelected: i == index];
+         }
+     }
+     
+-    if (!isForward && diff > 0) {
++    if (index < _currentIndex) {
+         for (NSInteger i=_currentIndex; i>=index; i--) {
+             // Prevent removal of one or many pages at a time
+-            if (index == _currentIndex || i >= numberOfPages) {
++            if (i == _currentIndex || i >= numberOfPages) {
+                 continue;
+             }
++            _numberOfAction += 1;
+             [self goToViewController:i direction:direction animated:animated shouldCallOnPageSelected: i == index];
+         }
+     }
+@@ -267,6 +279,7 @@
+     if (diff == 0) {
+         [self goToViewController:index direction:direction animated:animated shouldCallOnPageSelected:YES];
+     }
++    
+ }
+ 
+ - (void)goToViewController:(NSInteger)index
