@@ -34,8 +34,6 @@ const Bar = ({ color, path, itemKey, pressed, selectedPoints, points, test }) =>
 const TestStackedBarChart = ({ data, height, width, keys, colors, selectedPoints }) => {
   const pressed = useSharedValue(false);
 
-const TestStackedBarChart = ({ data, height, width, keys, colors, selectedPoints }) => {
-  const pressed = useSharedValue(false);
   return (
     <View height={height}>
       <Svg width={width} height={height}>
