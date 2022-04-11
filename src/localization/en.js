@@ -138,5 +138,7 @@ export default {
     default: 'Default',
     high: 'High',
     highest: 'Highest',
+    hideAddressBalance: 'Hide Payout Address Balance',
+    showAddressBalance: 'Show Payout Address Balance',
   },
 };
