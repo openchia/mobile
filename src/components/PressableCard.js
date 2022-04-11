@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import TouchableRipple from './TouchableRipple';
 
-const PressableCard = ({ style, onPress, children, enabled }) => {
+const PressableCard = ({ style, onPress, children, enabled = true }) => {
   const theme = useTheme();
   return (
     <TouchableRipple
