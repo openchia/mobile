@@ -172,6 +172,23 @@ android {
         }
     }
 
+    flavorDimensions "default"  // <-- !!! add this line !!!
+
+    productFlavors {
+        chia {
+//            applicationIdSuffix ".testnet"
+//            versionNameSuffix "-testnet"
+            resValue "string", "build_config_package", "com.openchia"
+            resValue "string", "app_name", "OpenChia"
+        }
+        otestnet {
+            applicationIdSuffix ".testnet"
+            versionNameSuffix "-testnet"
+            resValue "string", "build_config_package", "com.openchia"
+            resValue "string", "app_name", "OpenChia Testnet10"
+        }
+    }
+
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->

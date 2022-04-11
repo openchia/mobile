@@ -41,6 +41,12 @@ import FarmerScreen from './screens/dashboard/Farmer';
 import LaunchOptionScreen from './screens/more/Launch';
 import MoreScreen from './screens/More';
 import PoolScreen from './screens/Pool';
+import FarmerSettingsScreen from './screens/dashboard/Settings';
+import SettingComponentScreen from './screens/dashboard/settings/SettingComponent';
+import DifficultyScreen from './screens/dashboard/settings/Difficulty';
+import MinPayoutScreen from './screens/dashboard/settings/MinPayout';
+import SizeDropPercentScreen from './screens/dashboard/settings/SizeDropPercent';
+import SizeDropIntervalScreen from './screens/dashboard/settings/SizeDropInterval';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -167,6 +173,7 @@ const BaseScreen = () => {
                     headerBackTitleVisible: false,
                     gestureEnabled: true, // If you want to swipe back like iOS on Android
                     animation: 'slide_from_right',
+                    tabBarItemStyle: { padding: 0 },
                   }}
                 >
                   <Stack.Screen name="Root" options={{ headerShown: false }}>
@@ -240,6 +247,48 @@ const BaseScreen = () => {
                     component={LaunchOptionScreen}
                     options={() => ({
                       title: t('launchScreen'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Farmer Settings"
+                    component={FarmerSettingsScreen}
+                    options={() => ({
+                      title: t('settingsScreen'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Settings Component"
+                    component={SettingComponentScreen}
+                    options={({ route }) => ({
+                      title: route.params.title,
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Difficulty Setting"
+                    component={DifficultyScreen}
+                    options={({ route }) => ({
+                      title: route.params.title,
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Min Payout Setting"
+                    component={MinPayoutScreen}
+                    options={({ route }) => ({
+                      title: route.params.title,
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Size Drop Setting"
+                    component={SizeDropPercentScreen}
+                    options={({ route }) => ({
+                      title: route.params.title,
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Size Drop Interval"
+                    component={SizeDropIntervalScreen}
+                    options={({ route }) => ({
+                      title: route.params.title,
                     })}
                   />
                 </Stack.Navigator>

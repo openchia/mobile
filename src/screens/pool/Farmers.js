@@ -13,8 +13,8 @@ import {
   farmerSearchBarTextState,
   settingsState,
 } from '../../recoil/Atoms';
-import { getFarmers } from '../../services/Api';
 import { formatBytes } from '../../utils/Formatting';
+import { api } from '../../services/Api';
 
 const HEIGHT = 50;
 
@@ -27,8 +27,6 @@ const CustomRank = ({ item, color, children, style, rank, previousTime }) => {
       <View
         style={[
           {
-            // backgroundColor: theme.colors.dividerColor,
-            // padding: 2,
             width: 24,
             hieght: 36,
             display: 'flex',
@@ -53,8 +51,6 @@ const CustomRank = ({ item, color, children, style, rank, previousTime }) => {
         <View
           style={[
             {
-              // backgroundColor: theme.colors.dividerColor,
-              // padding: 2,
               width: 24,
               hieght: 36,
               display: 'flex',
@@ -77,8 +73,6 @@ const CustomRank = ({ item, color, children, style, rank, previousTime }) => {
       <View
         style={[
           {
-            // backgroundColor: theme.colors.dividerColor,
-            // padding: 2,
             width: 24,
             hieght: 36,
             display: 'flex',
@@ -100,7 +94,6 @@ const CustomRank = ({ item, color, children, style, rank, previousTime }) => {
       style={[
         {
           backgroundColor: theme.colors.dividerColor,
-          // padding: 2,
           width: 29,
           height: 29,
           display: 'flex',
@@ -165,9 +158,9 @@ const Item = ({ item, rank, onPress, previousTime }) => {
               <CustomText style={{ textAlign: 'right' }}>
                 {formatBytes(item.estimated_size)}
               </CustomText>
-              <CustomText style={{ textAlign: 'right' }}>{`${item.points_of_total.toFixed(
-                2
-              )}%`}</CustomText>
+              <CustomText style={{ textAlign: 'right' }}>{`${(
+                Number(item.share_pplns) * 100
+              ).toFixed(2)}%`}</CustomText>
             </View>
           </View>
         </View>
@@ -307,7 +300,11 @@ const FarmersScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (hasMore && (loadState.loading || loadState.refreshing || loadState.querying)) {
-      getFarmers(offset, LIMIT, searchText, settings.showOnlyActiveFarmers)
+      api({
+        url: `launcher/?limit=${LIMIT}&${
+          settings.showOnlyActiveFarmers ? 'points_pplns__gt=0' : ''
+        }&offset=${offset}&is_pool_member=true&search=${searchText}&ordering=-points_pplns`,
+      })
         .then((farmers) => {
           if (searchPressed) {
             if (farmers.results.length === 1) {

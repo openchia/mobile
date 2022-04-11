@@ -49,6 +49,10 @@
             <action android:name="android.intent.action.VIEW" />
             <data  android:scheme="https" android:host="openchia.io" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data  android:scheme="https" android:host="spacescan.io" />
+        </intent>
     </queries>
 
 </manifest>

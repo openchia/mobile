@@ -14,7 +14,7 @@ import {
   monotoneCubicInterpolation,
 } from '../../react-native-animated-charts';
 import { settingsState } from '../../recoil/Atoms';
-import { getNetspace } from '../../services/Api';
+import { api, SPACESCAN_API } from '../../services/Api';
 
 const units = ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -117,7 +117,7 @@ const query = selectorFamily({
   get:
     (element) =>
     async ({ get }) => {
-      const response = await getNetspace(element.value);
+      const response = await api({ baseURL: SPACESCAN_API, url: `/xch/netspace/${element.value}` });
       if (response) {
         const convertedData = [];
 

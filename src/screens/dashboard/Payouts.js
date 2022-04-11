@@ -5,7 +5,7 @@ import { getFontScale } from 'react-native-device-info';
 import { Text, useTheme } from 'react-native-paper';
 import { useRecoilValue } from 'recoil';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-import { getPayoutsFromAddress } from '../../services/Api';
+import { api } from '../../services/Api';
 import { settingsState } from '../../recoil/Atoms';
 import PressableCard from '../../components/PressableCard';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -121,7 +121,9 @@ const FarmerPayoutScreen = ({ launcherId }) => {
 
   useEffect(() => {
     if (state.loading || state.querying || state.refreshing) {
-      getPayoutsFromAddress(launcherId, state.offset, LIMIT).then((response) => {
+      api({
+        url: `payoutaddress/?launcher=${launcherId}&limit=${LIMIT}&offset=${state.offset}`,
+      }).then((response) => {
         setDataState((prev) => ({
           dataProvider: new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
             prev.data.concat(response.results)

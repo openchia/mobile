@@ -5,7 +5,7 @@ import { getFontScale } from 'react-native-device-info';
 import { Text, useTheme } from 'react-native-paper';
 import { useRecoilValue } from 'recoil';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
-import { getBlocksFromFarmer } from '../../services/Api';
+import { api } from '../../services/Api';
 import { settingsState } from '../../recoil/Atoms';
 import PressableCard from '../../components/PressableCard';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -119,21 +119,23 @@ const FarmerBlockScreen = ({ navigation, launcherId }) => {
 
   useEffect(() => {
     if (state.loading || state.querying || state.refreshing) {
-      getBlocksFromFarmer(launcherId, state.offset, LIMIT).then((response) => {
-        setDataState((prev) => ({
-          dataProvider: new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
-            prev.data.concat(response.results)
-          ),
-          data: prev.data.concat(response.results),
-        }));
-        setState((prev) => ({
-          ...prev,
-          loading: false,
-          querying: false,
-          refreshing: false,
-          hasMore: response.results.length === LIMIT,
-        }));
-      });
+      api({ url: `block/?farmed_by=${launcherId}&limit=${LIMIT}&offset=${state.offset}` }).then(
+        (response) => {
+          setDataState((prev) => ({
+            dataProvider: new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(
+              prev.data.concat(response.results)
+            ),
+            data: prev.data.concat(response.results),
+          }));
+          setState((prev) => ({
+            ...prev,
+            loading: false,
+            querying: false,
+            refreshing: false,
+            hasMore: response.results.length === LIMIT,
+          }));
+        }
+      );
     }
   }, [state.loading, state.querying, state.refreshing]);
 

@@ -10,7 +10,7 @@ import TestStackedBarChart from '../../charts/TestStackedBarChart';
 import JellySelector from '../../components/JellySelector';
 import TestLabel from '../../components/TextTest';
 import { settingsState } from '../../recoil/Atoms';
-import { getPartialsFromIDsChart } from '../../services/Api';
+import { apiMulti } from '../../services/Api';
 
 export const { width } = Dimensions.get('window');
 const keys = ['failed', 'passed'];
@@ -147,20 +147,18 @@ const formatDatetime = (value) => {
   return res;
 };
 
-// const useRefresh = () => {
-//   const setRequestId = useSetRecoilState(partialRefreshState());
-//   return () => setRequestId((id) => id + 1);
-// };
-
 const query = selectorFamily({
   key: 'farmerPartials',
   get:
     (item) =>
     async ({ get }) => {
-      // get(partialRefreshState());
       let timestamp = new Date().getTime();
       timestamp = Math.floor(timestamp / 1000) - 60 * 60 * item.element.value;
-      const response = await getPartialsFromIDsChart(item.launcherIds, timestamp);
+      const urls = item.launcherIds.map(
+        (launcherId) =>
+          `partial/?ordering=-timestamp&min_timestamp=${timestamp.toString()}&launcher=${launcherId}&limit=2000`
+      );
+      const response = await apiMulti(urls);
       if (response.error) {
         throw response.error;
       }

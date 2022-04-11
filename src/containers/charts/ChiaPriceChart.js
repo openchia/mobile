@@ -17,7 +17,7 @@ import {
 } from '../../react-native-animated-charts';
 import { currencyState, settingsState } from '../../recoil/Atoms';
 import { getCurrencyFromKey } from '../../screens/more/Currency';
-import { getMarketChart } from '../../services/Api';
+import { api, COINGECKO_API } from '../../services/Api';
 import { currencyFormat } from '../../utils/Formatting';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -125,12 +125,17 @@ const query = selectorFamily({
     (element) =>
     async ({ get }) => {
       const currency = await get(currencyState);
-      const response = await getMarketChart(currency, element.value, element.interval);
-      if (response.data) {
+      const response = await api({
+        baseURL: COINGECKO_API,
+        url: `coins/chia/market_chart?vs_currency=${currency}&days=${
+          element.value || 'max'
+        }&interval=${element.interval || 1}`,
+      });
+      if (response) {
         if (element.label === '1h') {
           let now = Date.now();
           now = subHours(now, 1);
-          const data = response.data.prices
+          const data = response.prices
             .filter((item) => isAfter(new Date(item[0]), now))
             .map((item) => ({
               x: item[0],
@@ -140,7 +145,7 @@ const query = selectorFamily({
         }
 
         return monotoneCubicInterpolation({
-          data: response.data.prices.map((item) => ({
+          data: response.prices.map((item) => ({
             x: item[0],
             y: item[1],
           })),

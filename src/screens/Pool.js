@@ -160,10 +160,13 @@ const PoolScreen = ({ navigation, route }) => {
           lazyPreloadDistance: 1,
           tabBarLabelStyle: {
             fontFamily: theme.fonts.regular.fontFamily,
+            textTransform: 'none',
           },
+          tabBarItemStyle: { padding: 0 },
           tabBarStyle: {
             backgroundColor: theme.colors.tabNavigatorBackground,
           },
+          tabBarOptions: { upperCaseLabel: false },
         }}
       >
         <Tab.Screen name="Stats" component={StatsScreen} />

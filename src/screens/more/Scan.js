@@ -7,7 +7,7 @@ import { useTheme } from 'react-native-paper';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { useRecoilState } from 'recoil';
 import { launcherIDsState } from '../../recoil/Atoms';
-import { getLauncherIDFromToken, getPayoutAddress, updateFCMToken } from '../../services/Api';
+import { api } from '../../services/Api';
 import { encodePuzzleHash } from '../../utils/bech32';
 
 const ScanScreen = ({ navigation }) => {
@@ -22,44 +22,40 @@ const ScanScreen = ({ navigation }) => {
 
   const onSuccess = (e) => {
     const token = e.data;
-    getLauncherIDFromToken(token).then((data) => {
+    api({ method: 'post', url: 'login_qr', body: { token } }).then((data) => {
       if (data) {
-        getPayoutAddress(data.launcher_id).then((response) => {
-          setLauncherIDs((prev) => [
-            ...prev,
-            {
-              launcherId: data.launcher_id,
-              name: data.name,
-              token,
-              address: null,
-            },
-          ]);
-          // const address = encodePuzzleHash(response.results[0].puzzle_hash, 'xch');
-          // if (!launcherIDs.map((item) => item.launcherId).includes(data.launcher_id)) {
-          //   setLauncherIDs((prev) => [
-          //     ...prev,
-          //     {
-          //       launcherId: data.launcher_id,
-          //       name: data.name,
-          //       token,
-          //       address,
-          //     },
-          //   ]);
-          // }
-          messaging()
-            .getToken()
-            .then((FCMToken) => {
-              updateFCMToken(data.launcher_id, token, FCMToken).then(() => {
-                navigation.pop();
-              });
+        messaging()
+          .getToken()
+          .then((FCMToken) => {
+            api({
+              method: 'put',
+              url: `launcher/${data.launcher_id}/`,
+              body: { fcm_token: FCMToken },
+              headers: { Authorization: `Bearer ${token}` },
+            }).then(() => {
+              if (!launcherIDs.map((item) => item.launcherId).includes(data.launcher_id)) {
+                setLauncherIDs((prev) => [
+                  ...prev,
+                  {
+                    launcherId: data.launcher_id,
+                    name: data.name,
+                    token,
+                    // address: null,
+                    // email: data.email,
+                    // minimum_payout: data.minimum_payout,
+                    // size_drop: data.size_drop,
+                    // payment: data.payment,
+                    // size_drop_interval: data.size_drop_interval,
+                    // size_drop_percent: data.size_drop_percent,
+                    // referrer: data.referrer,
+                  },
+                ]);
+              }
+              navigation.pop();
             });
-        });
+          });
       } else {
         showDialog();
-        // setTimeout(() => {
-        //   scanner.current.reactivate();
-        // }, 1000);
-        // console.log('Error');
       }
     });
   };
