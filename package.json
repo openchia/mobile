@@ -56,7 +56,6 @@
     "react-native-permissions": "^3.1.0",
     "react-native-qrcode-scanner": "^1.5.4",
     "react-native-reanimated": "2.3.0",
-    "react-native-redash": "^16.2.2",
     "react-native-render-html": "^6.3.0",
     "react-native-ripple-button-reanimated": "^0.0.6",
     "react-native-safe-area-context": "^3.3.2",
