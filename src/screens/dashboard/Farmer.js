@@ -4,27 +4,36 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
-import { Platform, SafeAreaView, View } from 'react-native';
+import { Platform, Pressable, SafeAreaView, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilValue } from 'recoil';
-import { apiGet, apiMultiGet } from '../../services/Api';
+import { api } from '../../services/Api';
 import { currencyState } from '../../recoil/Atoms';
 import CustomIconButton from '../../components/CustomIconButton';
 import { getCurrencyFromKey } from '../more/Currency';
-import { formatBytes, formatPrice } from '../../utils/Formatting';
+import { convertMojoToChia, formatBytes, formatPrice } from '../../utils/Formatting';
 import FarmerBlockScreen from './Blocks';
 import FarmerPartialScreen from './Partials';
 import FarmerPayoutScreen from './Payouts';
 import FarmerStatsScreen from './Stats';
+
+const earningTypes = [
+  { title: 'Daily Rewards', days: 1 },
+  { title: 'Weekly Rewards', days: 7 },
+  { title: 'Montly Rewards', days: 30 },
+  { title: 'Yearly Rewards', days: 365 },
+];
 
 const Tab = createMaterialTopTabNavigator();
 
 const Content = ({ route, navigation }) => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [showFiat, setShowFiat] = useState(false);
   const currency = useRecoilValue(currencyState);
   const { launcherId, name } = route.params;
+  const [earningState, setEarningState] = useState(0);
   const { t } = useTranslation();
   const theme = useTheme();
   const handleError = useErrorHandler();
@@ -33,16 +42,14 @@ const Content = ({ route, navigation }) => {
     const controller = new AbortController();
 
     const fetchData = async () => {
-      const stats = await apiGet('stats', {
-        signal: controller.signal,
-      }).catch((err) => {
+      const stats = await api({ url: 'stats' }, controller.signal).catch((err) => {
         handleError(err);
       });
-      const farmer = await apiGet(`launcher/${launcherId}/`, {
-        signal: controller.signal,
-      }).catch((err) => {
-        handleError(err);
-      });
+      const farmer = await api({ url: `launcher/${launcherId}/` }, controller.signal).catch(
+        (err) => {
+          handleError(err);
+        }
+      );
       if (stats && farmer) {
         setData({ stats, farmer });
       }
@@ -91,85 +98,11 @@ const Content = ({ route, navigation }) => {
             }}
           />
         </View>
-        {/* {farm ? (
-          farm.token === null ? (
-            <View
-              style={{
-                backgroundColor: theme.colors.onSurfaceLight,
-                alignItems: 'center',
-                flexDirection: 'row',
-                position: 'absolute',
-                right: 0,
-                top: 0,
-              }}
-            >
-              <CustomIconButton
-                icon={<AntDesign name="staro" size={24} color={theme.colors.text} />}
-                style={{ marginEnd: 8 }}
-                color="#fff"
-                size={24}
-                onPress={() => {
-                  if (!launcherIDs.map((item) => item.launcherId).includes(launcherId)) {
-                    setLauncherIDs((prev) => [
-                      ...prev,
-                      {
-                        launcherId,
-                        name,
-                        token: null,
-                        address: null,
-                      },
-                    ]);
-                  } else {
-                    const newData = launcherIDs.filter((item) => item.launcherId !== launcherId);
-                    setLauncherIDs(newData);
-                  }
-                }}
-              />
-            </View>
-          ) : null
-        ) : (
-          <View
-            style={{
-              backgroundColor: theme.colors.onSurfaceLight,
-              alignItems: 'center',
-              flexDirection: 'row',
-              position: 'absolute',
-              right: 0,
-              top: 0,
-            }}
-          >
-            <CustomIconButton
-              icon={<AntDesign name="staro" size={24} color={theme.colors.text} />}
-              style={{ marginEnd: 8 }}
-              color="#fff"
-              size={24}
-              onPress={() => {
-                if (!launcherIDs.map((item) => item.launcherId).includes(launcherId)) {
-                  setLauncherIDs((prev) => [
-                    ...prev,
-                    {
-                      launcherId,
-                      name,
-                      token: null,
-                      address: null,
-                    },
-                  ]);
-                } else {
-                  const newData = launcherIDs.filter((item) => item.launcherId !== launcherId);
-                  setLauncherIDs(newData);
-                }
-              }}
-            />
-          </View>
-        )} */}
-
         <Text
           numberOfLines={1}
           style={{
             paddingTop: 24,
             fontSize: 20,
-            // color: theme.colors.textGrey,
-            // padding: 2,
             marginLeft: 48,
             marginRight: 48,
           }}
@@ -184,10 +117,48 @@ const Content = ({ route, navigation }) => {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>Difficulty</Text>
-            <Text style={{ textAlign: 'center' }}>{loading ? '...' : data.farmer.difficulty}</Text>
+            <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>Paid</Text>
+            <Text style={{ textAlign: 'center' }}>
+              {loading
+                ? '...'
+                : showFiat
+                ? `${(
+                    convertMojoToChia(data.farmer.payout.total_paid) *
+                    data.stats.xch_current_price[currency]
+                  ).toFixed(2)} ${getCurrencyFromKey(currency)}`
+                : `${convertMojoToChia(data.farmer.payout.total_paid).toFixed(3)} XCH`}
+            </Text>
           </View>
-          <View style={{ flex: 1 }}>
+          <Pressable
+            style={{ flex: 1 }}
+            onPress={() => {
+              if (earningState === earningTypes.length - 1) {
+                setEarningState(0);
+              } else setEarningState((prev) => prev + 1);
+            }}
+          >
+            <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>
+              {earningTypes[earningState].title}
+            </Text>
+            <Text style={{ textAlign: 'center' }}>
+              {loading
+                ? '...'
+                : showFiat
+                ? `${formatPrice(
+                    (data.farmer.estimated_size / 1099511627776) *
+                      data.stats.xch_tb_month *
+                      earningTypes[earningState].days *
+                      data.stats.xch_current_price[currency],
+                    currency
+                  )}  ${getCurrencyFromKey(currency)}`
+                : `${(
+                    (data.farmer.estimated_size / 1099511627776) *
+                    data.stats.xch_tb_month *
+                    earningTypes[earningState].days
+                  ).toFixed(4)}  XCH`}
+            </Text>
+          </Pressable>
+          {/* <View style={{ flex: 1 }}>
             <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>
               Daily Earnings
             </Text>
@@ -201,7 +172,7 @@ const Content = ({ route, navigation }) => {
                     currency
                   )}  ${getCurrencyFromKey(currency)}`}
             </Text>
-          </View>
+          </View> */}
           <View style={{ flex: 1 }}>
             <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>Size</Text>
             <Text style={{ textAlign: 'center' }}>
@@ -210,6 +181,7 @@ const Content = ({ route, navigation }) => {
           </View>
         </View>
       </View>
+
       <View style={{ height: 1 }} />
       <Tab.Navigator
         screenOptions={{
@@ -224,10 +196,22 @@ const Content = ({ route, navigation }) => {
         }}
       >
         <Tab.Screen name="FarmerStats" options={{ title: t('stats') }}>
-          {() => <FarmerStatsScreen launcherIds={[launcherId]} />}
+          {() => (
+            <FarmerStatsScreen
+              launcherIds={[launcherId]}
+              farmData={[data.farmer]}
+              loading={loading}
+            />
+          )}
         </Tab.Screen>
         <Tab.Screen name="FarmerPartials" options={{ title: t('partials') }}>
-          {() => <FarmerPartialScreen launcherIds={[launcherId]} />}
+          {() => (
+            <FarmerPartialScreen
+              launcherIds={[launcherId]}
+              farmData={[data.farmer]}
+              loading={loading}
+            />
+          )}
         </Tab.Screen>
         <Tab.Screen name="FarmerPayouts" options={{ title: t('payouts') }}>
           {() => <FarmerPayoutScreen launcherId={launcherId} />}

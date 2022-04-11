@@ -7,16 +7,16 @@ import { Text, useTheme } from 'react-native-paper';
 import { Shadow } from 'react-native-shadow-2';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilState } from 'recoil';
-import CustomIconButton from '../../components/CustomIconButton';
-import { launcherIDsState, settingsState } from '../../recoil/Atoms';
-import { api } from '../../services/Api';
+import CustomIconButton from '../../../components/CustomIconButton';
+import { launcherIDsState, settingsState } from '../../../recoil/Atoms';
+import { api } from '../../../services/Api';
 
-const FarmerNameScreen = ({ route, navigation }) => {
+const SettingComponentScreen = ({ route, navigation }) => {
   const [farms, setLauncherIDs] = useRecoilState(launcherIDsState);
   const [settings, setSettings] = useRecoilState(settingsState);
   const { t } = useTranslation();
-  const { launcherId, token, name } = route.params;
-  const [farmerName, setFarmerName] = useState(name);
+  const { launcherId, token, defaultData, type, keyboardType } = route.params;
+  const [data, setData] = useState(defaultData);
   const theme = useTheme();
 
   useLayoutEffect(() => {
@@ -36,15 +36,23 @@ const FarmerNameScreen = ({ route, navigation }) => {
             color="#fff"
             size={24}
             onPress={() => {
+              // console.log({
+              //   method: 'put',
+              //   url: `launcher/${launcherId}/`,
+              //   body: { [type]: data === '' ? null : data },
+              //   headers: { Authorization: `Bearer ${token}` },
+              // });
               api({
                 method: 'put',
                 url: `launcher/${launcherId}/`,
-                body: { name: farmerName },
+                body: { [type]: data === '' ? null : data },
                 headers: { Authorization: `Bearer ${token}` },
               })
                 .then(() => {
                   const updatedList = farms.map((item) => {
-                    return item.launcherId === launcherId ? { ...item, name: farmerName } : item;
+                    return item.launcherId === launcherId
+                      ? { ...item, [type]: data === '' ? null : data }
+                      : item;
                   });
                   setLauncherIDs(updatedList);
                 })
@@ -59,7 +67,7 @@ const FarmerNameScreen = ({ route, navigation }) => {
         </View>
       ),
     });
-  }, [navigation, farmerName]);
+  }, [navigation, data]);
 
   return (
     <SafeAreaView>
@@ -87,26 +95,16 @@ const FarmerNameScreen = ({ route, navigation }) => {
               // margin: 16,
             }}
           >
-            {/* <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-                color: theme.colors.textGrey,
-                marginEnd: 16,
-              }}
-            >
-              Name
-            </Text> */}
             <TextInput
               placeholderTextColor={theme.colors.textGreyLight}
               style={{ flex: 1, color: theme.colors.text, fontSize: 18 }}
               mode="flat"
               onChangeText={(text) => {
-                setFarmerName(text);
+                setData(text);
               }}
-              value={farmerName}
-              // placeholder={farmerName}
-              keyboardType="default"
+              value={data}
+              placeholder={`Enter ${type}`}
+              keyboardType={keyboardType || 'default'}
             />
           </View>
         </Shadow>
@@ -114,4 +112,4 @@ const FarmerNameScreen = ({ route, navigation }) => {
     </SafeAreaView>
   );
 };
-export default FarmerNameScreen;
+export default SettingComponentScreen;

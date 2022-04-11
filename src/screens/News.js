@@ -18,7 +18,7 @@ import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import LoadingComponent from '../components/LoadingComponent';
 import PressableCard from '../components/PressableCard';
 import { newsRefreshState, settingsState } from '../recoil/Atoms';
-import { getChiaPlotPosts } from '../services/Api';
+import { api, CHIA_PLOT_REST_API } from '../services/Api';
 
 const useRefresh = () => {
   const setRequestId = useSetRecoilState(newsRefreshState());
@@ -31,7 +31,7 @@ const query = selectorFamily({
     () =>
     async ({ get }) => {
       get(newsRefreshState());
-      const response = await getChiaPlotPosts();
+      const response = await api({ baseURL: CHIA_PLOT_REST_API, url: 'posts' });
       if (response.error) {
         throw response.error;
       }

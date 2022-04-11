@@ -1,12 +1,20 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundary, useErrorHandler } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
-import { Platform, SafeAreaView, View } from 'react-native';
+import {
+  Platform,
+  Pressable,
+  SafeAreaView,
+  TouchableHighlight,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { Button, IconButton, Portal, Switch, Text, useTheme } from 'react-native-paper';
 import Dialog from 'react-native-dialog';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -29,10 +37,18 @@ import {
 } from '../recoil/Atoms';
 import { convertMojoToChia, formatBytes, formatPrice } from '../utils/Formatting';
 import FarmerBlockScreen from './dashboard/Blocks';
-import FarmerPartialScreen from './dashboard/Partials';
 import FarmerPayoutScreen from './dashboard/Payouts';
 import FarmerStatsScreen from './dashboard/Stats';
 import { getCurrencyFromKey } from './more/Currency';
+import PartialsScreen from './dashboard/Partials';
+import FeeScreen from './dashboard/Fee';
+
+const earningTypes = [
+  { title: 'Daily Rewards', days: 1 },
+  { title: 'Weekly Rewards', days: 7 },
+  { title: 'Montly Rewards', days: 30 },
+  { title: 'Yearly Rewards', days: 365 },
+];
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -53,7 +69,6 @@ const LoadingText = ({ loading, error, value, style, formatValue }) => {
 const Content = ({ navigation }) => {
   const [farms, setFarms] = useRecoilState(launcherIDsState);
   const [dashboard, setDashboard] = useRecoilStateLoadable(dashboardState);
-  const refreshDashboard = useRecoilRefresher(dashboardState);
   const [selected, setSelected] = useRecoilState(dashboardSelectedState);
   const currency = useRecoilValue(currencyState);
   const theme = useTheme();
@@ -61,9 +76,48 @@ const Content = ({ navigation }) => {
   const { t } = useTranslation();
   const bottomSheetModalRef = useRef(null);
   const [showDialog, setShowDialog] = useState(false);
+  const [earningState, setEarningState] = useState(0);
+  const [showFiat, setShowFiat] = useState(false);
+  const handleError = useErrorHandler();
+  const { width } = useWindowDimensions();
+
+  const showPaid = (showFiat, val, togglePaid) => {
+    if (togglePaid) {
+      return showFiat
+        ? `${(
+            convertMojoToChia(
+              sumValue(
+                val.farms.map((item) => item.payout),
+                'total_unpaid'
+              )
+            ) * val.stats.xch_current_price[currency]
+          ).toFixed(2)} ${getCurrencyFromKey(currency)}`
+        : `${convertMojoToChia(
+            sumValue(
+              val.farms.map((item) => item.payout),
+              'total_unpaid'
+            )
+          ).toFixed(3)} XCH`;
+    }
+    return showFiat
+      ? `${(
+          convertMojoToChia(
+            sumValue(
+              val.farms.map((item) => item.payout),
+              'total_paid'
+            )
+          ) * val.stats.xch_current_price[currency]
+        ).toFixed(2)} ${getCurrencyFromKey(currency)}`
+      : `${convertMojoToChia(
+          sumValue(
+            val.farms.map((item) => item.payout),
+            'total_paid'
+          )
+        ).toFixed(3)} XCH`;
+  };
 
   // variables
-  const snapPoints = useMemo(() => ['25%', '40%'], []);
+  const snapPoints = useMemo(() => ['15%', '20%'], []);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -80,6 +134,10 @@ const Content = ({ navigation }) => {
     ),
     []
   );
+
+  if (dashboard.state === 'hasError') {
+    handleError(dashboard.contents);
+  }
 
   if (farms.length === 0) {
     return (
@@ -118,38 +176,16 @@ const Content = ({ navigation }) => {
         style={{
           backgroundColor: theme.colors.onSurfaceLight,
           alignItems: 'center',
-          paddingBottom: 16,
+          paddingBottom: 8,
         }}
       >
-        <View
+        {/* <View
           style={{
             backgroundColor: theme.colors.onSurfaceLight,
             alignItems: 'center',
             flexDirection: 'row',
             position: 'absolute',
             left: 0,
-            top: 0,
-          }}
-        >
-          {farms.length > 0 && (
-            <CustomIconButton
-              style={{ marginTop: 10, marginRight: 10 }}
-              icon={<Ionicons name="refresh" size={24} color={theme.colors.text} />}
-              color="#fff"
-              // size={24}
-              onPress={() => {
-                refreshDashboard();
-              }}
-            />
-          )}
-        </View>
-        <View
-          style={{
-            backgroundColor: theme.colors.onSurfaceLight,
-            alignItems: 'center',
-            flexDirection: 'row',
-            position: 'absolute',
-            right: 0,
             top: 0,
           }}
         >
@@ -163,17 +199,23 @@ const Content = ({ navigation }) => {
               />
             }
             color="#fff"
-            onPress={handlePresentModalPress}
+            onPress={() => {
+              refreshDashboard();
+            }}
           />
-        </View>
+        </View> */}
         {farms.length === 1 ? (
           <Text
             numberOfLines={1}
             style={{
-              paddingTop: 24,
+              paddingTop: 16,
               fontSize: 20,
-              marginLeft: 48,
-              marginRight: 48,
+              width: width / 2,
+              textAlign: 'center',
+              // width: 300,
+              // marginLeft: '30%',
+              // marginRight: '30%',
+              // maxWidth: '50%',
             }}
           >
             {farm(farms).name || farm(farms).launcherId}
@@ -192,6 +234,55 @@ const Content = ({ navigation }) => {
             valueExtractor={(item) => item.name || item.launcherId}
           />
         )}
+        <View
+          style={{
+            backgroundColor: theme.colors.onSurfaceLight,
+            alignItems: 'center',
+            flexDirection: 'row',
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            marginTop: 12,
+            marginRight: 0,
+          }}
+        >
+          <TouchableHighlight
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 36,
+              justifyContent: 'center',
+              alignItems: 'center',
+              // backgroundColor: 'blue',
+              // alignItems: 'center',
+              // justifyContent: 'center',
+            }}
+            activeOpacity={0.6}
+            underlayColor={settings.isThemeDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
+            onPress={() => {
+              setShowFiat((prev) => !prev);
+            }}
+          >
+            {/* <View> */}
+            <Text style={{ fontSize: 14, textAlign: 'center', textAlignVertical: 'center' }}>
+              {showFiat ? 'XCH' : currency.toUpperCase()}
+            </Text>
+            {/* </View> */}
+          </TouchableHighlight>
+          <CustomIconButton
+            style={{ margin: 0, padding: 0 }}
+            icon={
+              <Ionicons
+                name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
+                size={24}
+                color={theme.colors.text}
+              />
+            }
+            color="#fff"
+            onPress={handlePresentModalPress}
+          />
+        </View>
+
         <View style={{ alignItems: 'center' }}>
           {settings.showBalance && (
             <LoadingText
@@ -200,12 +291,18 @@ const Content = ({ navigation }) => {
               style={{ paddingTop: 16, fontSize: 24 }}
               value={dashboard.contents.balances}
               formatValue={(val) =>
-                // `${val}`
-                `${val
-                  .map((item) => item.balance)
-                  .map((item) => item.data.unspentBalance)
-                  .reduce((a, b) => a + b)
-                  .toFixed(3)} XCH`
+                showFiat
+                  ? `${
+                      val
+                        .map((item) => item.balance)
+                        .map((item) => item.data.unspentBalance)
+                        .reduce((a, b) => a + b) * val.stats.xch_current_price[currency]
+                    } ${getCurrencyFromKey(currency)}`
+                  : `${val
+                      .map((item) => item.balance)
+                      .map((item) => item.data.unspentBalance)
+                      .reduce((a, b) => a + b)
+                      .toFixed(3)} XCH`
               }
             />
           )}
@@ -216,64 +313,50 @@ const Content = ({ navigation }) => {
               marginTop: 16,
             }}
           >
-            <Text style={{ textAlign: 'center', color: theme.colors.textGrey, paddingEnd: 12 }}>
-              Paid
-            </Text>
-
-            <LoadingText
-              loading={dashboard.state === 'loading'}
-              error={dashboard.state === 'hasError'}
-              style={{ textAlign: 'center', paddingEnd: 36 }}
-              value={dashboard.contents.farms}
-              formatValue={(val) =>
-                `${convertMojoToChia(
-                  sumValue(
-                    val.map((item) => item.payout),
-                    'total_paid'
-                  )
-                ).toFixed(3)} XCH`
-              }
-            />
-
-            <Text style={{ textAlign: 'center', color: theme.colors.textGrey, paddingEnd: 12 }}>
-              Unpaid
-            </Text>
-
-            <LoadingText
-              loading={dashboard.state === 'loading'}
-              error={dashboard.state === 'hasError'}
-              style={{ textAlign: 'center' }}
-              value={dashboard.contents.farms}
-              formatValue={(val) =>
-                `${convertMojoToChia(
-                  sumValue(
-                    val.map((item) => item.payout),
-                    'total_unpaid'
-                  )
-                ).toFixed(3)} XCH`
-              }
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              margin: 'auto',
-              marginTop: 16,
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>Difficulty</Text>
+            <Pressable
+              style={{ flex: 1 }}
+              onPress={() => {
+                setSettings((prev) => ({ ...prev, togglePaid: !prev.togglePaid }));
+              }}
+            >
+              <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>
+                {settings.togglePaid ? 'Unpaid' : 'Paid'}
+              </Text>
               <LoadingText
                 loading={dashboard.state === 'loading'}
                 error={dashboard.state === 'hasError'}
                 style={{ textAlign: 'center' }}
-                value={dashboard.contents.farms}
-                formatValue={(val) => sumValue(val, 'difficulty')}
+                value={dashboard.contents}
+                formatValue={
+                  (val) => showPaid(showFiat, val, settings.togglePaid)
+                  // showFiat
+                  //   ? `${(
+                  //       convertMojoToChia(
+                  //         sumValue(
+                  //           val.farms.map((item) => item.payout),
+                  //           'total_paid'
+                  //         )
+                  //       ) * val.stats.xch_current_price[currency]
+                  //     ).toFixed(2)} ${getCurrencyFromKey(currency)}`
+                  //   : `${convertMojoToChia(
+                  //       sumValue(
+                  //         val.farms.map((item) => item.payout),
+                  //         'total_paid'
+                  //       )
+                  //     ).toFixed(3)} XCH`
+                }
               />
-            </View>
-            <View style={{ flex: 1 }}>
+            </Pressable>
+            <Pressable
+              style={{ flex: 1 }}
+              onPress={() => {
+                if (earningState === earningTypes.length - 1) {
+                  setEarningState(0);
+                } else setEarningState((prev) => prev + 1);
+              }}
+            >
               <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>
-                Daily Earnings
+                {earningTypes[earningState].title}
               </Text>
               <LoadingText
                 loading={dashboard.state === 'loading'}
@@ -281,15 +364,22 @@ const Content = ({ navigation }) => {
                 style={{ textAlign: 'center' }}
                 value={dashboard.contents}
                 formatValue={(val) =>
-                  `${formatPrice(
-                    (sumValue(val.farms, 'estimated_size') / 1099511627776) *
-                      val.stats.xch_tb_month *
-                      val.stats.xch_current_price[currency],
-                    currency
-                  )}  ${getCurrencyFromKey(currency)}`
+                  showFiat
+                    ? `${formatPrice(
+                        (sumValue(val.farms, 'estimated_size') / 1099511627776) *
+                          val.stats.xch_tb_month *
+                          earningTypes[earningState].days *
+                          val.stats.xch_current_price[currency],
+                        currency
+                      )}  ${getCurrencyFromKey(currency)}`
+                    : `${(
+                        (sumValue(val.farms, 'estimated_size') / 1099511627776) *
+                        val.stats.xch_tb_month *
+                        earningTypes[earningState].days
+                      ).toFixed(4)}  XCH`
                 }
               />
-            </View>
+            </Pressable>
             <View style={{ flex: 1 }}>
               <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>Size</Text>
 
@@ -310,8 +400,12 @@ const Content = ({ navigation }) => {
           lazyPreloadDistance: 1,
           tabBarLabelStyle: {
             fontFamily: theme.fonts.regular.fontFamily,
+            fontSize: 11,
+            textTransform: 'none',
           },
+          tabBarItemStyle: { padding: 0 },
           tabBarStyle: {
+            padding: 0,
             backgroundColor: theme.colors.tabNavigatorBackground,
           },
         }}
@@ -320,6 +414,8 @@ const Content = ({ navigation }) => {
           {() => (
             <FarmerStatsScreen
               selected={selected}
+              farmData={dashboard.contents.farms}
+              loading={dashboard.state === 'loading'}
               launcherIds={
                 selected
                   ? farms
@@ -330,10 +426,12 @@ const Content = ({ navigation }) => {
             />
           )}
         </Tab.Screen>
-        <Tab.Screen name="FarmerPartials" options={{ title: t('partials') }}>
+        <Tab.Screen name="PartialStats" options={{ title: t('partials') }}>
           {() => (
-            <FarmerPartialScreen
+            <PartialsScreen
               selected={selected}
+              farmData={dashboard.contents.farms}
+              loading={dashboard.state === 'loading'}
               launcherIds={
                 selected
                   ? farms
@@ -383,8 +481,112 @@ const Content = ({ navigation }) => {
         handleIndicatorStyle={{ backgroundColor: theme.colors.textGrey }}
         backdropComponent={renderBackdrop}
       >
-        <View style={{ flex: 1 }}>
-          <View style={{ flexDirection: 'column' }}>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <View
+            style={{
+              flexDirection: 'column',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CustomIconButton
+              size={30}
+              icon={<Ionicons name="scan" size={26} color={theme.colors.text} />}
+              color="#fff"
+              onPress={() => {
+                bottomSheetModalRef.current?.dismiss();
+                setTimeout(() => navigation.navigate('Verify Farm'), 200);
+              }}
+            />
+            <Text>Scan</Text>
+          </View>
+          {(selected || farms.length === 1) && (
+            <View
+              style={{
+                flexDirection: 'column',
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <CustomIconButton
+                size={30}
+                icon={<Ionicons name="settings" size={26} color={theme.colors.text} />}
+                color="#fff"
+                onPress={() => {
+                  bottomSheetModalRef.current?.dismiss();
+                  if (dashboard.state === 'hasValue') {
+                    // console.log(selected || farms[0].launcherId);
+                    // console.log(dashboard.contents.farms);
+                    // const farm = selected
+                    //   ? dashboard.contents.farms.find((item) => item === selected.launcherId)
+                    //   : dashboard.contents.farms.map((item) => item)[0];
+                    // const updatedList = farms.map((item) => {
+                    //   console.log(item);
+                    //   return item.launcherId === farm.launcher_id
+                    //     ? {
+                    //         ...item,
+                    //         address: farm.address,
+                    //         email: farm.email,
+                    //         minimum_payout: farm.minimum_payout,
+                    //         size_drop: farm.size_drop,
+                    //         payment: farm.payment,
+                    //         size_drop_interval: farm.size_drop_interval,
+                    //         size_drop_percent: farm.size_drop_percent,
+                    //         referrer: farm.referrer,
+                    //         custom_difficulty: farm.custom_difficulty,
+                    //       }
+                    //     : item;
+                    // });
+                    // setFarms(updatedList);
+                    // setFarms((prev) => [
+                    //   ...prev,
+                    //   {
+                    //     address: farm.address,
+                    //     email: farm.email,
+                    //     minimum_payout: farm.minimum_payout,
+                    //     size_drop: farm.size_drop,
+                    //     payment: farm.payment,
+                    //     size_drop_interval: farm.size_drop_interval,
+                    //     size_drop_percent: farm.size_drop_percent,
+                    //     referrer: farm.referrer,
+                    //   },
+                    // ]);
+                    navigation.navigate({
+                      name: 'Farmer Settings',
+                      params: {
+                        farm: selected || farms[0],
+                      },
+                    });
+                  }
+                }}
+              />
+              <Text>Settings</Text>
+            </View>
+          )}
+          {(selected || farms.length === 1) && (
+            <View
+              style={{
+                flexDirection: 'column',
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <CustomIconButton
+                size={30}
+                icon={<Ionicons name="trash-bin" size={26} color={theme.colors.text} />}
+                color="#fff"
+                onPress={() => {
+                  bottomSheetModalRef.current?.dismiss();
+                  setShowDialog(true);
+                }}
+              />
+              <Text>Remove</Text>
+            </View>
+          )}
+          {/* <View style={{ flexDirection: 'column' }}>
             <PressableCard
               style={{
                 justifyContent: 'center',
@@ -500,7 +702,73 @@ const Content = ({ navigation }) => {
                 </View>
               </PressableCard>
             )}
-          </View>
+            {(selected || farms.length === 1) && (
+              <>
+                <PressableCard
+                  style={{
+                    justifyContent: 'center',
+                    padding: 4,
+                    backgroundColor: theme.colors.tabNavigatorBackground,
+                    // backgroundColor: 'blue',
+                  }}
+                  onPress={() => {
+                    // bottomSheetModalRef.current?.dismiss();
+                    setSettings((prev) => ({ ...prev, showBalance: !prev.showBalance }));
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingTop: 8,
+                      paddingBottom: 8,
+                    }}
+                  >
+                    <Text style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
+                      Payment Notifications
+                    </Text>
+                    <View pointerEvents="none" style={{ paddingRight: 16 }}>
+                      <Switch
+                        value={settings.showBalance}
+                        trackColor={{ true: theme.colors.accentLight, false: 'rgba(0, 0, 0, 0.4)' }}
+                      />
+                    </View>
+                  </View>
+                </PressableCard>
+                <PressableCard
+                  style={{
+                    justifyContent: 'center',
+                    padding: 4,
+                    backgroundColor: theme.colors.tabNavigatorBackground,
+                    // backgroundColor: 'blue',
+                  }}
+                  onPress={() => {
+                    // bottomSheetModalRef.current?.dismiss();
+                    setSettings((prev) => ({ ...prev, showBalance: !prev.showBalance }));
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingTop: 8,
+                      paddingBottom: 8,
+                    }}
+                  >
+                    <Text style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
+                      Size Decrease Notifications
+                    </Text>
+                    <View pointerEvents="none" style={{ paddingRight: 16 }}>
+                      <Switch
+                        value={settings.showBalance}
+                        trackColor={{ true: theme.colors.accentLight, false: 'rgba(0, 0, 0, 0.4)' }}
+                      />
+                    </View>
+                  </View>
+                </PressableCard>
+              </>
+            )}
+          </View> */}
         </View>
       </BottomSheetModal>
       {Platform.OS === 'android' ? (

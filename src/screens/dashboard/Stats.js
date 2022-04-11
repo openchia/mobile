@@ -1,15 +1,22 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-nested-ternary */
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { format, toDate } from 'date-fns';
+import humanizeDuration from 'humanize-duration';
 import React, { useEffect, useState } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { Shadow } from 'react-native-shadow-2';
-import { useRecoilValue } from 'recoil';
-import { apiMultiGet } from '../../services/Api';
-import { settingsState } from '../../recoil/Atoms';
+import {
+  useRecoilStateLoadable,
+  useRecoilValue,
+  useRecoilRefresher_UNSTABLE as useRecoilRefresher,
+} from 'recoil';
 import CustomCard from '../../components/CustomCard';
+import { dashboardState, settingsState } from '../../recoil/Atoms';
+import { apiMulti } from '../../services/Api';
 
 const Item = ({ title, color, loading, value, format, settings }) => {
   const theme = useTheme();
@@ -31,14 +38,14 @@ const Item = ({ title, color, loading, value, format, settings }) => {
             justifyContent: 'center',
           }}
         >
-          <Text numberOfLines={1} style={{ color, fontSize: 14, textAlign: 'center' }}>
+          <Text numberOfLines={1} style={{ color, fontSize: 13, textAlign: 'center' }}>
             {title}
           </Text>
           <Text
             style={{
               textAlign: 'center',
-              fontSize: 18,
-              fontWeight: 'bold',
+              // fontSize: 16,
+              // fontWeight: 'bold',
             }}
           >
             {!loading && value ? format(value) : '...'}
@@ -49,118 +56,135 @@ const Item = ({ title, color, loading, value, format, settings }) => {
   );
 };
 
-const partialPerfomance = (partialCount, failedPartialCount) =>
-  ((partialCount - failedPartialCount) * 100) / partialCount;
+const shortEnglishHumanizer = humanizeDuration.humanizer({
+  language: 'shortEn',
+  conjunction: ' ',
+  delimiter: ' ',
+  serialComma: false,
+  spacer: '',
+  largest: 3,
+  // serialComma: false,
+  languages: {
+    shortEn: {
+      y: () => 'y',
+      mo: () => 'mo',
+      w: () => 'w',
+      d: () => 'd',
+      h: () => 'h',
+      m: () => 'm',
+      s: () => 's',
+      ms: () => 'ms',
+    },
+  },
+});
 
-const FarmerStatsScreen = ({ launcherIds, selected }) => {
+const FarmerStatsScreen = ({ launcherIds, selected, farmData, loading }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const settings = useRecoilValue(settingsState);
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(true);
+  // const [data, setData] = useState();
+  // const [loading, setLoading] = useState(true);
   const [refreshing, setRefresh] = useState(false);
-
-  const handleError = useErrorHandler();
+  // const [dashboard, setDashboard] = useRecoilStateLoadable(dashboardState);
+  const refreshDashboard = useRecoilRefresher(dashboardState);
+  const [data, setData] = useState();
 
   useEffect(() => {
-    const controller = new AbortController();
+    if (!loading) {
+      let mPoints = 0;
+      let mPointsPPLNS = 0;
+      let mSharePPLNS = 0;
+      let mDifficulty = 0;
+      let mEstimatedSize = 0;
+      let mTotalPaid = 0;
+      let mTotalUnpaid = 0;
+      let mTotalTransactions = 0;
+      let mBlocksTotal = 0;
+      let mCurrentETW = 0;
+      let mCurrentEffort = 0;
+      let mFee = 0;
+      const mJoinedLastAt = [];
+      const mJoinedAt = [];
 
-    setLoading(true);
-
-    let timestamp = new Date().getTime();
-    timestamp = Math.floor(timestamp / 1000) - 60 * 60 * 24;
-    const calls = launcherIds.map(
-      (launcherId) =>
-        `partial/?ordering=-timestamp&min_timestamp=${timestamp.toString()}&launcher=${launcherId}&limit=2000`
-    );
-
-    const fetchData = async () => {
-      const response = await apiMultiGet(calls, {
-        signal: controller.signal,
-      }).catch((err) => {
-        handleError(err);
+      farmData.forEach((farm) => {
+        const {
+          points,
+          points_pplns,
+          share_pplns,
+          difficulty,
+          estimated_size,
+          joined_at,
+          joined_last_at,
+          current_etw,
+          current_effort,
+        } = farm;
+        const { total_paid, total_unpaid, total_transactions } = farm.payout;
+        const { final } = farm.fee;
+        const { total } = farm.blocks;
+        mPoints += points;
+        mPointsPPLNS += points_pplns;
+        mSharePPLNS += Number(share_pplns) / farmData.length;
+        mDifficulty += difficulty;
+        mEstimatedSize += estimated_size;
+        mTotalPaid += total_paid;
+        mTotalUnpaid += total_unpaid;
+        mTotalTransactions += total_transactions;
+        mBlocksTotal += total;
+        mJoinedLastAt.push(joined_last_at);
+        mJoinedAt.push(joined_at);
+        mCurrentETW += current_etw;
+        mCurrentEffort += current_effort;
+        mFee += final;
       });
 
-      if (response) {
-        const harvesters = new Set();
-        const failedPartials = [];
-        const successfulPartials = [];
-        let partialCount = 0;
-        let points = 0;
-
-        // console.log(response.map((item) => item.results));
-
-        response
-          .map((data) => data.results)
-          .forEach((farm) => {
-            farm.forEach((item) => {
-              harvesters.add(item.harvester_id);
-              if (item.error !== null) {
-                failedPartials.push(item);
-              } else {
-                successfulPartials.push(item);
-                points += item.difficulty;
-              }
-              partialCount += 1;
-            });
-          });
-
-        setData({
-          harvesters,
-          failedPartials,
-          successfulPartials,
-          points,
-          partialCount,
-          partialPerfomance: partialPerfomance(partialCount, failedPartials.length),
-        });
-      }
-      setLoading(false);
-    };
-    fetchData();
-
-    return () => {
-      controller.abort();
-    };
-  }, [refreshing, selected]);
+      setData({
+        points: mPoints,
+        pointsPPLNS: mPointsPPLNS,
+        share_pplns: mSharePPLNS,
+        difficulty: mDifficulty,
+        estimatedSize: mEstimatedSize,
+        totalPaid: mTotalPaid,
+        totalUnpaid: mTotalUnpaid,
+        totalTransactions: mTotalTransactions,
+        blocksTotal: mBlocksTotal,
+        etw: mCurrentETW / farmData.length,
+        effort: mCurrentEffort / farmData.length,
+        joinedLastAt: mJoinedLastAt,
+        joinedAt: mJoinedAt,
+        fee: mFee / farmData.length,
+      });
+    }
+  }, [farmData, selected]);
 
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.colors.background }}
-      // contentContainerStyle={{ flexGrow: 1, marginVertical: 12, marginHorizontal: 12 }}
-      contentContainerStyle={{ marginVertical: 6, marginHorizontal: 6, flexGrow: 1 }}
+      contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, marginHorizontal: 6, flexGrow: 1 }}
       refreshControl={
         <RefreshControl
           refreshing={false}
           onRefresh={() => {
-            setLoading(true);
-            setRefresh((prev) => !prev);
+            refreshDashboard();
+            // setRefresh((prev) => !prev);
           }}
         />
       }
     >
-      {/* <HeaderItem
-        loadable={dataLoadable}
-        launcherId={launcherId}
-        currency={currency}
-        t={t}
-        theme={theme}
-      /> */}
-      {/* <View style={{ height: 8 }} /> */}
       <View style={styles.container}>
         <Item
           loading={loading}
           value={data}
-          format={(item) => item.partialCount}
+          format={(item) => `${(item.share_pplns * 100).toFixed(3)}%`}
           color={theme.colors.green}
-          title={`${t('partials')}\n(${t('24Hours').toUpperCase()})`}
+          title={`${t('Utilization Space')}`}
           settings={settings}
         />
         <Item
           loading={loading}
           value={data}
-          format={(item) => item.points}
-          color={theme.colors.blue}
-          title={`${t('points')}\n(${t('24Hours').toUpperCase()})`}
+          format={(item) => `${item.effort.toFixed(3)}%`}
+          color={theme.colors.red}
+          title={'Current Effort'}
           settings={settings}
         />
       </View>
@@ -168,17 +192,17 @@ const FarmerStatsScreen = ({ launcherIds, selected }) => {
         <Item
           loading={loading}
           value={data}
-          format={(item) => item.successfulPartials.length}
+          format={(item) => `${shortEnglishHumanizer(item.etw * 1000)}`}
           color={theme.colors.indigo}
-          title={`${t('successfulPartials')}`}
+          title={'ETW'}
           settings={settings}
         />
         <Item
           loading={loading}
           value={data}
-          format={(item) => item.failedPartials.length}
-          color={theme.colors.orange}
-          title={`${t('failedPartials')}`}
+          format={(item) => `${(item.fee * 100).toFixed(3)}%`}
+          color={theme.colors.teal}
+          title={`Effective Fee`}
           settings={settings}
         />
       </View>
@@ -186,39 +210,78 @@ const FarmerStatsScreen = ({ launcherIds, selected }) => {
         <Item
           loading={loading}
           value={data}
-          format={(item) => `${item.partialPerfomance.toFixed(1)}%`}
-          color={theme.colors.pink}
-          title={t('partialPerfomance')}
+          format={(item) => `${item.blocksTotal}`}
+          color={theme.colors.orange}
+          title={`Blocks`}
           settings={settings}
         />
         <Item
           loading={loading}
           value={data}
-          format={(item) => item.harvesters.size}
+          format={(item) => item.totalTransactions}
           color={theme.colors.purple}
-          title={t('harvesterCount')}
+          title={`Total Rewards`}
           settings={settings}
         />
       </View>
-      {/* <View style={{ height: 8 }} /> */}
-      {/* <View style={styles.container}>
+      <View style={styles.container}>
         <Item
-          value={payouts}
-          format={(item) => `${convertMojoToChia(item)} XCH`}
+          loading={loading}
+          value={data}
+          format={(item) => `${item.pointsPPLNS}`}
           color={theme.colors.pink}
-          title={t('partialPerfomance')}
+          title={`Points PPLNS`}
+          settings={settings}
         />
-        <View style={{ width: 8 }} />
         <Item
-          value={data.partials}
-          format={(item) => item.harvesters.size}
-          color={theme.colors.purple}
-          title={t('harvesterCount')}
+          loading={loading}
+          value={data}
+          format={(item) => item.difficulty}
+          color={theme.colors.blue}
+          title={`Dificulty`}
+          settings={settings}
         />
-      </View> */}
-      {/* <View style={{ height: 8 }} /> */}
+      </View>
+      <JoinedItem
+        loading={loading}
+        selected={selected}
+        launcherIds={launcherIds}
+        data={data}
+        settings={settings}
+        theme={theme}
+      />
+      {/* {selected ||
+        (launcherIds.length === 1 && (
+          <View style={styles.container}>
+            <Item
+              loading={dashboard.state === 'loading'}
+              value={data}
+              format={(item) => `${format(new Date(item.joinedLastAt[0]), 'PPpp')}`}
+              color={theme.colors.green}
+              title={`${'Last Joined At'}`}
+              settings={settings}
+            />
+          </View>
+        ))} */}
     </ScrollView>
   );
+};
+
+const JoinedItem = ({ selected, launcherIds, data, settings, theme, loading }) => {
+  if (selected || launcherIds.length === 1)
+    return (
+      <View style={styles.container}>
+        <Item
+          loading={loading}
+          value={data}
+          format={(item) => `${format(new Date(item.joinedLastAt[0]), 'PPpp')}`}
+          color={theme.colors.green}
+          title={`${'Last Joined At'}`}
+          settings={settings}
+        />
+      </View>
+    );
+  return null;
 };
 
 const styles = StyleSheet.create({

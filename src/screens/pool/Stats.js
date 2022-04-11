@@ -21,6 +21,7 @@ import {
   formatBytes,
 } from '../../utils/Formatting';
 import { getCurrencyFromKey } from '../more/Currency';
+import { api } from './../../services/Api';
 
 const Item = ({ title, value, color, loadable, data, format, onPress, icon, settings, error }) => {
   const theme = useTheme();
@@ -38,6 +39,7 @@ const Item = ({ title, value, color, loadable, data, format, onPress, icon, sett
           style={{
             borderRadius: settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius,
             backgroundColor: theme.colors.onSurfaceLight,
+            padding: 4,
           }}
           onPress={onPress}
         >
@@ -46,12 +48,13 @@ const Item = ({ title, value, color, loadable, data, format, onPress, icon, sett
               {title}
             </Text>
             <Text
+              numberOfLines={1}
               style={{
                 textAlign: 'center',
-                // marginTop: 10,
-                // marginBottom: 10,
-                fontSize: 18,
-                fontWeight: 'bold',
+                // paddingLeft: 8,
+                // paddingRight: 8,
+                // fontSize: 18,
+                // fontWeight: 'bold',
               }}
             >
               {!loadable && !error ? format(data) : '...'}
@@ -59,8 +62,8 @@ const Item = ({ title, value, color, loadable, data, format, onPress, icon, sett
             <View
               style={{
                 position: 'absolute',
-                right: 12,
-                bottom: 12,
+                right: 4,
+                bottom: 2,
               }}
             >
               {icon}
@@ -99,7 +102,12 @@ const Content = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ marginVertical: 6, marginHorizontal: 6, flexGrow: 1 }}
+        contentContainerStyle={{
+          paddingTop: 6,
+          paddingBottom: 6,
+          marginHorizontal: 6,
+          flexGrow: 1,
+        }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

@@ -2,7 +2,7 @@
 import messaging from '@react-native-firebase/messaging';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Linking, SafeAreaView, useWindowDimensions, View } from 'react-native';
+import { Alert, Image, Linking, SafeAreaView, useWindowDimensions, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Switch, Text, useTheme } from 'react-native-paper';
 import { Shadow } from 'react-native-shadow-2';
@@ -15,6 +15,7 @@ import CustomIconButton from '../components/CustomIconButton';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import PressableCard from '../components/PressableCard';
 import { currencyState, settingsState } from '../recoil/Atoms';
+import { SPACESCAN } from '../assets/images/index';
 import { LANGUAGES } from './more/Language';
 
 const Item = ({ item, color, t, onPress, theme }) => (
@@ -123,7 +124,8 @@ const MoreScreen = ({ navigation }) => {
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'row',
-            paddingBottom: 36,
+            paddingBottom: 24,
+            paddingTop: 16,
           }}
         >
           <View style={{ marginEnd: 16 }}>
@@ -203,11 +205,14 @@ const MoreScreen = ({ navigation }) => {
           </Shadow>
         </View>
         <View style={{ alignSelf: 'stretch', margin: 16 }}>
+          <Text
+            style={{ paddingBottom: 4, fontFamily: theme.fonts.medium.fontFamily, fontSize: 12 }}
+          >
+            Settings
+          </Text>
           <Shadow
             distance={2}
             startColor="rgba(0, 0, 0, 0.02)"
-            // finalColor="rgba(0, 0, 0, 0.01)"
-            // containerViewStyle={{ marginVertical: 16 }}
             radius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
             viewStyle={{ alignSelf: 'stretch' }}
           >
@@ -215,10 +220,8 @@ const MoreScreen = ({ navigation }) => {
               style={[
                 {
                   marginVertical: 0,
-                  // padding: 16,
                   backgroundColor: theme.colors.background,
                   borderRadius: settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius,
-                  //   borderRadius: 16,
                 },
               ]}
             >
@@ -432,18 +435,89 @@ const MoreScreen = ({ navigation }) => {
                       color={theme.colors.textGrey}
                     />
                   )}
-                  {/* <Ionicons
-                    style={{ paddingRight: 20 }}
-                    name={settings.sharpEdges ? 'square-outline' : 'circle-outline'}
-                    size={24}
-                    color={theme.colors.textGrey}
-                  /> */}
                 </View>
               </PressableCard>
-              {/* <View>
-              <Text>React Native cross-platform box shadow</Text>
             </View>
-            <Text>Using the Platform API to conditionally render box shadow</Text> */}
+          </Shadow>
+        </View>
+        <View style={{ alignSelf: 'stretch', margin: 16 }}>
+          <Text
+            style={{ paddingBottom: 4, fontFamily: theme.fonts.medium.fontFamily, fontSize: 12 }}
+          >
+            Partners
+          </Text>
+          <Shadow
+            distance={2}
+            startColor="rgba(0, 0, 0, 0.02)"
+            radius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
+            viewStyle={{ alignSelf: 'stretch' }}
+          >
+            <View
+              style={[
+                {
+                  marginVertical: 0,
+                  backgroundColor: theme.colors.background,
+                  borderRadius: settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius,
+                },
+              ]}
+            >
+              <PressableCard
+                style={{
+                  paddingTop: 16,
+                  paddingBottom: 16,
+                  borderTopLeftRadius: settings.sharpEdges
+                    ? theme.tileModeRadius
+                    : theme.roundModeRadius,
+                  borderTopRightRadius: settings.sharpEdges
+                    ? theme.tileModeRadius
+                    : theme.roundModeRadius,
+                  borderBottomLeftRadius: settings.sharpEdges
+                    ? theme.tileModeRadius
+                    : theme.roundModeRadius,
+                  borderBottomRightRadius: settings.sharpEdges
+                    ? theme.tileModeRadius
+                    : theme.roundModeRadius,
+                  backgroundColor: theme.colors.onSurfaceLight,
+                  marginBottom: 1,
+                }}
+                onPress={() => {
+                  Linking.canOpenURL('https://www.spacescan.io/').then((supported) => {
+                    if (supported) {
+                      Linking.openURL('https://www.spacescan.io/');
+                    }
+                  });
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Image style={{ marginLeft: 16, width: 24, height: 24 }} source={SPACESCAN} />
+                  <Text style={{ paddingLeft: 16, flex: 1 }}>Spacescan</Text>
+                  <Text
+                    style={{
+                      paddingLeft: 16,
+                      paddingRight: 16,
+                      color: theme.colors.textGrey,
+                      fontFamily: theme.fonts.medium.fontFamily,
+                    }}
+                  >
+                    Chia Explorer
+                  </Text>
+                  {/* <Text
+                    style={{
+                      paddingLeft: 16,
+                      paddingRight: 16,
+                      color: theme.colors.textGrey,
+                      fontFamily: theme.fonts.medium.fontFamily,
+                    }}
+                  >
+                    {currency.toUpperCase()}
+                  </Text> */}
+                </View>
+              </PressableCard>
             </View>
           </Shadow>
         </View>

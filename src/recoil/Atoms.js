@@ -8,37 +8,8 @@ import {
   waitForAllSettled,
   waitForAny,
 } from 'recoil';
-import { apiGet, apiSpaceScanGet } from '../services/Api';
+import { api, SPACESCAN_API } from '../services/Api';
 import { getObject, saveObject } from '../utils/Utils';
-
-const localForageEffect =
-  (key) =>
-  ({ setSelf, onSet }) => {
-    setSelf(
-      getObject(key).then(
-        (savedValue) => (savedValue != null ? Object.entries(savedValue) : new DefaultValue()) // Abort initialization if no value was stored
-      )
-    );
-
-    onSet((newValue) => {
-      saveObject(key, newValue);
-    });
-  };
-
-const localTokenEffect =
-  (key) =>
-  ({ setSelf, onSet }) => {
-    setSelf(
-      getObject(key).then(
-        (savedValue) =>
-          savedValue != null ? new Set(Object.entries(savedValue)) : new DefaultValue() // Abort initialization if no value was stored
-      )
-    );
-
-    onSet((newValue) => {
-      saveObject(key, newValue);
-    });
-  };
 
 const localEffect =
   (key) =>
@@ -54,37 +25,30 @@ const localEffect =
     });
   };
 
-// const localGroupsEffect =
-//   (key) =>
-//   ({ setSelf, onSet }) => {
-//     setSelf(
-//       getObject(key).then(
-//         (savedValue) => (savedValue != null ? JSON.parse(savedValue) : new DefaultValue()) // Abort initialization if no value was stored
-//       )
-//     );
-
-//     onSet((newValue) => {
-//       saveObject(key, JSON.stringify(newValue));
-//     });
-//   };
-
 export const launcherIDsState = atom({
   key: 'atomFarms',
   default: [],
   effects_UNSTABLE: [localEffect('farms')],
 });
 
-export const groupState = atom({
-  key: 'groupState',
-  default: [],
-  effects_UNSTABLE: [localEffect('group')],
-});
-
-export const tokensState = atom({
-  key: 'atomTokens',
-  default: new Set(),
-  effects_UNSTABLE: [localTokenEffect('tokens')],
-});
+// [
+//   {
+//     address: undefined,
+//     customDifficulty: 'LOWEST',
+//     custom_difficulty: 'LOWEST',
+//     email: null,
+//     launcherId: '6d50b88556ba0cbc8229e971c8c5deb49677bcfb640dd9186f8615fbe7ac68fc',
+//     min_payout: 50000000000000,
+//     minimum_payout: 8000000000000,
+//     name: 'Voldermort',
+//     payment: ['PUSH'],
+//     referrer: null,
+//     size_drop: [],
+//     size_drop_interval: 80,
+//     size_drop_percent: 34,
+//     token: '1e8e6acd9456f39b599de18dde552e0a020d72b0205468d77d4e28a203ebb1ea',
+//   },
+// ];
 
 export const settingsState = atom({
   key: 'atomTheme',
@@ -103,42 +67,19 @@ export const settingsState = atom({
   effects_UNSTABLE: [localEffect('settings')],
 });
 
-// export const dashboardState = atom({
-//   key: 'atomDashboard',
-//   default: {},
-// });
-
 export const dashboardSelectedState = atom({
   key: 'dashboardSelectedState',
   default: null,
 });
 
-// export const dashboardState = selector({
-//   key: 'dashboardState',
-//   get: ({ get }) => {
-//     const farms = get(launcherIDsState);
-//     const selected = get(dashboardSelectedState);
-//     const isSingle = farms.length === 1;
-//     if (isSingle) {
-//       return { farm: farms[0], isSingle: true };
-//     }
-//     if (selected) {
-//       return {
-//         farm: farms.find((item) => item.launcherId === selected.launcherId),
-//         isSingle: false,
-//         selected: true,
-//       };
-//     }
-//     return { farms, isSingle: false, selected: false };
-//   },
-// });
-
 export const balanceQuery = selectorFamily({
   key: 'BalanceQuery',
   get: (address) => async () => {
-    const balance = await apiSpaceScanGet(`/xch/balance/${address}`).catch((err) => {
-      throw err;
-    });
+    const balance = await api({ baseURL: SPACESCAN_API, url: `/xch/balance/${address}` }).catch(
+      (err) => {
+        throw err;
+      }
+    );
     return { address, balance };
   },
 });
@@ -146,8 +87,7 @@ export const balanceQuery = selectorFamily({
 export const statsQuery = selectorFamily({
   key: 'StatsQuery',
   get: () => async () => {
-    const response = await apiGet(`stats`).catch((err) => {
-      console.log('Called');
+    const response = await api({ url: `stats` }).catch((err) => {
       throw err;
     });
     return response;
@@ -157,7 +97,7 @@ export const statsQuery = selectorFamily({
 export const launcherQuery = selectorFamily({
   key: 'LauncherQuery',
   get: (launcherId) => async () => {
-    const response = await apiGet(`launcher/${launcherId}/`).catch((err) => {
+    const response = await api({ url: `launcher/${launcherId}/` }).catch((err) => {
       throw err;
     });
     return response;
@@ -204,105 +144,14 @@ export const dashboardState = selector({
   },
 });
 
-export const farmLoadingState = atom({
-  key: 'atomLoadingFarm',
-  default: { address: true, stats: true, partials: true, payouts: true },
-});
-
-export const farmErrorState = atom({
-  key: 'atomErrorFarm',
-  default: { address: false, stats: false, partials: false, payouts: false },
-});
-
 export const currencyState = atom({
   key: 'atomCurrency',
   default: 'usd',
   effects_UNSTABLE: [localEffect('currency')],
 });
 
-// eslint-disable-next-line import/prefer-default-export
-export const textState = atom({
-  key: 'textState', // unique ID (with respect to other atoms/selectors)
-  default: 'Testing', // default value (aka initial value)
-});
-
-export const statsState = atom({
-  key: 'statsAtom', // unique ID (with respect to other atoms/selectors)
-  default: 'Testing', // default value (aka initial value)
-});
-
-export const networkState = atom({
-  key: 'networkStateAtom', // unique ID (with respect to other atoms/selectors)
-  default: true, // default value (aka initial value)
-});
-
-export const statsRequestIDState = atomFamily({
-  key: 'statsRequestAtomFamily',
-  default: 0,
-});
-
-export const giveawayRequestState = atomFamily({
-  key: 'giveawayRequestState',
-  default: 0,
-});
-
-export const giveawayWinnersState = atomFamily({
-  key: 'giveawayWinnersState',
-  default: 0,
-});
-
-export const farmersRequestIDState = atomFamily({
-  key: 'farmersRequestAtomFamily',
-  default: 0,
-});
-
-export const blocksRequestIDState = atomFamily({
-  key: 'blocksRequestAtomFamily',
-  default: 0,
-});
-
-export const payoutsRequestIDState = atomFamily({
-  key: 'payoutsRequestAtomFamily',
-  default: 0,
-});
-
-export const farmerRequestIDState = atomFamily({
-  key: 'farmerRequestAtomFamily',
-  default: 0,
-});
-
-export const netSpaceRequestIDState = atomFamily({
-  key: 'netspaceRequestAtomFamily',
-  default: 0,
-});
-
-export const farmerBlockRefreshState = atomFamily({
-  key: 'farmerBlockRefreshState',
-  default: 0,
-});
-
-export const farmerPayoutsRefreshState = atomFamily({
-  key: 'farmerPayoutsRefreshState',
-  default: 0,
-});
-
-export const ticketsRefreshState = atomFamily({
-  key: 'ticketsRefreshState',
-  default: 0,
-});
-
-export const farmerRefreshState = atomFamily({
-  key: 'farmerRefreshState',
-  default: 0,
-});
-
 export const newsRefreshState = atomFamily({
   key: 'newsRefreshState',
-  default: 0,
-});
-
-export const partialRefreshState = atomFamily({
-  key: 'partialRefreshState',
   default: 0,
 });
 

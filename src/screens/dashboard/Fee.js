@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-nested-ternary */
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useEffect, useState } from 'react';
@@ -6,9 +7,9 @@ import { useTranslation } from 'react-i18next';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { Shadow } from 'react-native-shadow-2';
-import { useRecoilValue, useRecoilRefresher_UNSTABLE as useRecoilRefresher } from 'recoil';
-import { apiMulti } from '../../services/Api';
-import { dashboardState, settingsState } from '../../recoil/Atoms';
+import { useRecoilValue } from 'recoil';
+import { api, apiMulti } from '../../services/Api';
+import { settingsState } from '../../recoil/Atoms';
 import CustomCard from '../../components/CustomCard';
 
 const Item = ({ title, color, loading, value, format, settings }) => {
@@ -31,14 +32,14 @@ const Item = ({ title, color, loading, value, format, settings }) => {
             justifyContent: 'center',
           }}
         >
-          <Text numberOfLines={1} style={{ color, fontSize: 13, textAlign: 'center' }}>
+          <Text numberOfLines={1} style={{ color, fontSize: 14, textAlign: 'center' }}>
             {title}
           </Text>
           <Text
             style={{
               textAlign: 'center',
-              // fontSize: 16,
-              // fontWeight: 'bold',
+              fontSize: 18,
+              fontWeight: 'bold',
             }}
           >
             {!loading && value ? format(value) : '...'}
@@ -49,124 +50,69 @@ const Item = ({ title, color, loading, value, format, settings }) => {
   );
 };
 
-const PartialsScreen = ({ launcherIds, selected, farmData, loading }) => {
+const FeeScreen = ({ launcherId }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const settings = useRecoilValue(settingsState);
   const [data, setData] = useState();
+  const [loading, setLoading] = useState(true);
   const [refreshing, setRefresh] = useState(false);
-  const refreshDashboard = useRecoilRefresher(dashboardState);
 
   const handleError = useErrorHandler();
 
   useEffect(() => {
-    if (!loading) {
-      let mTotal = 0;
-      let mPoints = 0;
-      let mSuccessful = 0;
-      let mFailed = 0;
-      let mPerformance = 0;
-      let mHarvesters = 0;
+    const controller = new AbortController();
 
-      // const { farms } = farmData.contents;
-      // const { length } = farms;
+    setLoading(true);
 
-      farmData.forEach((farm) => {
-        const { total, points, successful, failed, performance, harvesters } = farm.partials;
-        mTotal += total;
-        mPoints += points;
-        mSuccessful += successful;
-        mFailed += failed;
-        mPerformance += performance;
-        mHarvesters += harvesters;
+    const fetchData = async () => {
+      const response = await api(`launcher/${launcherId}`, controller.signal).catch((err) => {
+        handleError(err);
       });
 
-      setData({
-        total: mTotal,
-        points: mPoints,
-        successful: mSuccessful,
-        failed: mFailed,
-        performance: mPerformance / farmData.length,
-        harvesters: mHarvesters,
-      });
-    }
-  }, [farmData, selected]);
+      if (response) {
+        const {
+          stay_length_days,
+          stay_length_days_max,
+          stay_length_discount,
+          stay_length_discount_max,
+          size_discount,
+          max_discount,
+          pool,
+          final,
+        } = response.fee;
 
-  // useEffect(() => {
-  //   const controller = new AbortController();
+        setData({
+          stayLengthDays: stay_length_days,
+          stayLengthDaysMax: stay_length_days_max,
+          stayLengthDiscount: stay_length_discount,
+          stayLengthDiscountMax: stay_length_discount_max,
+          sizeDiscount: size_discount,
+          maxDiscount: max_discount,
+          pool,
+          final,
+        });
+      }
+      setLoading(false);
+    };
+    fetchData();
 
-  //   setLoading(true);
-
-  //   const urls = launcherIds.map((launcherId) => `launcher/${launcherId}`);
-
-  //   const fetchData = async () => {
-  //     const response = await apiMulti(urls, controller.signal).catch((err) => {
-  //       handleError(err);
-  //     });
-
-  //     if (response) {
-  //       let mTotal = 0;
-  //       let mPoints = 0;
-  //       let mSuccessful = 0;
-  //       let mFailed = 0;
-  //       let mPerformance = 0;
-  //       let mHarvesters = 0;
-
-  //       // // console.log(response.map((item) => item.results));
-
-  //       response.forEach((farm) => {
-  //         const { total, points, successful, failed, performance, harvesters } = farm.partials;
-  //         mTotal += total;
-  //         mPoints += points;
-  //         mSuccessful += successful;
-  //         mFailed += failed;
-  //         mPerformance += performance;
-  //         mHarvesters += harvesters;
-  //       });
-
-  //       // response
-  //       //   .map((data) => data.results)
-  //       //   .forEach((farm) => {
-  //       //     farm.forEach((item) => {
-  //       //       harvesters.add(item.harvester_id);
-  //       //       if (item.error !== null) {
-  //       //         failedPartials.push(item);
-  //       //       } else {
-  //       //         successfulPartials.push(item);
-  //       //         points += item.difficulty;
-  //       //       }
-  //       //       partialCount += 1;
-  //       //     });
-  //       //   });
-
-  //       setData({
-  //         total: mTotal,
-  //         points: mPoints,
-  //         successful: mSuccessful,
-  //         failed: mFailed,
-  //         performance: mPerformance / response.length,
-  //         harvesters: mHarvesters,
-  //       });
-  //     }
-  //     setLoading(false);
-  //   };
-  //   fetchData();
-
-  //   return () => {
-  //     controller.abort();
-  //   };
-  // }, [refreshing, selected]);
+    return () => {
+      controller.abort();
+    };
+  }, [refreshing]);
 
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.colors.background }}
       // contentContainerStyle={{ flexGrow: 1, marginVertical: 12, marginHorizontal: 12 }}
-      contentContainerStyle={{ paddingTop: 6, paddingBottom: 6, marginHorizontal: 6, flexGrow: 1 }}
+      contentContainerStyle={{ marginVertical: 6, marginHorizontal: 6, flexGrow: 1 }}
       refreshControl={
         <RefreshControl
           refreshing={false}
           onRefresh={() => {
-            refreshDashboard();
+            setLoading(true);
+            setRefresh((prev) => !prev);
           }}
         />
       }
@@ -265,4 +211,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PartialsScreen;
+export default FeeScreen;
