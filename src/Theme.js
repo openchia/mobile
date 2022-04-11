@@ -33,7 +33,12 @@ const fontConfig = {
   },
   ios: {
     regular: {
-      fontFamily: 'Poppins-Regular',
+      fontFamily: 'Poppins-SemiBold',
+  //    fontWeight: 'normal',
+      fontWeight: '600',
+    },
+    bold: {
+      fontFamily: 'Poppins-Bold',
       fontWeight: 'normal',
     },
     medium: {

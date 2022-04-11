@@ -72,8 +72,8 @@ const Root = ({ settings }) => {
         },
         tabBarInactiveTintColor: theme.colors.textGreyLight,
         tabBarLabelStyle: {
-          fontFamily: theme.fonts.regular.fontFamily,
-          fontSize: 12,
+         // fontFamily: theme.fonts.regular.fontFamily,
+      //    fontSize: 12,
         },
       }}
     >

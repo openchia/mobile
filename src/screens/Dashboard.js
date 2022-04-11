@@ -117,7 +117,7 @@ const Content = ({ navigation }) => {
   };
 
   // variables
-  const snapPoints = useMemo(() => ['15%', '20%'], []);
+  const snapPoints = useMemo(() => ['15%', '22%'], []);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -481,7 +481,7 @@ const Content = ({ navigation }) => {
         handleIndicatorStyle={{ backgroundColor: theme.colors.textGrey }}
         backdropComponent={renderBackdrop}
       >
-        <View style={{ flex: 1, flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row' }}>
           <View
             style={{
               flexDirection: 'column',
