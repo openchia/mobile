@@ -9,6 +9,7 @@ import {
   waitForAny,
 } from 'recoil';
 import { api, SPACESCAN_API } from '../services/Api';
+import { encodePuzzleHash } from '../utils/bech32';
 import { getObject, saveObject } from '../utils/Utils';
 
 const localEffect =
@@ -96,12 +97,17 @@ export const statsQuery = selectorFamily({
 
 export const launcherQuery = selectorFamily({
   key: 'LauncherQuery',
-  get: (launcherId) => async () => {
-    const response = await api({ url: `launcher/${launcherId}/` }).catch((err) => {
-      throw err;
-    });
-    return response;
-  },
+  get:
+    ({ launcherId, token }) =>
+    async () => {
+      const response = await api({
+        url: `launcher/${launcherId}/`,
+        headers: { Authorization: `Bearer ${token}` },
+      }).catch((err) => {
+        throw err;
+      });
+      return response;
+    },
 });
 
 export const dashboardState = selector({
@@ -112,16 +118,18 @@ export const dashboardState = selector({
     const launchderIds = get(launcherIDsState);
     const stats = get(statsQuery());
 
-    const farms = get(waitForAll(launchderIds.map((farm) => launcherQuery(farm.launcherId))));
+    const farms = get(
+      waitForAll(
+        launchderIds.map((farm) =>
+          launcherQuery({ launcherId: farm.launcherId, token: farm.token })
+        )
+      )
+    );
 
     if (showBalance) {
       const addressesToScan = new Set();
-      const balanceLauncherIds = [];
-      launchderIds.forEach((item) => {
-        if (item.token !== null) {
-          addressesToScan.add(item.address);
-          balanceLauncherIds.push(item.launcherId);
-        }
+      farms.forEach((item) => {
+        addressesToScan.add(encodePuzzleHash(item.payout_instructions, 'xch'));
       });
       const balances = get(
         waitForAll(Array.from(addressesToScan).map((address) => balanceQuery(address)))
