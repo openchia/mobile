@@ -1,14 +1,13 @@
 /* eslint-disable no-plusplus */
-import React, { useEffect, useState, Suspense } from 'react';
+import { getUnixTime } from 'date-fns';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Dimensions, SafeAreaView, View } from 'react-native';
 import { ActivityIndicator, useTheme } from 'react-native-paper';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { selectorFamily, useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { fromUnixTime, isAfter, subHours } from 'date-fns';
-import CustomCard from '../components/CustomCard';
+import { selectorFamily, useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { getSpace } from '../Api';
+import { settingsState } from '../Atoms';
+import JellySelector from '../components/JellySelector';
 import {
   ChartDot,
   ChartPath,
@@ -16,63 +15,52 @@ import {
   ChartXLabel,
   ChartYLabel,
   monotoneCubicInterpolation,
-  simplifyData,
 } from '../react-native-animated-charts';
-import { NetspaceChartIntervals } from './Constants';
-import { getMarketChart } from '../Api';
-import JellySelector from '../components/JellySelector';
-import { currencyState, settingsState } from '../Atoms';
-import LoadingComponent from '../components/LoadingComponent';
-import { currencyFormat } from '../utils/Formatting';
-import { getCurrencyFromKey } from '../screens/CurrencySelectionScreen';
 
+const units = ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const ITEMS = [
   {
-    label: '1h',
-    value: 1,
-    interval: 1,
-  },
-  {
     label: '24h',
     value: 1,
-    interval: 1,
+  },
+  {
+    label: '3d',
+    value: 3,
   },
   {
     label: '7d',
     value: 7,
-    interval: 1,
   },
   {
     label: '30d',
     value: 30,
-    interval: 1,
   },
   {
     label: '90d',
     value: 90,
-    interval: 1,
   },
   {
     label: '1y',
     value: 365,
-    interval: 1,
-  },
-  {
-    label: 'all',
-    value: 'max',
-    interval: 1,
   },
 ];
 
-export const formatY = (value, extraVal) => {
+export const formatY = (value) => {
   'worklet';
 
   if (value === '') {
     return '';
   }
-  const fiatVal = Number(value);
-  return `${fiatVal.toFixed(2)} ${extraVal}`;
+  let bytes = Number(value);
+  const thresh = 1024;
+  if (bytes < thresh) return `${bytes} B`;
+  let u = -1;
+  do {
+    bytes /= thresh;
+    ++u;
+  } while (bytes >= thresh);
+  return `${bytes.toFixed(2)} ${units[u]}`;
 };
 
 const formatDatetime = (value) => {
@@ -83,7 +71,7 @@ const formatDatetime = (value) => {
     return '';
   }
 
-  const date = new Date(Number(value));
+  const date = new Date(Number(value) * 1000);
   const now = new Date();
 
   let res = `${MONTHS[date.getMonth()]} `;
@@ -126,30 +114,19 @@ const formatDatetime = (value) => {
 };
 
 const query = selectorFamily({
-  key: 'chiaPrice',
+  key: 'poolSpace',
   get:
     (element) =>
     async ({ get }) => {
-      const currency = await get(currencyState);
-      const response = await getMarketChart(currency, element.value, element.interval);
-      if (response.data) {
-        if (element.label === '1h') {
-          let now = Date.now();
-          now = subHours(now, 1);
-          const data = response.data.prices
-            .filter((item) => isAfter(new Date(item[0]), now))
-            .map((item) => ({
-              x: item[0],
-              y: item[1],
-            }));
-          return data;
-        }
+      const response = await getSpace(element.value);
+      if (response) {
+        const convertedData = response.map((item) => ({
+          x: getUnixTime(new Date(item.date)),
+          y: item.size,
+        }));
 
         return monotoneCubicInterpolation({
-          data: response.data.prices.map((item) => ({
-            x: item[0],
-            y: item[1],
-          })),
+          data: convertedData,
           includeExtremes: true,
           range: 100,
         });
@@ -158,11 +135,10 @@ const query = selectorFamily({
     },
 });
 
-const Chart = ({ chiaPrice, element, bottomContent, width, height }) => {
+const Chart = ({ poolSpace, element, bottomContent, width, height }) => {
   const loadableData = useRecoilValueLoadable(query(element));
-  const currency = useRecoilValue(currencyState);
-  const theme = useTheme();
   const [points, setPoints] = useState([]);
+  const theme = useTheme();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -173,31 +149,23 @@ const Chart = ({ chiaPrice, element, bottomContent, width, height }) => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center' }}>
-      <ChartPathProvider
-        data={{
-          points,
-          smoothingStrategy: 'bezier',
-        }}
-      >
+      <ChartPathProvider data={{ points, smoothingStrategy: 'bezier' }}>
         <View style={{ justifyContent: 'center' }}>
           <View>
-            {/* {loadableData.state === 'loading' ? (
-              <View style={{ height: height / 2.5 + 60 }}>
-                <ActivityIndicator
-                  style={{
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    margin: 'auto',
-                    position: 'absolute',
-                  }}
-                  size={60}
-                  color="#119400"
-                />
-              </View>
-            ) : (
-              <> */}
+            {points.length === 0 && (
+              <ActivityIndicator
+                style={{
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  margin: 'auto',
+                  position: 'absolute',
+                }}
+                size={60}
+                color="#119400"
+              />
+            )}
             <ChartPath
               hapticsEnabled={false}
               hitSlop={30}
@@ -205,6 +173,7 @@ const Chart = ({ chiaPrice, element, bottomContent, width, height }) => {
               fill="none"
               height={height / 2.5}
               stroke={theme.colors.primaryLight}
+              backgroundColor="url(#prefix__paint0_linear)"
               selectedStrokeWidth="1.8"
               strokeWidth="2"
               width={width}
@@ -214,8 +183,6 @@ const Chart = ({ chiaPrice, element, bottomContent, width, height }) => {
                 backgroundColor: theme.colors.accentColor,
               }}
             />
-            {/* </>
-            )} */}
           </View>
         </View>
         <View
@@ -231,13 +198,12 @@ const Chart = ({ chiaPrice, element, bottomContent, width, height }) => {
         >
           <ChartXLabel
             format={formatDatetime}
-            defaultValue={t('chiaPrice')}
+            defaultValue={t('poolSpace')}
             style={{ color: theme.colors.text, padding: 0, fontSize: 16 }}
           />
           <ChartYLabel
             format={formatY}
-            extraVal={`${getCurrencyFromKey(currency)}`}
-            defaultValue={`${currencyFormat(chiaPrice)} ${getCurrencyFromKey(currency)}`}
+            defaultValue={poolSpace}
             style={{ color: theme.colors.text, padding: 0, fontSize: 24 }}
           />
         </View>
@@ -247,9 +213,11 @@ const Chart = ({ chiaPrice, element, bottomContent, width, height }) => {
   );
 };
 
-const ChiaPriceChart = ({ chiaPrice }) => {
+const PoolspaceChart = ({ poolSpace }) => {
   const [settings, setSettings] = useRecoilState(settingsState);
-  const [element, setElement] = useState(ITEMS[settings.priceDefault ? settings.priceDefault : 0]);
+  const [element, setElement] = useState(
+    ITEMS[settings.poolspaceDefault ? settings.poolspaceDefault : 4]
+  );
   const { width, height } = Dimensions.get('window');
 
   return (
@@ -258,7 +226,7 @@ const ChiaPriceChart = ({ chiaPrice }) => {
         height={height}
         width={width}
         element={element}
-        chiaPrice={chiaPrice}
+        poolSpace={poolSpace}
         bottomContent={
           <JellySelector
             width={width}
@@ -275,4 +243,4 @@ const ChiaPriceChart = ({ chiaPrice }) => {
   );
 };
 
-export default ChiaPriceChart;
+export default PoolspaceChart;

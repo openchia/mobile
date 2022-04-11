@@ -8,7 +8,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 import { Shadow } from 'react-native-shadow-2';
 import CustomCard from './CustomCard';
 
-const JellySelector = ({ items, onPress, defaultVal, width, borderRadius }) => {
+const JellySelector = ({ items, onPress, defaultVal, width }) => {
   const SELECTION_WIDTH = width - 32;
   const BUTTON_WIDTH = (width - 32) / items.length;
   const transition = useSharedValue(0);
@@ -22,13 +22,17 @@ const JellySelector = ({ items, onPress, defaultVal, width, borderRadius }) => {
   }));
 
   return (
-    <View style={{ marginVertical: 8, marginHorizontal: 8 }}>
-      <Shadow
-        distance={6}
-        startColor="rgba(0, 0, 0, 0.02)"
-        finalColor="rgba(0, 0, 0, 0.0)"
-        radius={borderRadius}
-        viewStyle={{ alignSelf: 'stretch' }}
+    <CustomCard style={{ marginVertical: 8, marginHorizontal: 8 }}>
+      <View
+        style={{
+          display: 'flex',
+          // flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+          width: SELECTION_WIDTH,
+          alignSelf: 'center',
+        }}
       >
         <CustomCard
           style={{
