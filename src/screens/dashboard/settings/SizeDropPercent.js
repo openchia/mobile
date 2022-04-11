@@ -164,7 +164,7 @@ const SizeDropPercentScreen = ({ navigation, route }) => {
           </PanGestureHandler>
         </View>
         <Animated.View
-          style={[{ marginTop: 4, width: KNOB_WIDTH, alignItems: 'center' }, animatedText]}
+          style={[{ paddingTop: 4, width: KNOB_WIDTH, alignItems: 'center' }, animatedText]}
         >
           <AnimatedText text={stepText} />
         </Animated.View>
