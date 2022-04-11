@@ -1,17 +1,28 @@
 /* eslint-disable no-nested-ternary */
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { Shadow } from 'react-native-shadow-2';
-import { useRecoilValue, useRecoilRefresher_UNSTABLE as useRecoilRefresher } from 'recoil';
-import { apiMulti } from '../../services/Api';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useRecoilRefresher_UNSTABLE as useRecoilRefresher, useRecoilValue } from 'recoil';
+import PressableCard from '../../components/PressableCard';
 import { dashboardState, settingsState } from '../../recoil/Atoms';
-import CustomCard from '../../components/CustomCard';
 
-const Item = ({ title, color, loading, value, format, settings }) => {
+const Item = ({
+  title,
+  color,
+  loading,
+  value,
+  format,
+  settings,
+  icon,
+  enabled = false,
+  onPress,
+}) => {
   const theme = useTheme();
   return (
     <View style={{ flex: 1, margin: 6 }}>
@@ -22,7 +33,9 @@ const Item = ({ title, color, loading, value, format, settings }) => {
         radius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
         viewStyle={{ height: '100%', width: '100%' }}
       >
-        <CustomCard
+        <PressableCard
+          enabled={enabled}
+          onPress={onPress}
           style={{
             borderRadius: settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius,
             backgroundColor: theme.colors.onSurfaceLight,
@@ -31,25 +44,36 @@ const Item = ({ title, color, loading, value, format, settings }) => {
             justifyContent: 'center',
           }}
         >
-          <Text numberOfLines={1} style={{ color, fontSize: 13, textAlign: 'center' }}>
-            {title}
-          </Text>
-          <Text
-            style={{
-              textAlign: 'center',
-              // fontSize: 16,
-              // fontWeight: 'bold',
-            }}
-          >
-            {!loading && value ? format(value) : '...'}
-          </Text>
-        </CustomCard>
+          <View style={styles.item}>
+            <Text numberOfLines={1} style={{ color, fontSize: 14, textAlign: 'center' }}>
+              {title}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={{
+                textAlign: 'center',
+              }}
+            >
+              {!loading && value ? format(value) : '...'}
+            </Text>
+            <View
+              style={{
+                position: 'absolute',
+                right: 4,
+                bottom: 4,
+              }}
+            >
+              {icon}
+            </View>
+          </View>
+        </PressableCard>
       </Shadow>
     </View>
   );
 };
 
 const PartialsScreen = ({ launcherIds, selected, farmData, loading }) => {
+  const navigation = useNavigation();
   const { t } = useTranslation();
   const theme = useTheme();
   const settings = useRecoilValue(settingsState);
@@ -92,71 +116,6 @@ const PartialsScreen = ({ launcherIds, selected, farmData, loading }) => {
     }
   }, [farmData, selected]);
 
-  // useEffect(() => {
-  //   const controller = new AbortController();
-
-  //   setLoading(true);
-
-  //   const urls = launcherIds.map((launcherId) => `launcher/${launcherId}`);
-
-  //   const fetchData = async () => {
-  //     const response = await apiMulti(urls, controller.signal).catch((err) => {
-  //       handleError(err);
-  //     });
-
-  //     if (response) {
-  //       let mTotal = 0;
-  //       let mPoints = 0;
-  //       let mSuccessful = 0;
-  //       let mFailed = 0;
-  //       let mPerformance = 0;
-  //       let mHarvesters = 0;
-
-  //       // // console.log(response.map((item) => item.results));
-
-  //       response.forEach((farm) => {
-  //         const { total, points, successful, failed, performance, harvesters } = farm.partials;
-  //         mTotal += total;
-  //         mPoints += points;
-  //         mSuccessful += successful;
-  //         mFailed += failed;
-  //         mPerformance += performance;
-  //         mHarvesters += harvesters;
-  //       });
-
-  //       // response
-  //       //   .map((data) => data.results)
-  //       //   .forEach((farm) => {
-  //       //     farm.forEach((item) => {
-  //       //       harvesters.add(item.harvester_id);
-  //       //       if (item.error !== null) {
-  //       //         failedPartials.push(item);
-  //       //       } else {
-  //       //         successfulPartials.push(item);
-  //       //         points += item.difficulty;
-  //       //       }
-  //       //       partialCount += 1;
-  //       //     });
-  //       //   });
-
-  //       setData({
-  //         total: mTotal,
-  //         points: mPoints,
-  //         successful: mSuccessful,
-  //         failed: mFailed,
-  //         performance: mPerformance / response.length,
-  //         harvesters: mHarvesters,
-  //       });
-  //     }
-  //     setLoading(false);
-  //   };
-  //   fetchData();
-
-  //   return () => {
-  //     controller.abort();
-  //   };
-  // }, [refreshing, selected]);
-
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.colors.background }}
@@ -171,22 +130,26 @@ const PartialsScreen = ({ launcherIds, selected, farmData, loading }) => {
         />
       }
     >
-      {/* <HeaderItem
-        loadable={dataLoadable}
-        launcherId={launcherId}
-        currency={currency}
-        t={t}
-        theme={theme}
-      /> */}
-      {/* <View style={{ height: 8 }} /> */}
       <View style={styles.container}>
         <Item
+          enabled
           loading={loading}
           value={data}
           format={(item) => item.total}
           color={theme.colors.green}
           title={`${t('partials')}\n(${t('24Hours').toUpperCase()})`}
           settings={settings}
+          icon={
+            <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
+          }
+          onPress={() => {
+            navigation.navigate({
+              name: 'Farmer Partials Chart',
+              params: {
+                launcherIds,
+              },
+            });
+          }}
         />
         <Item
           loading={loading}
@@ -262,6 +225,10 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // justifyContent: 'center',
     // backgroundColor: 'green',
+  },
+  item: {
+    height: '100%',
+    justifyContent: 'center',
   },
 });
 

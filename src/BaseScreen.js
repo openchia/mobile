@@ -47,6 +47,7 @@ import DifficultyScreen from './screens/dashboard/settings/Difficulty';
 import MinPayoutScreen from './screens/dashboard/settings/MinPayout';
 import SizeDropPercentScreen from './screens/dashboard/settings/SizeDropPercent';
 import SizeDropIntervalScreen from './screens/dashboard/settings/SizeDropInterval';
+import FarmerPartialScreen from './screens/charts/Partials';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -72,8 +73,8 @@ const Root = ({ settings }) => {
         },
         tabBarInactiveTintColor: theme.colors.textGreyLight,
         tabBarLabelStyle: {
-         // fontFamily: theme.fonts.regular.fontFamily,
-      //    fontSize: 12,
+          // fontFamily: theme.fonts.regular.fontFamily,
+          //    fontSize: 12,
         },
       }}
     >
@@ -284,11 +285,19 @@ const BaseScreen = () => {
                       title: route.params.title,
                     })}
                   />
+
                   <Stack.Screen
                     name="Size Drop Interval"
                     component={SizeDropIntervalScreen}
                     options={({ route }) => ({
                       title: route.params.title,
+                    })}
+                  />
+                  <Stack.Screen
+                    name="Farmer Partials Chart"
+                    component={FarmerPartialScreen}
+                    options={({ route }) => ({
+                      title: t('farmerPartialsChart'),
                     })}
                   />
                 </Stack.Navigator>

@@ -21,7 +21,6 @@ import {
   formatBytes,
 } from '../../utils/Formatting';
 import { getCurrencyFromKey } from '../more/Currency';
-import { api } from './../../services/Api';
 
 const Item = ({ title, value, color, loadable, data, format, onPress, icon, settings, error }) => {
   const theme = useTheme();
@@ -39,7 +38,7 @@ const Item = ({ title, value, color, loadable, data, format, onPress, icon, sett
           style={{
             borderRadius: settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius,
             backgroundColor: theme.colors.onSurfaceLight,
-            padding: 4,
+            // padding: 4,
           }}
           onPress={onPress}
         >
@@ -51,10 +50,6 @@ const Item = ({ title, value, color, loadable, data, format, onPress, icon, sett
               numberOfLines={1}
               style={{
                 textAlign: 'center',
-                // paddingLeft: 8,
-                // paddingRight: 8,
-                // fontSize: 18,
-                // fontWeight: 'bold',
               }}
             >
               {!loadable && !error ? format(data) : '...'}
@@ -63,7 +58,7 @@ const Item = ({ title, value, color, loadable, data, format, onPress, icon, sett
               style={{
                 position: 'absolute',
                 right: 4,
-                bottom: 2,
+                bottom: 4,
               }}
             >
               {icon}

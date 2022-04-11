@@ -140,5 +140,6 @@ export default {
     highest: 'Highest',
     hideAddressBalance: 'Hide Payout Address Balance',
     showAddressBalance: 'Show Payout Address Balance',
+    farmerPartialsChart: 'Partials Chart',
   },
 };

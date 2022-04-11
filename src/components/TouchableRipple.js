@@ -11,7 +11,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-const TouchableRipple = ({ style, onPress, children }) => {
+const TouchableRipple = ({ style, onPress, children, enabled }) => {
   const centerX = useSharedValue(0);
   const centerY = useSharedValue(0);
   const scale = useSharedValue(0);
@@ -34,6 +34,7 @@ const TouchableRipple = ({ style, onPress, children }) => {
       // scale.value = withTiming(1, { duration: 500 });
     },
     onActive: (tapEvent) => {
+      if (!enabled) return;
       const layout = measure(aRef);
       width.value = layout.width;
       height.value = layout.height;
@@ -47,6 +48,7 @@ const TouchableRipple = ({ style, onPress, children }) => {
       if (onPress) runOnJS(onPress)();
     },
     onFinish: () => {
+      if (!enabled) return;
       rippleOpacity.value = withTiming(0);
     },
   });

@@ -121,5 +121,6 @@ export default {
     darkMode: 'Switch to Dark Mode',
     dashboard: 'Dashboard',
     launchScreen: 'Launch Screen',
+    farmerPartials: 'Partials',
   },
 };

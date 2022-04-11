@@ -290,16 +290,16 @@ const Content = ({ navigation }) => {
               loading={dashboard.state === 'loading'}
               error={dashboard.state === 'hasError'}
               style={{ paddingTop: 16, fontSize: 24 }}
-              value={dashboard.contents.balances}
+              value={dashboard.contents}
               formatValue={(val) =>
                 showFiat
-                  ? `${
-                      val
+                  ? `${(
+                      val.balances
                         .map((item) => item.balance)
                         .map((item) => item.data.unspentBalance)
                         .reduce((a, b) => a + b) * val.stats.xch_current_price[currency]
-                    } ${getCurrencyFromKey(currency)}`
-                  : `${val
+                    ).toFixed(2)} ${getCurrencyFromKey(currency)}`
+                  : `${val.balances
                       .map((item) => item.balance)
                       .map((item) => item.data.unspentBalance)
                       .reduce((a, b) => a + b)

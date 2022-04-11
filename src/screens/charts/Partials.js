@@ -6,7 +6,8 @@ import useOrientation from '../../hooks/useOrientation';
 
 export const { width } = Dimensions.get('window');
 
-const FarmerPartialScreen = ({ launcherIds }) => {
+const FarmerPartialScreen = ({ route }) => {
+  const { launcherIds } = route.params;
   const orientation = useOrientation();
   return (
     <SafeAreaView style={{ flex: 1 }}>

@@ -4,12 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
-import { Platform, Pressable, SafeAreaView, View } from 'react-native';
+import { Platform, Pressable, SafeAreaView, TouchableHighlight, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { api } from '../../services/Api';
-import { currencyState } from '../../recoil/Atoms';
+import { currencyState, settingsState } from '../../recoil/Atoms';
 import CustomIconButton from '../../components/CustomIconButton';
 import { getCurrencyFromKey } from '../more/Currency';
 import { convertMojoToChia, formatBytes, formatPrice } from '../../utils/Formatting';
@@ -31,6 +31,7 @@ const Content = ({ route, navigation }) => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [showFiat, setShowFiat] = useState(false);
+  const [settings, setSettings] = useRecoilState(settingsState);
   const currency = useRecoilValue(currencyState);
   const { launcherId, name } = route.params;
   const [earningState, setEarningState] = useState(0);
@@ -97,6 +98,37 @@ const Content = ({ route, navigation }) => {
               navigation.goBack();
             }}
           />
+        </View>
+        <View
+          style={{
+            backgroundColor: theme.colors.onSurfaceLight,
+            alignItems: 'center',
+            flexDirection: 'row',
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            // marginTop: 12,
+            marginRight: 6,
+          }}
+        >
+          <TouchableHighlight
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 36,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            activeOpacity={0.6}
+            underlayColor={settings.isThemeDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
+            onPress={() => {
+              setShowFiat((prev) => !prev);
+            }}
+          >
+            <Text style={{ fontSize: 14, textAlign: 'center', textAlignVertical: 'center' }}>
+              {showFiat ? 'XCH' : currency.toUpperCase()}
+            </Text>
+          </TouchableHighlight>
         </View>
         <Text
           numberOfLines={1}
