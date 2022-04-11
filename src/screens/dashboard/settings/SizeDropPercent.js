@@ -15,6 +15,7 @@ import CustomIconButton from '../../../components/CustomIconButton';
 import { launcherIDsState } from '../../../recoil/Atoms';
 import { api } from '../../../services/Api';
 import AnimatedText from './AnimatedText';
+import { Platform } from 'react-native';
 
 // const BAR_WIDTH = 350;
 const BAR_HEIGHT = 20;
@@ -55,7 +56,6 @@ const SizeDropPercentScreen = ({ navigation, route }) => {
         >
           <CustomIconButton
             icon={<Ionicons name="ios-save-outline" size={24} color={theme.colors.textGrey} />}
-            style={{ marginEnd: 20 }}
             color="#fff"
             size={24}
             onPress={() => {
@@ -164,7 +164,14 @@ const SizeDropPercentScreen = ({ navigation, route }) => {
           </PanGestureHandler>
         </View>
         <Animated.View
-          style={[{ paddingTop: 4, width: KNOB_WIDTH, alignItems: 'center' }, animatedText]}
+          style={[
+            {
+              marginTop: Platform.OS === 'ios' ? KNOB_WIDTH / 2 : 0,
+              width: KNOB_WIDTH,
+              alignItems: 'center',
+            },
+            animatedText,
+          ]}
         >
           <AnimatedText text={stepText} />
         </Animated.View>
