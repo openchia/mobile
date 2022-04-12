@@ -181,9 +181,12 @@ const Content = ({ navigation, route }) => {
                     alignItems: 'center',
                   }}
                 >
-                  <Text style={{ paddingLeft: 16, flex: 1 }}>{t('displayName')}</Text>
+                  <Text style={{ paddingLeft: 16 }}>{t('displayName')}</Text>
                   <Text
+                    numberOfLines={1}
                     style={{
+                      textAlign: 'right',
+                      flex: 1,
                       paddingLeft: 16,
                       paddingRight: 16,
                       color: theme.colors.textGrey,
