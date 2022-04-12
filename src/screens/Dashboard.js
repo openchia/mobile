@@ -69,6 +69,7 @@ const LoadingText = ({ loading, error, value, style, formatValue }) => {
 const Content = ({ navigation }) => {
   const [farms, setFarms] = useRecoilState(launcherIDsState);
   const [dashboard, setDashboard] = useRecoilStateLoadable(dashboardState);
+  console.log(farms);
   const [selected, setSelected] = useRecoilState(dashboardSelectedState);
   const currency = useRecoilValue(currencyState);
   const theme = useTheme();
@@ -117,7 +118,7 @@ const Content = ({ navigation }) => {
   };
 
   // variables
-  const snapPoints = useMemo(() => ['15%', '22%'], []);
+  const snapPoints = useMemo(() => ['15%', '60%'], []);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -209,8 +210,10 @@ const Content = ({ navigation }) => {
             numberOfLines={1}
             style={{
               paddingTop: 16,
-              fontSize: 20,
-              width: width / 2,
+              fontSize: 17,
+              marginLeft: 16,
+              marginRight: 16,
+              // width: width / 1.2,
               textAlign: 'center',
               // width: 300,
               // marginLeft: '30%',
@@ -246,7 +249,7 @@ const Content = ({ navigation }) => {
             marginRight: 0,
           }}
         >
-          <TouchableHighlight
+          {/* <TouchableHighlight
             style={{
               width: 36,
               height: 36,
@@ -263,12 +266,10 @@ const Content = ({ navigation }) => {
               setShowFiat((prev) => !prev);
             }}
           >
-            {/* <View> */}
             <Text style={{ fontSize: 14, textAlign: 'center', textAlignVertical: 'center' }}>
               {showFiat ? 'XCH' : currency.toUpperCase()}
             </Text>
-            {/* </View> */}
-          </TouchableHighlight>
+          </TouchableHighlight> */}
           <CustomIconButton
             style={{ margin: 0, padding: 0 }}
             icon={
@@ -289,7 +290,7 @@ const Content = ({ navigation }) => {
             <LoadingText
               loading={dashboard.state === 'loading'}
               error={dashboard.state === 'hasError'}
-              style={{ paddingTop: 16, fontSize: 24 }}
+              style={{ paddingTop: 16, fontSize: 20 }}
               value={dashboard.contents}
               formatValue={(val) =>
                 showFiat
@@ -482,8 +483,8 @@ const Content = ({ navigation }) => {
         handleIndicatorStyle={{ backgroundColor: theme.colors.textGrey }}
         backdropComponent={renderBackdrop}
       >
-        <View style={{ flexDirection: 'row' }}>
-          <View
+        <View>
+          {/* <View
             style={{
               flexDirection: 'column',
               flex: 1,
@@ -518,42 +519,6 @@ const Content = ({ navigation }) => {
                 onPress={() => {
                   bottomSheetModalRef.current?.dismiss();
                   if (dashboard.state === 'hasValue') {
-                    // console.log(selected || farms[0].launcherId);
-                    // console.log(dashboard.contents.farms);
-                    // const farm = selected
-                    //   ? dashboard.contents.farms.find((item) => item === selected.launcherId)
-                    //   : dashboard.contents.farms.map((item) => item)[0];
-                    // const updatedList = farms.map((item) => {
-                    //   console.log(item);
-                    //   return item.launcherId === farm.launcher_id
-                    //     ? {
-                    //         ...item,
-                    //         address: farm.address,
-                    //         email: farm.email,
-                    //         minimum_payout: farm.minimum_payout,
-                    //         size_drop: farm.size_drop,
-                    //         payment: farm.payment,
-                    //         size_drop_interval: farm.size_drop_interval,
-                    //         size_drop_percent: farm.size_drop_percent,
-                    //         referrer: farm.referrer,
-                    //         custom_difficulty: farm.custom_difficulty,
-                    //       }
-                    //     : item;
-                    // });
-                    // setFarms(updatedList);
-                    // setFarms((prev) => [
-                    //   ...prev,
-                    //   {
-                    //     address: farm.address,
-                    //     email: farm.email,
-                    //     minimum_payout: farm.minimum_payout,
-                    //     size_drop: farm.size_drop,
-                    //     payment: farm.payment,
-                    //     size_drop_interval: farm.size_drop_interval,
-                    //     size_drop_percent: farm.size_drop_percent,
-                    //     referrer: farm.referrer,
-                    //   },
-                    // ]);
                     navigation.navigate({
                       name: 'Farmer Settings',
                       params: {
@@ -586,8 +551,8 @@ const Content = ({ navigation }) => {
               />
               <Text>Remove</Text>
             </View>
-          )}
-          {/* <View style={{ flexDirection: 'column' }}>
+          )} */}
+          <View style={{ flexDirection: 'column' }}>
             <PressableCard
               style={{
                 justifyContent: 'center',
@@ -617,44 +582,62 @@ const Content = ({ navigation }) => {
                 }}
                 onPress={() => {
                   bottomSheetModalRef.current?.dismiss();
-                  const farm = farms.find((item) =>
-                    item.launcherId === selected ? selected.launcherId : item.launcherId
-                  );
-                  setTimeout(
-                    () =>
-                      navigation.navigate({
-                        name: 'Farmer Name',
-                        params: {
-                          launcherId: farm.launcherId,
-                          token: farm.token,
-                          name: farm.name,
-                        },
-                      }),
-                    200
-                  );
+                  if (dashboard.state === 'hasValue') {
+                    navigation.navigate({
+                      name: 'Farmer Settings',
+                      params: {
+                        farm: selected || farms[0],
+                      },
+                    });
+                  }
                 }}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <CustomIconButton
-                    icon={<Ionicons name="pencil-sharp" size={24} color={theme.colors.textGrey} />}
+                    icon={<Ionicons name="settings" size={24} color={theme.colors.textGrey} />}
                     title="Info"
                     color="#fff"
                   />
 
-                  <Text style={{ fontSize: 16 }}>Farm Name</Text>
+                  <Text style={{ fontSize: 16 }}>Farm Settings</Text>
                 </View>
               </PressableCard>
             )}
-            {settings.showBalance && (
+            <PressableCard
+              style={{
+                justifyContent: 'center',
+                padding: 4,
+                backgroundColor: theme.colors.tabNavigatorBackground,
+                // backgroundColor: 'blue',
+              }}
+              onPress={() => {
+                setShowFiat((prev) => !prev);
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingTop: 8,
+                  paddingBottom: 8,
+                }}
+              >
+                <Text numberOfLines={1} style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
+                  Show in {showFiat ? 'XCH' : currency.toUpperCase()}
+                </Text>
+                {/* <View pointerEvents="none" style={{ paddingRight: 16 }}>
+                  <Text> {showFiat ? 'XCH' : currency.toUpperCase()}</Text>
+                </View> */}
+              </View>
+            </PressableCard>
+            {(selected || farms.length === 1) && (
               <PressableCard
                 style={{
                   justifyContent: 'center',
                   padding: 4,
                   backgroundColor: theme.colors.tabNavigatorBackground,
-                  // backgroundColor: 'blue',
                 }}
                 onPress={() => {
-                  // bottomSheetModalRef.current?.dismiss();
                   setSettings((prev) => ({ ...prev, showBalance: !prev.showBalance }));
                 }}
               >
@@ -666,7 +649,7 @@ const Content = ({ navigation }) => {
                     paddingBottom: 8,
                   }}
                 >
-                  <Text style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
+                  <Text numberOfLines={1} style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
                     Show Payout Address Balance
                   </Text>
                   <View pointerEvents="none" style={{ paddingRight: 16 }}>
@@ -692,9 +675,7 @@ const Content = ({ navigation }) => {
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <CustomIconButton
-                    icon={
-                      <Ionicons name="trash-bin-outline" size={24} color={theme.colors.textGrey} />
-                    }
+                    icon={<Ionicons name="trash-bin" size={24} color={theme.colors.textGrey} />}
                     title="Info"
                     color="#fff"
                   />
@@ -703,73 +684,7 @@ const Content = ({ navigation }) => {
                 </View>
               </PressableCard>
             )}
-            {(selected || farms.length === 1) && (
-              <>
-                <PressableCard
-                  style={{
-                    justifyContent: 'center',
-                    padding: 4,
-                    backgroundColor: theme.colors.tabNavigatorBackground,
-                    // backgroundColor: 'blue',
-                  }}
-                  onPress={() => {
-                    // bottomSheetModalRef.current?.dismiss();
-                    setSettings((prev) => ({ ...prev, showBalance: !prev.showBalance }));
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingTop: 8,
-                      paddingBottom: 8,
-                    }}
-                  >
-                    <Text style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
-                      Payment Notifications
-                    </Text>
-                    <View pointerEvents="none" style={{ paddingRight: 16 }}>
-                      <Switch
-                        value={settings.showBalance}
-                        trackColor={{ true: theme.colors.accentLight, false: 'rgba(0, 0, 0, 0.4)' }}
-                      />
-                    </View>
-                  </View>
-                </PressableCard>
-                <PressableCard
-                  style={{
-                    justifyContent: 'center',
-                    padding: 4,
-                    backgroundColor: theme.colors.tabNavigatorBackground,
-                    // backgroundColor: 'blue',
-                  }}
-                  onPress={() => {
-                    // bottomSheetModalRef.current?.dismiss();
-                    setSettings((prev) => ({ ...prev, showBalance: !prev.showBalance }));
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingTop: 8,
-                      paddingBottom: 8,
-                    }}
-                  >
-                    <Text style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
-                      Size Decrease Notifications
-                    </Text>
-                    <View pointerEvents="none" style={{ paddingRight: 16 }}>
-                      <Switch
-                        value={settings.showBalance}
-                        trackColor={{ true: theme.colors.accentLight, false: 'rgba(0, 0, 0, 0.4)' }}
-                      />
-                    </View>
-                  </View>
-                </PressableCard>
-              </>
-            )}
-          </View> */}
+          </View>
         </View>
       </BottomSheetModal>
       {Platform.OS === 'android' ? (

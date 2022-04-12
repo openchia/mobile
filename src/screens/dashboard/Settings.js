@@ -370,43 +370,6 @@ const Content = ({ navigation, route }) => {
                 style={{
                   paddingTop: 16,
                   paddingBottom: 16,
-                  borderTopLeftRadius: settings.sharpEdges
-                    ? theme.tileModeRadius
-                    : theme.roundModeRadius,
-                  borderTopRightRadius: settings.sharpEdges
-                    ? theme.tileModeRadius
-                    : theme.roundModeRadius,
-                  backgroundColor: theme.colors.onSurfaceLight,
-                  marginBottom: 1,
-                }}
-                onPress={() => {
-                  setSettings((prev) => ({
-                    ...prev,
-                    showBalance: !prev.showBalance,
-                  }));
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ paddingLeft: 16, flex: 1 }}>
-                    {settings.showBalance ? t('hideAddressBalance') : t('showAddressBalance')}
-                  </Text>
-                  <View pointerEvents="none" style={{ paddingRight: 16 }}>
-                    <Switch
-                      value={settings.showBalance}
-                      trackColor={{ true: theme.colors.accentLight, false: 'rgba(0, 0, 0, 0.4)' }}
-                    />
-                  </View>
-                </View>
-              </PressableCard>
-              <PressableCard
-                style={{
-                  paddingTop: 16,
-                  paddingBottom: 16,
                   borderBottomLeftRadius: settings.sharpEdges
                     ? theme.tileModeRadius
                     : theme.roundModeRadius,

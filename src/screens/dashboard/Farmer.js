@@ -134,9 +134,9 @@ const Content = ({ route, navigation }) => {
           numberOfLines={1}
           style={{
             paddingTop: 24,
-            fontSize: 20,
-            marginLeft: 48,
-            marginRight: 48,
+            fontSize: 17,
+            marginLeft: 40,
+            marginRight: 40,
           }}
         >
           {name || launcherId}
