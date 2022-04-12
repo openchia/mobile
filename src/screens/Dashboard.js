@@ -69,7 +69,6 @@ const LoadingText = ({ loading, error, value, style, formatValue }) => {
 const Content = ({ navigation }) => {
   const [farms, setFarms] = useRecoilState(launcherIDsState);
   const [dashboard, setDashboard] = useRecoilStateLoadable(dashboardState);
-  console.log(farms);
   const [selected, setSelected] = useRecoilState(dashboardSelectedState);
   const currency = useRecoilValue(currencyState);
   const theme = useTheme();
