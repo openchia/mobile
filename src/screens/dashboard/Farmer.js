@@ -113,7 +113,7 @@ const Content = ({ route, navigation }) => {
             right: 0,
             top: 0,
             // marginTop: 12,
-            marginRight: 6,
+            marginRight: 12,
           }}
         >
           <TouchableHighlight

@@ -232,6 +232,7 @@ const Content = ({ navigation, route }) => {
                       flexDirection: 'row',
                       flex: 1,
                       justifyContent: 'flex-end',
+                      alignItems: "center",
                     }}
                   >
                     <Text
