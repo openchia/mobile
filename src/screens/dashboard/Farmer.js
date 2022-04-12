@@ -67,10 +67,10 @@ const Content = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.statusBarColor }}>
-      <FocusAwareStatusBar
+      {/* <FocusAwareStatusBar
         backgroundColor={theme.colors.statusBarColor}
         barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
-      />
+      /> */}
       <View
         style={{
           backgroundColor: theme.colors.onSurfaceLight,
