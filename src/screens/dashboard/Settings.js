@@ -232,7 +232,7 @@ const Content = ({ navigation, route }) => {
                       flexDirection: 'row',
                       flex: 1,
                       justifyContent: 'flex-end',
-                      alignItems: "center",
+                      alignItems: 'center',
                     }}
                   >
                     <Text
@@ -641,6 +641,7 @@ const Content = ({ navigation, route }) => {
                       flexDirection: 'row',
                       flex: 1,
                       justifyContent: 'flex-end',
+                      alignItems: 'center',
                     }}
                   >
                     <Text
