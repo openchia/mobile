@@ -17,6 +17,7 @@ import FarmerBlockScreen from './Blocks';
 import FarmerPartialScreen from './Partials';
 import FarmerPayoutScreen from './Payouts';
 import FarmerStatsScreen from './Stats';
+import FocusAwareStatusBar from '../../components/FocusAwareStatusBar';
 
 const earningTypes = [
   { title: 'Daily Rewards', days: 1 },
@@ -66,6 +67,10 @@ const Content = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.onSurface }}>
+      <FocusAwareStatusBar
+        backgroundColor={theme.colors.statusBarColor}
+        barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
+      />
       <View
         style={{
           backgroundColor: theme.colors.onSurfaceLight,
