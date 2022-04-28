@@ -152,12 +152,18 @@ const PartialsScreen = ({ launcherIds, selected, farmData, loading }) => {
           }}
         />
         <Item
+          // enabled
           loading={loading}
           value={data}
           format={(item) => item.points}
           color={theme.colors.blue}
           title={`${t('points')}\n(${t('24Hours').toUpperCase()})`}
           settings={settings}
+          // onPress={() => {
+          //   navigation.navigate({
+          //     name: 'SkiaTest',
+          //   });
+          // }}
         />
       </View>
       <View style={styles.container}>

@@ -136,8 +136,10 @@ const Content = ({ navigation }) => {
   );
 
   if (dashboard.state === 'hasError') {
-    handleError(dashboard.contents);
+    handleError(dashboard.contents.balance);
   }
+
+  // console.log(dashboard.contents.balances[0].balance.data);
 
   if (farms.length === 0) {
     return (
@@ -292,16 +294,17 @@ const Content = ({ navigation }) => {
               style={{ paddingTop: 16, fontSize: 20 }}
               value={dashboard.contents}
               formatValue={(val) =>
+                // balances[0].balance.data
                 showFiat
                   ? `${(
                       val.balances
                         .map((item) => item.balance)
-                        .map((item) => item.data.unspentBalance)
+                        .map((item) => item.data.balance)
                         .reduce((a, b) => a + b) * val.stats.xch_current_price[currency]
                     ).toFixed(2)} ${getCurrencyFromKey(currency)}`
                   : `${val.balances
                       .map((item) => item.balance)
-                      .map((item) => item.data.unspentBalance)
+                      .map((item) => item.data.balance)
                       .reduce((a, b) => a + b)
                       .toFixed(3)} XCH`
               }
@@ -581,14 +584,12 @@ const Content = ({ navigation }) => {
                 }}
                 onPress={() => {
                   bottomSheetModalRef.current?.dismiss();
-                  if (dashboard.state === 'hasValue') {
-                    navigation.navigate({
-                      name: 'Farmer Settings',
-                      params: {
-                        farm: selected || farms[0],
-                      },
-                    });
-                  }
+                  navigation.navigate({
+                    name: 'Farmer Settings',
+                    params: {
+                      farm: selected || farms[0],
+                    },
+                  });
                 }}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>

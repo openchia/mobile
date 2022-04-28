@@ -37,6 +37,7 @@ const FarmerNameScreen = ({ route, navigation }) => {
             size={24}
             onPress={() => {
               api({
+                
                 method: 'put',
                 url: `launcher/${launcherId}/`,
                 body: { name: farmerName },

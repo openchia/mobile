@@ -358,9 +358,10 @@ const Content = ({ navigation, route }) => {
                   }}
                 >
                   <Text style={{ paddingLeft: 16, flex: 1 }}>
-                    {data.payment.includes('PUSH')
+                    {t('paymentNotification')}
+                    {/* {data.payment.includes('PUSH')
                       ? t('paymentOffNotification')
-                      : t('paymentOnNotification')}
+                      : t('paymentOnNotification')} */}
                   </Text>
                   <View pointerEvents="none" style={{ paddingRight: 16 }}>
                     <Switch
@@ -471,9 +472,10 @@ const Content = ({ navigation, route }) => {
                   }}
                 >
                   <Text style={{ paddingLeft: 16, flex: 1 }}>
-                    {data.sizeDrop.includes('PUSH')
+                    {t('sizeDropNotification')}
+                    {/* {data.sizeDrop.includes('PUSH')
                       ? t('sizeDropOffNotification')
-                      : t('sizeDropOnNotification')}
+                      : t('sizeDropOnNotification')} */}
                   </Text>
                   <View pointerEvents="none" style={{ paddingRight: 16 }}>
                     <Switch

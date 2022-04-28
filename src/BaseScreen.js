@@ -48,6 +48,7 @@ import MinPayoutScreen from './screens/dashboard/settings/MinPayout';
 import SizeDropPercentScreen from './screens/dashboard/settings/SizeDropPercent';
 import SizeDropIntervalScreen from './screens/dashboard/settings/SizeDropInterval';
 import FarmerPartialScreen from './screens/charts/Partials';
+import SkiaChart from './screens/dashboard/SkiaChart';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -296,6 +297,13 @@ const BaseScreen = () => {
                   <Stack.Screen
                     name="Farmer Partials Chart"
                     component={FarmerPartialScreen}
+                    options={({ route }) => ({
+                      title: t('farmerPartialsChart'),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="SkiaTest"
+                    component={SkiaChart}
                     options={({ route }) => ({
                       title: t('farmerPartialsChart'),
                     })}

@@ -30,7 +30,7 @@ const DifficultyScreen = ({ navigation, route }) => {
       .then(() => {
         const updatedList = farms.map((item) =>
           item.launcherId === launcherId
-            ? { ...item, custom_difficulty: difficulty === 'DEFAULT' ? null : difficulty }
+            ? { ...item, difficulty: difficulty === 'DEFAULT' ? null : difficulty }
             : item
         );
         setLauncherIDs(updatedList);
