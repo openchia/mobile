@@ -35,11 +35,32 @@ const Item = ({ item, color, t, onPress, theme }) => (
   </PressableCard>
 );
 
+const LaunchScreenText = ({ settings, theme }) => {
+  const { t } = useTranslation('translation', { keyPrefix: 'screenNames' });
+
+  return (
+    <Text
+      style={{
+        paddingLeft: 16,
+        paddingRight: 16,
+        color: theme.colors.textGrey,
+        fontFamily: theme.fonts.medium.fontFamily,
+      }}
+    >
+      {settings.intialRoute === 'Home'
+        ? t('home')
+        : settings.intialRoute === 'Dashboard'
+        ? t('dashboard')
+        : t('news')}
+    </Text>
+  );
+};
+
 const MoreScreen = ({ navigation }) => {
   const theme = useTheme();
   const { width } = useWindowDimensions();
   const [settings, setSettings] = useRecoilState(settingsState);
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('translation', { keyPrefix: 'more' });
   const selectedLanguageCode = i18n.language;
   const currency = useRecoilValue(currencyState);
 
@@ -317,7 +338,8 @@ const MoreScreen = ({ navigation }) => {
                   }}
                 >
                   <Text style={{ paddingLeft: 16, flex: 1 }}>{t('launchScreen')}</Text>
-                  <Text
+                  <LaunchScreenText theme={theme} settings={settings} />
+                  {/* <Text
                     style={{
                       paddingLeft: 16,
                       paddingRight: 16,
@@ -330,7 +352,7 @@ const MoreScreen = ({ navigation }) => {
                       : settings.intialRoute === 'Dashboard'
                       ? t('dashboard')
                       : t('news')}
-                  </Text>
+                  </Text> */}
                   <Ionicons
                     style={{ paddingRight: 16 }}
                     name="chevron-forward-outline"
@@ -354,11 +376,7 @@ const MoreScreen = ({ navigation }) => {
                     alignItems: 'center',
                   }}
                 >
-                  <Text style={{ paddingLeft: 16, flex: 1 }}>
-                    {settings.blockNotifications
-                      ? t('blockOffNotification')
-                      : t('blockOnNotification')}
-                  </Text>
+                  <Text style={{ paddingLeft: 16, flex: 1 }}>{t('blockNotifications')}</Text>
                   <View pointerEvents="none" style={{ paddingRight: 16 }}>
                     <Switch
                       value={settings.blockNotifications}
@@ -371,8 +389,13 @@ const MoreScreen = ({ navigation }) => {
                 style={{
                   paddingTop: 16,
                   paddingBottom: 16,
+                  borderBottomLeftRadius: settings.sharpEdges
+                    ? theme.tileModeRadius
+                    : theme.roundModeRadius,
+                  borderBottomRightRadius: settings.sharpEdges
+                    ? theme.tileModeRadius
+                    : theme.roundModeRadius,
                   backgroundColor: theme.colors.onSurfaceLight,
-                  marginBottom: 1,
                 }}
                 onPress={() => {
                   setSettings((prev) => ({ ...prev, isThemeDark: !prev.isThemeDark }));
@@ -384,9 +407,7 @@ const MoreScreen = ({ navigation }) => {
                     alignItems: 'center',
                   }}
                 >
-                  <Text style={{ paddingLeft: 16, flex: 1 }}>
-                    {settings.isThemeDark ? t('lightMode') : t('darkMode')}
-                  </Text>
+                  <Text style={{ paddingLeft: 16, flex: 1 }}>{t('appearance')}</Text>
                   <Ionicons
                     style={{ paddingRight: 20 }}
                     name={settings.isThemeDark ? 'ios-moon' : 'ios-sunny'}
@@ -395,7 +416,7 @@ const MoreScreen = ({ navigation }) => {
                   />
                 </View>
               </PressableCard>
-              <PressableCard
+              {/* <PressableCard
                 style={{
                   paddingTop: 16,
                   paddingBottom: 16,
@@ -436,7 +457,7 @@ const MoreScreen = ({ navigation }) => {
                     />
                   )}
                 </View>
-              </PressableCard>
+              </PressableCard> */}
             </View>
           </Shadow>
         </View>

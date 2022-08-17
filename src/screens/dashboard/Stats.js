@@ -79,7 +79,7 @@ const shortEnglishHumanizer = humanizeDuration.humanizer({
 });
 
 const FarmerStatsScreen = ({ launcherIds, selected, farmData, loading }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', { keyPrefix: 'dashboard.stats' });
   const theme = useTheme();
   const settings = useRecoilValue(settingsState);
   // const [data, setData] = useState();
@@ -176,7 +176,7 @@ const FarmerStatsScreen = ({ launcherIds, selected, farmData, loading }) => {
           value={data}
           format={(item) => `${(item.share_pplns * 100).toFixed(3)}%`}
           color={theme.colors.green}
-          title={`${t('Utilization Space')}`}
+          title={`${t('utilizationSpace')}`}
           settings={settings}
         />
         <Item
@@ -184,7 +184,7 @@ const FarmerStatsScreen = ({ launcherIds, selected, farmData, loading }) => {
           value={data}
           format={(item) => `${item.effort.toFixed(3)}%`}
           color={theme.colors.red}
-          title={'Current Effort'}
+          title={`${t('currentEffort')}`}
           settings={settings}
         />
       </View>
@@ -194,7 +194,7 @@ const FarmerStatsScreen = ({ launcherIds, selected, farmData, loading }) => {
           value={data}
           format={(item) => `${shortEnglishHumanizer(item.etw * 1000)}`}
           color={theme.colors.indigo}
-          title={'ETW'}
+          title={`${t('etw')}`}
           settings={settings}
         />
         <Item
@@ -202,7 +202,7 @@ const FarmerStatsScreen = ({ launcherIds, selected, farmData, loading }) => {
           value={data}
           format={(item) => `${(item.fee * 100).toFixed(3)}%`}
           color={theme.colors.teal}
-          title={`Effective Fee`}
+          title={`${t('effectiveFee')}`}
           settings={settings}
         />
       </View>
@@ -212,7 +212,7 @@ const FarmerStatsScreen = ({ launcherIds, selected, farmData, loading }) => {
           value={data}
           format={(item) => `${item.blocksTotal}`}
           color={theme.colors.orange}
-          title={`Blocks`}
+          title={`${t('blocks')}`}
           settings={settings}
         />
         <Item
@@ -220,7 +220,7 @@ const FarmerStatsScreen = ({ launcherIds, selected, farmData, loading }) => {
           value={data}
           format={(item) => item.totalTransactions}
           color={theme.colors.purple}
-          title={`Total Rewards`}
+          title={`${t('totalRewards')}`}
           settings={settings}
         />
       </View>
@@ -230,7 +230,7 @@ const FarmerStatsScreen = ({ launcherIds, selected, farmData, loading }) => {
           value={data}
           format={(item) => `${item.pointsPPLNS}`}
           color={theme.colors.pink}
-          title={`Points PPLNS`}
+          title={`${t('pointsPPLNS')}`}
           settings={settings}
         />
         <Item
@@ -238,7 +238,7 @@ const FarmerStatsScreen = ({ launcherIds, selected, farmData, loading }) => {
           value={data}
           format={(item) => item.difficulty}
           color={theme.colors.blue}
-          title={`Dificulty`}
+          title={`${t('difficulty')}`}
           settings={settings}
         />
       </View>

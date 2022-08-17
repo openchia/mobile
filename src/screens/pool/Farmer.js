@@ -13,17 +13,17 @@ import { currencyState, settingsState } from '../../recoil/Atoms';
 import CustomIconButton from '../../components/CustomIconButton';
 import { getCurrencyFromKey } from '../more/Currency';
 import { convertMojoToChia, formatBytes, formatPrice } from '../../utils/Formatting';
-import FarmerBlockScreen from './Blocks';
-import FarmerPartialScreen from './Partials';
-import FarmerPayoutScreen from './Payouts';
-import FarmerStatsScreen from './Stats';
+import FarmerBlockScreen from '../dashboard/Blocks';
+import FarmerPartialScreen from '../dashboard/Partials';
+import FarmerPayoutScreen from '../dashboard/Payouts';
+import FarmerStatsScreen from '../dashboard/Stats';
 import FocusAwareStatusBar from '../../components/FocusAwareStatusBar';
 
 const earningTypes = [
-  { title: 'Daily Rewards', days: 1 },
-  { title: 'Weekly Rewards', days: 7 },
-  { title: 'Montly Rewards', days: 30 },
-  { title: 'Yearly Rewards', days: 365 },
+  { title: 'dailyRewards', days: 1 },
+  { title: 'weeklyRewards', days: 7 },
+  { title: 'monthlyRewards', days: 30 },
+  { title: 'yearlyRewards', days: 365 },
 ];
 
 const Tab = createMaterialTopTabNavigator();
@@ -36,7 +36,7 @@ const Content = ({ route, navigation }) => {
   const currency = useRecoilValue(currencyState);
   const { launcherId, name } = route.params;
   const [earningState, setEarningState] = useState(0);
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', { keyPrefix: 'dashboard' });
   const theme = useTheme();
   const handleError = useErrorHandler();
 
@@ -154,7 +154,7 @@ const Content = ({ route, navigation }) => {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>Paid</Text>
+            <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>{t('paid')}</Text>
             <Text style={{ textAlign: 'center' }}>
               {loading
                 ? '...'
@@ -175,7 +175,7 @@ const Content = ({ route, navigation }) => {
             }}
           >
             <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>
-              {earningTypes[earningState].title}
+              {t(earningTypes[earningState].title)}
             </Text>
             <Text style={{ textAlign: 'center' }}>
               {loading
@@ -211,7 +211,7 @@ const Content = ({ route, navigation }) => {
             </Text>
           </View> */}
           <View style={{ flex: 1 }}>
-            <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>Size</Text>
+            <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>{t('size')}</Text>
             <Text style={{ textAlign: 'center' }}>
               {loading ? '...' : formatBytes(data.farmer.estimated_size)}
             </Text>
@@ -232,7 +232,7 @@ const Content = ({ route, navigation }) => {
           },
         }}
       >
-        <Tab.Screen name="FarmerStats" options={{ title: t('stats') }}>
+        <Tab.Screen name="FarmerStats" options={{ title: t('tabs.stats') }}>
           {() => (
             <FarmerStatsScreen
               launcherIds={[launcherId]}
@@ -241,7 +241,7 @@ const Content = ({ route, navigation }) => {
             />
           )}
         </Tab.Screen>
-        <Tab.Screen name="FarmerPartials" options={{ title: t('partials') }}>
+        <Tab.Screen name="FarmerPartials" options={{ title: t('tabs.partials') }}>
           {() => (
             <FarmerPartialScreen
               launcherIds={[launcherId]}
@@ -250,11 +250,11 @@ const Content = ({ route, navigation }) => {
             />
           )}
         </Tab.Screen>
-        <Tab.Screen name="FarmerPayouts" options={{ title: t('payouts') }}>
-          {() => <FarmerPayoutScreen launcherId={launcherId} />}
-        </Tab.Screen>
-        <Tab.Screen name="FarmerBlocks" options={{ title: t('blocks') }}>
+        <Tab.Screen name="FarmerBlocks" options={{ title: t('tabs.blocks') }}>
           {() => <FarmerBlockScreen launcherId={launcherId} />}
+        </Tab.Screen>
+        <Tab.Screen name="FarmerPayouts" options={{ title: t('tabs.payouts') }}>
+          {() => <FarmerPayoutScreen launcherId={launcherId} />}
         </Tab.Screen>
       </Tab.Navigator>
     </SafeAreaView>

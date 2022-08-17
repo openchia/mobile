@@ -9,6 +9,7 @@ import { Shadow } from 'react-native-shadow-2';
 import CustomCard from './CustomCard';
 
 const JellySelector = ({ items, onPress, defaultVal, width, borderRadius }) => {
+  console.log(items);
   const SELECTION_WIDTH = width - 32;
   const BUTTON_WIDTH = (width - 32) / items.length;
   const transition = useSharedValue(0);

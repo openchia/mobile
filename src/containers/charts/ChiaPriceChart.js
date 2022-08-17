@@ -1,32 +1,42 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react/style-prop-object */
+/* eslint-disable no-else-return */
 /* eslint-disable no-plusplus */
-import { isAfter, subHours } from 'date-fns';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Dimensions, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { selectorFamily, useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
-import JellySelector from '../../components/JellySelector';
 import {
-  ChartDot,
-  ChartPath,
-  ChartPathProvider,
-  ChartXLabel,
-  ChartYLabel,
-  monotoneCubicInterpolation,
-} from '../../react-native-animated-charts';
-import { currencyState, settingsState } from '../../recoil/Atoms';
-import { getCurrencyFromKey } from '../../screens/more/Currency';
+  Canvas,
+  Easing,
+  Group,
+  LinearGradient,
+  Paint,
+  Path,
+  runSpring,
+  runTiming,
+  useComputedValue,
+  useValue,
+  useValueEffect,
+  vec,
+} from '@shopify/react-native-skia';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { selector, selectorFamily, useRecoilValueLoadable, waitForAll } from 'recoil';
+import { currencyState } from '../../recoil/Atoms';
 import { api, COINGECKO_API } from '../../services/Api';
-import { currencyFormat } from '../../utils/Formatting';
+import createGraphPath, { getPointAtPositionInPath } from './new/CreateGraphPath';
+import Cursor from './new/Cursor';
+import { getSixDigitHex } from './new/getSixDigitHex';
+import { getYForX } from './new/GetYForX';
+import { JellySelector } from './new/JellySelector';
+import { Label } from './new/Label';
+import { useGraphTouchHandler } from './new/useGraphTouchHandler';
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const ITEMS = [
-  {
-    label: '1h',
-    value: 1,
-    interval: 1,
-  },
+  // {
+  //   label: '1h',
+  //   value: 1,
+  //   interval: 1,
+  // },
   {
     label: '24h',
     value: 1,
@@ -59,217 +69,190 @@ const ITEMS = [
   },
 ];
 
-export const formatY = (value, extraVal) => {
-  'worklet';
-
-  if (value === '') {
-    return '';
-  }
-  const fiatVal = Number(value);
-  return `${fiatVal.toFixed(2)} ${extraVal}`;
-};
-
-const formatDatetime = (value) => {
-  'worklet';
-
-  // we have to do it manually due to limitations of reanimated
-  if (value === '') {
-    return '';
-  }
-
-  const date = new Date(Number(value));
-  const now = new Date();
-
-  let res = `${MONTHS[date.getMonth()]} `;
-
-  const d = date.getDate();
-  if (d < 10) {
-    res += '0';
-  }
-  res += d;
-
-  const y = date.getFullYear();
-  const yCurrent = now.getFullYear();
-  if (y !== yCurrent) {
-    res += `, ${y}`;
-    return res;
-  }
-
-  const h = date.getHours() % 12;
-  if (h === 0) {
-    res += ' 12:';
-  } else if (h < 10) {
-    res += ` 0${h}:`;
-  } else {
-    res += ` ${h}:`;
-  }
-
-  const m = date.getMinutes();
-  if (m < 10) {
-    res += '0';
-  }
-  res += `${m} `;
-
-  if (date.getHours() < 12) {
-    res += 'AM';
-  } else {
-    res += 'PM';
-  }
-
-  return res;
-};
-
-const query = selectorFamily({
-  key: 'chiaPrice',
+export const fetchPrices = selectorFamily({
+  key: 'pricesQuery',
   get:
-    (element) =>
-    async ({ get }) => {
-      const currency = await get(currencyState);
+    ({ element, currency }) =>
+    async () => {
       const response = await api({
         baseURL: COINGECKO_API,
         url: `coins/chia/market_chart?vs_currency=${currency}&days=${
           element.value || 'max'
         }&interval=${element.interval || 1}`,
       });
-      if (response) {
-        if (element.label === '1h') {
-          let now = Date.now();
-          now = subHours(now, 1);
-          const data = response.prices
-            .filter((item) => isAfter(new Date(item[0]), now))
-            .map((item) => ({
-              x: item[0],
-              y: item[1],
-            }));
-          return data;
-        }
-
-        return monotoneCubicInterpolation({
-          data: response.prices.map((item) => ({
-            x: item[0],
-            y: item[1],
-          })),
-          includeExtremes: true,
-          range: 100,
-        });
-      }
-      return response.statusText;
+      return response.prices;
     },
 });
 
-const Chart = ({ chiaPrice, element, bottomContent, width, height }) => {
-  const loadableData = useRecoilValueLoadable(query(element));
-  const currency = useRecoilValue(currencyState);
-  const theme = useTheme();
-  const [points, setPoints] = useState([]);
-  const { t } = useTranslation();
+export const query = selector({
+  key: 'prices',
+  get: ({ get }) => {
+    const currency = get(currencyState);
+    const data = get(waitForAll(ITEMS.map((item) => fetchPrices({ element: item, currency }))));
+    return data;
+  },
+});
 
-  useEffect(() => {
-    if (loadableData.state === 'hasValue') {
-      setPoints(loadableData.contents);
+const Chart = ({
+  graphs,
+  chiaPrice,
+  element,
+  bottomContent,
+  enableFadeInMask = false,
+  width = 200,
+  height = 300,
+  margin,
+  xMax,
+  yMax,
+  color = '#3AAC59',
+}) => {
+  const transition = useValue(4);
+  const currentState = useValue(0);
+  const nextState = useValue(0);
+  const stateChanged = useValue(0);
+  const gestureActive = useValue(false);
+  const minX = useValue(graphs[currentState.current].xMinValue);
+  const maxX = useValue(graphs[currentState.current].xMaxValue);
+  const x = useValue(0);
+  const y = useValue(0);
+  const pathEnd = useValue(1);
+
+  const gradientColors = useMemo(() => {
+    if (enableFadeInMask) {
+      return [
+        `${getSixDigitHex(color)}00`,
+        `${getSixDigitHex(color)}ff`,
+        `${getSixDigitHex(color)}ff`,
+        `${getSixDigitHex(color)}33`,
+        `${getSixDigitHex(color)}33`,
+      ];
+    } else {
+      return [color, color, color, `${getSixDigitHex(color)}33`, `${getSixDigitHex(color)}33`];
     }
-  }, [loadableData]);
+  }, [color, enableFadeInMask]);
+
+  const path = useComputedValue(() => {
+    const start = graphs[currentState.current].path;
+    const end = graphs[nextState.current].path;
+    return end.interpolate(start, transition.current);
+  }, [currentState, nextState, transition]);
+
+  const positions = useComputedValue(
+    () => [0, Math.min(0.15, pathEnd.current), pathEnd.current, pathEnd.current, 1],
+    [pathEnd]
+  );
+
+  useValueEffect(x, () => {
+    // const yPos = getYForX(path.current.toCmds(), x.current);
+    // if (yPos) {
+    //   y.current = yPos;
+    // }
+    // y.current = getYForX(path.current.toCmds(), x.current);
+    y.current = getPointAtPositionInPath(
+      x.current,
+      xMax,
+      graphs[currentState.current].points.length,
+      path.current
+    ).y;
+  });
+
+  const onTouch = useGraphTouchHandler(x, y, xMax, width, margin, gestureActive, pathEnd);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
-      <ChartPathProvider
-        data={{
-          points,
-          smoothingStrategy: 'bezier',
+    <View style={{ flex: 1 }}>
+      <Canvas style={{ width, height }} onTouch={onTouch}>
+        <Label
+          gestureActive={gestureActive}
+          price={chiaPrice}
+          currentState={currentState}
+          nextState={nextState}
+          y={y}
+          x={x}
+          yMax={yMax}
+          xMax={xMax}
+          graphs={graphs}
+          width={width}
+          height={height}
+          margin={margin}
+          minX={minX}
+          maxX={maxX}
+        />
+        <Group transform={[{ translateY: margin.top }, { translateX: margin.left }]}>
+          <Path style="stroke" path={path} strokeWidth={2.5} strokeJoin="round" strokeCap="round">
+            <LinearGradient
+              start={vec(0, 0)}
+              end={vec(width, 0)}
+              colors={gradientColors}
+              positions={positions}
+            />
+          </Path>
+          <Cursor x={x} y={y} color={color} gestureActive={gestureActive} pathEnd={pathEnd} />
+        </Group>
+      </Canvas>
+      <JellySelector
+        onPress={(index) => {
+          stateChanged.current = index;
+          runTiming(minX, graphs[index].xMinValue, {
+            easing: Easing.linear,
+            duration: 200,
+          });
+          runTiming(maxX, graphs[index].xMaxValue, {
+            easing: Easing.linear,
+            duration: 200,
+          });
         }}
-      >
-        <View style={{ justifyContent: 'center' }}>
-          <View>
-            {/* {loadableData.state === 'loading' ? (
-              <View style={{ height: height / 2.5 + 60 }}>
-                <ActivityIndicator
-                  style={{
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    margin: 'auto',
-                    position: 'absolute',
-                  }}
-                  size={60}
-                  color="#119400"
-                />
-              </View>
-            ) : (
-              <> */}
-            <ChartPath
-              hapticsEnabled={false}
-              hitSlop={30}
-              smoothingWhileTransitioningEnabled={false}
-              fill="none"
-              height={height / 2.5}
-              stroke={theme.colors.primaryLight}
-              selectedStrokeWidth="1.8"
-              strokeWidth="2"
-              width={width}
-            />
-            <ChartDot
-              style={{
-                backgroundColor: theme.colors.accentColor,
-              }}
-            />
-            {/* </>
-            )} */}
-          </View>
-        </View>
-        <View
-          style={{
-            margin: 6,
-            padding: 8,
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            backgroundColor: theme.colors.background,
-            borderRadius: 4,
-          }}
-        >
-          <ChartXLabel
-            format={formatDatetime}
-            defaultValue={t('chiaPrice')}
-            style={{ color: theme.colors.text, padding: 0, fontSize: 16 }}
-          />
-          <ChartYLabel
-            format={formatY}
-            extraVal={`${getCurrencyFromKey(currency)}`}
-            defaultValue={`${currencyFormat(chiaPrice)} ${getCurrencyFromKey(currency)}`}
-            style={{ color: theme.colors.text, padding: 0, fontSize: 24 }}
-          />
-        </View>
-      </ChartPathProvider>
-      <View>{bottomContent}</View>
+        currentState={currentState}
+        nextState={nextState}
+        transition={transition}
+        jellyData={ITEMS}
+      />
     </View>
   );
 };
 
-const ChiaPriceChart = ({ chiaPrice }) => {
-  const [settings, setSettings] = useRecoilState(settingsState);
-  const [element, setElement] = useState(ITEMS[settings.priceDefault ? settings.priceDefault : 0]);
-  const { width, height } = Dimensions.get('window');
-  const theme = useTheme();
+const ChiaPriceChart = ({ chiaPrice, margin = { top: 140, right: 20, bottom: 40, left: 20 } }) => {
+  const { width, height } = useWindowDimensions();
+
+  const loadableData = useRecoilValueLoadable(query);
+  const yMax = height / 2 - margin.bottom - margin.top;
+  const xMax = width - margin.left - margin.right;
+
+  const graphs = useMemo(() => {
+    if (loadableData.state === 'hasValue') {
+      const response = loadableData.contents;
+      return ITEMS.map((item, index) =>
+        createGraphPath({
+          data: response[index],
+          label: `${item}`,
+          xMax,
+          yMax,
+          xAccessor: (d) => d[0],
+          yAccessor: (d) => d[1],
+        })
+      );
+    }
+  }, [loadableData.contents, loadableData.state, xMax, yMax]);
+
+  if (!graphs) {
+    return (
+      <SafeAreaView style={{ flex: 1, alignItems: 'center' }}>
+        <View style={{ height: height / 2, justifyContent: 'center' }}>
+          <ActivityIndicator size={36} color="#119400" />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Chart
-        height={height}
+        height={height / 2}
         width={width}
-        element={element}
+        graphs={graphs}
+        xMax={xMax}
+        yMax={yMax}
+        margin={margin}
         chiaPrice={chiaPrice}
-        bottomContent={
-          <JellySelector
-            width={width}
-            defaultVal={settings.priceDefault}
-            items={ITEMS}
-            onPress={(item, index) => {
-              setElement(item);
-              setSettings((prev) => ({ ...prev, priceDefault: index }));
-            }}
-            borderRadius={settings.sharpEdges ? theme.tileModeRadius : theme.roundModeRadius}
-          />
-        }
       />
     </SafeAreaView>
   );

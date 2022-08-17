@@ -120,5 +120,6 @@ export default {
     darkMode: 'Switch to Dark Mode',
     dashboard: 'Dashboard',
     launchScreen: 'Launch Screen',
+    nested: { value: 'test' },
   },
 };

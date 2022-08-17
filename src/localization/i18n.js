@@ -3,33 +3,41 @@ import { initReactI18next } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as RNLocalize from 'react-native-localize';
 
-import en from './en';
-import fr from './fr';
-import de from './de';
-import es from './es';
-import hu from './hu';
-import pl from './pl';
-import ru from './ru';
-import cs from './cs';
-import zh from './zh';
-import pt from './pt';
-import nl from './nl';
+import { en } from './translations';
 
-const LANGUAGES = {
-  en,
-  fr,
-  cs,
-  de,
-  es,
-  hu,
-  pl,
-  ru,
-  zh,
-  pt,
-  nl,
+// import en from './en';
+// import fr from './fr';
+// import de from './de';
+// import es from './es';
+// import hu from './hu';
+// import pl from './pl';
+// import ru from './ru';
+// import cs from './cs';
+// import zh from './zh';
+// import pt from './pt';
+// import nl from './nl';
+
+// const LANGUAGES = {
+//   en,
+//   fr,
+//   cs,
+//   de,
+//   es,
+//   hu,
+//   pl,
+//   ru,
+//   zh,
+//   pt,
+//   nl,
+// };
+
+const resources = {
+  en: {
+    translation: en,
+  },
 };
 
-const LANG_CODES = Object.keys(LANGUAGES);
+const LANG_CODES = Object.keys(resources);
 
 const LANGUAGE_DETECTOR = {
   type: 'languageDetector',
@@ -65,11 +73,13 @@ i18n
   .use(initReactI18next)
   // set options
   .init({
-    resources: LANGUAGES,
+    resources,
     compatibilityJSON: 'v3',
     react: {
       useSuspense: false,
     },
+    keySeparator: '.', // we do not use keys in form messages.welcome
+    // keySeparator: true,
     interpolation: {
       escapeValue: false,
     },

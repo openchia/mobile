@@ -16,7 +16,6 @@ import { convertMojoToChia, convertChiaToMojo } from '../../../utils/Formatting'
 const SizeDropIntervalScreen = ({ route, navigation }) => {
   const [farms, setLauncherIDs] = useRecoilState(launcherIDsState);
   const [settings, setSettings] = useRecoilState(settingsState);
-  const { t } = useTranslation();
   const { launcherId, token, sizeDropInterval } = route.params;
   const [data, setData] = useState(`${sizeDropInterval}`);
   const theme = useTheme();

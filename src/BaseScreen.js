@@ -37,7 +37,7 @@ import NewsScreen from './screens/News';
 import ScanScreen from './screens/more/Scan';
 import { DarkTheme, LightTheme } from './Theme';
 import DashboardScreen from './screens/Dashboard';
-import FarmerScreen from './screens/dashboard/Farmer';
+import FarmerScreen from './screens/pool/Farmer';
 import LaunchOptionScreen from './screens/more/Launch';
 import MoreScreen from './screens/More';
 import PoolScreen from './screens/Pool';
@@ -48,7 +48,6 @@ import MinPayoutScreen from './screens/dashboard/settings/MinPayout';
 import SizeDropPercentScreen from './screens/dashboard/settings/SizeDropPercent';
 import SizeDropIntervalScreen from './screens/dashboard/settings/SizeDropInterval';
 import FarmerPartialScreen from './screens/charts/Partials';
-import SkiaChart from './screens/dashboard/SkiaChart';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -192,70 +191,70 @@ const BaseScreen = () => {
                     name="Post"
                     component={NewsPostScreen}
                     options={() => ({
-                      title: t('post'),
+                      title: t('screenNames.post'),
                     })}
                   />
                   <Stack.Screen
                     name="Language"
                     component={LanguageSelectorScreen}
                     options={() => ({
-                      title: t('language'),
+                      title: t('screenNames.language'),
                     })}
                   />
                   <Stack.Screen
                     name="Currency"
                     component={CurrencySelectionScreen}
                     options={() => ({
-                      title: t('currency'),
+                      title: t('screenNames.currency'),
                     })}
                   />
                   <Stack.Screen
                     name="Poolspace"
                     component={PoolspaceScreen}
                     options={() => ({
-                      title: t('poolSpace'),
+                      title: t('screenNames.poolNetspaceChart'),
                     })}
                   />
                   <Stack.Screen
                     name="Netspace"
                     component={NetspaceScreen}
                     options={() => ({
-                      title: t('netspace'),
+                      title: t('screenNames.netspaceChart'),
                     })}
                   />
                   <Stack.Screen
                     name="Chia Price Chart"
                     component={ChiaPriceScreen}
                     options={() => ({
-                      title: t('chiaPriceChart'),
+                      title: t('screenNames.priceChart'),
                     })}
                   />
                   <Stack.Screen
                     name="Farmer Name"
                     component={FarmerNameScreen}
                     options={() => ({
-                      title: t('farmName'),
+                      title: t('screenNames.farmName'),
                     })}
                   />
                   <Stack.Screen
                     name="Verify Farm"
                     component={ScanScreen}
                     options={() => ({
-                      title: t('verifyFarm'),
+                      title: t('screenNames.verifyFarm'),
                     })}
                   />
                   <Stack.Screen
                     name="LaunchOptionScreen"
                     component={LaunchOptionScreen}
                     options={() => ({
-                      title: t('launchScreen'),
+                      title: t('screenNames.launchScreen'),
                     })}
                   />
                   <Stack.Screen
                     name="Farmer Settings"
                     component={FarmerSettingsScreen}
                     options={() => ({
-                      title: t('settingsScreen'),
+                      title: t('screenNames.farmSettings'),
                     })}
                   />
                   <Stack.Screen
@@ -286,7 +285,6 @@ const BaseScreen = () => {
                       title: route.params.title,
                     })}
                   />
-
                   <Stack.Screen
                     name="Size Drop Interval"
                     component={SizeDropIntervalScreen}
@@ -294,20 +292,13 @@ const BaseScreen = () => {
                       title: route.params.title,
                     })}
                   />
-                  <Stack.Screen
+                  {/* <Stack.Screen
                     name="Farmer Partials Chart"
                     component={FarmerPartialScreen}
                     options={({ route }) => ({
-                      title: t('farmerPartialsChart'),
+                      title: t('screenNames.farmerPartialsChart'),
                     })}
-                  />
-                  <Stack.Screen
-                    name="SkiaTest"
-                    component={SkiaChart}
-                    options={({ route }) => ({
-                      title: t('farmerPartialsChart'),
-                    })}
-                  />
+                  /> */}
                 </Stack.Navigator>
               </BottomSheetModalProvider>
             </NavigationContainer>

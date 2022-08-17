@@ -44,10 +44,10 @@ import PartialsScreen from './dashboard/Partials';
 import FeeScreen from './dashboard/Fee';
 
 const earningTypes = [
-  { title: 'Daily Rewards', days: 1 },
-  { title: 'Weekly Rewards', days: 7 },
-  { title: 'Montly Rewards', days: 30 },
-  { title: 'Yearly Rewards', days: 365 },
+  { title: 'dailyRewards', days: 1 },
+  { title: 'weeklyRewards', days: 7 },
+  { title: 'monthlyRewards', days: 30 },
+  { title: 'yearlyRewards', days: 365 },
 ];
 
 const Tab = createMaterialTopTabNavigator();
@@ -73,7 +73,9 @@ const Content = ({ navigation }) => {
   const currency = useRecoilValue(currencyState);
   const theme = useTheme();
   const [settings, setSettings] = useRecoilState(settingsState);
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
+  const { t } = useTranslation('translation', { keyPrefix: 'dashboard' });
+
   const bottomSheetModalRef = useRef(null);
   const [showDialog, setShowDialog] = useState(false);
   const [earningState, setEarningState] = useState(0);
@@ -151,9 +153,9 @@ const Content = ({ navigation }) => {
           alignItems: 'center',
         }}
       >
-        <Text style={{ fontSize: 18 }}>Add Farm To Dashboard</Text>
+        <Text style={{ fontSize: 18 }}>{t('addFarmTitle')}</Text>
         <Text style={{ fontSize: 14, color: theme.colors.textGrey, paddingBottom: 16 }}>
-          Shows all data relevent to your Farm.
+          {t('addFarmDesc')}
         </Text>
         <IconButton
           style={{ backgroundColor: theme.colors.primary }}
@@ -181,31 +183,6 @@ const Content = ({ navigation }) => {
           paddingBottom: 8,
         }}
       >
-        {/* <View
-          style={{
-            backgroundColor: theme.colors.onSurfaceLight,
-            alignItems: 'center',
-            flexDirection: 'row',
-            position: 'absolute',
-            left: 0,
-            top: 0,
-          }}
-        >
-          <CustomIconButton
-            style={{ marginTop: 10, marginRight: 10 }}
-            icon={
-              <Ionicons
-                name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
-                size={24}
-                color={theme.colors.text}
-              />
-            }
-            color="#fff"
-            onPress={() => {
-              refreshDashboard();
-            }}
-          />
-        </View> */}
         {farms.length === 1 ? (
           <Text
             numberOfLines={1}
@@ -214,12 +191,7 @@ const Content = ({ navigation }) => {
               fontSize: 17,
               marginLeft: 16,
               marginRight: 16,
-              // width: width / 1.2,
               textAlign: 'center',
-              // width: 300,
-              // marginLeft: '30%',
-              // marginRight: '30%',
-              // maxWidth: '50%',
             }}
           >
             {farm(farms).name || farm(farms).launcherId}
@@ -250,37 +222,9 @@ const Content = ({ navigation }) => {
             marginRight: 0,
           }}
         >
-          {/* <TouchableHighlight
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: 36,
-              justifyContent: 'center',
-              alignItems: 'center',
-              // backgroundColor: 'blue',
-              // alignItems: 'center',
-              // justifyContent: 'center',
-            }}
-            activeOpacity={0.6}
-            underlayColor={settings.isThemeDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-            onPress={() => {
-              setShowFiat((prev) => !prev);
-            }}
-          >
-            <Text style={{ fontSize: 14, textAlign: 'center', textAlignVertical: 'center' }}>
-              {showFiat ? 'XCH' : currency.toUpperCase()}
-            </Text>
-          </TouchableHighlight> */}
           <CustomIconButton
             style={{ margin: 0, padding: 0 }}
-            icon={
-              <Ionicons
-                name="ellipsis-vertical"
-                // name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
-                size={24}
-                color={theme.colors.text}
-              />
-            }
+            icon={<Ionicons name="ellipsis-vertical" size={24} color={theme.colors.text} />}
             color="#fff"
             onPress={handlePresentModalPress}
           />
@@ -324,7 +268,7 @@ const Content = ({ navigation }) => {
               }}
             >
               <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>
-                {settings.togglePaid ? 'Unpaid' : 'Paid'}
+                {settings.togglePaid ? t('unpaid') : t('paid')}
               </Text>
               <LoadingText
                 loading={dashboard.state === 'loading'}
@@ -360,7 +304,7 @@ const Content = ({ navigation }) => {
               }}
             >
               <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>
-                {earningTypes[earningState].title}
+                {t(earningTypes[earningState].title)}
               </Text>
               <LoadingText
                 loading={dashboard.state === 'loading'}
@@ -385,7 +329,7 @@ const Content = ({ navigation }) => {
               />
             </Pressable>
             <View style={{ flex: 1 }}>
-              <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>Size</Text>
+              <Text style={{ textAlign: 'center', color: theme.colors.textGrey }}>{t('size')}</Text>
 
               <LoadingText
                 loading={dashboard.state === 'loading'}
@@ -414,7 +358,7 @@ const Content = ({ navigation }) => {
           },
         }}
       >
-        <Tab.Screen name="FarmerStats" options={{ title: t('stats') }}>
+        <Tab.Screen name="FarmerStats" options={{ title: t('tabs.stats') }}>
           {() => (
             <FarmerStatsScreen
               selected={selected}
@@ -430,7 +374,7 @@ const Content = ({ navigation }) => {
             />
           )}
         </Tab.Screen>
-        <Tab.Screen name="PartialStats" options={{ title: t('partials') }}>
+        <Tab.Screen name="PartialStats" options={{ title: t('tabs.partials') }}>
           {() => (
             <PartialsScreen
               selected={selected}
@@ -447,9 +391,9 @@ const Content = ({ navigation }) => {
           )}
         </Tab.Screen>
         {(selected || farms.length === 1) && (
-          <Tab.Screen name="FarmerPayouts" options={{ title: t('payouts') }}>
+          <Tab.Screen name="FarmerBlocks" options={{ title: t('tabs.blocks') }}>
             {() => (
-              <FarmerPayoutScreen
+              <FarmerBlockScreen
                 selected={selected}
                 launcherId={
                   selected
@@ -461,9 +405,9 @@ const Content = ({ navigation }) => {
           </Tab.Screen>
         )}
         {(selected || farms.length === 1) && (
-          <Tab.Screen name="FarmerBlocks" options={{ title: t('blocks') }}>
+          <Tab.Screen name="FarmerPayouts" options={{ title: t('tabs.payouts') }}>
             {() => (
-              <FarmerBlockScreen
+              <FarmerPayoutScreen
                 selected={selected}
                 launcherId={
                   selected
@@ -486,74 +430,6 @@ const Content = ({ navigation }) => {
         backdropComponent={renderBackdrop}
       >
         <View>
-          {/* <View
-            style={{
-              flexDirection: 'column',
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <CustomIconButton
-              size={30}
-              icon={<Ionicons name="scan" size={26} color={theme.colors.text} />}
-              color="#fff"
-              onPress={() => {
-                bottomSheetModalRef.current?.dismiss();
-                setTimeout(() => navigation.navigate('Verify Farm'), 200);
-              }}
-            />
-            <Text>Scan</Text>
-          </View>
-          {(selected || farms.length === 1) && (
-            <View
-              style={{
-                flexDirection: 'column',
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <CustomIconButton
-                size={30}
-                icon={<Ionicons name="settings" size={26} color={theme.colors.text} />}
-                color="#fff"
-                onPress={() => {
-                  bottomSheetModalRef.current?.dismiss();
-                  if (dashboard.state === 'hasValue') {
-                    navigation.navigate({
-                      name: 'Farmer Settings',
-                      params: {
-                        farm: selected || farms[0],
-                      },
-                    });
-                  }
-                }}
-              />
-              <Text>Settings</Text>
-            </View>
-          )}
-          {(selected || farms.length === 1) && (
-            <View
-              style={{
-                flexDirection: 'column',
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <CustomIconButton
-                size={30}
-                icon={<Ionicons name="trash-bin" size={26} color={theme.colors.text} />}
-                color="#fff"
-                onPress={() => {
-                  bottomSheetModalRef.current?.dismiss();
-                  setShowDialog(true);
-                }}
-              />
-              <Text>Remove</Text>
-            </View>
-          )} */}
           <View style={{ flexDirection: 'column' }}>
             <PressableCard
               style={{
@@ -572,7 +448,7 @@ const Content = ({ navigation }) => {
                   title="Info"
                   color="#fff"
                 />
-                <Text style={{ fontSize: 16 }}>Add Farm</Text>
+                <Text style={{ fontSize: 16 }}>{t('bottomSheet.addFarm')}</Text>
               </View>
             </PressableCard>
             {(selected || farms.length === 1) && (
@@ -599,7 +475,7 @@ const Content = ({ navigation }) => {
                     color="#fff"
                   />
 
-                  <Text style={{ fontSize: 16 }}>Farm Settings</Text>
+                  <Text style={{ fontSize: 16 }}>{t('bottomSheet.farmSettings')}</Text>
                 </View>
               </PressableCard>
             )}
@@ -623,7 +499,7 @@ const Content = ({ navigation }) => {
                 }}
               >
                 <Text numberOfLines={1} style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
-                  Show in {showFiat ? 'XCH' : currency.toUpperCase()}
+                  {t('bottomSheet.showIn')} {showFiat ? 'XCH' : currency.toUpperCase()}
                 </Text>
                 {/* <View pointerEvents="none" style={{ paddingRight: 16 }}>
                   <Text> {showFiat ? 'XCH' : currency.toUpperCase()}</Text>
@@ -650,7 +526,7 @@ const Content = ({ navigation }) => {
                   }}
                 >
                   <Text numberOfLines={1} style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
-                    Show Payout Address Balance
+                    {t('bottomSheet.showPayoutAddrBalance')}
                   </Text>
                   <View pointerEvents="none" style={{ paddingRight: 16 }}>
                     <Switch
@@ -680,7 +556,7 @@ const Content = ({ navigation }) => {
                     color="#fff"
                   />
 
-                  <Text style={{ fontSize: 16 }}>Remove Farm</Text>
+                  <Text style={{ fontSize: 16 }}>{t('bottomSheet.removeFarm')}</Text>
                 </View>
               </PressableCard>
             )}

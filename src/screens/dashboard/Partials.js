@@ -74,7 +74,7 @@ const Item = ({
 
 const PartialsScreen = ({ launcherIds, selected, farmData, loading }) => {
   const navigation = useNavigation();
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation', { keyPrefix: 'dashboard.partials' });
   const theme = useTheme();
   const settings = useRecoilValue(settingsState);
   const [data, setData] = useState();
@@ -137,19 +137,19 @@ const PartialsScreen = ({ launcherIds, selected, farmData, loading }) => {
           value={data}
           format={(item) => item.total}
           color={theme.colors.green}
-          title={`${t('partials')}\n(${t('24Hours').toUpperCase()})`}
+          title={`${t('partials')}\n(${t('24h').toUpperCase()})`}
           settings={settings}
-          icon={
-            <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
-          }
-          onPress={() => {
-            navigation.navigate({
-              name: 'Farmer Partials Chart',
-              params: {
-                launcherIds,
-              },
-            });
-          }}
+          // icon={
+          //   <MaterialCommunityIcons name="chart-line" size={16} color={theme.colors.textGrey} />
+          // }
+          // onPress={() => {
+          //   navigation.navigate({
+          //     name: 'Farmer Partials Chart',
+          //     params: {
+          //       launcherIds,
+          //     },
+          //   });
+          // }}
         />
         <Item
           // enabled
@@ -157,7 +157,7 @@ const PartialsScreen = ({ launcherIds, selected, farmData, loading }) => {
           value={data}
           format={(item) => item.points}
           color={theme.colors.blue}
-          title={`${t('points')}\n(${t('24Hours').toUpperCase()})`}
+          title={`${t('points')}\n(${t('24h').toUpperCase()})`}
           settings={settings}
           // onPress={() => {
           //   navigation.navigate({
@@ -190,7 +190,7 @@ const PartialsScreen = ({ launcherIds, selected, farmData, loading }) => {
           value={data}
           format={(item) => `${item.performance.toFixed(1)}%`}
           color={theme.colors.pink}
-          title={t('partialPerfomance')}
+          title={t('partialPerformance')}
           settings={settings}
         />
         <Item

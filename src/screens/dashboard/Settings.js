@@ -19,7 +19,9 @@ import { convertMojoToChia } from '../../utils/Formatting';
 const Content = ({ navigation, route }) => {
   const theme = useTheme();
   const [settings, setSettings] = useRecoilState(settingsState);
-  const { t, i18n } = useTranslation();
+  // const { t, i18n } = useTranslation();
+  const { t } = useTranslation('translation', { keyPrefix: 'settings' });
+
   const { farm } = route.params;
   const [farms, setFarms] = useRecoilState(launcherIDsState);
   const [loading, setLoading] = useState(true);
@@ -91,8 +93,6 @@ const Content = ({ navigation, route }) => {
       return item;
     });
 
-    console.log(updatedList);
-
     api({
       method: 'put',
       url: `launcher/${farm.launcherId}/`,
@@ -132,7 +132,7 @@ const Content = ({ navigation, route }) => {
           <Text
             style={{ paddingBottom: 4, fontFamily: theme.fonts.medium.fontFamily, fontSize: 12 }}
           >
-            General
+            {t('general')}
           </Text>
           <Shadow
             distance={2}
@@ -317,7 +317,7 @@ const Content = ({ navigation, route }) => {
           <Text
             style={{ paddingBottom: 4, fontFamily: theme.fonts.medium.fontFamily, fontSize: 12 }}
           >
-            Payments
+            {t('payments')}
           </Text>
           <Shadow
             distance={2}

@@ -1,7 +1,7 @@
 import messaging from '@react-native-firebase/messaging';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, StyleSheet, Text } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import Dialog from 'react-native-dialog';
 import { useTheme } from 'react-native-paper';
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -73,7 +73,9 @@ const ScanScreen = ({ navigation }) => {
           //   Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on your computer and
           //   scan the QR code.
           // </Text>
-          <Text style={[{ color: theme.colors.text }, styles.centerText]}>{t('scanDesc')}</Text>
+          <View style={{ alignItems: 'center' }}>
+            <Text style={[{ color: theme.colors.text }, styles.centerText]}>{t('scanDesc')}</Text>
+          </View>
         }
         markerStyle={{
           borderColor: 'white',

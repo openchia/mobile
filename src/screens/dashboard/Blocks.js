@@ -29,7 +29,7 @@ const Item = ({ item, theme, t, onPress }) => (
           numberOfLines={1}
           style={{ textAlign: 'right', fontSize: 12, color: theme.colors.textGrey }}
         >
-          {item.confirmed_block_index}
+          {item.farmed_height}
         </Text>
         <Text
           numberOfLines={1}

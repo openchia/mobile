@@ -1,6 +1,7 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -42,15 +43,10 @@ const StatsToolbar = ({ route, showSearch }) => {
       style={{
         height: 54,
         flexDirection: 'row',
-        // justifyContent: 'space-between',
-        // backgroundColor: 'white',
-        // width: '50%',
         paddingTop: 6,
         paddingBottom: 6,
         alignItems: 'center',
         backgroundColor: theme.colors.tabNavigatorBackground,
-        // justifyContent: 'center',
-        // padding: 8,
       }}
     >
       {searching ? (
@@ -59,16 +55,13 @@ const StatsToolbar = ({ route, showSearch }) => {
             icon={<Ionicons name="arrow-back" size={24} color={theme.colors.textGreyLight} />}
             onPress={() => {
               setSearching(false);
-              // width.value = 48;
               setText('');
-              // input.current.blur();
             }}
             title="Info"
             color="#fff"
           />
           <TextInput
             style={{
-              // width: '100%',
               backgroundColor: theme.colors.tabNavigatorBackground,
               flex: 1,
               color: '#ffffff',
@@ -78,7 +71,6 @@ const StatsToolbar = ({ route, showSearch }) => {
             placeholder="Search..."
             placeholderTextColor="#bababa"
             onChangeText={(text) => {
-              // setTextShowing(text.length > 0);
               setText(text);
             }}
           />
@@ -110,7 +102,6 @@ const StatsToolbar = ({ route, showSearch }) => {
         <>
           <OpenChiaTextIconRight
             style={{ paddingStart: 8, marginLeft: 12, marginRight: 16, width: 200, height: 32 }}
-            // size={}
             color={theme.colors.primary}
           />
           <View style={{ flex: 1 }} />
@@ -138,17 +129,10 @@ const PoolScreen = ({ navigation, route }) => {
   const theme = useTheme();
   const [showSearch, setShowSearch] = useState(false);
   const settings = useRecoilValue(settingsState);
-
-  // useLayoutEffect(() => {
-  //   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Stats';
-  //   setShowSearch(routeName === 'Farmers');
-  // }, [navigation, route]);
+  const { t } = useTranslation('translation', { keyPrefix: 'pool.tabs' });
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.statusBarColor }}>
-      {/* <View style={{ flex: 1, backgroundColor: theme.colors.primary }}></View> */}
-      {/* <CustomStatusBar /> */}
-
       <FocusAwareStatusBar
         backgroundColor={theme.colors.statusBarColor}
         barStyle={settings.isThemeDark ? 'light-content' : 'dark-content'}
@@ -169,10 +153,34 @@ const PoolScreen = ({ navigation, route }) => {
           tabBarOptions: { upperCaseLabel: false },
         }}
       >
-        <Tab.Screen name="Stats" component={StatsScreen} />
-        <Tab.Screen name="Farmers" component={FarmersScreen} />
-        <Tab.Screen name="Blocks" component={BlocksFoundScreen} />
-        <Tab.Screen name="Payouts" component={PayoutScreen} />
+        <Tab.Screen
+          name="Stats"
+          component={StatsScreen}
+          options={() => ({
+            title: t('stats'),
+          })}
+        />
+        <Tab.Screen
+          name="Farmers"
+          component={FarmersScreen}
+          options={() => ({
+            title: t('farmers'),
+          })}
+        />
+        <Tab.Screen
+          name="Blocks"
+          component={BlocksFoundScreen}
+          options={() => ({
+            title: t('blocks'),
+          })}
+        />
+        <Tab.Screen
+          name="Payouts"
+          component={PayoutScreen}
+          options={() => ({
+            title: t('payouts'),
+          })}
+        />
       </Tab.Navigator>
     </SafeAreaView>
   );

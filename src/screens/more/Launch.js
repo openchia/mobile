@@ -31,7 +31,8 @@ const LaunchOptionScreen = ({ navigation }) => {
   const theme = useTheme();
   const { width } = useWindowDimensions();
   const [settings, setSettings] = useRecoilState(settingsState);
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('translation', { keyPrefix: 'screenNames' });
+
   const selectedLanguageCode = i18n.language;
   const currency = useRecoilValue(currencyState);
 
