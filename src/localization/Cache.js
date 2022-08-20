@@ -4,8 +4,8 @@ import { MMKV } from 'react-native-mmkv';
 
 function getDefaults() {
   return {
-    expirationTime: 1 * 24 * 60 * 60 * 1000,
-    // expirationTime: 1000 * 60 * 5,
+    // expirationTime: 1 * 24 * 60 * 60 * 1000,
+    expirationTime: 1000,
   };
 }
 
