@@ -6,20 +6,20 @@ import { CROWDIN_OTA_HASH } from '@env';
 const Backend = {
   type: 'backend',
   init: (services, backendOptions, i18nextOptions) => {
-    console.log('Backend init');
+    // console.log('Backend init');
   },
   read: (language, namespace, callback) => {
-    console.log('Backend read');
+    // console.log('Backend read');
     const config = {
       disableManifestCache: true,
       disableJsonDeepMerge: true,
       disableLanguagesCache: true,
     };
-    const client = new OtaClient(CROWDIN_OTA_HASH, config);
+    const client = new OtaClient('b706da58690220246d363f90zfc', config);
     client.setCurrentLocale(language);
     client.getStringsByLocale().then((res) => {
       if (res) {
-        console.log('Successfully updated');
+        // console.log('Successfully updated');
         return callback(null, res);
       }
       return callback(null, null);

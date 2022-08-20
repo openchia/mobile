@@ -4,8 +4,8 @@ import { MMKV } from 'react-native-mmkv';
 
 function getDefaults() {
   return {
-    // expirationTime: 1 * 24 * 60 * 60 * 1000,
-    expirationTime: 1000,
+    expirationTime: 1 * 24 * 60 * 60 * 1000,
+    // expirationTime: 1000,
   };
 }
 
@@ -25,7 +25,7 @@ class Cache {
   read(language, namespace, callback) {
     const nowMS = new Date().getTime();
 
-    console.log('Cache Language: ', language);
+    // console.log('Cache Language: ', language);
 
     if (!this.storage) {
       return callback(null, null);
@@ -34,7 +34,7 @@ class Cache {
     let local = this.storage.getString(language);
 
     if (local) {
-      console.log('Cache Language found');
+      // console.log('Cache Language found');
 
       local = JSON.parse(local);
       if (local.i18nStamp && local.i18nStamp + this.options.expirationTime > nowMS) {
@@ -42,22 +42,19 @@ class Cache {
         return callback(null, local);
       }
     }
-    console.log('Cache Language not found');
+    // console.log('Cache Language not found', language);
 
-    return callback(null, null);
+    callback(null, null);
   }
 
   save(language, namespace, data) {
     if (this.storage) {
       data.i18nStamp = new Date().getTime();
-      console.log('Cache Save', data);
+      // console.log('Cache Saved');
       this.storage.set(language, JSON.stringify(data));
     }
   }
 
-  // getVersion(language) {
-  //   return this.options.versions[language] || this.options.defaultVersion;
-  // }
 }
 
 Cache.type = 'backend';
