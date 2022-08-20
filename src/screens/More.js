@@ -89,7 +89,7 @@ const MoreScreen = ({ navigation }) => {
     // },
     {
       name: 'Settings',
-      navigateTo: 'Settings',
+      navigateTo: '',
       icon: <Ionicons name="settings" size={24} color={theme.colors.textGreyLight} />,
     },
     {
@@ -229,7 +229,7 @@ const MoreScreen = ({ navigation }) => {
           <Text
             style={{ paddingBottom: 4, fontFamily: theme.fonts.medium.fontFamily, fontSize: 12 }}
           >
-            Settings
+            {t('settings')}
           </Text>
           <Shadow
             distance={2}
@@ -465,7 +465,7 @@ const MoreScreen = ({ navigation }) => {
           <Text
             style={{ paddingBottom: 4, fontFamily: theme.fonts.medium.fontFamily, fontSize: 12 }}
           >
-            Partners
+            {t('partners')}
           </Text>
           <Shadow
             distance={2}

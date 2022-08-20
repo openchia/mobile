@@ -5,7 +5,8 @@ import { initReactI18next } from 'react-i18next';
 import Backend from './Backend';
 import Cache from './Cache';
 import LanguageDetector from './LanguageDetector';
-import { de, en } from './translations';
+import en from './en.json';
+import de from './de.json';
 
 // import en from './en';
 // import fr from './fr';

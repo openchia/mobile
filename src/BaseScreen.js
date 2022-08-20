@@ -59,6 +59,7 @@ LogBox.ignoreLogs(['keyboardDidHide: ...']); // Ignore log notification by messa
 LogBox.ignoreLogs(['cycle']);
 
 const Root = ({ settings }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   return (
     <Tab.Navigator
@@ -105,6 +106,7 @@ const Root = ({ settings }) => {
         name="News"
         component={NewsScreen}
         options={{
+          title: t('screenNames.news'),
           headerShown: true,
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons
