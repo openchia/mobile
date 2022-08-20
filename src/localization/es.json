@@ -1,0 +1,134 @@
+{
+  "24h": "24h",
+  "7d": "7d",
+  "30d": "30",
+  "90d": "90d",
+  "1y": "1y",
+  "all": "All",
+  "scanDesc": "Escanee el código QR que se encuentra en nuestro sitio web usando el enlace de acceso al pool de datos.",
+  "pool": {
+    "tabs": {
+      "stats": "Stats",
+      "farmers": "Farmers",
+      "blocks": "Blocks",
+      "payouts": "Payouts"
+    },
+    "stats": {
+      "chiaPrice": "Chia Price",
+      "poolSpace": "Pool Netspace",
+      "etw": "etw",
+      "blocks": "Blocks",
+      "farmers": "Farmers",
+      "netspace": "Netspace",
+      "currentEffort": "Current Effort",
+      "effort": "Effort",
+      "sinceLastWin": "Since Last Win",
+      "rewards": "Rewards",
+      "profitability": "Profitability"
+    },
+    "farmers": {
+      "chiaPrice": "Chia Price",
+      "poolSpace": "Pool Space",
+      "etw": "etw",
+      "blocks": "Blocks",
+      "farmers": "Farmers",
+      "netspace": "Netspace",
+      "currentEffort": "Current Effort",
+      "effort": "Effort",
+      "sinceLastWin": "Since Last Win",
+      "rewards": "Rewards",
+      "profitability": "Profitability"
+    }
+  },
+  "dashboard": {
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "dailyRewards": "Daily Rewards",
+    "weeklyRewards": "Weekly Rewards",
+    "monthlyRewards": "Monthly Rewards",
+    "yearlyRewards": "Yearly Rewards",
+    "size": "Size",
+    "addFarmTitle": "Add Farm to Dashboard",
+    "addFarmDesc": "Shows more in depth stats of your farm.",
+    "tabs": {
+      "stats": "Stats",
+      "partials": "Partials",
+      "blocks": "Blocks",
+      "payouts": "Payouts"
+    },
+    "stats": {
+      "utilizationSpace": "Utilization Space",
+      "currentEffort": "Current Effort",
+      "etw": "ETW",
+      "effectiveFee": "Effective Fee",
+      "blocks": "Blocks",
+      "totalRewards": "Total Rewards",
+      "pointsPPLNS": "Points PPLNS",
+      "effort": "Effort",
+      "difficulty": "Difficulty",
+      "lastJoinedAt": "Last Joined At"
+    },
+    "partials": {
+      "partials": "Partials",
+      "points": "Points",
+      "successfulPartials": "Successful Partials",
+      "failedPartials": "Failed Partials",
+      "partialPerformance": "Partial Performance",
+      "harvesterCount": "Harvester Count",
+      "24h": "24h"
+    },
+    "bottomSheet": {
+      "addFarm": "Add Farm",
+      "farmSettings": "Farm Settings",
+      "showIn": "Show in",
+      "showPayoutAddrBalance": "Show Payout Address Balance",
+      "removeFarm": "Remove Farm"
+    }
+  },
+  "settings": {
+    "general": "General",
+    "payments": "Payments",
+    "displayName": "Display Name",
+    "email": "Email",
+    "difficulty": "Difficulty",
+    "paymentNotification": "Payment Notification",
+    "minPayoutSet": "Minimum Payout",
+    "sizeDropNotification": "Size Drop Notification",
+    "sizeDropPercent": "Size Drop Percent",
+    "sizeDropInterval": "Size Drop Interval",
+    "referrer": "Referrer",
+    "difficulties": {
+      "lowest": "Lowest",
+      "low": "Low",
+      "default": "Default",
+      "high": "High",
+      "highest": "Highest"
+    }
+  },
+  "more": {
+    "settings": "Settings",
+    "Partners": "Partners",
+    "currency": "Currency",
+    "language": "Language",
+    "launchScreen": "Launch Screen",
+    "blockNotifications": "Block Notifications",
+    "appearance": "Appearance"
+  },
+  "screenNames": {
+    "dashboard": "Dashboard",
+    "home": "Home",
+    "settings": "Settings",
+    "news": "News",
+    "more": "More",
+    "launchScreen": "Launch Screen",
+    "priceChart": "Chia Price Chart",
+    "netspaceChart": "Chia Netspace Chart",
+    "poolNetspaceChart": "Pool Netspace Chart",
+    "farmSettings": "Farm Settings",
+    "verifyFarm": "Add Farm",
+    "farmName": "Farm Name",
+    "currency": "Currency",
+    "language": "Language",
+    "post": "Post"
+  }
+}
