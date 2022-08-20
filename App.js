@@ -5,7 +5,6 @@ import { Notifications } from 'react-native-notifications';
 // import { enableFreeze } from 'react-native-screens';
 import { RecoilRoot } from 'recoil';
 import BaseScreen from './src/BaseScreen';
-import './src/localization/i18n';
 
 // enableFreeze(true);
 

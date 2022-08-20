@@ -48,6 +48,7 @@ import MinPayoutScreen from './screens/dashboard/settings/MinPayout';
 import SizeDropPercentScreen from './screens/dashboard/settings/SizeDropPercent';
 import SizeDropIntervalScreen from './screens/dashboard/settings/SizeDropInterval';
 import FarmerPartialScreen from './screens/charts/Partials';
+// import i18n from './localization/i18n';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -133,17 +134,18 @@ const BaseScreen = () => {
   const settingsLoadable = useRecoilValueLoadable(settingsState);
   const farmsLoadable = useRecoilValueLoadable(launcherIDsState);
   const currencyLoadable = useRecoilValueLoadable(currencyState);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     if (
       settingsLoadable.state === 'hasValue' &&
       farmsLoadable.state === 'hasValue' &&
-      currencyLoadable.state === 'hasValue'
+      currencyLoadable.state === 'hasValue' &&
+      i18n.isInitialized
     ) {
       SplashScreen.hide();
     }
-  }, [settingsLoadable, farmsLoadable, currencyLoadable]);
+  }, [settingsLoadable, farmsLoadable, currencyLoadable, i18n.isInitialized]);
 
   if (
     settingsLoadable.state === 'loading' ||

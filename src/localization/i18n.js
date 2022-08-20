@@ -1,9 +1,11 @@
 import i18n from 'i18next';
+import ChainedBackend from 'i18next-chained-backend';
+import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as RNLocalize from 'react-native-localize';
-
-import { en } from './translations';
+import Backend from './Backend';
+import Cache from './Cache';
+import LanguageDetector from './LanguageDetector';
+import { de, en } from './translations';
 
 // import en from './en';
 // import fr from './fr';
@@ -18,70 +20,50 @@ import { en } from './translations';
 // import nl from './nl';
 
 // const LANGUAGES = {
-//   en,
-//   fr,
-//   cs,
-//   de,
-//   es,
-//   hu,
-//   pl,
-//   ru,
-//   zh,
-//   pt,
-//   nl,
+// en,
+// fr,
+// cs,
+// de,
+// es,
+// hu,
+// pl,
+// ru,
+// zh,
+// pt,
+// nl,
 // };
 
 const resources = {
   en: {
     translation: en,
   },
-};
-
-const LANG_CODES = Object.keys(resources);
-
-const LANGUAGE_DETECTOR = {
-  type: 'languageDetector',
-  async: true,
-  detect: (callback) => {
-    AsyncStorage.getItem('user-language', (err, language) => {
-      // if error fetching stored data or no language was stored
-      // display errors when in DEV mode as console statements
-      if (err || !language) {
-        if (err) {
-          console.log('Error fetching Languages from asyncstorage ', err);
-        } else {
-          console.log('No language is set, choosing English as fallback');
-        }
-        const findBestAvailableLanguage = RNLocalize.findBestAvailableLanguage(LANG_CODES);
-
-        callback(findBestAvailableLanguage ? findBestAvailableLanguage.languageTag : 'en');
-        return;
-      }
-      callback(language);
-    });
-  },
-  init: () => {},
-  cacheUserLanguage: (language) => {
-    AsyncStorage.setItem('user-language', language);
+  de: {
+    translation: de,
   },
 };
 
 i18n
-  // detect language
-  .use(LANGUAGE_DETECTOR)
-  // pass the i18n instance to react-i18next.
+  .use(LanguageDetector)
+  .use(ChainedBackend)
   .use(initReactI18next)
-  // set options
-  .init({
-    resources,
-    compatibilityJSON: 'v3',
-    react: {
-      useSuspense: false,
+  .init(
+    {
+      compatibilityJSON: 'v3',
+      react: {
+        useSuspense: false,
+      },
+      fallbackLng: 'en',
+      interpolation: {
+        escapeValue: false, // not needed for react!!
+      },
+      backend: {
+        backends: [Cache, Backend, resourcesToBackend(resources)],
+        backendOptions: [],
+      },
     },
-    keySeparator: '.', // we do not use keys in form messages.welcome
-    // keySeparator: true,
-    interpolation: {
-      escapeValue: false,
-    },
-    // defaultNS: '',
-  });
+    () => {
+      console.log('finsihed loading');
+    }
+  );
+
+export default i18n;
