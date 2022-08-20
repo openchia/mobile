@@ -5,42 +5,16 @@ import { initReactI18next } from 'react-i18next';
 import Backend from './Backend';
 import Cache from './Cache';
 import LanguageDetector from './LanguageDetector';
-import en from './en.json';
-import de from './de.json';
-
-// import en from './en';
-// import fr from './fr';
-// import de from './de';
-// import es from './es';
-// import hu from './hu';
-// import pl from './pl';
-// import ru from './ru';
-// import cs from './cs';
-// import zh from './zh';
-// import pt from './pt';
-// import nl from './nl';
-
-// const LANGUAGES = {
-// en,
-// fr,
-// cs,
-// de,
-// es,
-// hu,
-// pl,
-// ru,
-// zh,
-// pt,
-// nl,
-// };
+import en from './en-US.json';
+// import de from './de.json';
 
 const resources = {
   en: {
     translation: en,
   },
-  de: {
-    translation: de,
-  },
+  // de: {
+  //   translation: de,
+  // },
 };
 
 i18n
