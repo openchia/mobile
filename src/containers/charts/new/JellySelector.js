@@ -41,7 +41,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export const JellySelector = ({ currentState, nextState, transition, jellyData, onPress }) => {
+export const JellySelector = ({
+  currentState,
+  nextState,
+  transition,
+  jellyData,
+  onPress,
+  theme,
+}) => {
   const { t } = useTranslation();
 
   const transform = useComputedValue(
@@ -61,7 +68,14 @@ export const JellySelector = ({ currentState, nextState, transition, jellyData, 
       <View style={styles.container}>
         <Canvas style={StyleSheet.absoluteFill}>
           <Group transform={transform}>
-            <RoundedRect x={0} y={0} height={48} width={buttonWidth} r={16} color="#e6e6e6" />
+            <RoundedRect
+              x={0}
+              y={0}
+              height={48}
+              width={buttonWidth}
+              r={16}
+              color={theme.colors.jelly}
+            />
           </Group>
         </Canvas>
         {jellyData.map((item, index) => (
@@ -88,8 +102,8 @@ export const JellySelector = ({ currentState, nextState, transition, jellyData, 
               //   });
             }}
           >
-            <View style={styles.button}>
-              <Text style={styles.label}>{t(item.label)}</Text>
+            <View style={[styles.button]}>
+              <Text style={[styles.label, { color: theme.colors.text }]}>{t(item.label)}</Text>
             </View>
           </TouchableWithoutFeedback>
         ))}

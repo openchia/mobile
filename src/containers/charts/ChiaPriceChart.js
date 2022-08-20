@@ -116,6 +116,7 @@ const Chart = ({
   const x = useValue(0);
   const y = useValue(0);
   const pathEnd = useValue(1);
+  const theme = useTheme();
 
   const gradientColors = useMemo(() => {
     if (enableFadeInMask) {
@@ -176,6 +177,7 @@ const Chart = ({
           margin={margin}
           minX={minX}
           maxX={maxX}
+          theme={theme}
         />
         <Group transform={[{ translateY: margin.top }, { translateX: margin.left }]}>
           <Path style="stroke" path={path} strokeWidth={2.5} strokeJoin="round" strokeCap="round">
@@ -205,6 +207,7 @@ const Chart = ({
         nextState={nextState}
         transition={transition}
         jellyData={ITEMS}
+        theme={theme}
       />
     </View>
   );

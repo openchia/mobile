@@ -10,7 +10,7 @@ import {
 } from '@shopify/react-native-skia';
 import React from 'react';
 
-const Cursor = ({ x, y, color, gestureActive, pathEnd }) => {
+const Cursor = ({ x, y, color, shadowColor = '#000000', gestureActive, pathEnd }) => {
   const circleRadius = useValue(0);
   const circleStrokeRadius = useComputedValue(() => circleRadius.current * 6, [circleRadius]);
   const transform = useComputedValue(
@@ -29,7 +29,7 @@ const Cursor = ({ x, y, color, gestureActive, pathEnd }) => {
   });
   return (
     <Group transform={transform}>
-      <Circle cx={0} cy={0} r={circleStrokeRadius} color="#000000" opacity={0.03} />
+      <Circle cx={0} cy={0} r={circleStrokeRadius} color={shadowColor} opacity={0.03} />
       <Circle cx={0} cy={0} r={circleRadius} color={color}>
         <Shadow dx={0} dy={0} blur={3} color="#828282" />
       </Circle>

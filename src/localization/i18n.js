@@ -149,7 +149,7 @@ i18n
       },
     },
     () => {
-      console.log('finsihed loading');
+      // console.log('finsihed loading');
     }
   );
 

@@ -103,6 +103,7 @@ export const LightTheme = {
     // textSecondary: '#436B34',
     divider: 'rgba(0, 0, 0, 0.02)',
     selected: 'rgba(0, 0, 0, 0.2)',
+    jelly: 'rgba(0, 0, 0, 0.1)',
     statusBarColor: '#ffffff',
     // statusBarColor: '#243F1E',
     text: '#636363',
@@ -188,5 +189,6 @@ export const DarkTheme = {
     red: '#ff453aff',
     teal: '#64d2ffff',
     yellow: '#ffd60aff',
+    jelly: 'rgba(255, 255, 255, 0.1)',
   },
 };

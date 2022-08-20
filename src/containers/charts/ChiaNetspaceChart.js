@@ -242,6 +242,7 @@ const Chart = ({
           margin={margin}
           minX={minX}
           maxX={maxX}
+          theme={theme}
         />
         <Group transform={[{ translateY: margin.top }, { translateX: margin.left }]}>
           <Path style="stroke" path={path} strokeWidth={3} strokeJoin="round" strokeCap="round">
@@ -256,10 +257,26 @@ const Chart = ({
             <LinearGradient
               start={vec(0, 0)}
               end={vec(0, yMax)}
-              colors={['#5cd17c', '#a9ebbb', '#b0e8c0', '#edf2ef', `${theme.colors.background}`]}
+              colors={[
+                'rgba(92, 209, 124, 0.8)',
+                'rgba(92, 209, 124, 0.5)',
+                'rgba(92, 209, 124, 0.4)',
+                'rgba(92, 209, 124, 0.2)',
+                'rgba(92, 209, 124, 0.1)',
+                'rgba(92, 209, 124, 0.05)',
+                'rgba(92, 209, 124, 0)',
+              ]}
             />
           </Path>
-          <Cursor x={x} y={y} color={color} gestureActive={gestureActive} pathEnd={pathEnd} />
+          <Cursor
+            x={x}
+            y={y}
+            color={theme.colors.text}
+            shadowColor={theme.colors.text}
+            gestureActive={gestureActive}
+            pathEnd={pathEnd}
+            theme={theme}
+          />
 
           {/* <Cursor
             x={x}
@@ -287,6 +304,7 @@ const Chart = ({
         nextState={nextState}
         transition={transition}
         jellyData={ITEMS}
+        theme={theme}
       />
     </View>
   );

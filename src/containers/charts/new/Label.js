@@ -16,6 +16,7 @@ import {
 } from '@shopify/react-native-skia';
 import React from 'react';
 import { format } from 'date-fns';
+import { useTheme } from 'react-native-paper';
 
 const LabelContents = ({
   price,
@@ -36,6 +37,7 @@ const LabelContents = ({
   priceFont,
   percentChangeFont,
   minMaxFont,
+  theme,
   image,
 }) => {
   const [active, setActive] = React.useState(false);
@@ -108,7 +110,7 @@ const LabelContents = ({
 
   const percentageColor = useComputedValue(() => {
     const graph = graphs[nextState.current];
-    return graph.percentChange.increase ? 'green' : 'red';
+    return graph.percentChange.increase ? theme.colors.green : theme.colors.red;
   }, [nextState]);
 
   return (
@@ -119,7 +121,7 @@ const LabelContents = ({
           y={font.getSize() + marginTop}
           text={format(new Date(Date.now()), 'MMM MM p')}
           font={font}
-          color="#606160"
+          color={theme.colors.text}
         />
       ) : (
         <Text
@@ -127,7 +129,7 @@ const LabelContents = ({
           y={font.getSize() + marginTop}
           text={dateText}
           font={font}
-          color="#606160"
+          color={theme.colors.text}
         />
       )}
       <Text
@@ -135,7 +137,7 @@ const LabelContents = ({
         y={font.getSize() + priceFont.getSize() + marginTop}
         text={text}
         font={priceFont}
-        color="black"
+        color={theme.colors.text}
       />
       <Group
         transform={[
@@ -149,13 +151,19 @@ const LabelContents = ({
         <Path path={pathValue} color={percentageColor} />
       </Group>
 
-      <Text x={maxX} y={margin.top - 4} text={maxPriceText} font={minMaxFont} color="#a3a3a3" />
+      <Text
+        x={maxX}
+        y={margin.top - 4}
+        text={maxPriceText}
+        font={minMaxFont}
+        color={theme.colors.text}
+      />
       <Text
         x={minX}
         y={margin.top + yMax + font.getSize() + 4}
         text={minPriceText}
         font={minMaxFont}
-        color="#a3a3a3"
+        color={theme.colors.text}
       />
     </>
   );
@@ -166,6 +174,7 @@ export const Label = ({
   currentState,
   gestureActive,
   nextState,
+  theme,
   y,
   x,
   yMax,
@@ -182,6 +191,7 @@ export const Label = ({
   const percentChangeFont = useFont(require('../../../../assets/fonts/Inter-Bold.otf'), 16);
   const minMaxFont = useFont(require('../../../../assets/fonts/Inter-Bold.otf'), 10);
   const image = useImage(require('../../../assets/images/chia_logo.png'));
+
   if (
     font === null ||
     priceFont == null ||
@@ -213,6 +223,7 @@ export const Label = ({
       percentChangeFont={percentChangeFont}
       minMaxFont={minMaxFont}
       image={image}
+      theme={theme}
     />
   );
 };
