@@ -14,7 +14,7 @@
       "payouts": "Payouts"
     },
     "stats": {
-      "chiaPrice": "Chia Price",
+      "chiaPrice": "Chia Preis",
       "poolSpace": "Pool Netspace",
       "etw": "etw",
       "blocks": "Blocks",
@@ -27,7 +27,7 @@
       "profitability": "Profitability"
     },
     "farmers": {
-      "chiaPrice": "Chia Price",
+      "chiaPrice": "Chia Preis",
       "poolSpace": "Pool Space",
       "etw": "etw",
       "blocks": "Blocks",
