@@ -5,7 +5,7 @@ import { initReactI18next } from 'react-i18next';
 import Backend from './Backend';
 import Cache from './Cache';
 import LanguageDetector from './LanguageDetector';
-import en from './en-US.json';
+import en from './translations/en-US.json';
 // import de from './de.json';
 
 const resources = {
