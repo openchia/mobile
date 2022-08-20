@@ -15,7 +15,7 @@ const Backend = {
       disableJsonDeepMerge: true,
       disableLanguagesCache: true,
     };
-    const client = new OtaClient('b706da58690220246d363f90zfc', config);
+    const client = new OtaClient(CROWDIN_OTA_HASH, config);
     client.setCurrentLocale(language);
     client.getStringsByLocale().then((res) => {
       if (res) {
