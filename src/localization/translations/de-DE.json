@@ -27,10 +27,10 @@
       "profitability": "Profitability"
     },
     "farmers": {
-      "chiaPrice": "Chia Price",
-      "poolSpace": "Pool Space",
+      "chiaPrice": "Chia Preis",
+      "poolSpace": "Pool Größe",
       "etw": "etw",
-      "blocks": "Blocks",
+      "blocks": "Blöcke",
       "farmers": "Farmers",
       "netspace": "Netspace",
       "currentEffort": "Current Effort",
