@@ -25,19 +25,6 @@
       "sinceLastWin": "Since Last Win",
       "rewards": "Rewards",
       "profitability": "Profitability"
-    },
-    "farmers": {
-      "chiaPrice": "Chia Price",
-      "poolSpace": "Pool Space",
-      "etw": "etw",
-      "blocks": "Blocks",
-      "farmers": "Farmers",
-      "netspace": "Netspace",
-      "currentEffort": "Current Effort",
-      "effort": "Effort",
-      "sinceLastWin": "Since Last Win",
-      "rewards": "Rewards",
-      "profitability": "Profitability"
     }
   },
   "dashboard": {
