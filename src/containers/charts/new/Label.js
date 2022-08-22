@@ -42,6 +42,8 @@ const LabelContents = ({
 }) => {
   const [active, setActive] = React.useState(false);
 
+  console.log(y.current)
+
   useValueEffect(gestureActive, () => {
     setActive(gestureActive.current);
   });

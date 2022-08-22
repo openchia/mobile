@@ -17,9 +17,8 @@ import {
   vec,
 } from '@shopify/react-native-skia';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { useWindowDimensions, View, SafeAreaView } from 'react-native';
 import { ActivityIndicator, useTheme } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { selector, selectorFamily, useRecoilValueLoadable, waitForAll } from 'recoil';
 import { currencyState } from '../../recoil/Atoms';
 import { api, COINGECKO_API } from '../../services/Api';
