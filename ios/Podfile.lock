@@ -131,6 +131,9 @@ PODS:
   - libwebp/mux (1.2.1):
     - libwebp/demux
   - libwebp/webp (1.2.1)
+  - MMKV (1.2.14):
+    - MMKVCore (~> 1.2.14)
+  - MMKVCore (1.2.14)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -346,6 +349,9 @@ PODS:
     - React-Core
   - react-native-camera/RN (4.2.1):
     - React-Core
+  - react-native-mmkv (2.4.3):
+    - MMKV (>= 1.2.13)
+    - React-Core
   - react-native-netinfo (7.1.7):
     - React-Core
   - react-native-notifications (4.1.3):
@@ -354,32 +360,32 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
-  - react-native-skia (0.1.120):
+  - react-native-skia (0.1.136):
     - React
     - React-callinvoker
     - React-Core
-    - react-native-skia/Api (= 0.1.120)
-    - react-native-skia/Jsi (= 0.1.120)
-    - react-native-skia/RNSkia (= 0.1.120)
-    - react-native-skia/SkiaHeaders (= 0.1.120)
-    - react-native-skia/Utils (= 0.1.120)
-  - react-native-skia/Api (0.1.120):
+    - react-native-skia/Api (= 0.1.136)
+    - react-native-skia/Jsi (= 0.1.136)
+    - react-native-skia/RNSkia (= 0.1.136)
+    - react-native-skia/SkiaHeaders (= 0.1.136)
+    - react-native-skia/Utils (= 0.1.136)
+  - react-native-skia/Api (0.1.136):
     - React
     - React-callinvoker
     - React-Core
-  - react-native-skia/Jsi (0.1.120):
+  - react-native-skia/Jsi (0.1.136):
     - React
     - React-callinvoker
     - React-Core
-  - react-native-skia/RNSkia (0.1.120):
+  - react-native-skia/RNSkia (0.1.136):
     - React
     - React-callinvoker
     - React-Core
-  - react-native-skia/SkiaHeaders (0.1.120):
+  - react-native-skia/SkiaHeaders (0.1.136):
     - React
     - React-callinvoker
     - React-Core
-  - react-native-skia/Utils (0.1.120):
+  - react-native-skia/Utils (0.1.136):
     - React
     - React-callinvoker
     - React-Core
@@ -450,6 +456,8 @@ PODS:
     - React-jsi (= 0.66.4)
     - React-logger (= 0.66.4)
     - React-perflogger (= 0.66.4)
+  - ReactNativeLocalization (2.3.1):
+    - React-Core
   - RNCAsyncStorage (1.15.14):
     - React-Core
   - RNCClipboard (1.9.0):
@@ -563,6 +571,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-camera (from `../node_modules/react-native-camera`)
+  - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
@@ -581,6 +590,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - ReactNativeLocalization (from `../node_modules/react-native-localization`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -619,6 +629,8 @@ SPEC REPOS:
     - GoogleUtilities
     - libevent
     - libwebp
+    - MMKV
+    - MMKVCore
     - nanopb
     - OpenSSL-Universal
     - PromisesObjC
@@ -665,6 +677,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-camera:
     :path: "../node_modules/react-native-camera"
+  react-native-mmkv:
+    :path: "../node_modules/react-native-mmkv"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-notifications:
@@ -701,6 +715,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeLocalization:
+    :path: "../node_modules/react-native-localization"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
@@ -758,6 +774,8 @@ SPEC CHECKSUMS:
   GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
+  MMKV: 9c4663aa7ca255d478ff10f2f5cb7d17c1651ccd
+  MMKVCore: 89f5c8a66bba2dcd551779dea4d412eeec8ff5bb
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   Permission-Camera: 9eb618fd601ae4a674b072c3b0d37f109d7b91e5
@@ -775,11 +793,12 @@ SPEC CHECKSUMS:
   React-jsinspector: d0374f7509d407d2264168b6d0fad0b54e300b85
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
   react-native-camera: 210a872c84d3aa0982a9223047ef9e743ed694fa
+  react-native-mmkv: ed8621138c19b6ed7a861dafac9c066000fda4ee
   react-native-netinfo: 1792d13894f12e8050c6cd7207192c74025e90d1
   react-native-notifications: c68bb052c68b6ee9aed237200aa06b9211e52eae
   react-native-pager-view: 311c10a4eead1be627cad59062aa059d8108b943
   react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
-  react-native-skia: cceac213a23bc5923fb84dfa25ba90e421d4c030
+  react-native-skia: 7f1c17bb3ed15c951305d6c924df917899d21613
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
   React-RCTActionSheet: 7d3041e6761b4f3044a37079ddcb156575fb6d89
@@ -793,6 +812,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: e3ffca672dd3772536cb844274094b0e2c31b187
   React-runtimeexecutor: dec32ee6f2e2a26e13e58152271535fadff5455a
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
+  ReactNativeLocalization: be60e3a0e6e8db88d9f8190719ffb75e1cdab22a
   RNCAsyncStorage: 4b6538222ce3f01f61011f512226ba3aaa0dc336
   RNCClipboard: f49f3de56b40d0f4104680dabadc7a1f063f4fd4
   RNDeviceInfo: 417b2ef4456c13a9d50ad8c57895eea837b735a8
