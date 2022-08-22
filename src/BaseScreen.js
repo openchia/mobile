@@ -16,9 +16,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LogBox, StatusBar, TouchableOpacity } from 'react-native';
+import { Linking, LogBox, StatusBar, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Provider as PaperProvider, useTheme } from 'react-native-paper';
+import {
+  Button,
+  Dialog,
+  IconButton,
+  Paragraph,
+  Portal,
+  Provider as PaperProvider,
+  useTheme,
+} from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import { ToastProvider } from 'react-native-toast-notifications';
@@ -48,6 +56,7 @@ import MinPayoutScreen from './screens/dashboard/settings/MinPayout';
 import SizeDropPercentScreen from './screens/dashboard/settings/SizeDropPercent';
 import SizeDropIntervalScreen from './screens/dashboard/settings/SizeDropInterval';
 import FarmerPartialScreen from './screens/charts/Partials';
+import CustomIconButton from './components/CustomIconButton';
 // import i18n from './localization/i18n';
 
 const Tab = createBottomTabNavigator();
@@ -138,6 +147,12 @@ const BaseScreen = () => {
   const currencyLoadable = useRecoilValueLoadable(currencyState);
   const { t, i18n } = useTranslation();
 
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
+
   useEffect(() => {
     if (
       settingsLoadable.state === 'hasValue' &&
@@ -203,6 +218,20 @@ const BaseScreen = () => {
                     component={LanguageSelectorScreen}
                     options={() => ({
                       title: t('screenNames.language'),
+                      headerRight: () => (
+                        <CustomIconButton
+                          onPress={() => {
+                            showDialog();
+                          }}
+                          icon={
+                            <Ionicons
+                              name="information-circle-outline"
+                              size={30}
+                              color={theme.colors.text}
+                            />
+                          }
+                        />
+                      ),
                     })}
                   />
                   <Stack.Screen
@@ -304,6 +333,34 @@ const BaseScreen = () => {
                     })}
                   /> */}
                 </Stack.Navigator>
+                <Portal>
+                  <Dialog visible={visible} onDismiss={hideDialog}>
+                    <Dialog.Title>Translation still in English ?</Dialog.Title>
+                    <Dialog.Content>
+                      <Paragraph>
+                        If so, we would appreciate the help in translating it. We use Crowdin for
+                        our translations, allowing everyone to easily add their translations.
+                      </Paragraph>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                      <Button onPress={hideDialog}>No</Button>
+                      <Button
+                        onPress={() => {
+                          hideDialog();
+                          Linking.canOpenURL('https://crwd.in/openchia-mobile').then(
+                            (supported) => {
+                              if (supported) {
+                                Linking.openURL('https://crwd.in/openchia-mobile');
+                              }
+                            }
+                          );
+                        }}
+                      >
+                        Yes
+                      </Button>
+                    </Dialog.Actions>
+                  </Dialog>
+                </Portal>
               </BottomSheetModalProvider>
             </NavigationContainer>
           </PaperProvider>
