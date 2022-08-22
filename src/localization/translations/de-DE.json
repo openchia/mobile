@@ -14,23 +14,10 @@
       "payouts": "Payouts"
     },
     "stats": {
-      "chiaPrice": "Chia Price",
-      "poolSpace": "Pool Netspace",
-      "etw": "etw",
-      "blocks": "Blocks",
-      "farmers": "Farmers",
-      "netspace": "Netspace",
-      "currentEffort": "Current Effort",
-      "effort": "Effort",
-      "sinceLastWin": "Since Last Win",
-      "rewards": "Rewards",
-      "profitability": "Profitability"
-    },
-    "farmers": {
       "chiaPrice": "Chia Preis",
       "poolSpace": "Pool Größe",
       "etw": "etw",
-      "blocks": "Blöcke",
+      "blocks": "Blocks",
       "farmers": "Farmers",
       "netspace": "Netspace",
       "currentEffort": "Current Effort",
