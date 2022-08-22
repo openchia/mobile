@@ -341,6 +341,10 @@ const BaseScreen = () => {
                         If so, we would appreciate the help in translating it. We use Crowdin for
                         our translations, allowing everyone to easily add their translations.
                       </Paragraph>
+                      <Paragraph>
+                        After the translation has been approved on our side it will be available in
+                        the app.
+                      </Paragraph>
                     </Dialog.Content>
                     <Dialog.Actions>
                       <Button onPress={hideDialog}>No</Button>
