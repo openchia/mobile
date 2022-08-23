@@ -16,7 +16,6 @@ import { convertMojoToChia, convertChiaToMojo } from '../../../utils/Formatting'
 const MinPayoutScreen = ({ route, navigation }) => {
   const [farms, setLauncherIDs] = useRecoilState(launcherIDsState);
   const [settings, setSettings] = useRecoilState(settingsState);
-  const { t } = useTranslation();
   const { launcherId, token, minimumPayout } = route.params;
   const [data, setData] = useState(`${convertMojoToChia(minimumPayout)}`);
   const theme = useTheme();

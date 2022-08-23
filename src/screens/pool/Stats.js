@@ -73,7 +73,7 @@ const Item = ({ title, value, color, loadable, data, format, onPress, icon, sett
 const Content = ({ navigation }) => {
   const statsLoadable = useRecoilValueLoadable(statsQuery());
   const refreshStats = useRecoilRefresher(statsQuery());
-  const { t } = useTranslation('translation', { keyPrefix: 'pool.stats' });
+  const { t } = useTranslation();
   const theme = useTheme();
   const currency = useRecoilValue(currencyState);
   const settings = useRecoilValue(settingsState);

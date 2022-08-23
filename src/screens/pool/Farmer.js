@@ -36,7 +36,7 @@ const Content = ({ route, navigation }) => {
   const currency = useRecoilValue(currencyState);
   const { launcherId, name } = route.params;
   const [earningState, setEarningState] = useState(0);
-  const { t } = useTranslation('translation', { keyPrefix: 'dashboard' });
+  const { t } = useTranslation();
   const theme = useTheme();
   const handleError = useErrorHandler();
 

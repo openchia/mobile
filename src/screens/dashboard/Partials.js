@@ -74,7 +74,7 @@ const Item = ({
 
 const PartialsScreen = ({ launcherIds, selected, farmData, loading }) => {
   const navigation = useNavigation();
-  const { t } = useTranslation('translation', { keyPrefix: 'dashboard.partials' });
+  const { t } = useTranslation();
   const theme = useTheme();
   const settings = useRecoilValue(settingsState);
   const [data, setData] = useState();

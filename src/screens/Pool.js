@@ -129,7 +129,7 @@ const PoolScreen = ({ navigation, route }) => {
   const theme = useTheme();
   const [showSearch, setShowSearch] = useState(false);
   const settings = useRecoilValue(settingsState);
-  const { t } = useTranslation('translation', { keyPrefix: 'pool.tabs' });
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.statusBarColor }}>

@@ -14,7 +14,7 @@ import { api } from '../../../services/Api';
 const DifficultyScreen = ({ navigation, route }) => {
   const [farms, setLauncherIDs] = useRecoilState(launcherIDsState);
   const [settings, setSettings] = useRecoilState(settingsState);
-  const { t } = useTranslation('translation', { keyPrefix: 'settings.difficulties' });
+  const { t } = useTranslation();
   const { launcherId, token, defaultDifficulty } = route.params;
   const [difficulty, setDifficulty] = useState(defaultDifficulty || 'DEFAULT');
   const theme = useTheme();

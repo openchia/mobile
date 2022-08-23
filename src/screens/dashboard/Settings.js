@@ -19,8 +19,7 @@ import { convertMojoToChia } from '../../utils/Formatting';
 const Content = ({ navigation, route }) => {
   const theme = useTheme();
   const [settings, setSettings] = useRecoilState(settingsState);
-  // const { t, i18n } = useTranslation();
-  const { t } = useTranslation('translation', { keyPrefix: 'settings' });
+  const { t, i18n } = useTranslation();
 
   const { farm } = route.params;
   const [farms, setFarms] = useRecoilState(launcherIDsState);

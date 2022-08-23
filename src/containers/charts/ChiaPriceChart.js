@@ -212,7 +212,7 @@ const Chart = ({
   );
 };
 
-const ChiaPriceChart = ({ chiaPrice, margin = { top: 140, right: 20, bottom: 40, left: 20 } }) => {
+const ChiaPriceChart = ({ chiaPrice, margin = { top: 140, right: 24, bottom: 40, left: 24 } }) => {
   const { width, height } = useWindowDimensions();
 
   const loadableData = useRecoilValueLoadable(query);

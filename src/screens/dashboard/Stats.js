@@ -79,7 +79,7 @@ const shortEnglishHumanizer = humanizeDuration.humanizer({
 });
 
 const FarmerStatsScreen = ({ launcherIds, selected, farmData, loading }) => {
-  const { t } = useTranslation('translation', { keyPrefix: 'dashboard.stats' });
+  const { t } = useTranslation();
   const theme = useTheme();
   const settings = useRecoilValue(settingsState);
   // const [data, setData] = useState();

@@ -74,7 +74,7 @@ const Content = ({ navigation }) => {
   const theme = useTheme();
   const [settings, setSettings] = useRecoilState(settingsState);
   // const { t } = useTranslation();
-  const { t } = useTranslation('translation', { keyPrefix: 'dashboard' });
+  const { t } = useTranslation();
 
   const bottomSheetModalRef = useRef(null);
   const [showDialog, setShowDialog] = useState(false);

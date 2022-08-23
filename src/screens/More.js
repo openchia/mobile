@@ -36,7 +36,7 @@ const Item = ({ item, color, t, onPress, theme }) => (
 );
 
 const LaunchScreenText = ({ settings, theme }) => {
-  const { t } = useTranslation('translation', { keyPrefix: 'screenNames' });
+  const { t } = useTranslation();
 
   return (
     <Text
@@ -60,7 +60,7 @@ const MoreScreen = ({ navigation }) => {
   const theme = useTheme();
   const { width } = useWindowDimensions();
   const [settings, setSettings] = useRecoilState(settingsState);
-  const { t, i18n } = useTranslation('translation', { keyPrefix: 'more' });
+  const { t, i18n } = useTranslation();
   const selectedLanguageCode = i18n.language;
   const currency = useRecoilValue(currencyState);
 

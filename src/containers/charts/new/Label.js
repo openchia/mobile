@@ -42,7 +42,7 @@ const LabelContents = ({
 }) => {
   const [active, setActive] = React.useState(false);
 
-  console.log(y.current)
+  console.log(y.current);
 
   useValueEffect(gestureActive, () => {
     setActive(gestureActive.current);
@@ -84,6 +84,16 @@ const LabelContents = ({
     return priceFormat(graph.maxValue);
   }, [nextState]);
 
+  const minXPos = useComputedValue(
+    () => minX.current + margin.left - minMaxFont.getTextWidth(minPriceText.current) / 2,
+    [minX, minPriceText]
+  );
+
+  const maxXPos = useComputedValue(
+    () => maxX.current + margin.left - minMaxFont.getTextWidth(maxPriceText.current) / 2,
+    [maxX, maxPriceText]
+  );
+
   const marginTop = 16;
 
   const pathValue = useComputedValue(() => {
@@ -119,7 +129,7 @@ const LabelContents = ({
     <>
       {!active ? (
         <Text
-          x={margin.left}
+          x={margin.left / 2}
           y={font.getSize() + marginTop}
           text={format(new Date(Date.now()), 'MMM MM p')}
           font={font}
@@ -127,7 +137,7 @@ const LabelContents = ({
         />
       ) : (
         <Text
-          x={margin.left}
+          x={margin.left / 2}
           y={font.getSize() + marginTop}
           text={dateText}
           font={font}
@@ -135,7 +145,7 @@ const LabelContents = ({
         />
       )}
       <Text
-        x={margin.left}
+        x={margin.left / 2}
         y={font.getSize() + priceFont.getSize() + marginTop}
         text={text}
         font={priceFont}
@@ -147,21 +157,21 @@ const LabelContents = ({
             translateY:
               font.getSize() + priceFont.getSize() + marginTop + percentChangeFont.getSize() + 8,
           },
-          { translateX: margin.left },
+          { translateX: margin.left / 2 },
         ]}
       >
         <Path path={pathValue} color={percentageColor} />
       </Group>
 
       <Text
-        x={maxX}
+        x={maxXPos}
         y={margin.top - 4}
         text={maxPriceText}
         font={minMaxFont}
         color={theme.colors.text}
       />
       <Text
-        x={minX}
+        x={minXPos}
         y={margin.top + yMax + font.getSize() + 4}
         text={minPriceText}
         font={minMaxFont}
