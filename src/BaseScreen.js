@@ -115,7 +115,7 @@ const Root = ({ settings }) => {
         name="News"
         component={NewsScreen}
         options={{
-          title: t('screenNames.news'),
+          title: t('news'),
           headerShown: true,
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons
@@ -210,14 +210,14 @@ const BaseScreen = () => {
                     name="Post"
                     component={NewsPostScreen}
                     options={() => ({
-                      title: t('screenNames.post'),
+                      title: t('post'),
                     })}
                   />
                   <Stack.Screen
                     name="Language"
                     component={LanguageSelectorScreen}
                     options={() => ({
-                      title: t('screenNames.language'),
+                      title: t('language'),
                       headerRight: () => (
                         <CustomIconButton
                           onPress={() => {
@@ -238,56 +238,56 @@ const BaseScreen = () => {
                     name="Currency"
                     component={CurrencySelectionScreen}
                     options={() => ({
-                      title: t('screenNames.currency'),
+                      title: t('currency'),
                     })}
                   />
                   <Stack.Screen
                     name="Poolspace"
                     component={PoolspaceScreen}
                     options={() => ({
-                      title: t('screenNames.poolNetspaceChart'),
+                      title: t('poolNetspaceChart'),
                     })}
                   />
                   <Stack.Screen
                     name="Netspace"
                     component={NetspaceScreen}
                     options={() => ({
-                      title: t('screenNames.netspaceChart'),
+                      title: t('netspaceChart'),
                     })}
                   />
                   <Stack.Screen
                     name="Chia Price Chart"
                     component={ChiaPriceScreen}
                     options={() => ({
-                      title: t('screenNames.priceChart'),
+                      title: t('priceChart'),
                     })}
                   />
                   <Stack.Screen
                     name="Farmer Name"
                     component={FarmerNameScreen}
                     options={() => ({
-                      title: t('screenNames.farmName'),
+                      title: t('farmName'),
                     })}
                   />
                   <Stack.Screen
                     name="Verify Farm"
                     component={ScanScreen}
                     options={() => ({
-                      title: t('screenNames.verifyFarm'),
+                      title: t('verifyFarm'),
                     })}
                   />
                   <Stack.Screen
                     name="LaunchOptionScreen"
                     component={LaunchOptionScreen}
                     options={() => ({
-                      title: t('screenNames.launchScreen'),
+                      title: t('launchScreen'),
                     })}
                   />
                   <Stack.Screen
                     name="Farmer Settings"
                     component={FarmerSettingsScreen}
                     options={() => ({
-                      title: t('screenNames.farmSettings'),
+                      title: t('farmSettings'),
                     })}
                   />
                   <Stack.Screen
@@ -329,7 +329,7 @@ const BaseScreen = () => {
                     name="Farmer Partials Chart"
                     component={FarmerPartialScreen}
                     options={({ route }) => ({
-                      title: t('screenNames.farmerPartialsChart'),
+                      title: t('farmerPartialsChart'),
                     })}
                   /> */}
                 </Stack.Navigator>

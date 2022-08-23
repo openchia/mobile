@@ -17,18 +17,19 @@ const Backend = {
     };
     const client = new OtaClient(CROWDIN_OTA_HASH, config);
     client.setCurrentLocale(language);
-    console.log("called")
-    client.getStringsByLocale().then((res, err) => {
-      console.log(res)
-      if (res) {
-       console.log('Successfully updated');
-        return callback(null, res);
-      }
-      return callback(null, null);
-    }).catch(err => {
-      console.log(err)
-      return callback(null, null);
-    });
+    client
+      .getStringsByLocale()
+      .then((res, err) => {
+        if (res) {
+          console.log('Successfully updated');
+          return callback(null, res);
+        }
+        return callback(null, null);
+      })
+      .catch((err) => {
+        console.log(err);
+        return callback(null, null);
+      });
   },
 
   save: (language, namespace, data) => {

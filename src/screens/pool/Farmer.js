@@ -232,7 +232,7 @@ const Content = ({ route, navigation }) => {
           },
         }}
       >
-        <Tab.Screen name="FarmerStats" options={{ title: t('tabs.stats') }}>
+        <Tab.Screen name="FarmerStats" options={{ title: t('stats') }}>
           {() => (
             <FarmerStatsScreen
               launcherIds={[launcherId]}
@@ -241,7 +241,7 @@ const Content = ({ route, navigation }) => {
             />
           )}
         </Tab.Screen>
-        <Tab.Screen name="FarmerPartials" options={{ title: t('tabs.partials') }}>
+        <Tab.Screen name="FarmerPartials" options={{ title: t('partials') }}>
           {() => (
             <FarmerPartialScreen
               launcherIds={[launcherId]}
@@ -250,10 +250,10 @@ const Content = ({ route, navigation }) => {
             />
           )}
         </Tab.Screen>
-        <Tab.Screen name="FarmerBlocks" options={{ title: t('tabs.blocks') }}>
+        <Tab.Screen name="FarmerBlocks" options={{ title: t('blocks') }}>
           {() => <FarmerBlockScreen launcherId={launcherId} />}
         </Tab.Screen>
-        <Tab.Screen name="FarmerPayouts" options={{ title: t('tabs.payouts') }}>
+        <Tab.Screen name="FarmerPayouts" options={{ title: t('payouts') }}>
           {() => <FarmerPayoutScreen launcherId={launcherId} />}
         </Tab.Screen>
       </Tab.Navigator>

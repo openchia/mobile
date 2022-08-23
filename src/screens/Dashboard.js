@@ -358,7 +358,7 @@ const Content = ({ navigation }) => {
           },
         }}
       >
-        <Tab.Screen name="FarmerStats" options={{ title: t('tabs.stats') }}>
+        <Tab.Screen name="FarmerStats" options={{ title: t('stats') }}>
           {() => (
             <FarmerStatsScreen
               selected={selected}
@@ -374,7 +374,7 @@ const Content = ({ navigation }) => {
             />
           )}
         </Tab.Screen>
-        <Tab.Screen name="PartialStats" options={{ title: t('tabs.partials') }}>
+        <Tab.Screen name="PartialStats" options={{ title: t('partials') }}>
           {() => (
             <PartialsScreen
               selected={selected}
@@ -391,7 +391,7 @@ const Content = ({ navigation }) => {
           )}
         </Tab.Screen>
         {(selected || farms.length === 1) && (
-          <Tab.Screen name="FarmerBlocks" options={{ title: t('tabs.blocks') }}>
+          <Tab.Screen name="FarmerBlocks" options={{ title: t('blocks') }}>
             {() => (
               <FarmerBlockScreen
                 selected={selected}
@@ -405,7 +405,7 @@ const Content = ({ navigation }) => {
           </Tab.Screen>
         )}
         {(selected || farms.length === 1) && (
-          <Tab.Screen name="FarmerPayouts" options={{ title: t('tabs.payouts') }}>
+          <Tab.Screen name="FarmerPayouts" options={{ title: t('payouts') }}>
             {() => (
               <FarmerPayoutScreen
                 selected={selected}
