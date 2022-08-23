@@ -448,7 +448,7 @@ const Content = ({ navigation }) => {
                   title="Info"
                   color="#fff"
                 />
-                <Text style={{ fontSize: 16 }}>{t('bottomSheet.addFarm')}</Text>
+                <Text style={{ fontSize: 16 }}>{t('addFarm')}</Text>
               </View>
             </PressableCard>
             {(selected || farms.length === 1) && (
@@ -475,7 +475,7 @@ const Content = ({ navigation }) => {
                     color="#fff"
                   />
 
-                  <Text style={{ fontSize: 16 }}>{t('bottomSheet.farmSettings')}</Text>
+                  <Text style={{ fontSize: 16 }}>{t('farmSettings')}</Text>
                 </View>
               </PressableCard>
             )}
@@ -499,7 +499,7 @@ const Content = ({ navigation }) => {
                 }}
               >
                 <Text numberOfLines={1} style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
-                  {t('bottomSheet.showIn')} {showFiat ? 'XCH' : currency.toUpperCase()}
+                  {t('showIn')} {showFiat ? 'XCH' : currency.toUpperCase()}
                 </Text>
                 {/* <View pointerEvents="none" style={{ paddingRight: 16 }}>
                   <Text> {showFiat ? 'XCH' : currency.toUpperCase()}</Text>
@@ -526,7 +526,7 @@ const Content = ({ navigation }) => {
                   }}
                 >
                   <Text numberOfLines={1} style={{ fontSize: 16, paddingLeft: 12, flex: 1 }}>
-                    {t('bottomSheet.showPayoutAddrBalance')}
+                    {t('showPayoutAddrBalance')}
                   </Text>
                   <View pointerEvents="none" style={{ paddingRight: 16 }}>
                     <Switch
@@ -556,7 +556,7 @@ const Content = ({ navigation }) => {
                     color="#fff"
                   />
 
-                  <Text style={{ fontSize: 16 }}>{t('bottomSheet.removeFarm')}</Text>
+                  <Text style={{ fontSize: 16 }}>{t('removeFarm')}</Text>
                 </View>
               </PressableCard>
             )}

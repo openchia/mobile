@@ -73,21 +73,10 @@ const poolSpaceQuery = selectorFamily({
   get:
     ({ element }) =>
     async () => {
-      // const convertedData = [];
-      const response = await api({ url: `space?days=${element.value}` });
-      // response.netspace.forEach((item, index) => {
-      //   convertedData.push([response.timestamp[index] / 1000, item]);
-      // });
-      // console.log(response);
-      // const x = response
-      //   .map((item) => ({
-      //     date: new Date(item.datetime).getTime(),
-      //     value: item.value,
-      //   }))
-      //   .reverse();
-
-      const x = response.map((item) => [new Date(item.date).getTime(), item.size]);
-      return x;
+      const response = await api({ url: `pool_size?days=${element.value}` });
+      return response
+        .filter((item) => item.field === 'global')
+        .map((item) => [new Date(item.datetime).getTime(), item.value]);
     },
 });
 
