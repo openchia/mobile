@@ -4,21 +4,21 @@
   "30d": "30d",
   "90d": "90d",
   "1y": "1y",
-  "all": "All",
-  "scanDesc": "Scan the QR Code found on our website using the pool login link.",
+  "all": "Všechny",
+  "scanDesc": "Nakenujte QR kód z pool login odkazu k aktivaci oznámení.",
   "pool": {
     "tabs": {
-      "stats": "Stats",
-      "farmers": "Farmers",
-      "blocks": "Blocks",
-      "payouts": "Payouts"
+      "stats": "Statistiky",
+      "farmers": "Farmáři",
+      "blocks": "Bloky",
+      "payouts": "Výplaty"
     },
     "stats": {
-      "chiaPrice": "Chia Price",
-      "poolSpace": "Pool Netspace",
-      "etw": "etw",
-      "blocks": "Blocks",
-      "farmers": "Farmers",
+      "chiaPrice": "XCH cena",
+      "poolSpace": "Velikost poolu",
+      "etw": "odhadovaný čas",
+      "blocks": "Bloky",
+      "farmers": "Farmáři",
       "netspace": "Netspace",
       "currentEffort": "Current Effort",
       "effort": "Effort",
